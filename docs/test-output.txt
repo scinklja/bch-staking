@@ -1,0 +1,28 @@
+
+> bch-staking@1.0.0 test
+> npm run compile && npm run typecheck && tsx --test tests/*.test.ts
+
+
+> bch-staking@1.0.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@1.0.0 typecheck
+> tsc
+
+{
+  fundingTxid: '2d92fa4d2ecda677831d25bf6cd5808fcf3889eaf9b9564867eb7c196eb675f6',
+  spendingTxid: '19e33c280242c97ca1185f405cda4c388325953a7dad00212d1e4b69054bac08',
+  confirmations: 1,
+  height: 107,
+  balanceBCH: 349.99996313
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (2291.8723ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7650.8

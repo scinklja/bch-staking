@@ -21,11 +21,11 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "cashc": "^0.14.0",
-    "cashscript": "^0.14.0"
+    "cashc": "0.14.0",
+    "cashscript": "0.14.0"
   },
   "devDependencies": {
-    "@types/node": "^26.6.6",
+    "@types/node": "24.19.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },

@@ -1,0 +1,1 @@
+bitcoin-cash-node-29.2.0-x86_64-linux-gnu.tar.gz: OK

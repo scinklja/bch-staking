@@ -18,6 +18,7 @@ case "${1:-status}" in
  done
  (( ready == 1 )) || { tail -40 "$DATA/regtest/debug.log"; exit 1; }
  fi
+ cli setnetworkactive false >/dev/null
  if ! cli listwallets | rg -q '"dev"'; then
  if cli listwalletdir | rg -q '"dev"'; then cli loadwallet dev; else cli createwallet dev; fi
  fi
@@ -25,7 +26,14 @@ case "${1:-status}" in
  if (( height < 101 )); then cli -rpcwallet=dev generatetoaddress "$((101-height))" "$(cli -rpcwallet=dev getnewaddress)" >/dev/null; fi
  cli getblockchaininfo
  ;;
- stop) cli stop ;;
+ stop)
+ cli stop
+ for i in {1..100}; do
+ [[ ! -f "$DATA/regtest/bitcoind.pid" ]] && exit 0
+ sleep 0.2
+ done
+ echo 'Node shutdown timed out'; exit 1
+ ;;
  status) cli getblockchaininfo; cli -rpcwallet=dev getwalletinfo ;;
  mine) count="${2:-1}"; [[ "$count" =~ ^[1-9][0-9]{0,3}$ ]] || exit 2; cli -rpcwallet=dev generatetoaddress "$count" "$(cli -rpcwallet=dev getnewaddress)" ;;
  rpc) shift; cli -rpcwallet=dev "$@" ;;
