@@ -1,0 +1,33 @@
+{
+  "name": "bch-staking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "node:start": "bash scripts/node.sh start",
+    "node:stop": "bash scripts/node.sh stop",
+    "node:status": "bash scripts/node.sh status",
+    "mine": "bash scripts/node.sh mine",
+    "compile": "cashc contracts/Example.cash --output artifacts/Example.json",
+    "typecheck": "tsc",
+    "test": "npm run compile && npm run typecheck && tsx --test tests/*.test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cashc": "^0.14.0",
+    "cashscript": "^0.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}

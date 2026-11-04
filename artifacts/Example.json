@@ -1,0 +1,34 @@
+{
+  "contractName": "Example",
+  "constructorInputs": [
+    { "name": "answer", "type": "int" }
+  ],
+  "abi": [
+    {
+      "name": "spend",
+      "inputs": [
+        { "name": "guess", "type": "int" }
+      ]
+    }
+  ],
+  "bytecode": "OP_NUMEQUAL",
+  "source": "pragma cashscript ^0.14.0;\n// Demonstration only: anyone who knows the public answer can spend this output.\ncontract Example(int answer) {\n    function spend(int guess) {\n        require(guess == answer);\n    }\n}\n",
+  "fingerprint": "fa9e7ae1cf47ba86e0c490d22034b0f3006b74c4164855e54e1b709313dd3dbe",
+  "debug": {
+    "bytecode": "9c",
+    "sourceMap": "5:8:5:33:1",
+    "logs": [],
+    "requires": [
+      { "ip": 2, "line": 5 }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-04T13:18:12.454Z"
+}

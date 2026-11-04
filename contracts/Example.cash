@@ -1,0 +1,7 @@
+pragma cashscript ^0.14.0;
+// Demonstration only: anyone who knows the public answer can spend this output.
+contract Example(int answer) {
+    function spend(int guess) {
+        require(guess == answer);
+    }
+}
