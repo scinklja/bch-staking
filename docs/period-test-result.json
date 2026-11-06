@@ -1,0 +1,166 @@
+[
+  {
+    "cutoff": 1793959920,
+    "initialMtp": 1793959737,
+    "clockControl": "normal clock, no setmocktime"
+  },
+  {
+    "name": "authorized cancellation before cutoff",
+    "mtp": 1793959740,
+    "result": {
+      "txid": "3deeb23e75d04e26c9d51762a2ea152b2435881ca443fcc843f89d7295fe0125",
+      "allowed": true,
+      "size": 332,
+      "vsize": 332,
+      "fees": {
+        "base": 0.00001,
+        "effective-feerate": 0.00003012
+      }
+    }
+  },
+  {
+    "name": "pre-cutoff cancellation confirmed",
+    "txid": "3deeb23e75d04e26c9d51762a2ea152b2435881ca443fcc843f89d7295fe0125",
+    "confirmations": 1,
+    "previousBlockMtp": 1793959740,
+    "observedWallTime": 1793959856
+  },
+  {
+    "name": "closure before cutoff",
+    "mtp": 1793959850,
+    "result": {
+      "txid": "a68c85a68a3370ab11fc0a9d7f034867aea04e09fcf737c43f4f3c511cf0243e",
+      "allowed": false,
+      "reject-reason": "64: bad-txns-nonfinal",
+      "reject-details": "bad-txns-nonfinal, non-final transaction"
+    }
+  },
+  {
+    "name": "irrevocable active offer cannot cancel before cutoff",
+    "mtp": 1793959850,
+    "result": {
+      "txid": "33ba2c891dd71cab890abf1563ff470b899b8a4c841334290c9e0a8a74733eda",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+    }
+  },
+  {
+    "name": "delayed closure; OPEN still unspent",
+    "mtp": 1793959933,
+    "delaySeconds": 13
+  },
+  {
+    "name": "UNSAFE late cancellation before close accepted",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "4c1dffe88862a127518a7f1b6d2d59f3aa39fce1fefbbd440a895b0e3df9c47f",
+      "allowed": true,
+      "size": 332,
+      "vsize": 332,
+      "fees": {
+        "base": 0.00001,
+        "effective-feerate": 0.00003012
+      }
+    }
+  },
+  {
+    "name": "UNSAFE late cancellation mined after cutoff",
+    "txid": "4c1dffe88862a127518a7f1b6d2d59f3aa39fce1fefbbd440a895b0e3df9c47f",
+    "confirmations": 1,
+    "previousBlockMtp": 1793959933,
+    "observedWallTime": 1793959932
+  },
+  {
+    "name": "declared locktime at cutoff rejected",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "c5ea07c597f0b83890fc143d227ac8ba71293ece44165ca0a333875483655fd7",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    }
+  },
+  {
+    "name": "active cancellation after cutoff before close rejected",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "a06019f22077da53cf7c9fb57e6d6013f023489938f568631114c51e0e50caa5",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+    }
+  },
+  {
+    "name": "permissionless delayed closure allowed",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "a68c85a68a3370ab11fc0a9d7f034867aea04e09fcf737c43f4f3c511cf0243e",
+      "allowed": true,
+      "size": 159,
+      "vsize": 159,
+      "fees": {
+        "base": 0.00001,
+        "effective-feerate": 0.00006289
+      }
+    }
+  },
+  {
+    "name": "OPEN -> CLOSED confirmed",
+    "txid": "a68c85a68a3370ab11fc0a9d7f034867aea04e09fcf737c43f4f3c511cf0243e",
+    "confirmations": 1,
+    "previousBlockMtp": 1793959933,
+    "observedWallTime": 1793959932
+  },
+  {
+    "name": "CLOSED -> OPEN forbidden",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "bcfbfc12676ce3ab0c84c88f2dade510ef4c409431762cce6b90edb7edfcf91f",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    }
+  },
+  {
+    "name": "lower-ranked offer after delayed close rejected",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "86f09e5687254360ad5b01ababbdd3c8e86efb9935540adcca1928ae3ed2638d",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    }
+  },
+  {
+    "name": "later tied offer after delayed close rejected",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "2a673b98b939614371121964977d37df383d4870ee96c463fbf81ca5e9c4e110",
+      "allowed": false,
+      "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+      "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    }
+  },
+  {
+    "name": "permissionless settlement after delayed close",
+    "mtp": 1793959933,
+    "result": {
+      "txid": "a497598bbc1a9e8474d723bca1358cdc5bf281be11d9c965a93acd9ca70937b5",
+      "allowed": true,
+      "size": 922,
+      "vsize": 922,
+      "fees": {
+        "base": 0.00001,
+        "effective-feerate": 0.00001084
+      }
+    }
+  },
+  {
+    "name": "CLOSED -> SETTLED terminal confirmed",
+    "txid": "a497598bbc1a9e8474d723bca1358cdc5bf281be11d9c965a93acd9ca70937b5",
+    "confirmations": 1,
+    "previousBlockMtp": 1793959933,
+    "observedWallTime": 1793959932
+  }
+]

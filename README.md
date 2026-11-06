@@ -1,6 +1,6 @@
 # BCH regtest development environment
 
-Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform.
+Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 
 ## Restart after VM boot
 
@@ -28,7 +28,7 @@ bash scripts/node.sh rpc getbalance
 bash scripts/node.sh rpc getrawtransaction TRANSACTION_ID true
 ```
 
-Tests consume test BCH and append local blocks each run. They require the node to be running. Do not run multiple integration tests or scans concurrently.
+Tests consume test BCH and append local blocks each run. The period test waits roughly a minute to cross a real UTC cutoff without changing the node clock. They require the node to be running. Do not run multiple integration tests or scans concurrently.
 
 ## Files and installation
 

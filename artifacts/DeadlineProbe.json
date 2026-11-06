@@ -1,0 +1,49 @@
+{
+  "contractName": "DeadlineProbe",
+  "constructorInputs": [
+    { "name": "cutoff", "type": "int" },
+    { "name": "owner", "type": "pubkey" },
+    { "name": "refund", "type": "bytes" },
+    { "name": "closed", "type": "bytes" }
+  ],
+  "abi": [
+    {
+      "name": "cancel",
+      "inputs": [
+        { "name": "authorization", "type": "sig" }
+      ]
+    },
+    { "name": "close", "inputs": [] }
+  ],
+  "bytecode": "OP_4 OP_PICK OP_0 OP_NUMEQUAL OP_IF OP_TXLOCKTIME OP_CHECKLOCKTIMEVERIFY OP_DROP OP_5 OP_ROLL OP_ROT OP_CHECKSIGVERIFY OP_TXLOCKTIME 0065cd1d OP_GREATERTHANOREQUAL OP_VERIFY OP_TXLOCKTIME OP_GREATERTHAN OP_VERIFY OP_TXINPUTCOUNT OP_1 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE e803 OP_SUB OP_NUMEQUAL OP_NIP OP_NIP OP_ELSE OP_4 OP_ROLL OP_1 OP_NUMEQUALVERIFY OP_CHECKLOCKTIMEVERIFY OP_DROP OP_TXINPUTCOUNT OP_1 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_3 OP_ROLL OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE e803 OP_SUB OP_NUMEQUAL OP_NIP OP_NIP OP_ENDIF",
+  "source": "pragma cashscript ^0.14.0;\n// Intentionally UNSAFE counterexample. Never use as a deadline mechanism.\ncontract DeadlineProbe(int cutoff, pubkey owner, bytes refund, bytes closed) {\n    function cancel(sig authorization) {\n        require(checkSig(authorization, owner));\n        require(tx.locktime >= 500000000);\n        require(tx.locktime < cutoff);\n        require(tx.inputs.length == 1 && tx.outputs.length == 1);\n        require(tx.outputs[0].lockingBytecode == refund);\n        require(tx.outputs[0].value == tx.inputs[0].value - 1000);\n    }\n    function close() {\n        require(tx.time >= cutoff);\n        require(tx.inputs.length == 1 && tx.outputs.length == 1);\n        require(tx.outputs[0].lockingBytecode == closed);\n        require(tx.outputs[0].value == tx.inputs[0].value - 1000);\n    }\n}\n",
+  "fingerprint": "c6efbe64c93bde40e6715dc89ac16527968af9369477fabb83d2de76cf67216a",
+  "debug": {
+    "bytecode": "5479009c63c5b175557a7badc5040065cd1da269c5a069c3519cc4519c9a6900cd8800cc00c602e803949c777767547a519db175c3519cc4519c9a6900cd537a8800cc00c602e803949c777768",
+    "sourceMap": "4:4:11:5;;;;;:39:4:39;::::1;;5:25:5:38:0;;:40::45;:8::48:1;6:16:6:27:0;:31::40;:16:::1;:8::42;7:16:7:27:0;:::36:1;:8::38;8:16:8:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;9:27:9:28:0;:16::45:1;:8::57;10:27:10:28:0;:16::35:1;:49::50:0;:39::57:1;:60::64:0;:39:::1;:8::66;4:39:11:5;;:4;12::17::0;;;;13:8:13:35:1;;14:16:14:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;15:27:15:28:0;:16::45:1;:49::55:0;;:8::57:1;16:27:16:28:0;:16::35:1;:49::50:0;:39::57:1;:60::64:0;:39:::1;:8::66;12:21:17:5;;3:0:18:1",
+    "logs": [],
+    "requires": [
+      { "ip": 10, "line": 4, "message": "Using tx.locktime requires a non-final sequence number on the spending input" },
+      { "ip": 15, "line": 5 },
+      { "ip": 19, "line": 6 },
+      { "ip": 22, "line": 7 },
+      { "ip": 30, "line": 8 },
+      { "ip": 33, "line": 9 },
+      { "ip": 41, "line": 10 },
+      { "ip": 48, "line": 13 },
+      { "ip": 57, "line": 14 },
+      { "ip": 62, "line": 15 },
+      { "ip": 70, "line": 16 }
+    ],
+    "sourceTags": "5:7:lg;37:38:sc;66:67:sc"
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-06T10:10:38.887Z"
+}

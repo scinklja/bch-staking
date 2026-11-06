@@ -2,7 +2,7 @@
   {
     "name": "lower-ranked winner",
     "result": {
-      "txid": "b5a9b748da1bad8291f3dc644626596674beac548fe3e85398ae949f42450282",
+      "txid": "d59defa35bccb2271ec886367dda1d0a9ed2368902329b8b034134ef099fa37f",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -11,7 +11,7 @@
   {
     "name": "later equal-ranked offer",
     "result": {
-      "txid": "e6c1b3cd3320f2c77ebb409ec0800ed3a6fdde3bb18c0bb6675beb304d803e3b",
+      "txid": "cae482d4cce3610b8a910b2b14844b8196c7daba03d032fd0e7976d61b93f916",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -20,7 +20,7 @@
   {
     "name": "incorrect payout",
     "result": {
-      "txid": "94657ebec20628d9ea9d6f4c84c19c749f670ed466f292cd8e31807872fab147",
+      "txid": "94ab9ffa3a550e1b398c90d2250b88d8ce094160283dd8c913720651e170b38a",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -29,7 +29,7 @@
   {
     "name": "insufficient full reserve",
     "result": {
-      "txid": "9d746bc6bc9c64ab601420e6428b51217423c0581bbe8388aa75e80ffe2af952",
+      "txid": "4b2dd09718d24f0a2c3c69aab9bbdf976361171d0198be62e2236155f6b86a60",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -38,7 +38,7 @@
   {
     "name": "period not started",
     "result": {
-      "txid": "182576240afedd6044d7fc0d8b22328dc906a2a90cafcb67080f822c585f1f3f",
+      "txid": "905a14ef5027e1c325069be2b6a5227c1db914f35c09abffd7bf8f63d5a52108",
       "allowed": false,
       "reject-reason": "64: bad-txns-nonfinal",
       "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -47,7 +47,7 @@
   {
     "name": "strictly higher offer exists",
     "result": {
-      "txid": "b13fc6396e211d6b732b746757c2661a0ce7efc81678b329fcaea66c34cf3eda",
+      "txid": "a246d262dfc4910c80837efcf8dc80aa4c622d0f142acada597b913e2341d3c2",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -56,7 +56,7 @@
   {
     "name": "conflicting settlement",
     "result": {
-      "txid": "2b0d2812ec8e6618b7791987d27585b4b4cc3cc9db77346e24d47eb651e8f6ff",
+      "txid": "f6ea251996c472b8dc4ca4c07515add365416a298d7cf42e55b6e11d82686023",
       "allowed": false,
       "reject-reason": "18: txn-mempool-conflict",
       "reject-details": "txn-mempool-conflict"
@@ -65,15 +65,15 @@
   {
     "name": "early stake withdrawal",
     "result": {
-      "txid": "03f8f3951bb0c4389235e6043b688190a745f8ed0590643d03e6e64c83bc92cf",
+      "txid": "657ae47dd23ad59709eb8ae388fb2b2f21dbd20d0162b05b2c2c338a7674169f",
       "allowed": false,
       "reject-reason": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)",
       "reject-details": "non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     }
   },
   {
-    "accepted": "a31114ef6e49307a555d5f1f870f8e383071fa46a4c8939c9bf1c363d212cce9",
-    "uniqueWinner": "e2bb5c0c4a8f93fcef3aeb0aa1611c7556a682360da7fdb39acc8b5c3a217425",
+    "accepted": "e53d68b9ad2f7b5c7659028f3245046405173c9efd10947a8225058639b19010",
+    "uniqueWinner": "b40027d9a679cb4552dbf19f1af67c48a89362807ac79caa44f32fa198db7c07",
     "confirmations": 1,
     "bytes": 922,
     "covenantBytes": 685

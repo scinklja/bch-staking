@@ -1,0 +1,18 @@
+pragma cashscript ^0.14.0;
+// Intentionally UNSAFE counterexample. Never use as a deadline mechanism.
+contract DeadlineProbe(int cutoff, pubkey owner, bytes refund, bytes closed) {
+    function cancel(sig authorization) {
+        require(checkSig(authorization, owner));
+        require(tx.locktime >= 500000000);
+        require(tx.locktime < cutoff);
+        require(tx.inputs.length == 1 && tx.outputs.length == 1);
+        require(tx.outputs[0].lockingBytecode == refund);
+        require(tx.outputs[0].value == tx.inputs[0].value - 1000);
+    }
+    function close() {
+        require(tx.time >= cutoff);
+        require(tx.inputs.length == 1 && tx.outputs.length == 1);
+        require(tx.outputs[0].lockingBytecode == closed);
+        require(tx.outputs[0].value == tx.inputs[0].value - 1000);
+    }
+}

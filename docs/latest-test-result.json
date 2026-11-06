@@ -1,7 +1,7 @@
 {
-  "fundingTxid": "ee4b64696b562855a9a3039414c6840bbdc93c381ce21480c72b9be56452a99b",
-  "spendingTxid": "5ba2f1f3cdf8cf67e8ef25071e1f517b44e2e16503754845333ca034426c6861",
+  "fundingTxid": "e77f34113657cf1494bc20f6679f4d00cf0815711db2c40870e7c62f969dec51",
+  "spendingTxid": "bb5f0a5b1e58d60edb649702bc3b6248c5c96b3fd144e8b7c10239adf4d47700",
   "confirmations": 1,
-  "height": 121,
-  "balanceBCH": 1049.99596023
+  "height": 166,
+  "balanceBCH": 3299.9891213
 }

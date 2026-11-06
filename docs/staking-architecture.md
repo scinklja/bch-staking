@@ -1,5 +1,7 @@
 # Staking feasibility and bounded prototype
 
+The [follow-up cancellation investigation](cancellation-deadlines.md) tests the deadline attack and an experimental irrevocable OPEN → CLOSED → SETTLED path; its protocol amendment is proposed, not an assertion that the original UTC deadlines work.
+
 ## Decision
 
 A bounded auction with a complete authenticated offer set is feasible. The full specification, interpreted as exact wall-clock deadlines and globally earliest submissions, is **not** enforceable as written on BCH. Adopt explicit chain-time and serialized-registration semantics before building a production system. This implementation is an experiment, not a deployable staking protocol.

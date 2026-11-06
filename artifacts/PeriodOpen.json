@@ -1,0 +1,33 @@
+{
+  "contractName": "PeriodOpen",
+  "constructorInputs": [
+    { "name": "cutoff", "type": "int" },
+    { "name": "closed", "type": "bytes" }
+  ],
+  "abi": [
+    { "name": "close", "inputs": [] }
+  ],
+  "bytecode": "OP_CHECKLOCKTIMEVERIFY OP_DROP OP_TXINPUTCOUNT OP_1 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE e803 OP_SUB OP_NUMEQUAL",
+  "source": "pragma cashscript ^0.14.0;\n// Experimental protocol change: activation is irrevocable; no cancellation branch.\n// Complete roster and immutable settings are committed through closed bytecode.\ncontract PeriodOpen(int cutoff, bytes closed) {\n    function close() {\n        require(tx.time >= cutoff);\n        require(tx.inputs.length == 1 && tx.outputs.length == 1);\n        require(tx.outputs[0].lockingBytecode == closed);\n        require(tx.outputs[0].value == tx.inputs[0].value - 1000);\n    }\n}\n",
+  "fingerprint": "b21b419a30d62f2f82740dcd190d36ba8f1192b416cbe2531babd08cdb13996b",
+  "debug": {
+    "bytecode": "b175c3519cc4519c9a6900cd8800cc00c602e803949c",
+    "sourceMap": "6:8:6:35:1;;7:16:7:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;8:27:8:28:0;:16::45:1;:8::57;9:27:9:28:0;:16::35:1;:49::50:0;:39::57:1;:60::64:0;:39:::1;:8::66",
+    "logs": [],
+    "requires": [
+      { "ip": 2, "line": 6 },
+      { "ip": 11, "line": 7 },
+      { "ip": 14, "line": 8 },
+      { "ip": 22, "line": 9 }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-06T10:10:39.865Z"
+}

@@ -1,0 +1,11 @@
+pragma cashscript ^0.14.0;
+// Experimental protocol change: activation is irrevocable; no cancellation branch.
+// Complete roster and immutable settings are committed through closed bytecode.
+contract PeriodOpen(int cutoff, bytes closed) {
+    function close() {
+        require(tx.time >= cutoff);
+        require(tx.inputs.length == 1 && tx.outputs.length == 1);
+        require(tx.outputs[0].lockingBytecode == closed);
+        require(tx.outputs[0].value == tx.inputs[0].value - 1000);
+    }
+}
