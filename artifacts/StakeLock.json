@@ -1,0 +1,34 @@
+{
+  "contractName": "StakeLock",
+  "constructorInputs": [
+    { "name": "end", "type": "int" },
+    { "name": "recipient", "type": "bytes" }
+  ],
+  "abi": [
+    { "name": "withdraw", "inputs": [] }
+  ],
+  "bytecode": "OP_CHECKLOCKTIMEVERIFY OP_DROP OP_TXINPUTCOUNT OP_1 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUALVERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE e803 OP_SUB OP_GREATERTHANOREQUAL",
+  "source": "pragma cashscript ^0.14.0;\ncontract StakeLock(int end, bytes recipient) {\n    function withdraw() {\n        require(tx.time >= end);\n        require(tx.inputs.length == 1);\n        require(tx.outputs.length == 1);\n        require(tx.outputs[0].lockingBytecode == recipient);\n        require(tx.outputs[0].value >= tx.inputs[0].value - 1000);\n    }\n}\n",
+  "fingerprint": "0926de293037504f7b88808823395b6df7dfd2a875e28638cdb22ab2ccf54c76",
+  "debug": {
+    "bytecode": "b175c3519dc4519d00cd8800cc00c602e80394a2",
+    "sourceMap": "4:8:4:32:1;;5:16:5::0;:36::37;:8::39:1;6:16:6:33:0;:37::38;:8::40:1;7:27:7:28:0;:16::45:1;:8::60;8:27:8:28:0;:16::35:1;:49::50:0;:39::57:1;:60::64:0;:39:::1;:8::66",
+    "logs": [],
+    "requires": [
+      { "ip": 2, "line": 4 },
+      { "ip": 6, "line": 5 },
+      { "ip": 9, "line": 6 },
+      { "ip": 12, "line": 7 },
+      { "ip": 20, "line": 8 }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-06T09:41:49.509Z"
+}

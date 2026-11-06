@@ -1,0 +1,49 @@
+pragma cashscript ^0.14.0;
+// Bounded, atomic genesis roster. Array position is the authenticated tie order.
+contract Vault(int start, int cap, int reserve, bytes creator,
+    int s0, int t0, int r0, bytes p0, bytes l0,
+    int s1, int t1, int r1, bytes p1, bytes l1,
+    int s2, int t2, int r2, bytes p2, bytes l2) {
+    function settle(int winner) {
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 1);
+        require(tx.outputs.length == 5);
+        require(tx.time >= start);
+        require(reserve >= cap && cap > 0);
+        require(s0 >= 1000 && s0 <= 1000000 && t0 > 0 && t0 <= 1000000 && r0 >= 1000 && r0 <= cap);
+        require(s1 >= 1000 && s1 <= 1000000 && t1 > 0 && t1 <= 1000000 && r1 >= 1000 && r1 <= cap);
+        require(s2 >= 1000 && s2 <= 1000000 && t2 > 0 && t2 <= 1000000 && r2 >= 1000 && r2 <= cap);
+        require(cap <= 1000000);
+        require(tx.inputs[0].value == reserve + s0 + s1 + s2 + 1000);
+        int reward = r0;
+        bytes payee = p0;
+        bytes dest0 = l0;
+        bytes dest1 = p1;
+        bytes dest2 = p2;
+        if (winner == 0) {
+            require(s0 * t0 * r1 >= s1 * t1 * r0);
+            require(s0 * t0 * r2 >= s2 * t2 * r0);
+        } else if (winner == 1) {
+            require(s1 * t1 * r0 > s0 * t0 * r1);
+            require(s1 * t1 * r2 >= s2 * t2 * r1);
+            reward = r1;
+            payee = p1;
+            dest0 = p0;
+            dest1 = l1;
+        } else {
+            require(winner == 2);
+            require(s2 * t2 * r0 > s0 * t0 * r2);
+            require(s2 * t2 * r1 > s1 * t1 * r2);
+            reward = r2;
+            payee = p2;
+            dest0 = p0;
+            dest2 = l2;
+        }
+        require(tx.outputs[0].lockingBytecode == payee);
+        require(tx.outputs[0].value == reward);
+        require(tx.outputs[1].lockingBytecode == dest0 && tx.outputs[1].value == s0);
+        require(tx.outputs[2].lockingBytecode == dest1 && tx.outputs[2].value == s1);
+        require(tx.outputs[3].lockingBytecode == dest2 && tx.outputs[3].value == s2);
+        require(tx.outputs[4].lockingBytecode == creator && tx.outputs[4].value == reserve - reward);
+    }
+}

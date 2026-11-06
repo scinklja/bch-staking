@@ -1,6 +1,6 @@
 # BCH regtest development environment
 
-Verified on Omarchy / Arch Linux, x86_64. This project is infrastructure and an example contract only; no staking protocol is implemented.
+Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform.
 
 ## Restart after VM boot
 
@@ -28,13 +28,13 @@ bash scripts/node.sh rpc getbalance
 bash scripts/node.sh rpc getrawtransaction TRANSACTION_ID true
 ```
 
-Tests consume test BCH and mine two blocks each run. They require the node to be running. Do not run multiple integration tests or scans concurrently.
+Tests consume test BCH and append local blocks each run. They require the node to be running. Do not run multiple integration tests or scans concurrently.
 
 ## Files and installation
 
-- `contracts/`: example contract. The answer is public; this is a compilation/spending demonstration.
+- `contracts/`: original Example demonstration, bounded three-offer Vault and StakeLock.
 - `src/`: cookie-authenticated JSON-RPC client and CashScript `NetworkProvider` implementation.
-- `tests/`: actual BCHN funding, invalid-spend rejection, valid-spend broadcast and confirmation test.
+- `tests/`: actual BCHN lifecycle and bounded-vault ranking, tie, reserve, payout, lock, conflict and replay tests.
 - `scripts/`: node lifecycle, mining and verified BCHN installation.
 - `artifacts/`: compiler output.
 - `docs/`: verification evidence, setup report and latest transaction IDs.
