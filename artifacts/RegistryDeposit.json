@@ -1,0 +1,34 @@
+{
+  "contractName": "RegistryDeposit",
+  "constructorInputs": [
+    { "name": "owner", "type": "pubkey" }
+  ],
+  "abi": [
+    {
+      "name": "spend",
+      "inputs": [
+        { "name": "authorization", "type": "sig" }
+      ]
+    }
+  ],
+  "bytecode": "OP_CHECKSIG",
+  "source": "pragma cashscript ^0.14.0;\n// Regtest fixture funding only; not part of registry authorization.\ncontract RegistryDeposit(pubkey owner) {\n    function spend(sig authorization) { require(checkSig(authorization, owner)); }\n}\n",
+  "fingerprint": "9bc6bf500d23c135ed2add8ccee8d1c83fc9170b3bc736e25fe62e6bcab2fad5",
+  "debug": {
+    "bytecode": "ac",
+    "sourceMap": "4:40:4:80:1",
+    "logs": [],
+    "requires": [
+      { "ip": 2, "line": 4 }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-06T10:58:13.513Z"
+}

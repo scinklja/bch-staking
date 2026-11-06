@@ -1,0 +1,5 @@
+pragma cashscript ^0.14.0;
+// Regtest fixture funding only; not part of registry authorization.
+contract RegistryDeposit(pubkey owner) {
+    function spend(sig authorization) { require(checkSig(authorization, owner)); }
+}

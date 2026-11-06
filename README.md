@@ -2,6 +2,8 @@
 
 Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 
+The [16-offer authenticated registry](docs/registry.md) adds protocol-assigned sequence numbers, height-gated immutable snapshots, future-only cancellation, full-roster ranking and collateral accounting. It remains a regtest experiment with documented genesis, asset and withdrawal limitations.
+
 ## Restart after VM boot
 
 ```bash
