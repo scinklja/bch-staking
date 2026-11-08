@@ -1,0 +1,91 @@
+{
+  "contractName": "StakeAllocation",
+  "constructorInputs": [
+    {
+      "name": "terms",
+      "type": "bytes110"
+    }
+  ],
+  "abi": [
+    {
+      "name": "withdraw",
+      "inputs": [
+        {
+          "name": "authorization",
+          "type": "sig"
+        }
+      ]
+    }
+  ],
+  "bytecode": "OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_1 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_TUCK 21 OP_SPLIT OP_DROP OP_CHECKSIGVERIFY OP_DUP 4e OP_SPLIT OP_DROP 4a OP_SPLIT OP_NIP OP_BIN2NUM OP_CHECKLOCKTIMEVERIFY OP_DROP OP_0 OP_UTXOVALUE d007 OP_NUMEQUALVERIFY OP_0 OP_UTXOTOKENCATEGORY OP_OVER 6e OP_SPLIT OP_DROP 4e OP_SPLIT OP_NIP OP_EQUALVERIFY OP_0 OP_UTXOTOKENCOMMITMENT OP_0 OP_EQUALVERIFY OP_0 OP_UTXOTOKENAMOUNT OP_OVER 4a OP_SPLIT OP_DROP 46 OP_SPLIT OP_NIP OP_BIN2NUM OP_NUMEQUALVERIFY OP_0 OP_OUTPUTBYTECODE 76a914 OP_2 OP_PICK 21 OP_SPLIT OP_DROP OP_HASH160 OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE e803 OP_NUMEQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_OVER 6e OP_SPLIT OP_DROP 4e OP_SPLIT OP_NIP OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCOMMITMENT OP_0 OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENAMOUNT OP_SWAP 4a OP_SPLIT OP_DROP 46 OP_SPLIT OP_NIP OP_BIN2NUM OP_NUMEQUAL",
+  "source": "pragma cashscript ^0.14.0;\n// Terms: owner(33), vault category(32), offer slot(1), period(4), S(4), maturity(4), asset(32).\n// Immutable terms are part of this UTXO's redeem script, not caller-supplied witnesses.\ncontract StakeAllocation(bytes110 terms) {\n    function withdraw(sig authorization) {\n        require(this.activeInputIndex == 0);\n        require(tx.inputs.length == 1 && tx.outputs.length == 1);\n        require(checkSig(authorization, pubkey(terms.slice(0,33))));\n        require(tx.time >= int(terms.slice(74,78)));\n        require(tx.inputs[0].value == 2000);\n        require(tx.inputs[0].tokenCategory == terms.slice(78,110));\n        require(tx.inputs[0].nftCommitment == 0x);\n        require(tx.inputs[0].tokenAmount == int(terms.slice(70,74)));\n        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(hash160(terms.slice(0,33))));\n        require(tx.outputs[0].value == 1000);\n        require(tx.outputs[0].tokenCategory == terms.slice(78,110));\n        require(tx.outputs[0].nftCommitment == 0x);\n        require(tx.outputs[0].tokenAmount == int(terms.slice(70,74)));\n    }\n}\n",
+  "fingerprint": "b03ac6fd9d3e136953a1e2cb5b1d2f00cf6df4d067f12d22f846ec2b97a64721",
+  "debug": {
+    "bytecode": "c0009dc3519cc4519c9a697d01217f75ad76014e7f75014a7f7781b17500c602d0079d00ce78016e7f75014e7f778800cf008800d078014a7f7501467f77819d00cd0376a914527901217f75a97e0288ac7e8800cc02e8039d00d178016e7f75014e7f778800d2008800d37c014a7f7501467f77819c",
+    "sourceMap": "6:16:6:37;:41::42;:8::44:1;7:16:7:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;8:25:8:52:0;:61::63;:47::64:1;;:8::68;9:31:9:36:0;:46::48;:31::49:1;;:43::45:0;:31::49:1;;:27::50;:8::52;;10:26:10:27:0;:16::34:1;:38::42:0;:8::44:1;11:26:11:27:0;:16::42:1;:46::51:0;:61::64;:46::65:1;;:58::60:0;:46::65:1;;:8::67;12:26:12:27:0;:16::42:1;:46::48:0;:8::50:1;13:26:13:27:0;:16::40:1;:48::53:0;:63::65;:48::66:1;;:60::62:0;:48::66:1;;:44::67;:8::69;14:27:14:28:0;:16::45:1;:49::101:0;:82::87;;:96::98;:82::99:1;;:74::100;:49::101;;;:8::103;15:27:15:28:0;:16::35:1;:39::43:0;:8::45:1;16:27:16:28:0;:16::43:1;:47::52:0;:62::65;:47::66:1;;:59::61:0;:47::66:1;;:8::68;17:27:17:28:0;:16::43:1;:47::49:0;:8::51:1;18:27:18:28:0;:16::41:1;:49::54:0;:64::66;:49::67:1;;:61::63:0;:49::67:1;;:45::68;:8::70",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 3,
+        "line": 6
+      },
+      {
+        "ip": 11,
+        "line": 7
+      },
+      {
+        "ip": 16,
+        "line": 8
+      },
+      {
+        "ip": 25,
+        "line": 9
+      },
+      {
+        "ip": 30,
+        "line": 10
+      },
+      {
+        "ip": 40,
+        "line": 11
+      },
+      {
+        "ip": 44,
+        "line": 12
+      },
+      {
+        "ip": 55,
+        "line": 13
+      },
+      {
+        "ip": 68,
+        "line": 14
+      },
+      {
+        "ip": 72,
+        "line": 15
+      },
+      {
+        "ip": 82,
+        "line": 16
+      },
+      {
+        "ip": 86,
+        "line": 17
+      },
+      {
+        "ip": 98,
+        "line": 18
+      }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-08T22:48:59.610Z"
+}

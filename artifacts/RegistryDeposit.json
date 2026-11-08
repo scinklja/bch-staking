@@ -1,13 +1,19 @@
 {
   "contractName": "RegistryDeposit",
   "constructorInputs": [
-    { "name": "owner", "type": "pubkey" }
+    {
+      "name": "owner",
+      "type": "pubkey"
+    }
   ],
   "abi": [
     {
       "name": "spend",
       "inputs": [
-        { "name": "authorization", "type": "sig" }
+        {
+          "name": "authorization",
+          "type": "sig"
+        }
       ]
     }
   ],
@@ -19,7 +25,10 @@
     "sourceMap": "4:40:4:80:1",
     "logs": [],
     "requires": [
-      { "ip": 2, "line": 4 }
+      {
+        "ip": 2,
+        "line": 4
+      }
     ]
   },
   "compiler": {
@@ -30,5 +39,5 @@
       "enforceLocktimeGuard": true
     }
   },
-  "updatedAt": "2026-11-06T10:58:13.513Z"
+  "updatedAt": "2026-11-08T22:48:59.976Z"
 }

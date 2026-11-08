@@ -5,13 +5,13 @@ import { cashAddressToLockingBytecode, binToHex, encodeCashAddress, hash160 } fr
 import { Contract, SignatureTemplate, TransactionBuilder, type SpendableUtxo, type TokenDetails } from 'cashscript';
 import { rpc, assertRegtest } from '../src/rpc.js';
 import { TokenRegtestProvider } from '../src/token-provider.js';
-import { hashState, nextState, offer, STATE_SIZE, LIVE, SNAPSHOT, RECORD_SIZE } from '../src/registry.js';
+import { hashState, nextState, offer, STATE_SIZE, LIVE, SNAPSHOT, RECORD_SIZE, periodBoundary } from '../src/legacy-registry.js';
 
-test('16-offer authenticated registry: registration, immutable activation, cancellation and settlement', { timeout: 240000 }, async () => {
+test('legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement', { timeout: 240000 }, async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const provider = new TokenRegtestProvider();
-  const artifact = JSON.parse(await readFile('artifacts/Registry.json', 'utf8'));
+  const artifact = JSON.parse(await readFile('artifacts/LegacyRegistry.json', 'utf8'));
   const depositArtifact = JSON.parse(await readFile('artifacts/RegistryDeposit.json', 'utf8'));
   const opts = { provider, contractType: 'p2sh32' as const };
   const signers = Array.from({ length: 16 }, (_, i) => new SignatureTemplate(new Uint8Array(32).fill(i + 20)));
@@ -39,8 +39,15 @@ test('16-offer authenticated registry: registration, immutable activation, cance
   const genesisInput = await output(pregen.txid, deposit.address);
   assert.equal(genesisInput.vout, 0);
   const category = pregen.txid;
-  const firstHeight = await provider.getBlockHeight() + 60;
-  const registry = new Contract(artifact, [Buffer.from(category, 'hex').reverse(), BigInt(firstHeight), 3n, 4n, 2000n], opts);
+  const info = await rpc('getblockchaininfo');
+  const schedule = { epoch: Math.ceil((Math.max(Date.now() / 1000, info.mediantime) + 40) / 10) * 10, periodSeconds: 10 };
+  const boundary = (p: number) => periodBoundary(schedule, p);
+  async function crossBoundary(p: number) {
+    while (Date.now() / 1000 <= boundary(p) + 2) await new Promise(resolve => setTimeout(resolve, 250));
+    await mine(12);
+    assert.ok((await rpc('getblockchaininfo')).mediantime > boundary(p));
+  }
+  const registry = new Contract(artifact, [Buffer.from(category, 'hex').reverse(), BigInt(schedule.epoch), BigInt(schedule.periodSeconds), 4n, 2000n], opts);
   let state: Buffer = Buffer.alloc(STATE_SIZE);
   const token = (s: Uint8Array): TokenDetails => ({ category, amount: 0n, nft: { capability: 'mutable', commitment: hashState(s) } });
   const genesis = await new TransactionBuilder({ provider }).addInput(genesisInput, deposit.unlock.spend(depositor))
@@ -61,8 +68,8 @@ test('16-offer authenticated registry: registration, immutable activation, cance
     2, 1000, i === 0 ? 1 : 2));
   async function build(action: number, slot = 0, record = Buffer.alloc(0), signer = depositor,
     changes: { next?: Buffer; witness?: Buffer; locktime?: number; deposit?: SpendableUtxo; payout?: number; sequence?: number } = {}) {
-    const next = changes.next ?? nextState(state, action, slot, record);
-    const b = new TransactionBuilder({ provider }).setLocktime(changes.locktime ?? Math.max(firstHeight, await provider.getBlockHeight()))
+    const next = changes.next ?? nextState(state, action, slot, record, schedule);
+    const b = new TransactionBuilder({ provider }).setLocktime(changes.locktime ?? Math.max(action === 2 ? boundary(state.readUInt32LE(0)) : 0, (await rpc('getblockchaininfo')).mediantime - 1))
       .addInput(current, registry.unlock.transition(changes.witness ?? state, BigInt(action), BigInt(slot), record, signer),
         changes.sequence === undefined ? {} : { sequence: changes.sequence });
     let amount = current.satoshis - 10000n;
@@ -96,7 +103,7 @@ test('16-offer authenticated registry: registration, immutable activation, cance
     state = b.next; current = await output(txid, registry.address);
     return txid;
   }
-  // Height guards apply only to activation, not registration/cancellation.
+  // UTC guards apply only to activation and winning collateral withdrawal.
   const oldHeight = await provider.getBlockHeight();
   const d0 = await fund(16000n);
   await check((await build(0, 1, records[0]!, depositor, { deposit: d0, locktime: oldHeight })).raw,
@@ -104,28 +111,35 @@ test('16-offer authenticated registry: registration, immutable activation, cance
   const forgedWins = Buffer.from(records[0]!); forgedWins[46] = 1;
   await check((await build(0, 0, forgedWins, depositor, { deposit: d0, locktime: oldHeight })).raw,
     'forged initial win counter', scriptFailure);
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 15; i++) {
     const d = i === 0 ? d0 : await fund(BigInt(records[i]!.readUInt32LE(33) + 10000));
     await apply(await build(0, i, records[i]!, signers[i]!, { deposit: d, locktime: await provider.getBlockHeight() }), `register canonical slot ${i}`);
     await mine();
   }
+  assert.equal(state[5], 15);
+  await check((await build(1, 14, Buffer.alloc(0), depositor, { locktime: await provider.getBlockHeight() })).raw,
+    'unauthorized cancellation', /mandatory-script-verify-flag-failed.*Signature must be zero/);
+  const early = await build(2, 0, Buffer.alloc(0), depositor, { locktime: boundary(0) });
+  await check(early.raw, 'premature activation with threshold locktime', /nonfinal/);
+  await check((await build(2, 0, Buffer.alloc(0), depositor, { locktime: await provider.getBlockHeight() })).raw,
+    'premature activation with backdated locktime', /Locktime requirement not satisfied/);
+  // Delay activation beyond the next nominal boundary. Eligibility still follows the baton.
+  await crossBoundary(1);
+  await apply(await build(1, 14, Buffer.alloc(0), signers[14]!), 'post-UTC pre-activation cancellation included in snapshot');
+  const lastDeposit = await fund(16000n);
+  await apply(await build(0, 15, records[15]!, signers[15]!, { deposit: lastDeposit }),
+    'post-UTC pre-activation registration included in snapshot');
   assert.equal(state[5], 16);
   const overflowDeposit = await fund(16000n);
   await check((await build(0, 16, records[0]!, depositor, { deposit: overflowDeposit, locktime: await provider.getBlockHeight() })).raw,
     '17th registration rejected', scriptFailure);
-  await check((await build(1, 15, Buffer.alloc(0), depositor, { locktime: await provider.getBlockHeight() })).raw,
-    'unauthorized cancellation', /mandatory-script-verify-flag-failed.*Signature must be zero/);
-  const early = await build(2);
-  await check(early.raw, 'premature activation with threshold locktime', /nonfinal/);
-  await check((await build(2, 0, Buffer.alloc(0), depositor, { locktime: await provider.getBlockHeight() })).raw,
-    'premature activation with backdated locktime', /Locktime requirement not satisfied/);
-  await mine(firstHeight - await provider.getBlockHeight() + 7);
+
   const activation = await build(2);
   const omit = Buffer.from(activation.next); omit.fill(0, SNAPSHOT + 15 * RECORD_SIZE, SNAPSHOT + 16 * RECORD_SIZE);
   await check((await build(2, 0, Buffer.alloc(0), depositor, { next: omit })).raw, 'snapshot omission of last offer', scriptFailure);
   const reseq = Buffer.from(state); reseq.set(records[15]!, LIVE); reseq.set(records[0]!, LIVE + 15 * RECORD_SIZE);
   await check((await build(2, 0, Buffer.alloc(0), depositor, { witness: reseq })).raw, 'forged authenticated registration order', scriptFailure);
-  await apply(activation, 'delayed height activation of complete roster');
+  await apply(activation, 'delayed UTC activation of complete roster');
   await mine();
   const frozen = Buffer.from(state.subarray(SNAPSHOT));
   const cancel = await build(1, 15, Buffer.alloc(0), signers[15]!);
@@ -140,7 +154,13 @@ test('16-offer authenticated registry: registration, immutable activation, cance
   await check((await build(3, 1)).raw, 'lower-ranked winner rejected across full roster', scriptFailure);
   await check((await build(3, 15)).raw, 'equal score loses to sequence zero despite late cancellation', scriptFailure);
   const winning = await build(3, 0);
-  const competing = await build(3, 0, Buffer.alloc(0), depositor, { locktime: await provider.getBlockHeight() - 1 });
+  const shortened = Buffer.from(winning.next); shortened.writeUInt32LE(boundary(1), LIVE + 49);
+  await check((await build(3, 0, Buffer.alloc(0), depositor, { next: shortened })).raw,
+    'settlement cannot shorten fixed UTC maturity', scriptFailure);
+  const shifted = Buffer.from(winning.next); shifted.writeUInt32LE(boundary(2) + 10, LIVE + 49);
+  await check((await build(3, 0, Buffer.alloc(0), depositor, { next: shifted })).raw,
+    'late settlement cannot shift fixed UTC maturity', scriptFailure);
+  const competing = await build(3, 0, Buffer.alloc(0), depositor, { locktime: boundary(0) });
   await check(competing.raw, 'independently valid duplicate settlement candidate');
   const settled = await apply(winning, 'earliest registered equal-score offer wins');
   await check(competing.raw, 'duplicate settlement conflicts', /txn-mempool-conflict/);
@@ -148,7 +168,10 @@ test('16-offer authenticated registry: registration, immutable activation, cance
   await assert.rejects(() => provider.sendRawTransaction(winning.raw), /already|spent|missing|chain/i);
   assert.equal(state.readUInt32LE(0), 1);
   assert.equal(state[LIVE + 46], 1);
-  // Withdrawals of winners use relative block age; updates may conservatively extend the lock.
+  assert.equal(state.readUInt32LE(LIVE + 49), boundary(2));
+  assert.equal(state[SNAPSHOT + 14 * RECORD_SIZE + 47], 1);
+  assert.equal(state[SNAPSHOT + 15 * RECORD_SIZE + 47], 0);
+  // UTC maturity stays unchanged through unrelated state transitions.
   // Activate next period after threshold; cancelled slot 15 and maxed slot 0 cannot win.
   await apply(await build(2), 'second period authenticated snapshot');
   await check((await build(3, 0)).raw, 'maximum wins alone prevents winning again', scriptFailure);
@@ -156,26 +179,40 @@ test('16-offer authenticated registry: registration, immutable activation, cance
   await apply(await build(1, 0, Buffer.alloc(0), signers[0]!), 'cancel exhausted winner future eligibility');
   const second = await apply(await build(3, 1), 'next complete roster selects next eligible rank');
   await mine();
-  await check((await build(4, 0, Buffer.alloc(0), signers[0]!)).raw, 'winner duration lock rejects default sequence', /Locktime requirement not satisfied|Unsatisfied locktime|sequence/i);
-  await check((await build(4, 0, Buffer.alloc(0), signers[0]!, { sequence: 2 })).raw, 'immature CSV-valid withdrawal rejected by BIP68', /non-BIP68-final/);
-  await mine(3);
-  await apply(await build(4, 0, Buffer.alloc(0), signers[0]!, { sequence: 2 }), 'mature winner collateral withdrawal');
-  await mine(3);
-  await check((await build(4, 0, Buffer.alloc(0), signers[0]!, { sequence: 2 })).raw, 'duplicate collateral withdrawal', scriptFailure);
-  for (let i = 1; i < 15; i++) {
+  assert.equal(state.readUInt32LE(LIVE + RECORD_SIZE + 49), boundary(3));
+  assert.equal(state.readUInt32LE(LIVE + 49), boundary(2));
+  await check((await build(4, 0, Buffer.alloc(0), signers[0]!, { locktime: boundary(2) })).raw,
+    'future UTC maturity locktime is nonfinal', /nonfinal/);
+  await check((await build(4, 0, Buffer.alloc(0), signers[0]!, { locktime: boundary(0) })).raw,
+    'backdated withdrawal cannot bypass UTC maturity', /Locktime requirement not satisfied/);
+  await crossBoundary(2);
+  await apply(await build(4, 0, Buffer.alloc(0), signers[0]!, { locktime: boundary(2) }),
+    'mature UTC collateral withdrawal despite intervening state updates');
+  await mine();
+  await check((await build(4, 0, Buffer.alloc(0), signers[0]!)).raw, 'duplicate collateral withdrawal', scriptFailure);
+  await apply(await build(2), 'third UTC period activation');
+  await apply(await build(3, 1), 'repeat winner extends maturity to its latest fixed period end');
+  assert.equal(state.readUInt32LE(LIVE + RECORD_SIZE + 49), boundary(4));
+  for (let i = 1; i < 14; i++) {
     await apply(await build(1, i, Buffer.alloc(0), signers[i]!), `cancel future eligibility slot ${i}`);
     if (i % 4 === 0) await mine();
   }
+  await crossBoundary(3);
   await apply(await build(2), 'empty eligible snapshot still authenticates all 16 records');
-  await apply(await build(5), 'permissionless full-roster empty-period advancement');
-  await apply(await build(2), 'final period snapshot');
+
   await apply(await build(5), 'final empty-period advancement');
-  await check((await build(2)).raw, 'finite vault cannot activate extra periods', scriptFailure);
+  await check((await build(2, 0, Buffer.alloc(0), depositor, { locktime: boundary(0) })).raw, 'finite vault cannot activate extra periods', scriptFailure);
+  await check((await build(4, 1, Buffer.alloc(0), signers[1]!, { locktime: boundary(3) })).raw,
+    'repeat winner cannot use its earlier maturity', /Locktime requirement not satisfied/);
+  await crossBoundary(4);
+  await apply(await build(4, 1, Buffer.alloc(0), signers[1]!, { locktime: boundary(4) }),
+    'repeat winner withdraws at fixed maturity after final reward period');
+  await apply(await build(4, 15, Buffer.alloc(0), signers[15]!), 'never-winning cancelled offer withdraws without maturity lock');
   await mine();
   const payout = await rpc('getrawtransaction', [settled, true]);
   assert.ok(payout.confirmations >= 1);
   assert.equal(Math.round(payout.vout[1].value * 1e8), 1000);
-  evidence.push({ genesis: genesis.txid, category, settled, second, firstHeight, registryBytes: registry.bytesize,
+  evidence.push({ genesis: genesis.txid, category, settled, second, schedule, registryBytes: registry.bytesize,
     activationBytes: activation.raw.length / 2, settlementBytes: winning.raw.length / 2, stateBytes: state.length });
   await writeFile('docs/registry-test-result.json', JSON.stringify(evidence, null, 2) + '\n');
 });

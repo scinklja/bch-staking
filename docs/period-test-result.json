@@ -1,14 +1,14 @@
 [
   {
-    "cutoff": 1793962770,
-    "initialMtp": 1793962622,
+    "cutoff": 1794178390,
+    "initialMtp": 1794178330,
     "clockControl": "normal clock, no setmocktime"
   },
   {
     "name": "authorized cancellation before cutoff",
-    "mtp": 1793962622,
+    "mtp": 1794178330,
     "result": {
-      "txid": "6361cbec6456d6839cccfe879072500398ca1fa66dbcc9f582bf36c2ba7ba8cd",
+      "txid": "762a638d8838808d2bb5d32105028c42393330ead3f4bd49806fbc70f3041b00",
       "allowed": true,
       "size": 332,
       "vsize": 332,
@@ -20,16 +20,16 @@
   },
   {
     "name": "pre-cutoff cancellation confirmed",
-    "txid": "6361cbec6456d6839cccfe879072500398ca1fa66dbcc9f582bf36c2ba7ba8cd",
+    "txid": "762a638d8838808d2bb5d32105028c42393330ead3f4bd49806fbc70f3041b00",
     "confirmations": 1,
-    "previousBlockMtp": 1793962622,
-    "observedWallTime": 1793962705
+    "previousBlockMtp": 1794178330,
+    "observedWallTime": 1794178332
   },
   {
     "name": "closure before cutoff",
-    "mtp": 1793962701,
+    "mtp": 1794178330,
     "result": {
-      "txid": "6796c828e9846047f7eb54a057eabf058a4a104fea90823de94f534ebd4da1d0",
+      "txid": "fdf3f6510c5fa69e07b5643dc1232ea4fdf02509234a7c5e4673d41c47a72656",
       "allowed": false,
       "reject-reason": "64: bad-txns-nonfinal",
       "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -37,9 +37,9 @@
   },
   {
     "name": "irrevocable active offer cannot cancel before cutoff",
-    "mtp": 1793962701,
+    "mtp": 1794178330,
     "result": {
-      "txid": "6e2c967074cf63d8d863eb17462f4c79f980921cf6f43edf15ab66a1a566f260",
+      "txid": "31779700fe3b0734efc84262e43c04208e74099fe243961c51ecf01ecc6816fe",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -47,14 +47,14 @@
   },
   {
     "name": "delayed closure; OPEN still unspent",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "delaySeconds": 13
   },
   {
     "name": "UNSAFE late cancellation before close accepted",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "a1d5928b38b045ef1925298421b429a9a17444b033ee3ce7e6a112ac8f2c5a3a",
+      "txid": "3e8ef94bd67219e72161523baaaa88a8ce51afe63c01132ef0a294d458e9f39c",
       "allowed": true,
       "size": 332,
       "vsize": 332,
@@ -66,16 +66,16 @@
   },
   {
     "name": "UNSAFE late cancellation mined after cutoff",
-    "txid": "a1d5928b38b045ef1925298421b429a9a17444b033ee3ce7e6a112ac8f2c5a3a",
+    "txid": "3e8ef94bd67219e72161523baaaa88a8ce51afe63c01132ef0a294d458e9f39c",
     "confirmations": 1,
-    "previousBlockMtp": 1793962783,
-    "observedWallTime": 1793962782
+    "previousBlockMtp": 1794178403,
+    "observedWallTime": 1794178402
   },
   {
     "name": "declared locktime at cutoff rejected",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "5e4b2540620fd656d11c908480f733e24d203616efab05be748a7f7e8eb1fcbf",
+      "txid": "f0b03c8e625209345ba51016233aff4590e4a9e5e18bfff9bdb69ee6ae3b22b5",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -83,9 +83,9 @@
   },
   {
     "name": "active cancellation after cutoff before close rejected",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "1fb528235adf4e191ba99c2acd2ac7848690ac6d37a54b20eac8eb8211f23da1",
+      "txid": "1842ce577c8ebf00f138eeea1e10a2dcd8beb93cecc915fd438628d7ba49e3f8",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -93,9 +93,9 @@
   },
   {
     "name": "permissionless delayed closure allowed",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "6796c828e9846047f7eb54a057eabf058a4a104fea90823de94f534ebd4da1d0",
+      "txid": "fdf3f6510c5fa69e07b5643dc1232ea4fdf02509234a7c5e4673d41c47a72656",
       "allowed": true,
       "size": 159,
       "vsize": 159,
@@ -107,16 +107,16 @@
   },
   {
     "name": "OPEN -> CLOSED confirmed",
-    "txid": "6796c828e9846047f7eb54a057eabf058a4a104fea90823de94f534ebd4da1d0",
+    "txid": "fdf3f6510c5fa69e07b5643dc1232ea4fdf02509234a7c5e4673d41c47a72656",
     "confirmations": 1,
-    "previousBlockMtp": 1793962783,
-    "observedWallTime": 1793962783
+    "previousBlockMtp": 1794178403,
+    "observedWallTime": 1794178404
   },
   {
     "name": "CLOSED -> OPEN forbidden",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "7317941eef6032c98f1b1384d6593745c3ad66c081fbe405155bdb7743888655",
+      "txid": "6e9d53149582e72b20a71ffc622f31bed06f7b5c642fdbb9f9e77e6ad1f987fd",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -124,9 +124,9 @@
   },
   {
     "name": "lower-ranked offer after delayed close rejected",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "5e2c383a9a451c9f9de2a2f6bf9803cd14238210b5edfdd146dd5aa8e81fc6b5",
+      "txid": "1fb4f963c1a741bcc7e99734e0c84971b9fd4b2314843c3814c6d2ffa1dede78",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -134,9 +134,9 @@
   },
   {
     "name": "later tied offer after delayed close rejected",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "29dc8741e49f106e390a25a42acee0cb7a902879dd69a93a7e979356bd8b3ca6",
+      "txid": "9ebbf643869a0ac39de63f0c3270824b9648874db4754aa3564a45f54e16556f",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -144,9 +144,9 @@
   },
   {
     "name": "permissionless settlement after delayed close",
-    "mtp": 1793962783,
+    "mtp": 1794178403,
     "result": {
-      "txid": "d867de0d16fd9e6ab572242ad06eaffe56a47b0dbea0676853c97fe3aa30b8e2",
+      "txid": "0a5a006003e5ee48a9a9048925091bc5627f0c01d06757cd7005983d107ac06b",
       "allowed": true,
       "size": 922,
       "vsize": 922,
@@ -158,9 +158,9 @@
   },
   {
     "name": "CLOSED -> SETTLED terminal confirmed",
-    "txid": "d867de0d16fd9e6ab572242ad06eaffe56a47b0dbea0676853c97fe3aa30b8e2",
+    "txid": "0a5a006003e5ee48a9a9048925091bc5627f0c01d06757cd7005983d107ac06b",
     "confirmations": 1,
-    "previousBlockMtp": 1793962783,
-    "observedWallTime": 1793962783
+    "previousBlockMtp": 1794178403,
+    "observedWallTime": 1794178404
   }
 ]

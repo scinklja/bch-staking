@@ -2,7 +2,7 @@
 
 Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 
-The [16-offer authenticated registry](docs/registry.md) adds protocol-assigned sequence numbers, height-gated immutable snapshots, future-only cancellation, full-roster ranking and collateral accounting. It remains a regtest experiment with documented genesis, asset and withdrawal limitations.
+The [16-offer authenticated registry](docs/registry.md) adds protocol-assigned sequence numbers, UTC-gated immutable activation snapshots, fixed UTC reward periods, upfront S×W CashToken escrow, independent per-win allocations and maturity, future-only cancellation, full-roster ranking and collateral accounting. Offer eligibility freezes at actual on-chain activation; delayed execution does not shift the UTC schedule. Each win atomically pays its BCH reward and creates a token-funded allocation withdrawable by its owner independently of all registry phases. It remains a regtest experiment with documented genesis, asset and withdrawal limitations.
 
 ## Restart after VM boot
 
@@ -24,19 +24,20 @@ mise exec -- npm run node:stop
 mise exec -- npm run node:status
 mise exec -- npm run mine -- 10
 mise exec -- npm run compile
+mise exec -- npm run compile:registry
 mise exec -- npm run typecheck
 mise exec -- npm test
 bash scripts/node.sh rpc getbalance
 bash scripts/node.sh rpc getrawtransaction TRANSACTION_ID true
 ```
 
-Tests consume test BCH and append local blocks each run. The period test waits roughly a minute to cross a real UTC cutoff without changing the node clock. They require the node to be running. Do not run multiple integration tests or scans concurrently.
+Tests consume test BCH and append local blocks each run. The period, allocation and legacy registry tests wait on actual UTC boundaries without changing the node clock; allow several minutes for the full suite. They require the node to be running. Do not run multiple integration tests or scans concurrently.
 
 ## Files and installation
 
-- `contracts/`: original Example demonstration, bounded three-offer Vault and StakeLock.
+- `contracts/`: current Registry, StakePool and per-win StakeAllocation covenants, plus retained legacy experiments.
 - `src/`: cookie-authenticated JSON-RPC client and CashScript `NetworkProvider` implementation.
-- `tests/`: actual BCHN lifecycle and bounded-vault ranking, tie, reserve, payout, lock, conflict and replay tests.
+- `tests/`: actual BCHN lifecycle, full-roster ranking, token escrow, independent allocations, snapshots, reserves, maturity and replay tests.
 - `scripts/`: node lifecycle, mining and verified BCHN installation.
 - `artifacts/`: compiler output.
 - `docs/`: verification evidence, setup report and latest transaction IDs.

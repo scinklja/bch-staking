@@ -1,0 +1,758 @@
+{
+  "verifiedAt": "2026-11-08T22:53:37.485Z",
+  "node": {
+    "version": 29020000,
+    "subversion": "/Bitcoin Cash Node:29.2.0/",
+    "protocolversion": 70016,
+    "localservices": "0000000000000425",
+    "localservicesnames": [
+      "NETWORK",
+      "BLOOM",
+      "BITCOIN_CASH",
+      "NETWORK_LIMITED"
+    ],
+    "localrelay": true,
+    "timeoffset": 0,
+    "networkactive": false,
+    "connections": 0,
+    "connections_in": 0,
+    "connections_out": 0,
+    "networks": [
+      {
+        "name": "ipv4",
+        "limited": false,
+        "reachable": true,
+        "proxy": "",
+        "proxy_randomize_credentials": false
+      },
+      {
+        "name": "ipv6",
+        "limited": false,
+        "reachable": true,
+        "proxy": "",
+        "proxy_randomize_credentials": false
+      },
+      {
+        "name": "onion",
+        "limited": true,
+        "reachable": false,
+        "proxy": "",
+        "proxy_randomize_credentials": false
+      },
+      {
+        "name": "",
+        "limited": false,
+        "reachable": true,
+        "proxy": "",
+        "proxy_randomize_credentials": false
+      },
+      {
+        "name": "",
+        "limited": false,
+        "reachable": true,
+        "proxy": "",
+        "proxy_randomize_credentials": false
+      }
+    ],
+    "relayfee": 0.00001,
+    "excessutxocharge": 0,
+    "localaddresses": [],
+    "warnings": ""
+  },
+  "schedule": {
+    "epoch": 1794168400,
+    "periodSeconds": 10
+  },
+  "before": {
+    "height": 952,
+    "hash": "6666e9f9958cf87b7df602ecf56ed6959465fb38bce2c5e02686f3eb5fe4ff0b"
+  },
+  "after": {
+    "height": 960,
+    "hash": "3758d1d322bb7c9e19fc9dce93e634fe6eff0a29953d39f30e87245ebf0fcf0e"
+  },
+  "accepted": 17,
+  "rejected": 29,
+  "evidence": [
+    {
+      "name": "late settlement: fresh genesis",
+      "txid": "07b99ae65848745dbcd83df9d9dc5b5ace4f6afca9669a769c778474817b7a27",
+      "category": "4d76f5dbc0446c7907de3fefe17a0a4d07543c30a488ada97d4a449b626f8ef4",
+      "seed": "1000000"
+    },
+    {
+      "name": "late settlement: register lower-ranked slot 0",
+      "result": {
+        "txid": "8bc6330ddf86fda38fb749d4f3dc8c5110db140e019aa794f4c4266b52ca6522",
+        "allowed": true,
+        "size": 3733,
+        "vsize": 3733,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002678
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after register lower-ranked slot 0",
+      "txid": "8bc6330ddf86fda38fb749d4f3dc8c5110db140e019aa794f4c4266b52ca6522",
+      "period": 0,
+      "value": "1001000",
+      "collateral": "1000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "late settlement: register higher-ranked slot 1",
+      "result": {
+        "txid": "57a512df8e99fc72766c8bd7ff27172668c1a87a2f6f53463d23ce07e47f9ed7",
+        "allowed": true,
+        "size": 3733,
+        "vsize": 3733,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002678
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after register higher-ranked slot 1",
+      "txid": "57a512df8e99fc72766c8bd7ff27172668c1a87a2f6f53463d23ce07e47f9ed7",
+      "period": 0,
+      "value": "1007000",
+      "collateral": "7000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "activation cannot omit strictly higher-ranked offer",
+      "result": {
+        "txid": "dbeb6c3bcfc58dad510ec983250bd9dde51fa9ce3501aaab0fb3bbad66e63334",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "late settlement: activate after scheduled winner maturity",
+      "result": {
+        "txid": "aa274f10a4247dfbdcd398af47420b4ebcaf3884ed9b73605a99ec0b7b248a8f",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after activate after scheduled winner maturity",
+      "txid": "aa274f10a4247dfbdcd398af47420b4ebcaf3884ed9b73605a99ec0b7b248a8f",
+      "period": 0,
+      "value": "997000",
+      "collateral": "7000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "complete roster rejects lower-ranked slot 0",
+      "result": {
+        "txid": "7609efac6af961a71c036533ad9ece0b4f7a7c489ae92e3ceaa2609e614abf90",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "activated snapshot cannot be modified by cancellation",
+      "result": {
+        "txid": "6303642608afaf8039cbd84dd046419fa8eb106bcfd27072ac5364805ee5cb5e",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "activated snapshot cannot reopen phase 0",
+      "result": {
+        "txid": "99a0fa5e68db1f96a45b1ea80d2fa77b12061813ded15e102b9af2a9b44771bc",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "substituted snapshot witness fails authentication",
+      "result": {
+        "txid": "8448c7618bd28030e9929179826eea1ff21ad453b9da032557ebc7294b8b51c6",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "activated snapshot cannot be replaced by reactivation",
+      "result": {
+        "txid": "77d6993956166c6623e196cfbee84a45a46e5c8ffd516ee4a9724304ac7026a1",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "cancellation cannot refund activated collateral",
+      "result": {
+        "txid": "21258461bf3c5644174b97493eaf75d4cfe9b1e66550e917c32a5c9e3cbd25a8",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "cancellation cannot mark activated collateral withdrawn",
+      "result": {
+        "txid": "54489124d8412072f384905e4cf76dada73c0c3c56161c453902438d8c0cf9cb",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "late settlement: cancel winner after activation",
+      "result": {
+        "txid": "859ab9dee3aeaaa77b0dbb79182e5a43ea98faf9eadaa456adde9a6b04a8942c",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after cancel winner after activation",
+      "txid": "859ab9dee3aeaaa77b0dbb79182e5a43ea98faf9eadaa456adde9a6b04a8942c",
+      "period": 0,
+      "value": "987000",
+      "collateral": "7000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "mature collateral still held while activated and unsettled",
+      "result": {
+        "txid": "eef28d41cb038cc3dcc4ef06959671123ba9337087d8d1413d030f4ff6e482e1",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "live cancellation cannot make frozen nonempty snapshot empty",
+      "result": {
+        "txid": "ef7fabf17558186226a5f7480cd4c797bed2288d5f237d46718b351266a13a3f",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "out-of-order settlement cannot skip period 1",
+      "result": {
+        "txid": "7e61304d557ef447470fe1f9b4192e401ba91327582b0681b3c3be0dc52b133b",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "late settlement cannot extend scheduled maturity",
+      "result": {
+        "txid": "b4bde93a90f7f6622a7bf7be954738edeae4dbd223332ba4a58ba3d728536db9",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "late settlement: settle period 0 after maturity",
+      "result": {
+        "txid": "09b3ba8b1fa28c643aa5bcd2dd68efca6777692000ecaf1ee37043ebf48805ed",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after settle period 0 after maturity",
+      "txid": "09b3ba8b1fa28c643aa5bcd2dd68efca6777692000ecaf1ee37043ebf48805ed",
+      "period": 1,
+      "value": "976000",
+      "collateral": "7000",
+      "rewardLiability": "4000"
+    },
+    {
+      "name": "current successor cannot settle previous snapshot twice",
+      "result": {
+        "txid": "b57b088b1ec7ff2272e89a95a7a72e4b6e92ff1659a8b8a089f2c0868fa95044",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "settled snapshot cannot be reopened as its previous period",
+      "result": {
+        "txid": "2e674f1a9cb79ed5b550bc3c57d3e7be3db59fe6b01c9391837e0382c7698531",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "settled audit snapshot remains immutable until next activation",
+      "result": {
+        "txid": "0a39f1068870142cd9b807cc17bbdd013387bc3e2b6e59913c05bf531aeb2377",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "late settlement: immediate withdrawal spends unconfirmed late settlement successor",
+      "result": {
+        "txid": "48732ed85436bb2f548c35c49e96123a0beb00d7c6da6870026916c4ac133a85",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "late settlement: accounting after immediate withdrawal spends unconfirmed late settlement successor",
+      "txid": "48732ed85436bb2f548c35c49e96123a0beb00d7c6da6870026916c4ac133a85",
+      "period": 1,
+      "value": "960000",
+      "collateral": "1000",
+      "rewardLiability": "4000"
+    },
+    {
+      "name": "late settlement and withdrawal mined in same block",
+      "settlement": "09b3ba8b1fa28c643aa5bcd2dd68efca6777692000ecaf1ee37043ebf48805ed",
+      "withdrawal": "48732ed85436bb2f548c35c49e96123a0beb00d7c6da6870026916c4ac133a85",
+      "blockhash": "22be786db50437ae6c6b342b8e6586e4f3d62b62dd5592679adf3da0bcde5251",
+      "scheduledMaturity": 1794168420,
+      "parentMtp": 1794178403,
+      "maturityExtended": false
+    },
+    {
+      "name": "repeat-win counterexample: fresh genesis",
+      "txid": "33caa5d6c84c9511fbf3b2e0e2a5525534fb2a751f3251f8dcc93dbf0362f041",
+      "category": "78fa879c97a27cf45e222e3ab4e19c50c447402ac9f2921a13634fe0605551b9",
+      "seed": "1000000"
+    },
+    {
+      "name": "repeat-win counterexample: deposit S exactly once",
+      "result": {
+        "txid": "11e336bdbec1a43789c3461684edbeccf9aa58569a390b2fd6dc7dae8ed8d66c",
+        "allowed": true,
+        "size": 3733,
+        "vsize": 3733,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002678
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after deposit S exactly once",
+      "txid": "11e336bdbec1a43789c3461684edbeccf9aa58569a390b2fd6dc7dae8ed8d66c",
+      "period": 0,
+      "value": "1006000",
+      "collateral": "6000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "period 0: activation cannot jump cursor",
+      "result": {
+        "txid": "10256d180750808070a3370730e95df3423c2f397276d6f547ce3eb920cd0689",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: activate delayed period 0",
+      "result": {
+        "txid": "fea6fb93b73312a1d32adc629c1949c56e244b8397cfb18bb0ef0ced3fd0a19b",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after activate delayed period 0",
+      "txid": "fea6fb93b73312a1d32adc629c1949c56e244b8397cfb18bb0ef0ced3fd0a19b",
+      "period": 0,
+      "value": "996000",
+      "collateral": "6000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "period 0: settlement cannot retain or roll back cursor",
+      "result": {
+        "txid": "de861080d7718326c42f55ac4f4642f9d57b1ecd79fbd98495e9e0708e68b6fb",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "period 0: cannot drain one extra reserve satoshi",
+      "result": {
+        "txid": "10ff9f57117258eb8d58c2531e924e58f437e8a0611e455ed1800f5a884e0c9d",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: settle delayed period 0",
+      "result": {
+        "txid": "f1b6c8a52c1cf1c881bac92cae0549fbcdd836af3fedef33fa444aa357241714",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after settle delayed period 0",
+      "txid": "f1b6c8a52c1cf1c881bac92cae0549fbcdd836af3fedef33fa444aa357241714",
+      "period": 1,
+      "value": "985000",
+      "collateral": "6000",
+      "rewardLiability": "4000"
+    },
+    {
+      "name": "period 0: duplicate settlement against successor rejected",
+      "result": {
+        "txid": "89ae236ce3fb601541f8dd56b13e6b45d3b8458241152d1d994e7c5f4c6e2813",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "period 1: activation cannot jump cursor",
+      "result": {
+        "txid": "87f5c158ae36940b5a9e29ae29f652d1e507d1c0d01006887bdeeff67c3b0d75",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: activate delayed period 1",
+      "result": {
+        "txid": "fe4847a16c013bb9475c0a615a999492e1b9fefe5b9d88a2b6b8b4adfa9cf900",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after activate delayed period 1",
+      "txid": "fe4847a16c013bb9475c0a615a999492e1b9fefe5b9d88a2b6b8b4adfa9cf900",
+      "period": 1,
+      "value": "975000",
+      "collateral": "6000",
+      "rewardLiability": "4000"
+    },
+    {
+      "name": "period 1: settlement cannot retain or roll back cursor",
+      "result": {
+        "txid": "5bf771731598551b0abefce2120ac2a5fdf861b217d716d41b7f6a5b546b7ccb",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "period 1: cannot drain one extra reserve satoshi",
+      "result": {
+        "txid": "d7a69947a2315820a6077204c1a1d884a02859ba621a649531d8e10dc69a80bb",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: settle delayed period 1",
+      "result": {
+        "txid": "67c0d3fcf3e93ad15fd55c75adf853c5cf1347f299b534f0a3b3cd5baac9277a",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after settle delayed period 1",
+      "txid": "67c0d3fcf3e93ad15fd55c75adf853c5cf1347f299b534f0a3b3cd5baac9277a",
+      "period": 2,
+      "value": "964000",
+      "collateral": "6000",
+      "rewardLiability": "2000"
+    },
+    {
+      "name": "period 1: duplicate settlement against successor rejected",
+      "result": {
+        "txid": "fa61ed85bcdd403d5098d12c71a10d5c88a1fb411a5251175acfb73106911ab2",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "period 2: activation cannot jump cursor",
+      "result": {
+        "txid": "d7f8626d18dd63549580a1188d814ac6cccb21b06b2e951a987e35b14561ed7e",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: activate delayed period 2",
+      "result": {
+        "txid": "8c8ff5bd42e8f813291e2484b9bd1b1a501dd1eca82dca2a2aa6579fbcfdf2c1",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after activate delayed period 2",
+      "txid": "8c8ff5bd42e8f813291e2484b9bd1b1a501dd1eca82dca2a2aa6579fbcfdf2c1",
+      "period": 2,
+      "value": "954000",
+      "collateral": "6000",
+      "rewardLiability": "2000"
+    },
+    {
+      "name": "period 2: settlement cannot retain or roll back cursor",
+      "result": {
+        "txid": "d1174782cfa08fa28f037c0f5a1db32665d3378cd901b134747fff5694d6b0b6",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "period 2: cannot drain one extra reserve satoshi",
+      "result": {
+        "txid": "1867075a3f8243522f25ddbe27c4a636123909869508dc0abe8025386ef91a09",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: settle delayed period 2",
+      "result": {
+        "txid": "e30280776446ad69d9fa1da0a4e3516c7965a20f484408a2c786c42f0ec12d99",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after settle delayed period 2",
+      "txid": "e30280776446ad69d9fa1da0a4e3516c7965a20f484408a2c786c42f0ec12d99",
+      "period": 3,
+      "value": "943000",
+      "collateral": "6000",
+      "rewardLiability": "0"
+    },
+    {
+      "name": "period 2: duplicate settlement against successor rejected",
+      "result": {
+        "txid": "c750fc6096734af0cfe5bd5dc512adcf4028bc5a0bc933deacd2cfd0a40b110d",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "repeat-win counterexample: cancel after three wins",
+      "result": {
+        "txid": "4230562f8240ce8dae4ad86a8cde1e4cb1822dc3f425515d7ef75c8c8d505f59",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after cancel after three wins",
+      "txid": "4230562f8240ce8dae4ad86a8cde1e4cb1822dc3f425515d7ef75c8c8d505f59",
+      "period": 3,
+      "value": "933000",
+      "collateral": "6000",
+      "rewardLiability": "0"
+    },
+    {
+      "name": "repeat-win counterexample: single S withdrawal after all three wins",
+      "result": {
+        "txid": "c131b8ecf24d6330be5a4a538b1ea4366a928fc7c3975e7ff55849f04990ae53",
+        "allowed": true,
+        "size": 3571,
+        "vsize": 3571,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.000028
+        }
+      }
+    },
+    {
+      "name": "repeat-win counterexample: accounting after single S withdrawal after all three wins",
+      "txid": "c131b8ecf24d6330be5a4a538b1ea4366a928fc7c3975e7ff55849f04990ae53",
+      "period": 3,
+      "value": "917000",
+      "collateral": "0",
+      "rewardLiability": "0"
+    },
+    {
+      "name": "cannot withdraw a second independent allocation because none exists",
+      "result": {
+        "txid": "a7d03456ea5416626dcae012d4ecd726ddc04d705a3883b19844970b0fc1f0bd",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      }
+    },
+    {
+      "name": "UNMET REQUIREMENT: separate allocation per win",
+      "wins": [
+        {
+          "period": 0,
+          "txid": "f1b6c8a52c1cf1c881bac92cae0549fbcdd836af3fedef33fa444aa357241714",
+          "maturity": 1794168420,
+          "outputs": 2
+        },
+        {
+          "period": 1,
+          "txid": "67c0d3fcf3e93ad15fd55c75adf853c5cf1347f299b534f0a3b3cd5baac9277a",
+          "maturity": 1794168430,
+          "outputs": 2
+        },
+        {
+          "period": 2,
+          "txid": "e30280776446ad69d9fa1da0a4e3516c7965a20f484408a2c786c42f0ec12d99",
+          "maturity": 1794168440,
+          "outputs": 2
+        }
+      ],
+      "depositedStake": 6000,
+      "peakAccountedCollateral": 6000,
+      "separateAllocations": false,
+      "actualModel": "one pooled stake; latest maturity overwrites earlier maturity"
+    },
+    {
+      "name": "fee-budget boundary: fresh genesis",
+      "txid": "89d18922adf4ceec2d400fcd5dc21b4b1b701b9259b4ec78277d5ac4ffab882e",
+      "category": "74e5e9ecc8b4a6e44e0d679e14f71a3c8b6ce87798db11b7b4a48eacb5055e86",
+      "seed": "17000"
+    },
+    {
+      "name": "fee-budget boundary: register",
+      "result": {
+        "txid": "ba803a9614d6dc6fdd59e2ebb216337381c217ec8231e617ffd3a63f5a8c9e4a",
+        "allowed": true,
+        "size": 3733,
+        "vsize": 3733,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002678
+        }
+      }
+    },
+    {
+      "name": "fee-budget boundary: accounting after register",
+      "txid": "ba803a9614d6dc6fdd59e2ebb216337381c217ec8231e617ffd3a63f5a8c9e4a",
+      "period": 0,
+      "value": "23000",
+      "collateral": "6000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "fee-budget boundary: activation consumes final excess fee budget",
+      "result": {
+        "txid": "845f99d10181bff5c47e6caff31d57ebe87a1a3e6a9c4c6991f9992d2ab78f5f",
+        "allowed": true,
+        "size": 3537,
+        "vsize": 3537,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002827
+        }
+      }
+    },
+    {
+      "name": "fee-budget boundary: accounting after activation consumes final excess fee budget",
+      "txid": "845f99d10181bff5c47e6caff31d57ebe87a1a3e6a9c4c6991f9992d2ab78f5f",
+      "period": 0,
+      "value": "13000",
+      "collateral": "6000",
+      "rewardLiability": "6000"
+    },
+    {
+      "name": "settlement rejected when fee would breach future reward reserve",
+      "result": {
+        "txid": "2658d5081dc02a25bcec978996e9487294705b1a4ca3ef39895853dae5583680",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      }
+    },
+    {
+      "name": "LIMITATION: fee exhaustion can strand an activated instance",
+      "period": 0,
+      "value": "13000",
+      "collateral": "6000",
+      "rewardLiability": "6000",
+      "topUpBranch": false
+    }
+  ]
+}

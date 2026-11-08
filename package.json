@@ -17,7 +17,7 @@
     "test": "npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && tsx --test --test-concurrency=1 tests/*.test.ts",
     "compile:vault": "cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json",
     "compile:period": "cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json",
-    "compile:registry": "cashc contracts/Registry.cash --output artifacts/Registry.json && cashc contracts/RegistryDeposit.cash --output artifacts/RegistryDeposit.json"
+    "compile:registry": "node scripts/compile-registry.mjs"
   },
   "keywords": [],
   "author": "",

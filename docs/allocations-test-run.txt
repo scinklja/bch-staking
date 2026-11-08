@@ -1,0 +1,48 @@
+
+> bch-staking@1.0.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && tsx --test --test-concurrency=1 tests/*.test.ts
+
+
+> bch-staking@1.0.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@1.0.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@1.0.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@1.0.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@1.0.0 typecheck
+> tsc
+
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (175668.371454ms)
+{
+  fundingTxid: 'ccf2427df056bfed2da5478d119686cf24ea0b75544c47972aacf7c1d3d7d1b1',
+  spendingTxid: '55c4102821aeb3a40255d04547d0c032af3bfcd293e39b372b9d6eaf9008d611',
+  confirmations: 1,
+  height: 932,
+  balanceBCH: 14597.6159158
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (1629.773521ms)
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (73930.752152ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (10073.801777ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (84687.999925ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (5350.972738ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 371914.132372

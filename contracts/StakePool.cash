@@ -1,0 +1,11 @@
+pragma cashscript ^0.14.0;
+// Binding: canonical state NFT category(32), staking fungible-token category(32).
+// The unique state NFT's covenant authorizes every pool movement; no standalone spend.
+contract StakePool(bytes64 binding) {
+    function spend() {
+        require(this.activeInputIndex == 1);
+        require(tx.inputs[0].tokenCategory == binding.slice(0,32) + 0x01);
+        require(tx.outputs[0].tokenCategory == binding.slice(0,32) + 0x01);
+        require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+    }
+}

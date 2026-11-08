@@ -1,3 +1,5 @@
+> Superseding protocol decision: the [current registry](registry.md) keeps fixed UTC rewards and maturity but uses actual on-chain activation for eligibility. Registration/cancellation before delayed activation may affect that period; cancellation afterward affects future snapshots only. This replaces this investigation's earlier recommendation against that tradeoff. The unsafe timestamp upper-bound counterexample below remains valid.
+
 # Cancellation cutoff investigation
 
 ## Finding
