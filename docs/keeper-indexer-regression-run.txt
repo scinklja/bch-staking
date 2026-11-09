@@ -60,7 +60,7 @@ test at tests/arena-empty.test.ts:15:1
 ✖ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (18079.290075ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   + actual - expected
-  
+
   + '{\n' +
   +   '  "error": "Error: Chain changed during projection; retry",\n' +
   +   '  "retry": true\n' +
@@ -74,7 +74,7 @@ test at tests/arena-empty.test.ts:15:1
   +   '  "retry": true\n' +
   +   '}\n'
   - ''
-  
+
       at TestContext.<anonymous> (/home/omarchy/bch-staking/tests/arena-empty.test.ts:72:65)
       at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
       at async Test.run (node:internal/test_runner/test:1409:7)
