@@ -1,0 +1,135 @@
+{
+  "verifiedAt": "2026-11-09T10:29:57.988279+00:00",
+  "baseCommit": "4404da9071787e901765003ee11168e25ea081dd",
+  "comparedAgainstOriginMaster": "4404da9071787e901765003ee11168e25ea081dd",
+  "plannedMilestoneTag": "v0.2.0-regtest",
+  "command": "mise exec -- npm test",
+  "compilationAndTypecheck": "passed",
+  "tests": 7,
+  "originalIntegrationTests": 6,
+  "additionalPolicyControlTests": 1,
+  "passed": 7,
+  "failed": 0,
+  "skipped": 0,
+  "runtimeMs": 603141.181853,
+  "cases": [
+    {
+      "name": "independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement",
+      "runtimeMs": 379592.807855,
+      "passed": true
+    },
+    {
+      "name": "local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation",
+      "runtimeMs": 2882.063996,
+      "passed": true
+    },
+    {
+      "name": "deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED",
+      "runtimeMs": 74477.568796,
+      "passed": true
+    },
+    {
+      "name": "BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms",
+      "runtimeMs": 25341.97027,
+      "passed": true
+    },
+    {
+      "name": "legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation",
+      "runtimeMs": 10702.214889,
+      "passed": true
+    },
+    {
+      "name": "legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement",
+      "runtimeMs": 84471.462658,
+      "passed": true
+    },
+    {
+      "name": "bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay",
+      "runtimeMs": 7885.928012,
+      "passed": true
+    }
+  ],
+  "security": {
+    "accepted": 71,
+    "rejected": 103,
+    "relayedTransactions": 113,
+    "confirmedTransactions": 113,
+    "standardPolicy": "acceptnonstdtxn=0 on both nodes"
+  },
+  "covenantSourceFilesUnchangedDuringCheckpoint": true,
+  "covenantSourceManifest": "docs/checkpoint-v0.2.0-covenants.sha256",
+  "before": {
+    "height": 1537,
+    "hash": "6db01ab497da4e558d9a5865f055a6fe41b7ffdfa2b28055558c3b35a4c0eb4d"
+  },
+  "after": {
+    "height": 1776,
+    "hash": "16b1764a63c65257af908837305d6cdd9a0746bfe07b63a80503d40cc32d195e"
+  },
+  "originalMilestoneCheckpointPreserved": {
+    "height": 1037,
+    "hash": "0da2963e6317e8f58b4fcdb392bbf91d669b4aad92f17a6d3b9d5bb42b027638"
+  },
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "finalNetworkActive": false,
+  "finalPeerCount": 0,
+  "publicationHygiene": {
+    "walletBalanceValuesRedactedFromLogs": [
+      "docs/checkpoint-v0.2.0-test-run.txt",
+      "docs/security-test-run.txt"
+    ],
+    "historicalResultFilesPreserved": [
+      "docs/latest-test-result.json",
+      "docs/period-test-result.json",
+      "docs/registry-verification-result.json",
+      "docs/registry-test-result.json",
+      "docs/vault-test-result.json"
+    ],
+    "realWalletDataAndCredentials": "Excluded; exact staged contents scanned before commit",
+    "fixturePrivateKeys": "Intentionally public deterministic regtest constants; never use for real funds",
+    "stagedFileCount": 29,
+    "stagedCredentialPatternMatches": 0,
+    "scanPatternClasses": [
+      "private-key-pem",
+      "github-token",
+      "aws-access-key",
+      "extended-private-key",
+      "bitcoin-wif",
+      "credential-literal",
+      "credential-url",
+      "wallet-internals"
+    ],
+    "scanLimitation": "Pattern scan plus manual diff/schema review; not a guarantee against every secret encoding. Public deterministic regtest fixture keys are intentionally included.",
+    "stagedPathsReviewed": [
+      "artifacts/Registry.json",
+      "artifacts/RegistryGenesis.json",
+      "artifacts/StakeAllocation.json",
+      "contracts/Registry.cash",
+      "contracts/Registry.template.cash",
+      "contracts/RegistryGenesis.cash",
+      "contracts/RegistryGenesis.template.cash",
+      "contracts/StakeAllocation.cash",
+      "docs/checkpoint-v0.2.0-covenants.sha256",
+      "docs/checkpoint-v0.2.0-test-run.txt",
+      "docs/checkpoint-v0.2.0-verification.json",
+      "docs/fee-recovery-test-result.json",
+      "docs/fee-recovery-test-run.txt",
+      "docs/policy-precheckpoint-result.json",
+      "docs/policy-test-result.json",
+      "docs/policy-test-run.txt",
+      "docs/registry.md",
+      "docs/security-allocation-run.txt",
+      "docs/security-precheckpoint-result.json",
+      "docs/security-review-v0.2.0.md",
+      "docs/security-suite-result.json",
+      "docs/security-test-result.json",
+      "docs/security-test-run.txt",
+      "scripts/bitcoin.conf",
+      "scripts/compile-registry.mjs",
+      "src/genesis.ts",
+      "src/relay-peer.ts",
+      "tests/allocations.test.ts",
+      "tests/policy.test.ts"
+    ]
+  }
+}

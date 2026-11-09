@@ -1,0 +1,89 @@
+{
+  "verifiedAt": "2026-11-09T10:12:41.878Z",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "peerDatadir": "/tmp/staking-standard-relay-awBaVY",
+  "before": {
+    "chain": "regtest",
+    "blocks": 1536,
+    "headers": 1536,
+    "bestblockhash": "5934732b8d08597d8d3323214069219d8c7b8a0ef2a1adeeee286a71d8b4c4f4",
+    "difficulty": 4.656542373906925e-10,
+    "mediantime": 1794219025,
+    "verificationprogress": 1,
+    "initialblockdownload": false,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000000c02",
+    "size_on_disk": 3105941,
+    "pruned": false,
+    "upgrade_status": {
+      "name": "May 2027 Upgrade (regtestnet)",
+      "mempool_activated": false,
+      "mempool_activation_mtp": 1810382400,
+      "block_preactivation_height": null,
+      "block_preactivation_hash": null,
+      "block_postactivation_height": null,
+      "block_postactivation_hash": null,
+      "software_expiration_time": 1810382400
+    },
+    "warnings": ""
+  },
+  "after": {
+    "chain": "regtest",
+    "blocks": 1537,
+    "headers": 1537,
+    "bestblockhash": "6db01ab497da4e558d9a5865f055a6fe41b7ffdfa2b28055558c3b35a4c0eb4d",
+    "difficulty": 4.656542373906925e-10,
+    "mediantime": 1794219084,
+    "verificationprogress": 1,
+    "initialblockdownload": false,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000000c04",
+    "size_on_disk": 3106876,
+    "pruned": false,
+    "upgrade_status": {
+      "name": "May 2027 Upgrade (regtestnet)",
+      "mempool_activated": false,
+      "mempool_activation_mtp": 1810382400,
+      "block_preactivation_height": null,
+      "block_preactivation_hash": null,
+      "block_postactivation_height": null,
+      "block_postactivation_hash": null,
+      "software_expiration_time": 1810382400
+    },
+    "warnings": ""
+  },
+  "localReject": {
+    "txid": "9cc1cc609e6d81e2aead83caca84dbb4b3dec09652f4ba849330cbe6fa91e987",
+    "allowed": false,
+    "reject-reason": "64: oversize-op-return",
+    "reject-details": "oversize-op-return"
+  },
+  "peerReject": {
+    "txid": "9cc1cc609e6d81e2aead83caca84dbb4b3dec09652f4ba849330cbe6fa91e987",
+    "allowed": false,
+    "reject-reason": "64: oversize-op-return",
+    "reject-details": "oversize-op-return"
+  },
+  "localAccept": {
+    "txid": "771a2300eaa3e3ae81b3d7fd11325a5e8458160ad93b8cc746f2cabf2fda543f",
+    "allowed": true,
+    "size": 409,
+    "vsize": 409,
+    "fees": {
+      "base": 0.00001,
+      "effective-feerate": 0.00002444
+    }
+  },
+  "peerAccept": {
+    "txid": "771a2300eaa3e3ae81b3d7fd11325a5e8458160ad93b8cc746f2cabf2fda543f",
+    "allowed": true,
+    "size": 409,
+    "vsize": 409,
+    "fees": {
+      "base": 0.00001,
+      "effective-feerate": 0.00002444
+    }
+  },
+  "rejectedBytes": 433,
+  "acceptedBytes": 409,
+  "relayedAndConfirmed": "771a2300eaa3e3ae81b3d7fd11325a5e8458160ad93b8cc746f2cabf2fda543f",
+  "note": "Oversized data is a policy rejection; no invalid-block consensus experiment was performed."
+}

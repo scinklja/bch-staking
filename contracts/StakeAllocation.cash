@@ -4,7 +4,11 @@ pragma cashscript ^0.14.0;
 contract StakeAllocation(bytes110 terms) {
     function withdraw(sig authorization) {
         require(this.activeInputIndex == 0);
-        require(tx.inputs.length == 1 && tx.outputs.length == 1);
+        require((tx.inputs.length == 1 || tx.inputs.length == 2) && tx.outputs.length == 1);
+        if (tx.inputs.length == 2) {
+            require(tx.inputs[1].tokenCategory == 0x);
+            require(tx.inputs[1].tokenAmount == 0);
+        }
         require(checkSig(authorization, pubkey(terms.slice(0,33))));
         require(tx.time >= int(terms.slice(74,78)));
         require(tx.inputs[0].value == 2000);

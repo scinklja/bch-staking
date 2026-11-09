@@ -1,25 +1,36 @@
 import test from 'node:test';
+import { relayPeer } from '../src/relay-peer.js';
+import { verifyRegistryGenesis } from '../src/genesis.js';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
-import { binToHex, cashAddressToLockingBytecode, encodeCashAddress, hash160 } from '@bitauth/libauth';
+import { binToHex, cashAddressToLockingBytecode, encodeCashAddress, encodeTransaction, hash160 } from '@bitauth/libauth';
 import { Contract, SignatureTemplate, TransactionBuilder, type SpendableUtxo, type TokenDetails } from 'cashscript';
 import { rpc, assertRegtest } from '../src/rpc.js';
 import { TokenRegtestProvider } from '../src/token-provider.js';
 import { allocationTerms, hashState, LIVE, nextState, offer, periodBoundary, RECORD_SIZE, remainingCommitment, SNAPSHOT, STATE_SIZE } from '../src/registry.js';
 
-test('independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 300000 }, async () => {
+const recoveryOnly = process.env.STAKING_RECOVERY_ONLY === '1';
+test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 600000 }, async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const checkpoint = await rpc('getblockchaininfo');
+  const relay = await relayPeer();
+  try {
   const provider = new TokenRegtestProvider();
   const options = { provider, contractType: 'p2sh32' as const };
   const artifacts: Record<string, any> = {};
-  for (const name of ['Registry', 'RegistryDeposit', 'StakePool', 'StakeAllocation']) {
+  for (const name of ['Registry', 'RegistryGenesis', 'RegistryDeposit', 'StakePool', 'StakeAllocation']) {
     artifacts[name] = JSON.parse(await readFile(`artifacts/${name}.json`, 'utf8'));
   }
   const owners = Array.from({ length: 16 }, (_, i) => new SignatureTemplate(new Uint8Array(32).fill(100 + i)));
   const depositor = owners[0]!;
   const deposit = new Contract(artifacts.RegistryDeposit, [depositor.publicKey], options);
+  const feePayer = new SignatureTemplate(new Uint8Array(32).fill(199));
+  const feeDeposit = new Contract(artifacts.RegistryDeposit, [feePayer.publicKey], options);
+  function feeUnlocker(input: SpendableUtxo) {
+    return input.lockingBytecode === feeDeposit.lockingBytecode ? feeDeposit.unlock.spend(feePayer) : deposit.unlock.spend(depositor);
+  }
+  let contractSizes: { registryBytes: number; poolBytes: number; allocationBytes: number } | undefined;
   const mining = await rpc<string>('getnewaddress');
   const evidence: any[] = [];
   const confirmedIds: string[] = [];
@@ -41,19 +52,22 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
     return { txid, vout: index, satoshis: BigInt(Math.round(v.value * 1e8)), lockingBytecode: v.scriptPubKey.hex,
       ...(v.tokenData ? { token: { category: v.tokenData.category, amount: BigInt(v.tokenData.amount ?? 0), nft: v.tokenData.nft } } : {}) };
   }
-  async function fundBch(amount: bigint) {
-    const id = await rpc<string>('sendtoaddress', [deposit.address, Number(amount) / 1e8]);
+  async function fundBch(amount: bigint, destination = deposit.address) {
+    const id = await rpc<string>('sendtoaddress', [destination, Number(amount) / 1e8]);
     const tx = await rpc('getrawtransaction', [id, true]);
-    return out(id, tx.vout.findIndex((v: any) => v.scriptPubKey.hex === script(deposit.address)));
+    return out(id, tx.vout.findIndex((v: any) => v.scriptPubKey.hex === script(destination)));
   }
   async function check(raw: string, name: string, reason?: RegExp) {
     const [result] = await rpc('testmempoolaccept', [[raw]]);
-    evidence.push({ name, result });
+    const decoded = await rpc('decoderawtransaction', [raw]);
+    evidence.push({ name, result, bytes: raw.length / 2, inputScriptBytes: decoded.vin.map((v: any) => v.scriptSig.hex.length / 2) });
     assert.equal(result.allowed, !reason, `${name}: ${JSON.stringify(result)}`);
     if (reason) assert.match(result['reject-reason'], reason, name);
   }
   async function send(raw: string) {
-    const txid = await provider.sendRawTransaction(raw); confirmedIds.push(txid); return txid;
+    const txid = await provider.sendRawTransaction(raw);
+    await relay.until(async () => (await relay.peer<string[]>('getrawmempool')).includes(txid), `transaction ${txid}`);
+    confirmedIds.push(txid); return txid;
   }
   // Mint a finite real fungible-token supply; no minting NFT is created or retained.
   async function asset() {
@@ -65,10 +79,10 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
     const genesis = await new TransactionBuilder({ provider }).addInput(await out(category, 0), deposit.unlock.spend(depositor))
       .addOutput({ to: deposit.tokenAddress, amount: 10000000n, token: { category, amount: 1000000000n } }).send();
     let supply = await out(genesis.txid, 0);
-    async function fundingTokens(amount: bigint) {
+    async function fundingTokens(amount: bigint, carrier = 10000n) {
       const raw = new TransactionBuilder({ provider }).addInput(supply, deposit.unlock.spend(depositor))
-        .addOutput({ to: deposit.tokenAddress, amount: 10000n, token: { category, amount } })
-        .addOutput({ to: deposit.tokenAddress, amount: supply.satoshis - 20000n,
+        .addOutput({ to: deposit.tokenAddress, amount: carrier, token: { category, amount } })
+        .addOutput({ to: deposit.tokenAddress, amount: supply.satoshis - carrier - 10000n,
           token: { category, amount: supply.token!.amount - amount } }).build();
       const txid = await send(raw); supply = await out(txid, 1); return out(txid, 0);
     }
@@ -80,8 +94,10 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
   type Schedule = { epoch: number; periodSeconds: number };
   async function fixture(label: string, schedule: Schedule, periods = 4, cap = 2000, seed = 2000000n) {
     const funding = await fundBch(seed + 21000n);
+    const factory = new Contract(artifacts.RegistryGenesis, [Buffer.from(tokens.category, 'hex').reverse(),
+      BigInt(schedule.epoch), BigInt(schedule.periodSeconds), BigInt(periods), BigInt(cap)], options);
     const pregen = await new TransactionBuilder({ provider }).addInput(funding, deposit.unlock.spend(depositor))
-      .addOutput({ to: deposit.address, amount: seed + 11000n }).send();
+      .addOutput({ to: factory.address, amount: seed + 11000n }).send();
     const category = pregen.txid;
     const categoryBytes = Buffer.from(category, 'hex').reverse();
     const assetBytes = Buffer.from(tokens.category, 'hex').reverse();
@@ -90,9 +106,52 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
     const pool = new Contract(artifacts.StakePool, [Buffer.concat([categoryBytes, assetBytes])], options);
     let state: Buffer = Buffer.alloc(STATE_SIZE);
     const stateToken = (s: Uint8Array): TokenDetails => ({ category, amount: 0n, nft: { capability: 'mutable', commitment: hashState(s) } });
-    const genesis = await new TransactionBuilder({ provider }).addInput(await out(category, 0), deposit.unlock.spend(depositor))
-      .addOutput({ to: registry.tokenAddress, amount: seed, token: stateToken(state) })
-      .addOutput({ to: pool.address, amount: 1000n }).send();
+    function genesisRaw(change: { amount?: bigint; token?: TokenDetails; registry?: Contract; poolValue?: bigint; extra?: boolean } = {}) {
+      const b = new TransactionBuilder({ provider })
+        .addInput(pregenUtxo, factory.unlock.create())
+        .addOutput({ to: (change.registry ?? registry).tokenAddress, amount: change.amount ?? seed, token: change.token ?? stateToken(state) })
+        .addOutput({ to: pool.address, amount: change.poolValue ?? 1000n });
+      if (change.extra) b.addOutput({ to: deposit.tokenAddress, amount: 1000n,
+        token: { category, amount: 0n, nft: { capability: 'minting', commitment: '' } } });
+      return b.build();
+    }
+    const pregenUtxo = await out(category, 0);
+    await check(genesisRaw({ amount: BigInt(periods * cap + 999) }), `${label}: underfunded genesis`, scriptFailure);
+    await check(genesisRaw({ token: { ...stateToken(state), nft: { capability: 'mutable', commitment: hashState(Buffer.alloc(STATE_SIZE, 1)) } } }), `${label}: nonempty genesis state`, scriptFailure);
+    await check(genesisRaw({ token: { ...stateToken(state), nft: { capability: 'minting', commitment: hashState(state) } } }), `${label}: minting state authority`, scriptFailure);
+    await check(genesisRaw({ extra: true }), `${label}: extra minting authority`, scriptFailure);
+    await check(genesisRaw({ poolValue: 1001n }), `${label}: malformed pool carrier`, scriptFailure);
+    const alternateRegistry = new Contract(artifacts.Registry, [categoryBytes, assetBytes, BigInt(schedule.epoch),
+      BigInt(schedule.periodSeconds), BigInt(periods), BigInt(cap + 1)], options);
+    await check(genesisRaw({ registry: alternateRegistry }), `${label}: substituted immutable cap`, scriptFailure);
+    for (const [name, altered] of [
+      ['staking category', [categoryBytes, Buffer.from(otherTokens.category, 'hex').reverse(), BigInt(schedule.epoch), BigInt(schedule.periodSeconds), BigInt(periods), BigInt(cap)]],
+      ['epoch', [categoryBytes, assetBytes, BigInt(schedule.epoch + 1), BigInt(schedule.periodSeconds), BigInt(periods), BigInt(cap)]],
+      ['period length', [categoryBytes, assetBytes, BigInt(schedule.epoch), BigInt(schedule.periodSeconds + 1), BigInt(periods), BigInt(cap)]],
+      ['horizon', [categoryBytes, assetBytes, BigInt(schedule.epoch), BigInt(schedule.periodSeconds), BigInt(periods + 1), BigInt(cap)]],
+    ] as const) {
+      await check(genesisRaw({ registry: new Contract(artifacts.Registry, [...altered], options) }), `${label}: substituted ${name}`, scriptFailure);
+    }
+    if (seed > BigInt(periods * cap + 1000)) {
+      await check(genesisRaw({ amount: seed - 1n }), `${label}: genesis cannot burn surplus reserve as fees`, scriptFailure);
+    }
+    if (label === 'zero fee reserve') {
+      const minimum = BigInt(periods * cap + 1000);
+      const shortFunding = await fundBch(minimum + 20999n);
+      const shortPregen = await new TransactionBuilder({ provider }).addInput(shortFunding, deposit.unlock.spend(depositor))
+        .addOutput({ to: factory.address, amount: minimum + 10999n }).send();
+      const shortCategory = Buffer.from(shortPregen.txid, 'hex').reverse();
+      const shortRegistry = new Contract(artifacts.Registry, [shortCategory, assetBytes, BigInt(schedule.epoch),
+        BigInt(schedule.periodSeconds), BigInt(periods), BigInt(cap)], options);
+      const shortPool = new Contract(artifacts.StakePool, [Buffer.concat([shortCategory, assetBytes])], options);
+      const shortGenesis = new TransactionBuilder({ provider }).addInput(await out(shortPregen.txid, 0), factory.unlock.create())
+        .addOutput({ to: shortRegistry.tokenAddress, amount: minimum - 1n,
+          token: { category: shortPregen.txid, amount: 0n, nft: { capability: 'mutable', commitment: hashState(state) } } })
+        .addOutput({ to: shortPool.address, amount: 1000n }).build();
+      await check(shortGenesis, 'correct genesis value equation still rejects insufficient reward funding', scriptFailure);
+    }
+    await check(genesisRaw(), `${label}: factory authorizes genesis`);
+    const genesis = { txid: await send(genesisRaw()) };
     let current = await out(genesis.txid, 0); let escrow = await out(genesis.txid, 1);
     let expectedBch = seed;
     const boundary = (p: number) => periodBoundary(schedule, p);
@@ -104,7 +163,7 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
       return { terms, contract: new Contract(artifacts.StakeAllocation, [terms], options) };
     }
     async function build(action: number, slot = 0, record = Buffer.alloc(0), changes: {
-      next?: Buffer; witness?: Buffer; funding?: SpendableUtxo; allocationTerms?: Buffer;
+      sponsor?: SpendableUtxo; extraInput?: SpendableUtxo; extraOutput?: boolean; next?: Buffer; witness?: Buffer; funding?: SpendableUtxo; allocationTerms?: Buffer;
       allocationAmount?: bigint; allocationValue?: bigint; allocationCategory?: string; poolAmount?: bigint;
       poolCategory?: string; refundAmount?: bigint; valueDelta?: bigint; rewardDelta?: bigint; owner?: SignatureTemplate; locktime?: number;
     } = {}) {
@@ -114,29 +173,35 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
         .addInput(current, registry.unlock.transition(changes.witness ?? state, BigInt(action), BigInt(slot), record, changes.owner ?? owners[slot]!))
         .addInput(escrow, pool.unlock.spend());
       if (action === 0) b.addInput(changes.funding ?? await tokens.fundingTokens(BigInt(record.readUInt32LE(33)) * BigInt(record[45]!)), deposit.unlock.spend(depositor));
+      if (changes.sponsor) b.addInput(changes.sponsor, feeUnlocker(changes.sponsor));
+      if (changes.extraInput) b.addInput(changes.extraInput, feeUnlocker(changes.extraInput));
       const selected = Buffer.from(state.subarray((action === 3 ? SNAPSHOT : LIVE) + slot * RECORD_SIZE,
         (action === 3 ? SNAPSHOT : LIVE) + (slot + 1) * RECORD_SIZE));
       const payout = action === 3 ? BigInt(selected.readUInt32LE(41)) : 0n;
       const refund = changes.refundAmount ?? (action === 4 ? BigInt(selected.readUInt32LE(33)) * BigInt(selected[45]! - selected[46]!) : 0n);
-      const amount = action === 0 ? current.satoshis : current.satoshis - 10000n - payout - (action === 3 ? 2000n : action === 4 ? 1000n : 0n);
+      const amount = action === 0 ? current.satoshis : current.satoshis - (changes.sponsor ? 0n : 10000n) - payout - (changes.sponsor ? 0n : action === 3 ? 2000n : action === 4 ? 1000n : 0n);
       b.addOutput({ to: registry.tokenAddress, amount: amount + (changes.valueDelta ?? 0n), token: stateToken(next) });
       b.addOutput({ to: pool.tokenAddress, amount: 1000n, token: poolToken(changes.poolAmount ?? remainingCommitment(next), changes.poolCategory) });
       let allocation: ReturnType<typeof lock> | undefined;
       if (action === 3) {
-        b.addOutput({ to: payee(owners[slot]!), amount: payout + (changes.rewardDelta ?? 0n) });
+        b.addOutput({ to: payee(owners.find(o => Buffer.from(o.publicKey).equals(selected.subarray(0,33)))!), amount: payout + (changes.rewardDelta ?? 0n) });
         allocation = lock(slot, state.readUInt32LE(0), selected);
         if (changes.allocationTerms) allocation = { terms: changes.allocationTerms, contract: new Contract(artifacts.StakeAllocation, [changes.allocationTerms], options) };
         b.addOutput({ to: allocation.contract.tokenAddress, amount: changes.allocationValue ?? 2000n,
           token: { category: changes.allocationCategory ?? tokens.category, amount: changes.allocationAmount ?? BigInt(selected.readUInt32LE(33)) } });
       }
-      if (action === 4) b.addOutput({ to: payee(owners[slot]!), amount: 1000n, token: poolToken(refund) });
-      return { raw: b.build(), next, action, amount, allocation, slot, period: state.readUInt32LE(0), payout, refund };
+      if (action === 4) b.addOutput({ to: payee(owners.find(o => Buffer.from(o.publicKey).equals(selected.subarray(0,33)))!), amount: 1000n, token: poolToken(refund) });
+      if (changes.extraOutput) b.addOutput({ to: payee(depositor), amount: 1000n });
+      return { builder: b, raw: binToHex(encodeTransaction((b as any).buildLibauthTransaction(true))), next, action, sponsored: !!changes.sponsor, amount, allocation, slot, period: state.readUInt32LE(0), payout, refund };
     }
     async function apply(candidate: Awaited<ReturnType<typeof build>>, name: string) {
       await check(candidate.raw, `${label}: ${name}`);
+      if (label === 'maximum bounds' && candidate.action === 3) {
+        evidence.push({ name: `${label}: VM resources ${name}`, metrics: candidate.builder.getVmResourceUsage() });
+      }
       const txid = await send(candidate.raw);
       state = candidate.next; current = await out(txid, 0); escrow = await out(txid, 1);
-      expectedBch += candidate.action === 0 ? 0n : -10000n - candidate.payout - (candidate.action === 3 ? 2000n : candidate.action === 4 ? 1000n : 0n);
+      expectedBch += candidate.action === 0 ? 0n : -(candidate.sponsored ? 0n : 10000n) - candidate.payout - (candidate.sponsored ? 0n : candidate.action === 3 ? 2000n : candidate.action === 4 ? 1000n : 0n);
       assert.equal(current.satoshis, expectedBch);
       assert.equal(escrow.token?.amount ?? 0n, remainingCommitment(state));
       assert.ok(current.satoshis >= BigInt(periods - state.readUInt32LE(0)) * BigInt(cap) + 1000n);
@@ -153,12 +218,15 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
       await apply(await build(2), `activate period ${p}`);
     }
     await mine();
+    const admitted = await verifyRegistryGenesis(genesis.txid, { stakingCategory: tokens.category, ...schedule, periods, cap });
+    assert.equal(admitted.category, category);
+    await assert.rejects(() => verifyRegistryGenesis(genesis.txid, { stakingCategory: otherTokens.category, ...schedule, periods, cap }), /factory/);
     evidence.push({ name: `${label}: canonical fresh genesis`, txid: genesis.txid, category, stakingCategory: tokens.category, schedule });
     return { build, apply, activate, allocations, boundary, category, registry, pool,
       get state() { return state; }, get current() { return current; }, get escrow() { return escrow; } };
   }
   function withdraw(a: { contract: Contract; utxo: SpendableUtxo; terms: Buffer }, changes: {
-    owner?: SignatureTemplate; locktime?: number; terms?: Buffer; tokenCategory?: string; amount?: bigint;
+    sponsor?: SpendableUtxo; extraOutput?: boolean; owner?: SignatureTemplate; locktime?: number; terms?: Buffer; tokenCategory?: string; amount?: bigint;
   } = {}) {
     const contract = changes.terms ? new Contract(artifacts.StakeAllocation, [changes.terms], options) : a.contract;
     const unlocker = contract.unlock.withdraw(changes.owner ?? owners[0]!);
@@ -167,9 +235,12 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
       .addInput(a.utxo, changes.terms ? { generateUnlockingBytecode: unlocker.generateUnlockingBytecode } : unlocker)
       .addOutput({ to: payee(owners[0]!), amount: 1000n,
         token: { category: changes.tokenCategory ?? tokens.category, amount: changes.amount ?? a.utxo.token!.amount } });
+    if (changes.sponsor) b.addInput(changes.sponsor, feeUnlocker(changes.sponsor));
+    if (changes.extraOutput) b.addOutput({ to: payee(depositor), amount: 1000n });
     return b.build();
   }
 
+  if (!recoveryOnly) {
   // Register all sixteen slots and rank the entire immutable roster as before.
   const now = Math.max(Date.now() / 1000, (await rpc('getblockchaininfo')).mediantime);
   console.log('Allocation verification: token genesis ready');
@@ -308,11 +379,70 @@ test('independent CashToken allocations: three wins, immutable locks, escrow, sn
   for (let p = 1; p < 3; p++) { await late.activate(); await late.apply(await late.build(5), `advance empty period ${p}`); }
   await check((await late.build(2)).raw, 'finite horizon prevents extra activation', scriptFailure);
   await mine();
+  contractSizes = { registryBytes: f.registry.bytesize, poolBytes: f.pool.bytesize, allocationBytes: a0.contract.bytesize };
+  }
+  // Exhausted fee reserve: exact reward budget only, independently sponsored at every step.
+  const low = await fixture('zero fee reserve', { epoch: Math.floor((await rpc('getblockchaininfo')).mediantime - 1000), periodSeconds: 1 }, 1, 1000, 2000n);
+  const sponsor = () => fundBch(15000n, feeDeposit.address); // Key 199 differs from initial funder 100 and stake owner 101.
+  const lowRecord = offer(owners[1]!.publicKey, 1000, 1, 1000, 1);
+  await low.apply(await low.build(0, 0, lowRecord, { owner: owners[1] }), 'registration token carrier funds original fee');
+  await check((await low.build(2, 0, Buffer.alloc(0), { valueDelta: 10000n })).raw, 'zero fee reserve cannot activate without sponsor', /mandatory-script|bad-txns|min relay fee/);
+  const funded = await sponsor();
+  await check((await low.build(2, 0, Buffer.alloc(0), { sponsor: funded, extraOutput: true })).raw, 'sponsor cannot add theft output', scriptFailure);
+  await check((await low.build(2, 0, Buffer.alloc(0), { sponsor: funded, extraInput: await sponsor() })).raw, 'second extra sponsor input rejected', scriptFailure);
+  await check((await low.build(2, 0, Buffer.alloc(0), { sponsor: await tokens.fundingTokens(1000n) })).raw, 'token-bearing sponsor rejected', /mandatory-script|bad-txns-token/);
+  await low.apply(await low.build(2, 0, Buffer.alloc(0), { sponsor: funded }), 'unrelated party sponsors activation');
+  await check((await low.build(3, 0, Buffer.alloc(0), { sponsor: await fundBch(2000n) })).raw, 'insufficient sponsor leaves zero fee: policy rejects', /min relay fee/);
+  await low.apply(await low.build(3, 0, Buffer.alloc(0), { sponsor: await sponsor() }), 'zero fee reserve settlement: sponsor also pays allocation carrier');
+  const recovery = await fixture('insufficient fee reserve', { epoch: Math.floor((await rpc('getblockchaininfo')).mediantime - 1000), periodSeconds: 1 }, 2, 1000, 3000n);
+  await recovery.apply(await recovery.build(0, 0, offer(owners[1]!.publicKey, 1000, 1, 1000, 2), { owner: owners[1], sponsor: await sponsor(), funding: await tokens.fundingTokens(2000n, 1000n) }), 'unrelated party sponsors registration with a 1000-satoshi token carrier');
+  await recovery.apply(await recovery.build(2, 0, Buffer.alloc(0), { sponsor: await sponsor() }), 'sponsored activation preserves reward and carrier reserve');
+  await recovery.apply(await recovery.build(3, 0, Buffer.alloc(0), { sponsor: await sponsor() }), 'sponsored settlement preserves immutable allocation and reward');
+  await recovery.apply(await recovery.build(1, 0, Buffer.alloc(0), { sponsor: await sponsor(), owner: owners[1] }), 'sponsored cancellation');
+  await recovery.apply(await recovery.build(4, 0, Buffer.alloc(0), { sponsor: await sponsor(), owner: owners[1] }), 'sponsored unallocated remainder refund including carrier');
+  const recoveredAllocation = recovery.allocations[0]!;
+  const withdrawalSponsor = await sponsor();
+  // Withdraw helper defaults to owner 0; this allocation belongs to owner 1.
+  const recoveryWithdraw = new TransactionBuilder({ provider }).setLocktime(recoveredAllocation.terms.readUInt32LE(74))
+    .addInput(recoveredAllocation.utxo, recoveredAllocation.contract.unlock.withdraw(owners[1]!))
+    .addInput(withdrawalSponsor, feeUnlocker(withdrawalSponsor))
+    .addOutput({ to: payee(owners[1]!), amount: 1000n, token: { category: tokens.category, amount: 1000n } }).build();
+  for (const [name, sponsorInput, destination, tokenCategory, extra] of [
+    ['token-bearing fee input', await tokens.fundingTokens(1000n), payee(owners[1]!), tokens.category, false],
+    ['stolen withdrawal destination', withdrawalSponsor, payee(depositor), tokens.category, false],
+    ['extra withdrawal output', withdrawalSponsor, payee(owners[1]!), tokens.category, true],
+    ['substituted withdrawal token', withdrawalSponsor, payee(owners[1]!), otherTokens.category, false],
+  ] as const) {
+    const attack = new TransactionBuilder({ provider, allowImplicitFungibleTokenBurn: true }).setLocktime(recoveredAllocation.terms.readUInt32LE(74))
+      .addInput(recoveredAllocation.utxo, recoveredAllocation.contract.unlock.withdraw(owners[1]!))
+      .addInput(sponsorInput, feeUnlocker(sponsorInput))
+      .addOutput({ to: destination, amount: 1000n, token: { category: tokenCategory, amount: 1000n } });
+    if (extra) attack.addOutput({ to: payee(depositor), amount: 1000n });
+    await check(binToHex(encodeTransaction((attack as any).buildLibauthTransaction(true))), name, /mandatory-script|bad-txns-token/);
+  }
+  await check(recoveryWithdraw, 'unrelated sponsor funds independent owner-authorized withdrawal');
+  await send(recoveryWithdraw);
+  await mine();
   for (const txid of confirmedIds) assert.ok((await rpc('getrawtransaction', [txid, true])).confirmations > 0, txid);
   assert.equal(await rpc('getblockhash', [checkpoint.blocks]), checkpoint.bestblockhash, 'existing development chain preserved');
-  await writeFile('docs/allocations-test-result.json', JSON.stringify({ verifiedAt: new Date().toISOString(), node: (await rpc('getnetworkinfo')).subversion,
+  if (!recoveryOnly) {
+  // Maximum protocol bounds and all sixteen eligible entries under standard relay policy.
+  const maximum = await fixture('maximum bounds', { epoch: Math.floor((await rpc('getblockchaininfo')).mediantime - 1000), periodSeconds: 1 }, 16, 1000000, 16001000n);
+  for (let slot = 0; slot < 16; slot++) {
+    await maximum.apply(await maximum.build(0, slot, offer(owners[slot]!.publicKey, 1000000, 16, 1000000, 16), { sponsor: await sponsor() }), `register maximum slot ${slot}`);
+    await mine();
+  }
+  await check((await maximum.build(0, 16, offer(owners[0]!.publicKey, 1000000, 16, 1000000, 16), { owner: owners[0], sponsor: await sponsor() })).raw, 'maximum bounds seventeenth lifetime offer rejected', scriptFailure);
+  await maximum.apply(await maximum.build(2, 0, Buffer.alloc(0), { sponsor: await sponsor() }), 'activate full maximum-bound roster');
+  await maximum.apply(await maximum.build(3, 0, Buffer.alloc(0), { sponsor: await sponsor() }), 'rank all sixteen maximum-bound offers and settle canonical tie winner');
+  await mine();
+  }
+  await relay.until(async () => (await relay.peer('getblockchaininfo')).bestblockhash === (await rpc('getblockchaininfo')).bestblockhash, 'final confirmation sync');
+  for (const txid of confirmedIds) assert.ok((await relay.peer('getrawtransaction', [txid, true])).confirmations > 0);
+  await writeFile(recoveryOnly ? 'docs/fee-recovery-test-result.json' : 'docs/security-test-result.json', JSON.stringify({ verifiedAt: new Date().toISOString(), node: (await rpc('getnetworkinfo')).subversion,
     before: { height: checkpoint.blocks, hash: checkpoint.bestblockhash }, after: await rpc('getblockchaininfo'),
     accepted: evidence.filter(e => e.result?.allowed === true).length, rejected: evidence.filter(e => e.result?.allowed === false).length,
-    confirmedTransactions: confirmedIds.length, registryBytes: f.registry.bytesize, poolBytes: f.pool.bytesize,
-    allocationBytes: a0.contract.bytesize, stateBytes: STATE_SIZE, evidence }, null, 2) + '\n');
+    confirmedTransactions: confirmedIds.length, relayedTransactions: confirmedIds.length, relayPeerDatadir: relay.directory, standardPolicy: 'acceptnonstdtxn=0 on both nodes', ...(contractSizes ?? { registryBytes: recovery.registry.bytesize, poolBytes: recovery.pool.bytesize, allocationBytes: recoveredAllocation.contract.bytesize }),
+    feePayerPublicKey: binToHex(feePayer.publicKey), initialFunderPublicKey: binToHex(depositor.publicKey), stakeOwnerPublicKey: binToHex(owners[1]!.publicKey), stateBytes: STATE_SIZE, evidence }, null, 2) + '\n');
+  } finally { await relay.close(); }
 });

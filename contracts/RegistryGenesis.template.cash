@@ -1,0 +1,33 @@
+pragma cashscript ^0.14.0;
+// Spend a token-free pregenesis output at index zero. No creator signature or administrator.
+contract RegistryGenesis(bytes32 stakingCategory, int epoch, int periodSeconds, int periods, int cap) {
+    function create() {
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 1 && tx.outputs.length == 2);
+        require(tx.inputs[0].outpointIndex == 0);
+        require(tx.inputs[0].tokenCategory == 0x);
+        require(epoch >= 500000000 && periodSeconds > 0);
+        require(periods > 0 && periods <= 16 && cap >= 1000 && cap <= 1000000);
+        require(epoch + (2 * periods - 1) * periodSeconds <= 2147483647);
+        bytes32 category = tx.inputs[0].outpointTransactionHash;
+        require(category != stakingCategory);
+        // Reproduce canonical minimally encoded constructor pushes, then the pinned executable body.
+        bytes lengthPush = toPaddedBytes(bytes(periodSeconds).length, 1) + bytes(periodSeconds);
+        if (periodSeconds <= 16) { lengthPush = toPaddedBytes(80 + periodSeconds, 1); }
+        bytes prefix = toPaddedBytes(bytes(cap).length, 1) + bytes(cap)
+            + toPaddedBytes(80 + periods, 1) + lengthPush + 0x04 + bytes(epoch)
+            + 0x20 + stakingCategory + 0x20 + category;
+        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2SH32(hash256(prefix + 0x__REGISTRY_BODY__)));
+        require(tx.outputs[0].tokenCategory == category + 0x01);
+        require(tx.outputs[0].tokenAmount == 0);
+        require(tx.outputs[0].nftCommitment == 0x__EMPTY_STATE_HASH__);
+        // Fees can always be sponsored; reward coverage and state dust cannot.
+        require(tx.outputs[0].value >= periods * cap + 1000);
+        // Permissionless creation cannot discard the creator's surplus reserve as miner fees.
+        require(tx.outputs[0].value == tx.inputs[0].value - 11000);
+        require(tx.outputs[1].lockingBytecode == new LockingBytecodeP2SH32(hash256(0x40 + category + stakingCategory + 0x__STAKEPOOL_BODY__)));
+        require(tx.outputs[1].value == 1000);
+        require(tx.outputs[1].tokenCategory == 0x);
+        require(tx.outputs[1].tokenAmount == 0);
+    }
+}

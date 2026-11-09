@@ -1,0 +1,740 @@
+{
+  "verifiedAt": "2026-11-09T10:12:11.952Z",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "before": {
+    "height": 1531,
+    "hash": "7a2753975492c7993001c03c8625e459d6062f9a56bb0e7f717d8a62852cae57"
+  },
+  "after": {
+    "chain": "regtest",
+    "blocks": 1536,
+    "headers": 1536,
+    "bestblockhash": "5934732b8d08597d8d3323214069219d8c7b8a0ef2a1adeeee286a71d8b4c4f4",
+    "difficulty": 4.656542373906925e-10,
+    "mediantime": 1794219025,
+    "verificationprogress": 1,
+    "initialblockdownload": false,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000000c02",
+    "size_on_disk": 3105941,
+    "pruned": false,
+    "upgrade_status": {
+      "name": "May 2027 Upgrade (regtestnet)",
+      "mempool_activated": false,
+      "mempool_activation_mtp": 1810382400,
+      "block_preactivation_height": null,
+      "block_preactivation_hash": null,
+      "block_postactivation_height": null,
+      "block_postactivation_hash": null,
+      "software_expiration_time": 1810382400
+    },
+    "warnings": ""
+  },
+  "accepted": 11,
+  "rejected": 30,
+  "confirmedTransactions": 15,
+  "relayedTransactions": 15,
+  "relayPeerDatadir": "/tmp/staking-standard-relay-IGZZMy",
+  "standardPolicy": "acceptnonstdtxn=0 on both nodes",
+  "registryBytes": 2250,
+  "poolBytes": 93,
+  "allocationBytes": 247,
+  "feePayerPublicKey": "02ab5d2f24422f6311baacd334ca090636e50bdf8c11b81b10064c46e581f3206e",
+  "initialFunderPublicKey": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55",
+  "stakeOwnerPublicKey": "032e5fdd11aac4372915c9960466b8b7b5ac74f3a91180d605f6e51a8798370773",
+  "stateBytes": 1574,
+  "evidence": [
+    {
+      "name": "zero fee reserve: underfunded genesis",
+      "result": {
+        "txid": "048dc57d1cef07fde9514e1a29c3d13fc3fc69e41e64007b507530565193c24a",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: nonempty genesis state",
+      "result": {
+        "txid": "be40356c5a09075b1070b64eecd7f87126efafa85a1632e37f026df39d24fab4",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: minting state authority",
+      "result": {
+        "txid": "73658120b26902049e8c303cf9fe884f93164c9d13c53e9167d98cffaf5bb79c",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: extra minting authority",
+      "result": {
+        "txid": "bc20af103482618059930ab2831a35b8a5a0495be333917c7b0ef6d58814753b",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 2789,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: malformed pool carrier",
+      "result": {
+        "txid": "8f800993b70dd366f5b6d79b2bf279941e976ada106f300604bb55a567ef385a",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: substituted immutable cap",
+      "result": {
+        "txid": "bd5e21cbdae2820e2d6536764f50544a4c061f7c5467ba84465c05361dd7eb63",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: substituted staking category",
+      "result": {
+        "txid": "8ce666ff80251a1f38883bf72e3527be9be99d645c7f0b01c3d8fc9228256558",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: substituted epoch",
+      "result": {
+        "txid": "b3e68cd2316027bf34aabe07c0c2bfc8882920f92ab181c26f2afb939b79152d",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: substituted period length",
+      "result": {
+        "txid": "783e9492118d6741157e0225113a023e5162c6232d5d86063759694fe8d3155e",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: substituted horizon",
+      "result": {
+        "txid": "a6a369f72ca293785ca3dde83115dea23a7f4371c71fca213404e9c74c6e2d65",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "correct genesis value equation still rejects insufficient reward funding",
+      "result": {
+        "txid": "b738118451fcaee4bc85c5b85ab9065798f0d03f88e5c27e278c20d1cca498af",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: factory authorizes genesis",
+      "result": {
+        "txid": "185189ec253a4006ee012f01b5a17fe46a011ee8ad11f1441df8744d4b33dbf9",
+        "allowed": true,
+        "size": 2711,
+        "vsize": 2711,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00003688
+        }
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "zero fee reserve: canonical fresh genesis",
+      "txid": "185189ec253a4006ee012f01b5a17fe46a011ee8ad11f1441df8744d4b33dbf9",
+      "category": "d09432739503d60a50cd54e177c2e866b77a7b48565332ff2618a252487041d1",
+      "stakingCategory": "e46ec375b5135008549b679159f361512c03260cf9def2bc622ccc2c1acf843c",
+      "schedule": {
+        "epoch": 1794217988,
+        "periodSeconds": 1
+      }
+    },
+    {
+      "name": "zero fee reserve: registration token carrier funds original fee",
+      "result": {
+        "txid": "882bac6a25a6697962aeda2d7c425cc0177be6eb7c5b2b00c258f8b29bb727bb",
+        "allowed": true,
+        "size": 4472,
+        "vsize": 4472,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00002236
+        }
+      },
+      "bytes": 4472,
+      "inputScriptBytes": [
+        3948,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "zero fee reserve: accounting",
+      "txid": "882bac6a25a6697962aeda2d7c425cc0177be6eb7c5b2b00c258f8b29bb727bb",
+      "period": 0,
+      "bch": "2000",
+      "remainingTokens": "1000",
+      "remainingRewardCaps": 1000
+    },
+    {
+      "name": "zero fee reserve cannot activate without sponsor",
+      "result": {
+        "txid": "bae4ed78d34f212dee6c5493c5c9d7d9b548db4140c7ea891a3a1faa853ee52d",
+        "allowed": false,
+        "reject-reason": "66: min relay fee not met",
+        "reject-details": "min relay fee not met"
+      },
+      "bytes": 4280,
+      "inputScriptBytes": [
+        3899,
+        95
+      ]
+    },
+    {
+      "name": "sponsor cannot add theft output",
+      "result": {
+        "txid": "cc82470b642391e6180359b1006f09e0e5fe4375fbf360bbddf6b97d8a587826",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      },
+      "bytes": 4457,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "second extra sponsor input rejected",
+      "result": {
+        "txid": "d3a882adca84308059c5267c4d625614a53d280eff356108477c22000adf22d8",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 4566,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102,
+        102
+      ]
+    },
+    {
+      "name": "token-bearing sponsor rejected",
+      "result": {
+        "txid": "005ca57a27f9639d4a496de883c9447e45315ecb2abcc0bc4adc757194629820",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 4423,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "zero fee reserve: unrelated party sponsors activation",
+      "result": {
+        "txid": "73ff877cfe032640fd1cbfbacead38ca848277ca3a04948110c08b898e9ab776",
+        "allowed": true,
+        "size": 4423,
+        "vsize": 4423,
+        "fees": {
+          "base": 0.00015,
+          "effective-feerate": 0.00003391
+        }
+      },
+      "bytes": 4423,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "zero fee reserve: accounting",
+      "txid": "73ff877cfe032640fd1cbfbacead38ca848277ca3a04948110c08b898e9ab776",
+      "period": 0,
+      "bch": "2000",
+      "remainingTokens": "1000",
+      "remainingRewardCaps": 1000
+    },
+    {
+      "name": "insufficient sponsor leaves zero fee: policy rejects",
+      "result": {
+        "txid": "c4bf993d17f86997819a2753fd93c159392225bf4043d08c4e214263ea48936e",
+        "allowed": false,
+        "reject-reason": "66: min relay fee not met",
+        "reject-details": "min relay fee not met"
+      },
+      "bytes": 4501,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "zero fee reserve: zero fee reserve settlement: sponsor also pays allocation carrier",
+      "result": {
+        "txid": "b6ea28b2bf5ef7658f3f13cdaba60c0d82310a07dbb22b9c9c114c2342fc3c4b",
+        "allowed": true,
+        "size": 4501,
+        "vsize": 4501,
+        "fees": {
+          "base": 0.00013,
+          "effective-feerate": 0.00002888
+        }
+      },
+      "bytes": 4501,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "zero fee reserve: accounting",
+      "txid": "b6ea28b2bf5ef7658f3f13cdaba60c0d82310a07dbb22b9c9c114c2342fc3c4b",
+      "period": 1,
+      "bch": "1000",
+      "remainingTokens": "0",
+      "remainingRewardCaps": 0
+    },
+    {
+      "name": "insufficient fee reserve: underfunded genesis",
+      "result": {
+        "txid": "43636c0aba1abe805c354b9820d80717d09ac696537b06c5060a38ea8393335f",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: nonempty genesis state",
+      "result": {
+        "txid": "5502a8664440c8ac43176709bd7ff81b629c9d4ec15cbc8500ef94d628b74d2a",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: minting state authority",
+      "result": {
+        "txid": "acf7da886753295c8afcc62ee82ff3ea736ea24784d9130b20cfa400a29d3442",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: extra minting authority",
+      "result": {
+        "txid": "2bb3088dc654b7ae93d31048ed92bae236f05d97b9724116ad3001018727aa7d",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 2789,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: malformed pool carrier",
+      "result": {
+        "txid": "32829c5e6a473111e3ecb2fd58138dca187ab39658ce8b37db42557a706f0385",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: substituted immutable cap",
+      "result": {
+        "txid": "097dac8c71ee499426bce350d62811421bb81dc6d4999befb2782499a5d630fe",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: substituted staking category",
+      "result": {
+        "txid": "9bfd6019e2f7ea71019dce315e858165e9cce7c0664675a18e04c741de51a594",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: substituted epoch",
+      "result": {
+        "txid": "001cb4b0d478bf65dd247ee9a8844279b1a23b4d2e950440f811d5a60ab6db50",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: substituted period length",
+      "result": {
+        "txid": "184626e1d6c4852c25883c04178a4e000fde2c6fd164383c48f6cbd7209dfbf3",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: substituted horizon",
+      "result": {
+        "txid": "4b1053f02e45897796a4d767444f34abc91520c7a82932c7c68c17d73116e88d",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: factory authorizes genesis",
+      "result": {
+        "txid": "c1eb5ecca59a656daac3adb7c90189f52c8f6128e6cdcdd87574baed5f64deb4",
+        "allowed": true,
+        "size": 2711,
+        "vsize": 2711,
+        "fees": {
+          "base": 0.0001,
+          "effective-feerate": 0.00003688
+        }
+      },
+      "bytes": 2711,
+      "inputScriptBytes": [
+        2503
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: canonical fresh genesis",
+      "txid": "c1eb5ecca59a656daac3adb7c90189f52c8f6128e6cdcdd87574baed5f64deb4",
+      "category": "469312a545b2e5486ba148cf3ce952b8c6aaf4c340f9c7d1f951d35644fefbfb",
+      "stakingCategory": "e46ec375b5135008549b679159f361512c03260cf9def2bc622ccc2c1acf843c",
+      "schedule": {
+        "epoch": 1794217993,
+        "periodSeconds": 1
+      }
+    },
+    {
+      "name": "insufficient fee reserve: unrelated party sponsors registration with a 1000-satoshi token carrier",
+      "result": {
+        "txid": "652999373848c9f8e885eae718ad91957f1eba9f16f0b11b52bff80cbda9aa5d",
+        "allowed": true,
+        "size": 4615,
+        "vsize": 4615,
+        "fees": {
+          "base": 0.00016,
+          "effective-feerate": 0.00003466
+        }
+      },
+      "bytes": 4615,
+      "inputScriptBytes": [
+        3948,
+        95,
+        102,
+        102
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: accounting",
+      "txid": "652999373848c9f8e885eae718ad91957f1eba9f16f0b11b52bff80cbda9aa5d",
+      "period": 0,
+      "bch": "3000",
+      "remainingTokens": "2000",
+      "remainingRewardCaps": 2000
+    },
+    {
+      "name": "insufficient fee reserve: sponsored activation preserves reward and carrier reserve",
+      "result": {
+        "txid": "1d4471fd1a2db5dc433fc488221d21bc1b1dd007fe039496a30ef8144d620a30",
+        "allowed": true,
+        "size": 4423,
+        "vsize": 4423,
+        "fees": {
+          "base": 0.00015,
+          "effective-feerate": 0.00003391
+        }
+      },
+      "bytes": 4423,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: accounting",
+      "txid": "1d4471fd1a2db5dc433fc488221d21bc1b1dd007fe039496a30ef8144d620a30",
+      "period": 0,
+      "bch": "3000",
+      "remainingTokens": "2000",
+      "remainingRewardCaps": 2000
+    },
+    {
+      "name": "insufficient fee reserve: sponsored settlement preserves immutable allocation and reward",
+      "result": {
+        "txid": "c675cee7d8c070b10984b17c568cf9c6e3567cd0b03281286e60aa3dec69eca0",
+        "allowed": true,
+        "size": 4538,
+        "vsize": 4538,
+        "fees": {
+          "base": 0.00013,
+          "effective-feerate": 0.00002864
+        }
+      },
+      "bytes": 4538,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: accounting",
+      "txid": "c675cee7d8c070b10984b17c568cf9c6e3567cd0b03281286e60aa3dec69eca0",
+      "period": 1,
+      "bch": "2000",
+      "remainingTokens": "1000",
+      "remainingRewardCaps": 1000
+    },
+    {
+      "name": "insufficient fee reserve: sponsored cancellation",
+      "result": {
+        "txid": "2ac69cf28e859ce2597583ac812bab432ae0d716a6c5324383f27734f6a57419",
+        "allowed": true,
+        "size": 4423,
+        "vsize": 4423,
+        "fees": {
+          "base": 0.00015,
+          "effective-feerate": 0.00003391
+        }
+      },
+      "bytes": 4423,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: accounting",
+      "txid": "2ac69cf28e859ce2597583ac812bab432ae0d716a6c5324383f27734f6a57419",
+      "period": 1,
+      "bch": "2000",
+      "remainingTokens": "1000",
+      "remainingRewardCaps": 1000
+    },
+    {
+      "name": "insufficient fee reserve: sponsored unallocated remainder refund including carrier",
+      "result": {
+        "txid": "57ec8ee346003d0d88750beab245a37a2be793006f94f7d50b15bfe5e14c3485",
+        "allowed": true,
+        "size": 4457,
+        "vsize": 4457,
+        "fees": {
+          "base": 0.00014,
+          "effective-feerate": 0.00003141
+        }
+      },
+      "bytes": 4457,
+      "inputScriptBytes": [
+        3899,
+        95,
+        102
+      ]
+    },
+    {
+      "name": "insufficient fee reserve: accounting",
+      "txid": "57ec8ee346003d0d88750beab245a37a2be793006f94f7d50b15bfe5e14c3485",
+      "period": 1,
+      "bch": "2000",
+      "remainingTokens": "0",
+      "remainingRewardCaps": 1000
+    },
+    {
+      "name": "token-bearing fee input",
+      "result": {
+        "txid": "1ce98a26f2fc7ed2b2a8d80be44ffda6c1a04909082f3acf34c29d8c2ac17960",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 582,
+      "inputScriptBytes": [
+        315,
+        102
+      ]
+    },
+    {
+      "name": "stolen withdrawal destination",
+      "result": {
+        "txid": "9bfadba38938081da45726e3b11b6139897368cd58744a2c74ef1e9f2ff48396",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
+      },
+      "bytes": 582,
+      "inputScriptBytes": [
+        315,
+        102
+      ]
+    },
+    {
+      "name": "extra withdrawal output",
+      "result": {
+        "txid": "5554c7e79d97891897ee686dd85e7b1650aaae71d53498268e3980547bb21315",
+        "allowed": false,
+        "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
+        "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+      },
+      "bytes": 616,
+      "inputScriptBytes": [
+        315,
+        102
+      ]
+    },
+    {
+      "name": "substituted withdrawal token",
+      "result": {
+        "txid": "0213a89b5debd54151f3b9423f64cd5c47d9901714db950058e761abb1821b39",
+        "allowed": false,
+        "reject-reason": "16: bad-txns-token-invalid-category",
+        "reject-details": "bad-txns-token-invalid-category"
+      },
+      "bytes": 582,
+      "inputScriptBytes": [
+        315,
+        102
+      ]
+    },
+    {
+      "name": "unrelated sponsor funds independent owner-authorized withdrawal",
+      "result": {
+        "txid": "f9a2d171311edea70eb00fb318239000e883ded55fbf0cb9233e54d9844e8630",
+        "allowed": true,
+        "size": 582,
+        "vsize": 582,
+        "fees": {
+          "base": 0.00016,
+          "effective-feerate": 0.00027491
+        }
+      },
+      "bytes": 582,
+      "inputScriptBytes": [
+        315,
+        102
+      ]
+    }
+  ]
+}

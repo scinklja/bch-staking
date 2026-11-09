@@ -1,0 +1,49 @@
+
+> bch-staking@1.0.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && tsx --test --test-concurrency=1 tests/*.test.ts
+
+
+> bch-staking@1.0.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@1.0.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@1.0.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@1.0.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@1.0.0 typecheck
+> tsc
+
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (379592.807855ms)
+{
+  fundingTxid: '0bc445e38407786f08dd772aab813da8e69c41b988dbde753aa267f51678c3cb',
+  spendingTxid: '065aa69e6bf6727dd0c576c6e401a925b271e368e90be78e80ae08422ca70c4d',
+  confirmations: 1,
+  height: 1670,
+  balanceBCH: '[redacted: local wallet balance]'
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (2882.063996ms)
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (74477.568796ms)
+✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (25341.97027ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (10702.214889ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (84471.462658ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (7885.928012ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 603141.181853
