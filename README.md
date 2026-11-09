@@ -1,5 +1,7 @@
 # BCH regtest development environment
 
+Staking Arena v0.3.0 backend development is on `feature/keeper-indexer`: see [keeper/indexer architecture, operation and limitations](docs/keeper-indexer.md). The read-only API and automated keeper are regtest-only; the v0.2.0 covenants are unchanged. Frontend development and the independent adversarial review remain deferred.
+
 Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 
 The [16-offer authenticated registry](docs/registry.md) adds protocol-assigned sequence numbers, UTC-gated immutable activation snapshots, fixed UTC reward periods, upfront S×W CashToken escrow, independent per-win allocations and maturity, future-only cancellation, full-roster ranking and collateral accounting. Offer eligibility freezes at actual on-chain activation; delayed execution does not shift the UTC schedule. Each win atomically pays its BCH reward and creates a token-funded allocation withdrawable by its owner independently of all registry phases. It remains a regtest experiment with documented genesis, asset and withdrawal limitations.

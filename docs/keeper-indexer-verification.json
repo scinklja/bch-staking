@@ -1,0 +1,96 @@
+{
+  "verifiedAt": "2026-11-09T13:23:00.266Z",
+  "branch": "feature/keeper-indexer",
+  "baseCommit": "6ef4d8867456a130bc6dbe056fdd6a70462c48b2",
+  "milestoneTagObject": "3070fb9684a9c51920307bc2bd63b393de819dcd",
+  "milestoneCommit": "6ef4d8867456a130bc6dbe056fdd6a70462c48b2",
+  "typecheck": "passed",
+  "originalRegressionCases": {
+    "passed": 7,
+    "cases": [
+      "✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (388707.179386ms)",
+      "✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (2258.367374ms)",
+      "✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (74846.984053ms)",
+      "✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (24395.030254ms)",
+      "✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (12211.024882ms)",
+      "✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (85224.48817ms)",
+      "✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (6955.605859ms)"
+    ]
+  },
+  "newIntegrationCases": {
+    "passed": 2,
+    "failed": 0,
+    "command": "mise exec -- npm run test:arena",
+    "log": "keeper-indexer-test-run.txt"
+  },
+  "fullSuiteRun": {
+    "command": "mise exec -- npm test",
+    "passed": 8,
+    "failed": 1,
+    "log": "keeper-indexer-regression-run.txt",
+    "failure": "Daemon harness incorrectly asserted stderr was empty while concurrent mining caused expected chain-change retries. All periods and accounting completed. Corrected harness verifies successful shutdown and final on-chain state; focused rerun passed both new cases."
+  },
+  "totalDistinctCasesPassing": 9,
+  "sourceChecks": [
+    "contracts/DeadlineProbe.cash: OK",
+    "contracts/Example.cash: OK",
+    "contracts/LegacyRegistry.cash: OK",
+    "contracts/PeriodOpen.cash: OK",
+    "contracts/Registry.cash: OK",
+    "contracts/Registry.template.cash: OK",
+    "contracts/RegistryDeposit.cash: OK",
+    "contracts/RegistryGenesis.cash: OK",
+    "contracts/RegistryGenesis.template.cash: OK",
+    "contracts/StakeAllocation.cash: OK",
+    "contracts/StakeLock.cash: OK",
+    "contracts/StakePool.cash: OK",
+    "contracts/Vault.cash: OK"
+  ],
+  "artifactBytecode": "Identical to v0.2.0-regtest; regenerated timestamp-only changes restored",
+  "existingEvidence": "Existing milestone test-result files restored after regression execution",
+  "preservedInitialChain": {
+    "height": 1776,
+    "hash": "16b1764a63c65257af908837305d6cdd9a0746bfe07b63a80503d40cc32d195e"
+  },
+  "after": {
+    "chain": "regtest",
+    "blocks": 2106,
+    "headers": 2100,
+    "bestblockhash": "06d3b057f718973f4281fe589171905e81884966286abd961515c796661be9c1",
+    "difficulty": 4.656542373906925e-10,
+    "mediantime": 1794230477,
+    "verificationprogress": 1,
+    "initialblockdownload": false,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000001076",
+    "size_on_disk": 4717406,
+    "pruned": false,
+    "upgrade_status": {
+      "name": "May 2027 Upgrade (regtestnet)",
+      "mempool_activated": false,
+      "mempool_activation_mtp": 1810382400,
+      "block_preactivation_height": null,
+      "block_preactivation_hash": null,
+      "block_postactivation_height": null,
+      "block_postactivation_hash": null,
+      "software_expiration_time": 1810382400
+    },
+    "warnings": "Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues."
+  },
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "scope": {
+    "chain": "regtest",
+    "mainnetDeployment": false,
+    "realFunds": false,
+    "frontendStarted": false,
+    "independentAdversarialReview": "postponed"
+  },
+  "limitations": [
+    "Explicit genesis admission list",
+    "Confirmed-only projections and one transition per confirmation",
+    "Archival txindex BCHN required",
+    "Full JSON journal replay; no pruning or pagination",
+    "Sponsor inputs explicitly provisioned; no change output or replenishment",
+    "No replacement of stalled mempool transactions",
+    "Linux CLI checkpoint ownership lock; independent keepers require separate checkpoint paths"
+  ]
+}

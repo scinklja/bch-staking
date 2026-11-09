@@ -1,0 +1,88 @@
+
+> bch-staking@0.3.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && tsx --test --test-concurrency=1 tests/*.test.ts
+
+
+> bch-staking@0.3.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@0.3.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@0.3.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@0.3.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@0.3.0 typecheck
+> tsc
+
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (388707.179386ms)
+✖ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (18079.290075ms)
+registration replay and UTXOs verified
+three sponsored periods settled automatically
+BCHN disconnected and restarted
+withdrawal, rollback and fresh reconstruction verified
+✔ v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restarts, BCHN outage, reorg, replay, API and UTXOs (79616.474577ms)
+{
+  fundingTxid: '89b6b2f4e350ffb8bcba08827b48729e421ed37c4f005a9cfc9d505243522027',
+  spendingTxid: 'b0baffb861d2266b417497c999fe7072da4f06f5f51b2344df9d832fca8f80ae',
+  confirmations: 1,
+  height: 1957,
+  balanceBCH: 14943.65139948
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (2258.367374ms)
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (74846.984053ms)
+✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (24395.030254ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (12211.024882ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (85224.48817ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (6955.605859ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 713977.079191
+
+✖ failing tests:
+
+test at tests/arena-empty.test.ts:15:1
+✖ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (18079.290075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '{\n' +
+  +   '  "error": "Error: Chain changed during projection; retry",\n' +
+  +   '  "retry": true\n' +
+  +   '}\n' +
+  +   '{\n' +
+  +   '  "error": "Error: Chain changed during projection; retry",\n' +
+  +   '  "retry": true\n' +
+  +   '}\n' +
+  +   '{\n' +
+  +   '  "error": "Error: Chain changed during projection; retry",\n' +
+  +   '  "retry": true\n' +
+  +   '}\n'
+  - ''
+  
+      at TestContext.<anonymous> (/home/omarchy/bch-staking/tests/arena-empty.test.ts:72:65)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "error": "Error: Chain changed during projection; retry",\n  "retry": true\n}\n{\n  "error": "Error: Chain changed during projection; retry",\n  "retry": true\n}\n{\n  "error": "Error: Chain changed during projection; retry",\n  "retry": true\n}\n',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

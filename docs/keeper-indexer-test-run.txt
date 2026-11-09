@@ -1,0 +1,18 @@
+
+> bch-staking@0.3.0 test:arena
+> tsx --test --test-concurrency=1 tests/arena*.test.ts
+
+✔ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (25617.406435ms)
+registration replay and UTXOs verified
+three sponsored periods settled automatically
+BCHN disconnected and restarted
+withdrawal, rollback and fresh reconstruction verified
+✔ v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restarts, BCHN outage, reorg, replay, API and UTXOs (76469.895369ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107581.634322
