@@ -1,0 +1,31 @@
+{
+  "capturedAt": "2026-11-09T14:44:35.999Z",
+  "source": "Actual localhost indexer through same-origin Vite proxy; no request fixtures",
+  "base": "http://127.0.0.1:5173",
+  "tip": {
+    "height": 2365,
+    "hash": "0533bff597d4af5f4196d7e451590e10c0932b7f0c8a053be9a9cc9ee2deb989",
+    "mtp": 1794234484
+  },
+  "categories": [
+    "f61e32f4b58a4bdf267ecb33f58f7321b55f5e39391e950907f689e738b56073"
+  ],
+  "browserErrors": [],
+  "apiRequests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5173/api/vaults"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:5173/api/vaults"
+    }
+  ],
+  "privateBackendFileStatus": 403,
+  "screenshots": [
+    "arena-overview-desktop.png",
+    "arena-marketplace-desktop.png",
+    "arena-periods-desktop.png",
+    "arena-positions-mobile.png"
+  ]
+}

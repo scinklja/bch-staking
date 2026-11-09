@@ -2,3 +2,7 @@ node_modules/
 downloads/
 .regtest/
 .env
+
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/

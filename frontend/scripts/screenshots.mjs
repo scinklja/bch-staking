@@ -1,0 +1,33 @@
+import { chromium } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import { mkdir,writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import assert from 'node:assert/strict';
+const base=process.env.FRONTEND_URL??'http://127.0.0.1:5173';
+const response=await fetch(`${base}/api/vaults`,{signal:AbortSignal.timeout(15000)});
+assert.equal(response.status,200);const data=await response.json();
+assert.equal(data.chain,'regtest');assert.equal(data.confirmedOnly,true);assert.equal(data.health.connected,true);assert.ok(data.tip&&data.vaults.length);
+const directory=fileURLToPath(new URL('../../docs/screenshots/',import.meta.url));await mkdir(directory,{recursive:true});
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??(existsSync('/usr/lib/chromium/chromium')?'/usr/lib/chromium/chromium':'/usr/bin/chromium'),args:['--no-sandbox','--disable-gpu','--renderer-process-limit=1']});
+const errors=[],requests=[];
+try {
+  const page=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});
+  page.on('pageerror',error=>errors.push(error.message));
+  page.on('request',req=>{if(req.url().includes('/api/'))requests.push({method:req.method(),url:req.url()});});
+  await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});await page.getByText('Admitted vaults',{exact:true}).waitFor({timeout:30000});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false);
+  await page.screenshot({path:`${directory}/arena-overview-desktop.png`,fullPage:true});
+  await page.getByRole('link',{name:'Offer marketplace'}).click();await page.getByRole('heading',{name:'Every offer. One canonical order.'}).waitFor();
+  await page.screenshot({path:`${directory}/arena-marketplace-desktop.png`,fullPage:true});
+  await page.getByRole('link',{name:'Period history'}).click();const snapshots=page.locator('.snapshot-details summary');if(await snapshots.count())await snapshots.first().click();
+  await page.screenshot({path:`${directory}/arena-periods-desktop.png`,fullPage:true});
+  await page.setViewportSize({width:390,height:844});await page.getByRole('link',{name:'Staker positions'}).click();
+  await page.getByRole('heading',{name:'Your view of staker positions'}).waitFor();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false);
+  await page.screenshot({path:`${directory}/arena-positions-mobile.png`,fullPage:true});
+  assert.deepEqual(errors,[]);assert.ok(requests.length);assert.ok(requests.every(r=>r.method==='GET'&&new URL(r.url).pathname==='/api/vaults'));
+  const denied=await fetch(`${base}/@fs${fileURLToPath(new URL('../../.regtest/regtest/.cookie',import.meta.url))}`);
+  assert.equal(denied.status,403,'Frontend must not serve the BCHN cookie');
+  const result={capturedAt:new Date().toISOString(),source:'Actual localhost indexer through same-origin Vite proxy; no request fixtures',base,tip:data.tip,categories:data.vaults.map(v=>v.category),browserErrors:errors,apiRequests:requests,privateBackendFileStatus:denied.status,screenshots:['arena-overview-desktop.png','arena-marketplace-desktop.png','arena-periods-desktop.png','arena-positions-mobile.png']};
+  await writeFile(`${directory}/live-check.json`,JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+} finally {await browser.close();}

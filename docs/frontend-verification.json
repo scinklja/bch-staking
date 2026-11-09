@@ -1,0 +1,136 @@
+{
+  "verifiedAt": "2026-11-09T15:01:08.264Z",
+  "branch": "feature/frontend",
+  "baseBranch": "feature/keeper-indexer",
+  "baseCommit": "2e927ff35a6c5beb05754ea4869bf820a9aa6dad",
+  "completeIntegrationSuite": {
+    "command": "mise exec -- npm test",
+    "exitCode": 0,
+    "tests": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 655093.012975,
+    "log": "frontend-integration-test-run.txt"
+  },
+  "earlierIntegrationAttempt": {
+    "exitCode": 1,
+    "passed": 8,
+    "failed": 1,
+    "log": "frontend-integration-first-run.txt",
+    "failure": "Service readiness exceeded the existing 15-second startup timeout during concurrent browser QA. A test child remained alive after failure.",
+    "correction": "The test harness now waits up to 30 seconds, reports premature exit, clears its timer, and always terminates/awaits its owned child in finally. Protocol assertions and keeper/indexer logic were preserved. The complete suite was rerun alone and passed."
+  },
+  "frontend": {
+    "build": {
+      "passed": true,
+      "command": "mise exec -- npm run frontend:build",
+      "includes": "TypeScript strict noEmit check and Vite static build",
+      "assets": [
+        {
+          "name": "index-BgEZJ-d_.css",
+          "bytes": 20284
+        },
+        {
+          "name": "index-pSJ9GU8u.js",
+          "bytes": 337877
+        }
+      ],
+      "log": "frontend-build-run.txt"
+    },
+    "unitTests": {
+      "passed": 10,
+      "failed": 0,
+      "log": "frontend-unit-test-run.txt"
+    },
+    "browserTests": {
+      "passed": 6,
+      "failed": 0,
+      "log": "frontend-browser-test-run.txt",
+      "coverage": [
+        "desktop navigation and historical snapshots",
+        "mobile layout and keyboard filter",
+        "outage retention and recovery",
+        "periodic refresh without navigation and reorg replacement",
+        "stale/malformed responses and eligibility",
+        "initial error recovery"
+      ]
+    },
+    "liveBrowser": {
+      "passed": true,
+      "evidence": "screenshots/live-check.json",
+      "tip": {
+        "height": 2365,
+        "hash": "0533bff597d4af5f4196d7e451590e10c0932b7f0c8a053be9a9cc9ee2deb989",
+        "mtp": 1794234484
+      },
+      "errors": [],
+      "privateCookieRequestStatus": 403
+    },
+    "staticPreview": {
+      "passed": true,
+      "evidence": "screenshots/static-preview-check.json",
+      "errors": []
+    },
+    "screenshots": [
+      "screenshots/arena-overview-desktop.png",
+      "screenshots/arena-marketplace-desktop.png",
+      "screenshots/arena-periods-desktop.png",
+      "screenshots/arena-positions-mobile.png"
+    ]
+  },
+  "unchanged": {
+    "covenantSources": true,
+    "covenantArtifactBytecode": true,
+    "keeperIndexerAndApiSource": true,
+    "historicalBackendEvidence": true,
+    "milestoneTag": true,
+    "master": true
+  },
+  "preservedReferenceChain": {
+    "height": 2106,
+    "hash": "06d3b057f718973f4281fe589171905e81884966286abd961515c796661be9c1"
+  },
+  "after": {
+    "chain": "regtest",
+    "blocks": 2627,
+    "headers": 2627,
+    "bestblockhash": "79b2a91bc4a3a1a1f09861bce5ac5904505083eb1f4ca4303c82e9eb49762b4b",
+    "difficulty": 4.656542373906925e-10,
+    "mediantime": 1794236214,
+    "verificationprogress": 1,
+    "initialblockdownload": false,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000001488",
+    "size_on_disk": 6206378,
+    "pruned": false,
+    "upgrade_status": {
+      "name": "May 2027 Upgrade (regtestnet)",
+      "mempool_activated": false,
+      "mempool_activation_mtp": 1810382400,
+      "block_preactivation_height": null,
+      "block_preactivation_hash": null,
+      "block_postactivation_height": null,
+      "block_postactivation_hash": null,
+      "software_expiration_time": 1810382400
+    },
+    "warnings": ""
+  },
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "scope": {
+    "readOnly": true,
+    "chain": "regtest",
+    "walletSigning": false,
+    "deposits": false,
+    "withdrawalSubmission": false,
+    "publicDeployment": false,
+    "mergedIntoMaster": false,
+    "independentSecurityReview": "still postponed"
+  },
+  "limitations": [
+    "API provides confirmation heights and transaction IDs, not actual event block timestamps; scheduled UTC times are never substituted",
+    "Token symbol and decimals unavailable: integer raw staking units displayed per category",
+    "Same-origin /api proxy required for live data; static files alone do not index the chain",
+    "Eligibility is confirmed indexed state, subject to reorg and synchronization freshness",
+    "Run browser QA and complete BCHN integration tests separately on this VM"
+  ]
+}

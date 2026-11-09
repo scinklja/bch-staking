@@ -1,6 +1,8 @@
 # BCH regtest development environment
 
-Staking Arena v0.3.0 backend development is on `feature/keeper-indexer`: see [keeper/indexer architecture, operation and limitations](docs/keeper-indexer.md). The read-only API and automated keeper are regtest-only; the v0.2.0 covenants are unchanged. Frontend development and the independent adversarial review remain deferred.
+The read-only React frontend is developed on `feature/frontend`. See [local startup, units, API proxy, testing and frontend limitations](docs/frontend.md). Run `mise exec -- npm --prefix frontend ci` followed by `mise exec -- npm run frontend` with BCHN running; open http://127.0.0.1:5173.
+
+Staking Arena v0.3.0 backend development is on `feature/keeper-indexer`: see [keeper/indexer architecture, operation and limitations](docs/keeper-indexer.md). The read-only API and automated keeper are regtest-only; the v0.2.0 covenants are unchanged. The independent adversarial review remains deferred; the frontend is a separate read-only development branch.
 
 Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 

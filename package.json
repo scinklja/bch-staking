@@ -19,7 +19,13 @@
     "compile:period": "cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json",
     "compile:registry": "node scripts/compile-registry.mjs",
     "arena": "tsx scripts/arena.ts",
-    "test:arena": "tsx --test --test-concurrency=1 tests/arena*.test.ts"
+    "test:arena": "tsx --test --test-concurrency=1 tests/arena*.test.ts",
+    "frontend": "tsx scripts/frontend.ts",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:typecheck": "npm --prefix frontend run typecheck",
+    "frontend:test": "npm --prefix frontend test",
+    "frontend:test:browser": "npm --prefix frontend run test:browser"
   },
   "keywords": [],
   "author": "",

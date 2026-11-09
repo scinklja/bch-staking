@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-09T14:45:37.978Z",
+  "base": "http://127.0.0.1:4173",
+  "htmlStatus": 200,
+  "compiledAssetReferences": true,
+  "browserErrors": [],
+  "periodCards": 3,
+  "tip": {
+    "height": 2365,
+    "hash": "0533bff597d4af5f4196d7e451590e10c0932b7f0c8a053be9a9cc9ee2deb989",
+    "mtp": 1794234484
+  },
+  "confirmedOnly": true
+}

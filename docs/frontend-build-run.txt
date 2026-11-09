@@ -1,0 +1,18 @@
+
+> bch-staking@0.3.0 frontend:build
+> npm --prefix frontend run build
+
+
+> staking-arena-web@0.3.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 113 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.63 kB │ gzip:   0.40 kB
+dist/assets/index-BgEZJ-d_.css   20.28 kB │ gzip:   5.22 kB
+dist/assets/index-pSJ9GU8u.js   337.87 kB │ gzip: 101.58 kB
+
+✓ built in 674ms

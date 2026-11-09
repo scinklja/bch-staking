@@ -1,0 +1,55 @@
+
+> bch-staking@0.3.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && tsx --test --test-concurrency=1 tests/*.test.ts
+
+
+> bch-staking@0.3.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@0.3.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@0.3.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@0.3.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@0.3.0 typecheck
+> tsc
+
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (365953.816619ms)
+✔ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (11449.822446ms)
+registration replay and UTXOs verified
+three sponsored periods settled automatically
+BCHN disconnected and restarted
+withdrawal, rollback and fresh reconstruction verified
+✔ v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restarts, BCHN outage, reorg, replay, API and UTXOs (53769.39074ms)
+{
+  fundingTxid: 'ee09c8caad76b3ee44c50803a5c041db30d85ac18a3f35f2ce604cc8fd2d65ee',
+  spendingTxid: '02d382bf9c0e650838587470d64e9a4a71172037b2c2814283a74787736ee61e',
+  confirmations: 1,
+  height: 2521,
+  balanceBCH: 14945.55118849
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (1801.876113ms)
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (76783.613685ms)
+✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (27902.420103ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (10056.233681ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (86923.0492ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (5761.947183ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 655093.012975

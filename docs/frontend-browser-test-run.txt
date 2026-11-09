@@ -1,0 +1,23 @@
+
+> bch-staking@0.3.0 frontend:test:browser
+> npm --prefix frontend run test:browser
+
+
+> staking-arena-web@0.3.0 test:browser
+> playwright test
+
+[WebServer] (node:389386) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:389430) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/arena.spec.ts:4:1 › desktop navigation uses the read-only API and distinguishes historical block confirmations (14.2s)
+  ✓  2 tests/browser/arena.spec.ts:27:1 › mobile layout, keyboard navigation and internal table scrolling remain usable (8.1s)
+  ✓  3 tests/browser/arena.spec.ts:40:1 › retains the last successful state on outage and recovers on manual refresh (11.7s)
+  ✓  4 tests/browser/arena.spec.ts:49:1 › polls live data without reloading and replaces reorganized allocations (18.5s)
+  ✓  5 tests/browser/arena.spec.ts:57:1 › shows stale eligibility warnings, empty vaults and malformed-response recovery (7.9s)
+  ✓  6 tests/browser/arena.spec.ts:66:1 › initial connection failure offers a retry and a loading state (3.6s)
+
+  6 passed (1.4m)

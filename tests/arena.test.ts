@@ -165,9 +165,20 @@ test('v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restart
   async function runService(signal: NodeJS.Signals) {
     const child = spawn(process.execPath,['--import','tsx','scripts/arena.ts',serviceConfig], {cwd:process.cwd(),stdio:['ignore','pipe','pipe']});
     let log = ''; child.stderr.on('data', b => {log += b;});
-    await Promise.race([once(child.stdout,'data'), new Promise((_,reject) => {const t=setTimeout(() => reject(Error(`Service did not start: ${log}`)),15000);t.unref();})]);
-    const exited = once(child,'exit'); child.kill(signal); await exited;
-    assert.equal(log,'');
+    const exited = once(child,'exit');
+    let timer: NodeJS.Timeout | undefined;
+    try {
+      await Promise.race([
+        once(child.stdout,'data'),
+        exited.then(()=>{throw Error(`Service exited before readiness: ${log}`);}),
+        new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error(`Service did not start: ${log}`)),30000);timer.unref();}),
+      ]);
+      assert.equal(log,'');
+    } finally {
+      clearTimeout(timer);
+      if(child.exitCode===null && child.signalCode===null) child.kill(signal);
+      await exited;
+    }
   }
   await runService('SIGKILL'); await runService('SIGTERM');
   const server = api(index); server.listen(0,'127.0.0.1'); await once(server,'listening');

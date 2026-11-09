@@ -1,0 +1,20 @@
+
+> bch-staking@0.3.0 frontend:test
+> npm --prefix frontend test
+
+
+> staking-arena-web@0.3.0 test
+> vitest run
+
+
+ RUN  v5.1.0 /home/omarchy/bch-staking/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  15:58:37
+   Duration  8.27s (environment 51%, tests 22%, setup 12%, transform 9%, import 6%)
+
+Environment  jsdom was created 2 times · 3.84s total, 51% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
