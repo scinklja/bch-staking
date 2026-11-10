@@ -46,7 +46,7 @@ try {
  await page.setViewportSize({width:390,height:844});await go('#/create');await waitHeading('Create Vault');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
- assert.ok(requests.every(r=>r.method==='GET'&&new URL(r.url).origin===base.origin&&new URL(r.url).pathname.startsWith(prefix)));
+ assert.ok(requests.every(r=>r.url.startsWith('data:')||(r.method==='GET'&&new URL(r.url).origin===base.origin&&new URL(r.url).pathname.startsWith(prefix))));
  assert.ok(!requests.some(r=>r.url.includes('/api/')||r.url.includes('/vaults')));
  const report={url:target,prefix,httpStatus:response.status(),marketplace:true,creationPreview:true,directVaultRoute:true,reload:true,mobile:true,offline:true,noBackendRequests:true,javascriptErrors:errors,failedResponses:failed,requests:requests.length};
  const reportPath=process.env.PAGES_REPORT??'test-results/github-pages-check.json';await mkdir(dirname(reportPath),{recursive:true});await writeFile(reportPath,JSON.stringify(report,null,2)+'\n');
