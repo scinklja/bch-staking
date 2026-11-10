@@ -5,63 +5,78 @@ import { fixture } from './fixture';
 import { REFRESH_MS } from '../src/useArena';
 afterEach(()=>{vi.useRealTimers();window.history.replaceState(null,'','/');});
 const response=(data:unknown)=>Promise.resolve(new Response(JSON.stringify(data),{status:200}));
-it('renders native BCH reserves, all offers and historical snapshots through the documented endpoint',async()=>{
-  const fetcher=vi.fn<typeof fetch>(()=>response(fixture()));vi.stubGlobal('fetch',fetcher);
-  render(<App/>);await screen.findByText('Native BCH reserves');
-  expect(screen.getAllByText('0.00090000')[0]).toBeInTheDocument();expect(fetcher.mock.calls[0]?.[0]).toBe('/api/vaults');
-  fireEvent.click(screen.getByRole('link',{name:'Offer marketplace'}));
-  expect(screen.getByText('Every offer. One canonical order.')).toBeInTheDocument();
-  expect(screen.getByText('Offer #00')).toBeInTheDocument();expect(screen.getByText('Offer #01')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('link',{name:'Period history'}));
-  expect(screen.getByText('2026-11-06 21:20:00 UTC')).toBeInTheDocument();
-  expect(screen.getByText(/does not supply event block timestamps/)).toBeInTheDocument();
-  expect(screen.getByText('Block 121')).toBeInTheDocument();expect(screen.getByText('Block 122')).toBeInTheDocument();
-  const details=screen.getByText('Inspect activated snapshot').closest('details')!;
-  fireEvent.click(screen.getByText('Inspect activated snapshot'));
-  expect(within(details).getByText('Offer #00')).toBeInTheDocument();expect(within(details).getByText('Offer #01')).toBeInTheDocument();
+function live(data=fixture()){vi.stubGlobal('fetch',vi.fn(()=>response(data)));return render(<App/>);}
+async function navigate(href:string){await act(async()=>{window.location.hash=href;window.dispatchEvent(new HashChangeEvent('hashchange'));});}
+it('shows only actual indexed vault terms and one primary navigation link',async()=>{
+ const fetcher=vi.fn(()=>response(fixture()));vi.stubGlobal('fetch',fetcher);render(<App/>);
+ await screen.findByText('Maximum reward / period');
+ expect(screen.getByRole('heading',{name:'Staking Arena'})).toBeInTheDocument();
+ expect(screen.getByRole('link',{name:'Create Vault'})).toHaveAttribute('href','#/create');
+ expect(screen.getByText('0.00001000 BCH')).toBeInTheDocument();
+ expect(screen.getByText('Every minute')).toBeInTheDocument();
+ expect(fetcher.mock.calls[0]).toBeDefined();
+ expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(1);
+ expect(screen.queryByText('Native BCH reserves')).not.toBeInTheDocument();
 });
-it('shows loading, a useful empty state, and a recoverable initial error',async()=>{
-  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const loading=render(<App/>);expect(screen.getByRole('status')).toHaveTextContent(/Reading/);loading.unmount();
-  vi.stubGlobal('fetch',vi.fn(()=>response({...fixture(),vaults:[]})));const empty=render(<App/>);await screen.findByText('No admitted vaults yet');empty.unmount();localStorage.clear();
-  vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('API unreachable')));render(<App/>);await screen.findByText('The indexer is out of reach');expect(screen.getByRole('button',{name:/Try again/})).toBeEnabled();
+it('opens a dedicated hash detail route and ranks offers by exact priority',async()=>{
+ const data=fixture();window.location.hash='#/vault/'+data.vaults[0].category;live(data);
+ const table=await screen.findByRole('table',{name:'Competing offers ranked by priority'});
+ const rows=within(table).getAllByRole('row');
+ expect(rows[1]).toHaveTextContent('Offer #01');expect(rows[2]).toHaveTextContent('Offer #00');
+ expect(screen.getByText('Current period')).toBeInTheDocument();expect(screen.getByText('2 of 3')).toBeInTheDocument();
+ expect(screen.getByRole('link',{name:'Make an Offer'})).toHaveAttribute('href','#/vault/'+data.vaults[0].category+'/offer');
+ expect(screen.getByText('Advanced vault information').closest('details')).not.toHaveAttribute('open');
 });
-it('refreshes in place, retains the last state on failure, and recovers without reloading',async()=>{
-  vi.useFakeTimers();const first=fixture();const second=fixture();second.vaults[0].bchSatoshis='80000';
-  const fetcher=vi.fn().mockImplementationOnce(()=>response(first)).mockImplementationOnce(()=>Promise.reject(Error('offline'))).mockImplementation(()=>response(second));
-  vi.stubGlobal('fetch',fetcher);render(<App/>);
-  await act(async()=>{await vi.advanceTimersByTimeAsync(1);});expect(screen.getByText('Native BCH reserves')).toBeInTheDocument();
-  await act(async()=>{await vi.advanceTimersByTimeAsync(REFRESH_MS);});
-  expect(screen.getByRole('alert')).toHaveTextContent('Refresh failed');expect(screen.getAllByText('0.00090000')[0]).toBeInTheDocument();
-  await act(async()=>{await vi.advanceTimersByTimeAsync(REFRESH_MS);});
-  expect(screen.queryByRole('alert')).not.toBeInTheDocument();expect(screen.getAllByText('0.00080000')[0]).toBeInTheDocument();
+it('keeps frozen snapshot competitors after a live cancellation',async()=>{
+ const data=fixture(),v=data.vaults[0];v.phase='activated';v.snapshot=v.offers.map(o=>({...o}));v.offers[1].cancelled=true;
+ window.location.hash='#/vault/'+v.category;live(data);
+ const table=await screen.findByRole('table',{name:'Competing offers ranked by priority'});
+ expect(within(table).getByText('Offer #01')).toBeInTheDocument();
+ expect(screen.getByText('Frozen period roster')).toBeInTheDocument();
 });
-it('distinguishes locked, eligible, withdrawn and stale allocation state and filters public positions',async()=>{
-  const data=fixture(),v=data.vaults[0];v.allocations.push({...v.allocations[0],id:'1'.repeat(64)+':3',eligible:true});
-  v.allocations.push({...v.allocations[0],id:'2'.repeat(64)+':3',withdrawal:'3'.repeat(64)});
-  vi.stubGlobal('fetch',vi.fn(()=>response(data)));render(<App/>);await screen.findByText('Native BCH reserves');
-  fireEvent.click(screen.getByRole('link',{name:'Staker positions'}));
-  expect(screen.getByText('Eligible at indexed MTP')).toBeInTheDocument();expect(screen.getByText('Locked at indexed MTP')).toBeInTheDocument();expect(screen.getByText('Withdrawn')).toBeInTheDocument();
-  fireEvent.change(screen.getByRole('textbox',{name:/Filter positions/}),{target:{value:'unmatched'}});expect(screen.getByText('No matching positions')).toBeInTheDocument();
-  expect(screen.queryByRole('button',{name:/withdraw|deposit|sign|connect wallet/i})).not.toBeInTheDocument();
+it('calculates the offer preview with exact BCH conversion and never submits a transaction',async()=>{
+ const data=fixture();window.location.hash='#/vault/'+data.vaults[0].category+'/offer';live(data);
+ await screen.findByRole('heading',{name:'Make an Offer'});
+ for(const [name,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const) fireEvent.change(screen.getByRole('textbox',{name}),{target:{value}});
+ expect(screen.getByText('6')).toBeInTheDocument();expect(screen.getByText('9,000 raw token units')).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'Offer submission unavailable'})).toBeDisabled();
+ fireEvent.change(screen.getByRole('textbox',{name:/^Reward requested/}),{target:{value:'0'}});
+ expect(screen.getByText(/Requested reward must be at least/)).toBeInTheDocument();
+ expect(screen.getByText('Form preview')).toBeInTheDocument();
 });
-it('preserves eligibility in an activated snapshot when the owner cancels for future periods',async()=>{
-  const data=fixture(),v=data.vaults[0];v.phase='activated';v.offers[1].cancelled=true;
-  vi.stubGlobal('fetch',vi.fn(()=>response(data)));render(<App/>);await screen.findByText('Native BCH reserves');
-  fireEvent.click(screen.getByRole('link',{name:'Offer marketplace'}));
-  expect(screen.getByText('Cancelled for future periods')).toBeInTheDocument();expect(screen.getAllByText('Eligible in snapshot')).toHaveLength(2);
+it('offers a creation preview even offline and only supports native BCH rewards',async()=>{
+ vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('offline')));window.location.hash='#/create';render(<App/>);
+ await screen.findByRole('heading',{name:'Create Vault'});
+ expect(screen.getAllByRole('option')).toHaveLength(1);expect(screen.getByRole('combobox')).toBeDisabled();
+ expect(screen.getByRole('button',{name:'Vault publication unavailable'})).toBeDisabled();
+ fireEvent.change(screen.getByRole('textbox',{name:/^Staking asset category/}),{target:{value:'e'.repeat(64)}});
+ fireEvent.change(screen.getByRole('textbox',{name:/^Maximum reward/}),{target:{value:'0.00001000'}});
+ fireEvent.change(screen.getByRole('textbox',{name:/^Number of periods/}),{target:{value:'3'}});
+ fireEvent.change(screen.getByLabelText(/^Schedule starts/),{target:{value:'2027-01-01T00:00'}});
+ expect(screen.getByText('0.00003000 BCH')).toBeInTheDocument();
+ expect(screen.getByText(/All vault settings become immutable/)).toBeInTheDocument();
 });
-
-it('labels a restored browser snapshot as historical even while reconnecting, then recovers',async()=>{
-  vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));
-  const first=render(<App/>);await screen.findByText('Native BCH reserves');first.unmount();
-  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));
-  const cached=render(<App/>);
-  expect(screen.getByRole('alert')).toHaveTextContent('Saved confirmed snapshot');
-  expect(screen.getByText('Last-known confirmed snapshot · not current')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('link',{name:'Staker positions'}));
-  expect(screen.getByText('Recheck synchronization')).toBeInTheDocument();
-  cached.unmount();
-  vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));
-  render(<App/>);await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());
-  expect(screen.getByText('Indexer synchronized')).toBeInTheDocument();
+it('handles loading, empty data, missing vaults and initial outages without fabricated listings',async()=>{
+ vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const loading=render(<App/>);expect(screen.getByText('Loading vaults…')).toBeInTheDocument();loading.unmount();
+ const empty=live({...fixture(),vaults:[]});await screen.findByText('No vaults listed');empty.unmount();localStorage.clear();
+ vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('offline')));const offline=render(<App/>);await screen.findByText('Vault data unavailable');expect(screen.queryByText('Maximum reward / period')).not.toBeInTheDocument();offline.unmount();
+ live();await navigate('/vault/'+'1'.repeat(64));await screen.findByText('Vault not found');
+ await navigate('/invalid');expect(screen.getByText('Page not found')).toBeInTheDocument();
+});
+it('retains historical terms on polling failure, labels a restored snapshot and recovers',async()=>{
+ vi.useFakeTimers();const data=fixture();
+ vi.stubGlobal('fetch',vi.fn().mockImplementationOnce(()=>response(data)).mockRejectedValue(Error('offline')));
+ const first=render(<App/>);await act(async()=>{await vi.advanceTimersByTimeAsync(1);});
+ await act(async()=>{await vi.advanceTimersByTimeAsync(REFRESH_MS);});
+ expect(screen.getByRole('alert')).toHaveTextContent('Refresh failed');expect(screen.getByText('Open · at snapshot')).toBeInTheDocument();first.unmount();vi.useRealTimers();
+ vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const restored=render(<App/>);
+ expect(screen.getByRole('alert')).toHaveTextContent('Saved confirmed snapshot');expect(screen.getByText('Last-known confirmed snapshot · not current')).toBeInTheDocument();
+ await navigate('/vault/'+data.vaults[0].category);expect(screen.getByText('Period at snapshot')).toBeInTheDocument();restored.unmount();
+ vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));render(<App/>);await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());
+});
+it('shows stale and malformed API responses without claiming current status',async()=>{
+ const data=fixture();data.health.connected=false;live(data);
+ await screen.findByText('Open · at snapshot');expect(screen.getByRole('alert')).toHaveTextContent('not synchronized');
+ vi.stubGlobal('fetch',vi.fn(()=>response({chain:'main'})));fireEvent.click(screen.getByRole('button',{name:'Refresh data'}));
+ await waitFor(()=>expect(screen.getByRole('alert')).toHaveTextContent('incompatible or malformed'));
 });

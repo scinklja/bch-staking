@@ -33,18 +33,21 @@ Vite's development and preview proxy only match `/health`, `/vaults`, and the do
 
 The app fetches immediately, then every ten seconds after each request finishes. Requests have a ten-second timeout, do not overlap, and are aborted on component unmount. Manual refresh, returning to a visible tab, and a browser online event also request fresh data. New responses replace the entire projection, so disconnected allocations and events disappear after a reorg. There is no optimistic protocol state. Fresh confirmed projections are cached in browser storage as explicitly historical snapshots; see the deployment guide for cache scope and limitations.
 
-A failed request preserves the last successfully parsed response and shows a stale-data warning. The API envelope is validated at runtime; malformed responses, non-regtest responses and unconfirmed-only metadata are rejected. Indexer disconnection, missing tip, a last-success timestamp older than 30 seconds, and material future clock skew also produce warnings. Old block MTP alone is not considered an indexer outage: an isolated regtest chain may intentionally stop mining. The UI reports both last fetch and last indexer synchronization. During a stale view, allocation eligibility is replaced with “Recheck synchronization.” All eligibility refers to the indexed state and is subject to reorgs.
+A failed request preserves the last successfully parsed response and shows a stale-data warning. The API envelope is validated at runtime; malformed responses, non-regtest responses and unconfirmed-only metadata are rejected. Indexer disconnection, missing tip, a last-success timestamp older than 30 seconds, and material future clock skew also produce warnings. Old block MTP alone is not considered an indexer outage: an isolated regtest chain may intentionally stop mining. The UI reports both last fetch and last indexer synchronization. Stale marketplace views label statuses and period progress as historical. All eligibility refers to the indexed state and is subject to reorgs.
 
-## Reading the views
+## Vault marketplace
 
-- **Overview:** admitted genesis identities, native BCH covenant reserves, staking categories, offer counts, settled-period progress and selected-vault schedule. BCH balances include covenant carriers and any remaining fee reserve; they are not freely withdrawable rewards. Empty-period advances count as settled periods, but are labelled separately in history. Unspent allocation counts can span vaults; token amounts are never added across different categories.
-- **Offer marketplace:** every registration, canonical slot, owner public key, committed S, duration T in periods, requested native BCH reward R, score, live win count and eligibility. An optional filter shows only eligible offers. R uses satoshis in the covenant's P = S × T / R. Displayed scores truncate at six decimals; exact cross products and registration slots determine order. The indexer's rankings remain authoritative. An activated snapshot can remain eligible even after a future-only live cancellation. A completed schedule is clearly labelled.
-- **Period history:** scheduled UTC boundaries, actual confirmed activation/settlement block heights and transaction IDs, winning slots, requested BCH rewards and expandable full activation rosters. The historical roster is decoded from the activation event's authenticated pre-transition state witness: activation copies that live roster into the snapshot. Current offer state is not substituted for old snapshots.
-- **Staker positions:** independent per-win allocation outpoints, public owners, raw locked token units, offer and winning period, fixed UTC maturity, and indexed withdrawal eligibility. A public-key/outpoint filter requires no wallet. Withdrawn allocations remain in history and are excluded from locked totals. Unused commitment refunds are distinct from allocations.
+The homepage contains the Staking Arena title, a prominent **Create Vault** preview link and a simple list of confirmed indexed vaults. Each listing shows the maximum native BCH reward per period, reward asset, total periods, period duration and indexed open/upcoming/completed status. No names, balances, vaults or supported reward assets are fabricated.
 
-**Time limitation:** v0.3.0 does not expose per-event block timestamps. The frontend therefore shows actual confirmation heights/IDs and explicitly says timestamps are unavailable. It never uses a scheduled boundary, indexer fetch time or current chain MTP as a fabricated activation/settlement time. Allocation maturity is the fixed scheduled UTC time, while eligibility requires chain MTP to pass it. Browser wall time does not unlock an allocation.
+Routes use hashes compatible with direct navigation and reload on GitHub Pages: `#/`, `#/create`, `#/vault/<category>` and `#/vault/<category>/offer`. No server path rewrites are required. Unknown routes and missing indexed vaults have explicit empty states.
 
-**Asset units:** reward reserves and requested rewards are native BCH, formatted with exact eight-decimal integer arithmetic. One BCH is 100,000,000 satoshis. Staked CashTokens are identified by category and displayed as integer raw units. The API does not supply token symbols, names or decimal metadata; the UI does not invent those properties or quote fiat prices.
+Vault details show immutable terms, the staking CashToken category (raw units; no invented symbol/decimals), one-based display of the current period, staking conditions and competing offers. Exact integer cross-products determine ranking; ties use canonical registration slots. Activated periods use the frozen snapshot, including offers cancelled only in the live roster. Inactive live registrations and chain identifiers remain in expandable sections. The indexed cursor determines completion; a delayed unsettled schedule is not marked completed merely because browser time has advanced.
+
+**Create Vault** and **Make an Offer** are clearly labeled form previews. Publication/submission controls are disabled and no transaction, wallet connection or optimistic vault/offer is created. Offer previews calculate P using R in BCH satoshis and the S × W upfront token commitment. Inputs follow the current registry bounds. Creation previews include the existing staking category, BCH cap, period duration/count and UTC epoch; all terms are immutable after eventual publication. Current contracts support native BCH rewards only. CashToken rewards remain explicitly unsupported future functionality.
+
+All data views preserve the existing validated read-only API and browser-snapshot behavior. Stale vault statuses say “at snapshot”; details replace “Current period” with “Period at snapshot.” Persistent historical banners and original fetch/synchronization timestamps remain visible across navigation and reload until a fresh indexed response arrives.
+
+See [redesign verification](marketplace-redesign.md) for current checks. The explorer screenshots and reports below are historical evidence for the earlier interface.
 
 ## Static build and hosting
 
@@ -55,9 +58,9 @@ mise exec -- npm --prefix frontend run preview
 
 The default production build is an independent offline viewer. To use the existing preview proxy for live local data, build with `VITE_API_BASE_URL=/api`. Development mode continues to use that proxy by default. Static assets use relative URLs and hash navigation.
 
-See [Cloudflare Pages setup, public API configuration, snapshot labels and backend-free verification](cloudflare-pages.md) for deployment from the existing GitHub repository. Nothing has been published.
+See [GitHub Pages hosting](github-pages.md) for the public compiled-only repository and project base path. The [Cloudflare configuration guide](cloudflare-pages.md) remains available as an alternative.
 
-## Checks and screenshots
+## Earlier explorer checks and screenshots
 
 ```bash
 mise exec -- npm run frontend:typecheck

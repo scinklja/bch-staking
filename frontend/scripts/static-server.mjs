@@ -1,13 +1,23 @@
-// Test-only file server: no Vite middleware, proxy, API or backend process.
+// Test-only static server. Optional live check forwards only GET /api/vaults to the existing read-only loopback indexer; no backend process starts.
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname } from 'node:path';
 const root = resolve('dist');
 const configured = resolve('.static-test/api');
+const live = resolve('.static-test/live');
 createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
-  const base = path.startsWith('/configured/') ? configured : root;
-  const relative = base === configured ? path.slice('/configured/'.length) : path.slice(1);
+  if (path === '/api/vaults' && process.env.ARENA_TEST_API) {
+    if (req.method !== 'GET') { res.writeHead(405).end(); return; }
+    try {
+      const upstream = await fetch(process.env.ARENA_TEST_API + '/vaults', { cache:'no-store', signal:AbortSignal.timeout(10000) });
+      res.writeHead(upstream.status, { 'Content-Type':'application/json', 'Cache-Control':'no-store' });
+      res.end(await upstream.text());
+    } catch { res.writeHead(503).end(); }
+    return;
+  }
+  const base = path.startsWith('/configured/') ? configured : path.startsWith('/live/') ? live : root;
+  const relative = base === configured ? path.slice('/configured/'.length) : base === live ? path.slice('/live/'.length) : path.slice(1);
   const file = resolve(base, relative || 'index.html');
   if (!file.startsWith(base + '/')) { res.writeHead(403).end(); return; }
   try {

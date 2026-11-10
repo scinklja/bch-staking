@@ -29,12 +29,12 @@ async function waitFor(check) {
   }
 }
 await waitFor(() => document.querySelector('[role=alert]'));
-assert.match(document.body.textContent, /The indexer is out of reach/);
-assert.equal(document.querySelectorAll('nav a').length, 4);
-assert.equal(document.querySelector('h1').textContent, 'The arena, at a glance.');
-window.location.hash = 'positions';
-await waitFor(() => document.querySelector('h1')?.textContent === 'A clear view of every lock.');
-assert.match(document.body.textContent, /No confirmed snapshot is available/);
+assert.match(document.body.textContent, /Vault data unavailable/);
+assert.equal(document.querySelectorAll('nav a').length, 1);
+assert.equal(document.querySelector('h1').textContent, 'Staking Arena');
+window.location.hash = '/create';
+await waitFor(() => document.querySelector('h1')?.textContent === 'Create Vault');
+assert.match(document.body.textContent, /Form preview/);
 if (configured) {
   assert.ok(requests.length > 0);
   assert.ok(requests.every(request => request.url === 'https://indexer.example.test/read-only/vaults' && request.options.credentials === 'omit'));
