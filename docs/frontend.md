@@ -27,11 +27,11 @@ If the indexer already runs on port 3100, start only the UI with `mise exec -- n
 
 ## API and refresh behavior
 
-The browser performs GET `/api/vaults`. Vite strips `/api` and proxies that request to the existing documented GET `/vaults` endpoint. The response already contains all vault status, offers, rankings, periods, history, allocations and withdrawal projections, together with one indexed chain tip. This avoids mixing projections from different polling instants. No new backend routes exist.
+In local development the browser performs GET `/api/vaults`. Production builds use the public `VITE_API_BASE_URL` base, or show offline mode when it is unset. See [Cloudflare Pages and offline snapshots](cloudflare-pages.md). Vite strips `/api` and proxies that request to the existing documented GET `/vaults` endpoint. The response already contains all vault status, offers, rankings, periods, history, allocations and withdrawal projections, together with one indexed chain tip. This avoids mixing projections from different polling instants. No new backend routes exist.
 
 Vite's development and preview proxy only match `/health`, `/vaults`, and the documented vault detail subroutes beneath `/api`. BCHN RPC port 18443 is never a proxy target. Browser source imports no backend code, RPC client, cookie, filesystem accessor or signing key. The startup helper removes `ARENA_SPONSOR_KEY` from the two child environments; no key is necessary for viewing. Vite serves only its frontend root with strict filesystem access. Do not put credentials in frontend source or `VITE_*` variables.
 
-The app fetches immediately, then every ten seconds after each request finishes. Requests have a ten-second timeout, do not overlap, and are aborted on component unmount. Manual refresh, returning to a visible tab, and a browser online event also request fresh data. New responses replace the entire projection, so disconnected allocations and events disappear after a reorg. There is no optimistic or local persisted protocol state.
+The app fetches immediately, then every ten seconds after each request finishes. Requests have a ten-second timeout, do not overlap, and are aborted on component unmount. Manual refresh, returning to a visible tab, and a browser online event also request fresh data. New responses replace the entire projection, so disconnected allocations and events disappear after a reorg. There is no optimistic protocol state. Fresh confirmed projections are cached in browser storage as explicitly historical snapshots; see the deployment guide for cache scope and limitations.
 
 A failed request preserves the last successfully parsed response and shows a stale-data warning. The API envelope is validated at runtime; malformed responses, non-regtest responses and unconfirmed-only metadata are rejected. Indexer disconnection, missing tip, a last-success timestamp older than 30 seconds, and material future clock skew also produce warnings. Old block MTP alone is not considered an indexer outage: an isolated regtest chain may intentionally stop mining. The UI reports both last fetch and last indexer synchronization. During a stale view, allocation eligibility is replaced with “Recheck synchronization.” All eligibility refers to the indexed state and is subject to reorgs.
 
@@ -46,16 +46,16 @@ A failed request preserves the last successfully parsed response and shows a sta
 
 **Asset units:** reward reserves and requested rewards are native BCH, formatted with exact eight-decimal integer arithmetic. One BCH is 100,000,000 satoshis. Staked CashTokens are identified by category and displayed as integer raw units. The API does not supply token symbols, names or decimal metadata; the UI does not invent those properties or quote fiat prices.
 
-## Static build and same-origin configuration
+## Static build and hosting
 
 ```bash
 mise exec -- npm run frontend:build
 mise exec -- npm --prefix frontend run preview
 ```
 
-Open http://127.0.0.1:4173 for a local preview of the built static files; the preview has the same localhost API proxy. Run the API separately if the combined dev command is stopped. The output uses relative assets and hash navigation, so static hosting does not need SPA path rewrites. The API path remains origin-relative `/api/vaults`.
+The default production build is an independent offline viewer. To use the existing preview proxy for live local data, build with `VITE_API_BASE_URL=/api`. Development mode continues to use that proxy by default. Static assets use relative URLs and hash navigation.
 
-Serving `frontend/dist` elsewhere requires a same-origin reverse proxy for `/api/` to the read-only indexer. Static files alone cannot supply live blockchain data. Do not expose BCHN RPC, the regtest cookie, the wallet or sponsorship keys. No public deployment configuration is installed by this work. Vite's preview server is a local verification tool, not production infrastructure. See the [Vite guide](https://vite.dev/guide/) and [React build-tool guide](https://react.dev/learn/build-a-react-app-from-scratch) for the underlying static SPA workflow.
+See [Cloudflare Pages setup, public API configuration, snapshot labels and backend-free verification](cloudflare-pages.md) for deployment from the existing GitHub repository. Nothing has been published.
 
 ## Checks and screenshots
 

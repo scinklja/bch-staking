@@ -10,7 +10,10 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:browser": "playwright test",
-    "screenshots": "node scripts/screenshots.mjs"
+    "screenshots": "node scripts/screenshots.mjs",
+    "test:static": "npm run build && VITE_API_BASE_URL=https://indexer.example.test/read-only vite build --outDir .static-test/api && playwright test --config playwright.static.config.ts",
+    "test:static:dom": "node scripts/verify-static.mjs dist && node scripts/verify-static.mjs .static-test/api configured",
+    "test:static:browser": "node scripts/verify-browser.mjs"
   },
   "dependencies": {
     "react": "19.3.1",

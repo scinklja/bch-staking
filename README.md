@@ -82,3 +82,7 @@ This adapter suits a small private chain: scans are not an address index, must n
 - Scan already in progress: wait for the other test/scan to finish.
 - npm may report esbuild's install script as pending approval. The installed platform binary was sufficient and tsx was executed successfully; no blanket install-script approval was enabled.
 - Never delete `.regtest` while the node is running. Deleting it discards this environment's test chain and wallet.
+
+## Independent static website hosting
+
+Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, explicit offline/last-known confirmed snapshot behavior, account configuration and backend-free verification. The production default makes no API requests. Nothing has been published; local development and VM port forwarding remain available.

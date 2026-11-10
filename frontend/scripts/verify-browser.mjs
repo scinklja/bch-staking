@@ -1,0 +1,46 @@
+// Low-memory browser verification of the two production builds; no backend starts.
+import { chromium } from 'playwright-core';
+import { fixture } from '../tests/fixture.ts';
+import assert from 'node:assert/strict';
+await import('./static-server.mjs');
+const browser = await chromium.launch({executablePath:process.env.CHROMIUM_PATH,timeout:180000,args:['--no-sandbox','--disable-gpu','--single-process','--no-zygote','--js-flags=--max-old-space-size=64']});
+console.log('Browser launched');
+try {
+ const page=await browser.newPage();
+ page.setDefaultTimeout(120000);page.setDefaultNavigationTimeout(120000);
+ const errors=[],requests=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ page.on('request',r=>requests.push(r.url()));
+ await page.goto('http://127.0.0.1:4174/',{waitUntil:'domcontentloaded'});
+ await page.getByText('Offline · no API configured',{exact:true}).waitFor();
+ assert.equal(requests.filter(url=>url.includes('/api/')).length,0);
+ await page.getByRole('link',{name:'Staker positions'}).click();
+ await page.getByRole('heading',{name:'A clear view of every lock.'}).waitFor();
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.getByText('Offline · no API configured',{exact:true}).waitFor();
+ console.log('PASS: default production build offline navigation and reload');
+ let online=false;
+ await page.route('https://indexer.example.test/read-only/vaults',route=>online?route.fulfill({json:fixture(),headers:{'Access-Control-Allow-Origin':'*'}}):route.abort());
+ await page.goto('http://127.0.0.1:4174/configured/',{waitUntil:'domcontentloaded'});
+ await page.getByText('The indexer is out of reach',{exact:true}).waitFor();
+ online=true;
+ await page.getByRole('button',{name:'Refresh data'}).click();
+ await page.getByText('Native BCH reserves',{exact:true}).waitFor();
+ online=false;
+ await page.getByRole('button',{name:'Refresh data'}).click();
+ await page.getByText('Last-known confirmed snapshot · not current',{exact:true}).waitFor();
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.getByText('Last-known confirmed snapshot · not current',{exact:true}).waitFor();
+ await page.getByRole('link',{name:'Staker positions'}).click();
+ await page.getByText('Recheck synchronization',{exact:true}).waitFor();
+ await page.waitForTimeout(11000);
+ await page.getByText('Last-known confirmed snapshot · not current',{exact:true}).waitFor();
+ await page.screenshot({path:'test-results/production-stale-snapshot.png',fullPage:true});
+ console.log('PASS: configured API outage, snapshot persisted through reload, stale labels persist through retry');
+ online=true;
+ await page.getByRole('button',{name:'Refresh data'}).click();
+ await page.getByText('Indexer synchronized',{exact:true}).waitFor();
+ assert.deepEqual(errors,[]);
+ console.log('PASS: recovery clears stale labels; no browser JavaScript errors');
+} finally { await browser.close(); }
+process.exit(0);

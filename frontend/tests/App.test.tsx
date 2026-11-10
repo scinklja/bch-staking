@@ -3,7 +3,7 @@ import { afterEach,expect,it,vi } from 'vitest';
 import App from '../src/App';
 import { fixture } from './fixture';
 import { REFRESH_MS } from '../src/useArena';
-afterEach(()=>{vi.useRealTimers();window.location.hash='';});
+afterEach(()=>{vi.useRealTimers();window.history.replaceState(null,'','/');});
 const response=(data:unknown)=>Promise.resolve(new Response(JSON.stringify(data),{status:200}));
 it('renders native BCH reserves, all offers and historical snapshots through the documented endpoint',async()=>{
   const fetcher=vi.fn<typeof fetch>(()=>response(fixture()));vi.stubGlobal('fetch',fetcher);
@@ -22,7 +22,7 @@ it('renders native BCH reserves, all offers and historical snapshots through the
 });
 it('shows loading, a useful empty state, and a recoverable initial error',async()=>{
   vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const loading=render(<App/>);expect(screen.getByRole('status')).toHaveTextContent(/Reading/);loading.unmount();
-  vi.stubGlobal('fetch',vi.fn(()=>response({...fixture(),vaults:[]})));const empty=render(<App/>);await screen.findByText('No admitted vaults yet');empty.unmount();
+  vi.stubGlobal('fetch',vi.fn(()=>response({...fixture(),vaults:[]})));const empty=render(<App/>);await screen.findByText('No admitted vaults yet');empty.unmount();localStorage.clear();
   vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('API unreachable')));render(<App/>);await screen.findByText('The indexer is out of reach');expect(screen.getByRole('button',{name:/Try again/})).toBeEnabled();
 });
 it('refreshes in place, retains the last state on failure, and recovers without reloading',async()=>{
@@ -49,4 +49,19 @@ it('preserves eligibility in an activated snapshot when the owner cancels for fu
   vi.stubGlobal('fetch',vi.fn(()=>response(data)));render(<App/>);await screen.findByText('Native BCH reserves');
   fireEvent.click(screen.getByRole('link',{name:'Offer marketplace'}));
   expect(screen.getByText('Cancelled for future periods')).toBeInTheDocument();expect(screen.getAllByText('Eligible in snapshot')).toHaveLength(2);
+});
+
+it('labels a restored browser snapshot as historical even while reconnecting, then recovers',async()=>{
+  vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));
+  const first=render(<App/>);await screen.findByText('Native BCH reserves');first.unmount();
+  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));
+  const cached=render(<App/>);
+  expect(screen.getByRole('alert')).toHaveTextContent('Saved confirmed snapshot');
+  expect(screen.getByText('Last-known confirmed snapshot · not current')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('link',{name:'Staker positions'}));
+  expect(screen.getByText('Recheck synchronization')).toBeInTheDocument();
+  cached.unmount();
+  vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));
+  render(<App/>);await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());
+  expect(screen.getByText('Indexer synchronized')).toBeInTheDocument();
 });
