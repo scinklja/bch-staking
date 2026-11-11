@@ -16,3 +16,6 @@ frontend/browser-diagnostics/
 .chipnet/
 
 deploy/data/
+
+# Reproducible compiled-only Pages release output (source stays private).
+frontend/.pages-production/
