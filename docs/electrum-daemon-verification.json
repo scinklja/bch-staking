@@ -1,0 +1,40 @@
+{
+  "verifiedAt": "2026-11-11T14:03:54Z",
+  "rpcUrl": "http://127.0.0.1:1/",
+  "rpcCookie": "/nonexistent-daemon-cookie",
+  "command": "ARENA_PROVIDER=electrum ARENA_NETWORK=chipnet node --import tsx scripts/arena.ts CONFIG",
+  "restartIdentical": true,
+  "runs": [
+    {
+      "attempt": 0,
+      "tip": {
+        "height": 331872,
+        "hash": "0000000000003df9ff5cbc7adeb0edee3300839e8e64548c740c9ba287d77955",
+        "mtp": 1794405266
+      },
+      "endpoint": "ssl://chipnet.bch.ninja:50002",
+      "category": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "historyActions": [
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "attempt": 1,
+      "tip": {
+        "height": 331872,
+        "hash": "0000000000003df9ff5cbc7adeb0edee3300839e8e64548c740c9ba287d77955",
+        "mtp": 1794405266
+      },
+      "endpoint": "ssl://chipnet.bch.ninja:50002",
+      "category": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "historyActions": [
+        0,
+        2,
+        3
+      ]
+    }
+  ],
+  "stagedSourceVerified": true
+}

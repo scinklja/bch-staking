@@ -1,6 +1,10 @@
+import { cors } from './http-policy.js';
+import { rpc, assertNetwork } from './rpc.js';
+import { networkConfig } from './rpc.js';
 import { createServer } from 'node:http';
 import { Indexer } from './indexer.js';
 import { json, rankings, records } from './arena.js';
+import { satoshis } from './genesis.js';
 import { periodBoundary, remainingCommitment } from './registry.js';
 
 export function vaultView(index: Indexer, category: string) {
@@ -14,7 +18,7 @@ export function vaultView(index: Indexer, category: string) {
   });
   return { category: v.category, config: v.config, period, phase: state[4] ? 'activated' : 'open',
     stateOutpoint: `${v.transaction.txid}:0`, poolOutpoint: `${v.transaction.txid}:1`, witness: v.witness,
-    bchSatoshis: Math.round(v.transaction.vout[0].value * 1e8).toString(), escrowTokens: remainingCommitment(state).toString(),
+    bchSatoshis: satoshis(v.transaction.vout[0]).toString(), escrowTokens: remainingCommitment(state).toString(),
     unsettledPeriods: Array.from({ length: v.config.periods - period }, (_, i) => i + period),
     readyPeriods: Array.from({ length: v.config.periods - period }, (_, i) => i + period).filter(p => mtp > periodBoundary(v.config, p)),
     offers, rankings: rankings(state), snapshot: state[4] ? records(state, true) : null,
@@ -27,13 +31,32 @@ export function vaultView(index: Indexer, category: string) {
       history: v.history.filter(h => h.action === 4) }, history: v.history };
 }
 export function api(index: Indexer) {
-  return createServer((req, res) => {
+  return createServer(async (req, res) => {
+    if (cors(req,res)) return;
     res.setHeader('content-type', 'application/json'); res.setHeader('cache-control', 'no-store');
     const send = (status: number, body: unknown) => { res.writeHead(status); res.end(json(body)); };
     if (req.method !== 'GET') { res.setHeader('allow', 'GET'); send(405, { error: 'Read-only API' }); return; }
     const path = new URL(req.url ?? '/', 'http://localhost').pathname.split('/').filter(Boolean);
-    const meta = { chain: 'regtest', health: index.health, tip: index.tip ? { height: index.tip.height, hash: index.tip.hash, mtp: index.tip.mtp } : null, confirmedOnly: true };
-    if (path.length === 1 && path[0] === 'health') { send(index.health.connected ? 200 : 503, meta); return; }
+    const stale = index.health.stale || !index.health.updatedAt || Date.now() - Date.parse(index.health.updatedAt) > 60000;
+    const health = { ...index.health, stale };
+    const meta = { chain: networkConfig().network, health, tip: index.tip ? { height: index.tip.height, hash: index.tip.hash, mtp: index.tip.mtp } : null, confirmedOnly: true };
+    if (path.length === 1 && path[0] === 'health') { send(index.health.connected && !stale ? 200 : 503, meta); return; }
+    if(path.length===2&&path[0]==='transactions'&&/^[0-9a-f]{64}$/i.test(path[1]!)) {
+      if (index.electrum) {
+        try {
+          const tx = await index.electrum.session(() => index.electrum!.transactionStatus(path[1]!));
+          send(200, { chain: networkConfig().network, txid: path[1], status: tx.confirmations > 0 ? 'confirmed' : 'pending', confirmations: tx.confirmations, block: tx.blockhash ?? null });
+        } catch { send(503, { status: 'unavailable', error: 'Electrum transaction lookup unavailable' }); }
+        return;
+      }
+      try { await assertNetwork(true); } catch { send(503,{status:'unavailable',error:'Blockchain data unavailable'});return; }
+      try {
+        const tx=await rpc('getrawtransaction',[path[1],true]);
+        const confirmations=tx.confirmations??0;
+        send(200,{chain:networkConfig().network,txid:path[1],status:confirmations>0?'confirmed':confirmations<0?'orphaned':'pending',confirmations,block:tx.blockhash??null});
+      }catch (error) {if(!String(error).includes('\"code\":-5')){send(503,{status:'unavailable',error:'Transaction lookup unavailable'});return;}send(404,{chain:networkConfig().network,txid:path[1],status:'not-found',error:'Not observed on this node; may be dropped, reorganized or unavailable. Retry after synchronization.'});}
+      return;
+    }
     if (path[0] !== 'vaults') { send(404, { error: 'Not found' }); return; }
     if (path.length === 1) { send(200, { ...meta, vaults: index.vaults.map(v => vaultView(index, v.category)) }); return; }
     const view = vaultView(index, path[1]!);

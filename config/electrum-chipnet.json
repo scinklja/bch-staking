@@ -1,0 +1,14 @@
+{
+  "vaults": [{
+    "genesis": "128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74",
+    "stakingCategory": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+    "epoch": 1794380640,
+    "periodSeconds": 60,
+    "periods": 1,
+    "cap": 2000
+  }],
+  "checkpoint": ".chipnet/electrum/checkpoint.json",
+  "port": 3100,
+  "pollMs": 10000,
+  "keeper": false
+}

@@ -1,0 +1,57 @@
+{
+  "primary": {
+    "verifiedAt": "2026-11-11T13:51:13.752Z",
+    "endpoint": "ssl://chipnet.bch.ninja:50002",
+    "tip": {
+      "height": 331865,
+      "hex": "00000020b8d8f9785e648f1b5d54657ac70a583db1f609ebed241b718277000000000000a8cdf58dce998ccd8fd2a945f93262dc8ea6e328debdee4428da7f57e4c8cdafbb72f46a4bad001b85159b86",
+      "hash": "000000000000065a514c1f7f34c8923cfba2ec336a4fa33e6d5abe7ed7cd45b2",
+      "parent": "0000000000007782711b24edeb09f6b13d580ac77a65545d1b8f645e78f9d8b8",
+      "merkle": "afcdc8e4577fda2844eebdde28e3a68edc6232f945a9d28fcd8c99ce8df5cda8",
+      "time": 1794405051
+    },
+    "txid": "9e1e7bd7b20828afe46ef4a88cc0e3f73f0022683f3512904b09bce851ebd6b2",
+    "outputs": 6,
+    "historyEntries": 0,
+    "utxos": 0,
+    "methods": [
+      "server.version",
+      "blockchain.block.header",
+      "blockchain.headers.subscribe",
+      "blockchain.transaction.id_from_pos",
+      "blockchain.transaction.get",
+      "blockchain.transaction.get_merkle",
+      "blockchain.scripthash.get_history",
+      "blockchain.scripthash.listunspent"
+    ],
+    "vaultVerified": false
+  },
+  "secondary": {
+    "verifiedAt": "2026-11-11T14:04:14.526Z",
+    "endpoint": "ssl://chipnet.imaginary.cash:50002",
+    "tip": {
+      "height": 331872,
+      "hex": "00ffff3f323bc433277bd1ae3332d943a8b6eaa4e0ac45eafd181c24f74c00000000000024597baf6de8137e82b6ea7fb62193d2d14904844a8de202ed224a326f7f41302775f46ae5225a1ab151f82c",
+      "hash": "0000000000003df9ff5cbc7adeb0edee3300839e8e64548c740c9ba287d77955",
+      "parent": "0000000000004cf7241c18fdea45ace0a4eab6a843d93233aed17b2733c43b32",
+      "merkle": "30417f6f324a22ed02e28d4a840449d1d29321b67feab6827e13e86daf7b5924",
+      "time": 1794405671
+    },
+    "txid": "dac7166b96ae35a067faf9dc3b33b2886a4f74c947a4636d794cdb0b30f23cb0",
+    "outputs": 6,
+    "historyEntries": 0,
+    "utxos": 0,
+    "methods": [
+      "server.version",
+      "blockchain.block.header",
+      "blockchain.headers.subscribe",
+      "blockchain.transaction.id_from_pos",
+      "blockchain.transaction.get",
+      "blockchain.transaction.get_merkle",
+      "blockchain.scripthash.get_history",
+      "blockchain.scripthash.listunspent"
+    ],
+    "vaultVerified": false
+  },
+  "note": "Real read-only public connectivity diagnostics. Token-aware vault indexing/restart/API verification is recorded separately; deterministic faults and replacement headers are offline tests."
+}

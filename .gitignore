@@ -10,3 +10,5 @@ frontend/playwright-report/
 frontend/.env*
 !frontend/.env.example
 frontend/.static-test/
+
+.chipnet/

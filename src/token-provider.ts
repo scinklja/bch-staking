@@ -1,11 +1,11 @@
 import { binToHex } from '@bitauth/libauth';
 import { type SpendableUtxo } from 'cashscript';
-import { RegtestProvider } from './provider.js';
-import { rpc, assertRegtest } from './rpc.js';
+import { BchnProvider } from './provider.js';
+import { rpc, assertNetwork } from './rpc.js';
 /** Explicit opt-in token-aware adapter; leaves the original BCH-only adapter unchanged. */
-export class TokenRegtestProvider extends RegtestProvider {
+export class TokenBchnProvider extends BchnProvider {
   override async getUtxosForLockingBytecode(bytecode: string | Uint8Array): Promise<SpendableUtxo[]> {
-    await assertRegtest();
+    await assertNetwork();
     const script = typeof bytecode === 'string' ? bytecode : binToHex(bytecode);
     if (!/^(?:[0-9a-fA-F]{2})+$/.test(script)) throw Error('Invalid locking bytecode');
     const scan = await rpc('scantxoutset', ['start', [`raw(${script})`]]);
@@ -27,3 +27,5 @@ export class TokenRegtestProvider extends RegtestProvider {
     return result;
   }
 }
+
+export class TokenRegtestProvider extends TokenBchnProvider {}

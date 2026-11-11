@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:net';
 import { SignatureTemplate } from 'cashscript';
+import { ElectrumProvider } from '../src/electrum.js';
 import { Indexer } from '../src/indexer.js';
 import { Keeper, type Sponsorship } from '../src/keeper.js';
 import { api } from '../src/api.js';
@@ -19,7 +20,9 @@ await new Promise<void>((resolveLock, reject) => {
   lock.once('error', reject);
   lock.listen('\0staking-arena-' + createHash('sha256').update(resolve(config.checkpoint)).digest('hex'), resolveLock);
 });
-const index = new Indexer(config.vaults, config.checkpoint);
+const useElectrum = process.env.ARENA_PROVIDER === 'electrum';
+if (useElectrum && (config.keeper || process.env.ARENA_SPONSOR_KEY || process.env.ARENA_NETWORK === 'regtest')) throw Error('Electrum service is chipnet and read-only; keeper and sponsorship require BCHN');
+const index = new Indexer(config.vaults, config.checkpoint, useElectrum ? new ElectrumProvider() : undefined);
 await index.load();
 let sponsorship: Sponsorship | undefined;
 if (process.env.ARENA_SPONSOR_KEY) {

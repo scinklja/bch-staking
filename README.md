@@ -86,3 +86,9 @@ This adapter suits a small private chain: scans are not an address index, must n
 ## Independent static website hosting
 
 Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, explicit offline/last-known confirmed snapshot behavior, account configuration and backend-free verification. The production default makes no API requests. Nothing has been published; local development and VM port forwarding remain available.
+
+### Electrum read-only chipnet API
+
+Run `ARENA_PROVIDER=electrum ARENA_NETWORK=chipnet npm run arena -- config/electrum-chipnet.json`
+without BCHN or RPC credentials. The example pins a real chipnet vault; keeper and broadcasts
+are disabled in this mode. See [Electrum configuration, verification and trust limits](docs/electrum.md).

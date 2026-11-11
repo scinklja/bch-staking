@@ -1,21 +1,21 @@
 import { binToHex, cashAddressToLockingBytecode } from '@bitauth/libauth';
 import { Network, type NetworkProvider, type SpendableUtxo } from 'cashscript';
-import { rpc, assertRegtest } from './rpc.js';
+import { rpc, assertNetwork, networkConfig } from './rpc.js';
 /** Small-chain development provider. Scans are serialized by callers; not an address indexer.
  * BCH-only: token outputs fail explicitly rather than risking accidental token burns.
  */
-export class RegtestProvider implements NetworkProvider {
-  network = Network.REGTEST;
-  async getBlockHeight(): Promise<number> { await assertRegtest(); return rpc('getblockcount'); }
-  async getRawTransaction(txid: string): Promise<string> { await assertRegtest(); return rpc('getrawtransaction', [txid]); }
-  async sendRawTransaction(hex: string): Promise<string> { await assertRegtest(); return rpc('sendrawtransaction', [hex]); }
+export class BchnProvider implements NetworkProvider {
+  network = networkConfig().network === 'chipnet' ? Network.CHIPNET : Network.REGTEST;
+  async getBlockHeight(): Promise<number> { await assertNetwork(); return rpc('getblockcount'); }
+  async getRawTransaction(txid: string): Promise<string> { await assertNetwork(); return rpc('getrawtransaction', [txid]); }
+  async sendRawTransaction(hex: string): Promise<string> { await assertNetwork(); return rpc('sendrawtransaction', [hex]); }
   async getUtxos(address: string) {
     const decoded = cashAddressToLockingBytecode(address);
-    if (typeof decoded === 'string' || decoded.prefix !== 'bchreg') throw new Error('Expected bchreg address');
+    if (typeof decoded === 'string' || decoded.prefix !== networkConfig().prefix) throw new Error('Address network mismatch');
     return this.getUtxosForLockingBytecode(decoded.bytecode);
   }
   async getUtxosForLockingBytecode(bytecode: string | Uint8Array): Promise<SpendableUtxo[]> {
-    await assertRegtest();
+    await assertNetwork();
     const script = typeof bytecode === 'string' ? bytecode : binToHex(bytecode);
     if (!/^(?:[0-9a-fA-F]{2})+$/.test(script)) throw new Error('Invalid locking bytecode');
     const scan = await rpc('scantxoutset', ['start', [`raw(${script})`]]);
@@ -35,3 +35,6 @@ export class RegtestProvider implements NetworkProvider {
     return result;
   }
 }
+
+/** Retained name for reference tests. Select ARENA_NETWORK=regtest explicitly. */
+export class RegtestProvider extends BchnProvider {}

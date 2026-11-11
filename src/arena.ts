@@ -1,24 +1,24 @@
 import { readFile } from 'node:fs/promises';
-import { Contract, type SpendableUtxo } from 'cashscript';
+import { Contract, type SpendableUtxo, type NetworkProvider } from 'cashscript';
 import { decodeAuthenticationInstructions } from '@bitauth/libauth';
-import { TokenRegtestProvider } from './token-provider.js';
-import { type GenesisParameters } from './genesis.js';
+import { TokenBchnProvider } from './token-provider.js';
+import { satoshis, type GenesisParameters } from './genesis.js';
 import { LIVE, SNAPSHOT, RECORD_SIZE, STATE_SIZE, allocationTerms, periodBoundary } from './registry.js';
 
 export interface VaultConfig extends GenesisParameters { genesis: string }
-export const provider = new TokenRegtestProvider();
-export async function contract(name: string, args: (bigint | Uint8Array)[]) {
+export const provider = new TokenBchnProvider();
+export async function contract(name: string, args: (bigint | Uint8Array)[], networkProvider: NetworkProvider = provider) {
   return new Contract(JSON.parse(await readFile(new URL(`../artifacts/${name}.json`, import.meta.url), 'utf8')), args,
-    { provider, contractType: 'p2sh32' });
+    { provider: networkProvider, contractType: 'p2sh32' });
 }
-export async function contracts(config: VaultConfig, category: string) {
+export async function contracts(config: VaultConfig, category: string, networkProvider: NetworkProvider = provider) {
   const vault = Buffer.from(category, 'hex').reverse(), asset = Buffer.from(config.stakingCategory, 'hex').reverse();
-  return { registry: await contract('Registry', [vault, asset, BigInt(config.epoch), BigInt(config.periodSeconds), BigInt(config.periods), BigInt(config.cap)]),
-    pool: await contract('StakePool', [Buffer.concat([vault, asset])]) };
+  return { registry: await contract('Registry', [vault, asset, BigInt(config.epoch), BigInt(config.periodSeconds), BigInt(config.periods), BigInt(config.cap)], networkProvider),
+    pool: await contract('StakePool', [Buffer.concat([vault, asset])], networkProvider) };
 }
 export function utxo(tx: any, n: number): SpendableUtxo {
   const o = tx.vout[n];
-  return { txid: tx.txid, vout: n, satoshis: BigInt(Math.round(o.value * 1e8)), lockingBytecode: o.scriptPubKey.hex,
+  return { txid: tx.txid, vout: n, satoshis: satoshis(o), lockingBytecode: o.scriptPubKey.hex,
     ...(o.tokenData ? { token: { category: o.tokenData.category, amount: BigInt(o.tokenData.amount ?? 0), ...(o.tokenData.nft ? { nft: o.tokenData.nft } : {}) } } : {}) };
 }
 export function records(state: Buffer, snapshot = false) {
