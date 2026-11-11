@@ -29,7 +29,9 @@ try{
   const status=await page.getByTestId('settlement-status').innerText();assert.match(status,/All periods processed|Confirmed|Waiting for the next period|Activation required|Settlement required|Blocked/);
   const body=await page.locator('body').innerText();assert.match(body,/competing offers/i);assert.match(body,/Confirmed indexer data/);
   if(vault.period>=vault.config.periods)assert.equal(await page.getByRole('button',{name:'Process Period',exact:true}).isDisabled(),true);
-  const inactive=page.locator('summary').filter({hasText:'Inactive live registrations'});if(await inactive.count()){await inactive.click();for(const offer of vault.offers)await page.getByRole('table',{name:'Inactive registrations'}).getByRole('rowheader',{name:'Offer #'+String(offer.slot).padStart(2,'0')}).waitFor();}
+  const inactive=page.locator('summary').filter({hasText:'Inactive live registrations'});if(await inactive.count()){await inactive.click();for(const offer of vault.offers)await page.getByRole('rowheader',{name:'Offer #'+String(offer.slot).padStart(2,'0'),exact:true}).waitFor();}
+  const ranked=page.getByRole('table',{name:'Competing offers ranked by priority'});
+  if(vault.rankings.length)assert.deepEqual(await ranked.getByRole('rowheader').allTextContents(),vault.rankings.map(o=>'Offer #'+String(o.slot).padStart(2,'0')));else assert.equal(await ranked.count(),0);
   report.vaults.push({category:vault.category,period:vault.period,periods:vault.config.periods,offers:vault.offers.length,rankings:vault.rankings.length,allocations:vault.allocations.length,status,manualDisabled:await page.getByRole('button',{name:'Process Period',exact:true}).isDisabled()});
   await page.goto(target+'#/vault/'+vault.category+'/offer',{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Make an Offer',exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Make an Offer',exact:true}).isDisabled(),true);
  }

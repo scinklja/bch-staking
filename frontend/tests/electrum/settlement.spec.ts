@@ -52,7 +52,7 @@ test('manual processing works with automation disabled and always waits for conf
  let release!:()=>void;holdResponses=new Promise<void>(done=>{release=done;});
  try {
   await page.getByRole('button',{name:'Refresh data',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Refresh data',exact:true})).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Refreshing…',exact:true})).toBeDisabled();
   await expect(page.getByRole('button',{name:'Process Period'})).toBeEnabled();
   await page.getByRole('button',{name:'Process Period'}).click();
  }finally{holdResponses=undefined;release();}
