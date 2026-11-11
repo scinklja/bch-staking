@@ -6,13 +6,14 @@ import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {execFileSync} from 'node:child_process';
 import {once} from 'node:events';
-let chain:SettlementChain,disconnectAfterAccept=false;
+let chain:SettlementChain,disconnectAfterAccept=false,holdResponses:Promise<void>|undefined;
 const cert=mkdtempSync(tmpdir()+'/arena-settlement-wss-');
 execFileSync('openssl',['req','-x509','-newkey','rsa:2048','-nodes','-keyout',cert+'/key','-out',cert+'/cert','-days','1','-subj','/CN=localhost','-addext','subjectAltName=IP:127.0.0.1,DNS:localhost'],{stdio:'ignore'});
 const server=createServer({key:readFileSync(cert+'/key'),cert:readFileSync(cert+'/cert')}),sockets=new WebSocketServer({server});
 test.beforeAll(async()=>{sockets.on('connection',(socket,request)=>socket.on('message',async frame=>{
  const data=JSON.parse(frame.toString());
  try {
+  if(holdResponses)await holdResponses;
   if(chain.disagree&&request.headers.host?.startsWith('localhost')&&data.method==='blockchain.scripthash.get_history'){socket.send(JSON.stringify({id:data.id,result:[]}));return;}
   const result=await chain.request(data.method,...data.params);
   if(disconnectAfterAccept&&data.method==='blockchain.transaction.broadcast'){disconnectAfterAccept=false;socket.close();return;}
@@ -20,7 +21,7 @@ test.beforeAll(async()=>{sockets.on('connection',(socket,request)=>socket.on('me
  }catch(error){socket.send(JSON.stringify({id:data.id,error:{code:-1,message:String(error)}}));}
 }));server.listen(4177,'0.0.0.0');await once(server,'listening');});
 test.afterAll(async()=>{for(const s of sockets.clients)s.terminate();sockets.close();server.close();await once(server,'close');rmSync(cert,{recursive:true,force:true});});
-test.beforeEach(()=>{chain=new SettlementChain();disconnectAfterAccept=false;});
+test.beforeEach(()=>{chain=new SettlementChain();disconnectAfterAccept=false;holdResponses=undefined;});
 const category=()=>chain.transactions.get(settlementConfig.genesis)!.vin[0]!.txid;
 async function open(page:Page){await page.goto(`http://127.0.0.1:4176/settlement/#/vault/${category()}`);await expect(page.getByTestId('settlement-status')).toContainText('Activation required',{timeout:60000});}
 const status=(page:Page)=>page.getByTestId('settlement-status');
@@ -46,7 +47,16 @@ test('two independent browser users race safely; one canonical transaction spend
  }finally{await other.close();}
 });
 test('manual processing works with automation disabled and always waits for confirmation',async({page})=>{
- await open(page);await page.getByRole('button',{name:'Process Period'}).click();await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});
+ await open(page);
+ // Queue a manual request during a background replay; toggling disabled mid-click must not lose it.
+ let release!:()=>void;holdResponses=new Promise<void>(done=>{release=done;});
+ try {
+  await page.getByRole('button',{name:'Refresh data',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Refresh data',exact:true})).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Process Period'})).toBeEnabled();
+  await page.getByRole('button',{name:'Process Period'}).click();
+ }finally{holdResponses=undefined;release();}
+ await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});
  expect(await page.getByRole('checkbox').isChecked()).toBe(false);expect(chain.broadcasts.length).toBe(1);
  chain.mine();await expect(status(page)).toContainText('Confirmed');await expect(status(page)).toContainText('Settlement required');expect(chain.broadcasts.length).toBe(1);
  await page.getByRole('button',{name:'Process Period'}).click();await expect.poll(()=>chain.pending.size).toBe(1);expect(chain.broadcasts.length).toBe(2);
