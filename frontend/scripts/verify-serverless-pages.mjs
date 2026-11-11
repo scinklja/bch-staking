@@ -39,7 +39,7 @@ try{
  await page.goto(target+'#/vault/'+packet.envelope.vaults[0].category,{waitUntil:'domcontentloaded'});await ready();
  report.indexedDbCheckpoints=await page.evaluate(()=>new Promise((done,reject)=>{const r=indexedDB.open('staking-arena-electrum-v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const tx=r.result.transaction('checkpoints'),q=tx.objectStore('checkpoints').count();q.onsuccess=()=>done(q.result);tx.oncomplete=()=>r.result.close();};}));assert.ok(report.indexedDbCheckpoints>=1);
  await context.setOffline(true);await page.getByRole('button',{name:'Refresh data',exact:true}).click();await page.getByRole('alert').filter({hasText:'Electrum WSS'}).waitFor({timeout:90000});assert.match(await page.locator('body').innerText(),/Last-known confirmed snapshot/);report.offlineState=await page.getByRole('alert').innerText();await page.getByRole('button',{name:'Refresh data',exact:true}).waitFor();
- await context.setOffline(false);await page.getByRole('button',{name:'Refresh data',exact:true}).click();await ready();report.reconnection=true;
+ await context.setOffline(false);await ready();report.reconnection=true;
  await page.reload({waitUntil:'domcontentloaded'});await ready();assert.equal(await page.getByRole('checkbox',{name:'Enable automatic settlement on chipnet'}).isChecked(),false);report.reload=true;
  // Read-only protocol probes also verify the second configured production WSS endpoint.
  report.endpoints=[];

@@ -1,0 +1,77 @@
+{
+  "implementationBase": "0762f95",
+  "sourceCommit": "fce13cd287929058f963eb7b89c296f08465a0e7",
+  "rollbackCommit": "eeb7240aff9188a6806a95c54504ce497be248ff",
+  "base": "/staking-arena-site/",
+  "sourceMaps": false,
+  "secretPatternAudit": true,
+  "assets": [
+    {
+      "path": "arena.svg",
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270,
+      "httpStatus": 200
+    },
+    {
+      "path": "index.html",
+      "sha256": "b6826d36348bb518fb27eacc538805b49670f66fa95be5261fff5b17f9ae74bb",
+      "bytes": 1146,
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-BbIxi3CV.js",
+      "sha256": "4fd019a7d15eea745b0c3d6ada53207d46c67ef28990d8d71a6f684128864681",
+      "bytes": 855605,
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/index-CGrS7IrM.js",
+      "sha256": "4684177f8a6f0159cd25668b08049ae7207bdffa57789574e25a1355a4393725",
+      "bytes": 3183,
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/arena.worker-7KNMBKpw.js",
+      "sha256": "1931c48938b560d0ddaa39930cb3cc80fefaf7a102e983a78794bf6818e44c1f",
+      "bytes": 727558,
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee",
+      "bytes": 9836,
+      "httpStatus": 200
+    }
+  ],
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "publicCommit": "4c420d6c7cc555c44c39ef6badc8f4fe73f0a0c3",
+  "rollbackBranch": "rollback/pre-serverless-2026-11-11",
+  "pagesBuild": {
+    "status": "built",
+    "commit": "4c420d6c7cc555c44c39ef6badc8f4fe73f0a0c3",
+    "updated_at": "2026-11-11T21:37:00Z"
+  },
+  "servedAssetsMatch": true,
+  "deployed": true,
+  "pagesSource": {
+    "branch": "main",
+    "path": "/"
+  },
+  "liveVerification": {
+    "path": "github-pages-serverless-live-verification.json",
+    "completed": true,
+    "firstSyncMs": 23131,
+    "noBackendRequests": true,
+    "defaultAutomationDisabled": true,
+    "processingControlsNotClicked": true
+  },
+  "tests": {
+    "frontendUnit": 32,
+    "nativeWss": 11,
+    "frontendBrowser": 5,
+    "keeperVmProtocol": 6,
+    "productionBuild": true,
+    "rootTypecheck": true
+  },
+  "reviewedPublicEnvironmentNames": true
+}

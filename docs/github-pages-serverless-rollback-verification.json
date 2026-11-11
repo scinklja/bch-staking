@@ -1,0 +1,32 @@
+{
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "rollbackCommit": "eeb7240aff9188a6806a95c54504ce497be248ff",
+  "files": [
+    {
+      "path": "arena.svg",
+      "status": 200,
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf"
+    },
+    {
+      "path": "assets/app-entry-BhQ7dFKJ.css",
+      "status": 200,
+      "sha256": "efac0373b5c68d44617d8c1f5723320b8c4c254c253ec2c239f02d7aa307d64e"
+    },
+    {
+      "path": "assets/app-entry-DQbfFCBB.js",
+      "status": 200,
+      "sha256": "e96e61471fc718d3c346fc41dd926dd4da9fbe2b95aa9eeed6d323cd38ed4433"
+    },
+    {
+      "path": "assets/index-5M2xGbh6.js",
+      "status": 200,
+      "sha256": "2d5e7b25d7147c8aa19a3cf8311a268ee78dabd25beccd26c60e80aacd5cc767"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "be818c710ab07d7d0c17be36c4fd6841f26e7da3dd45fcd669a778a335c36c60"
+    }
+  ],
+  "servedPayloadMatchesRollbackCommit": true
+}

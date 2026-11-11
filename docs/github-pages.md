@@ -1,5 +1,7 @@
 # GitHub Pages hosting
 
+The latest serverless chipnet publication is documented in [the release and rollback guide](github-pages-serverless-release.md). The offline publications below are historical. The current site uses browser Electrum with automation initially off.
+
 The public hosting repository is [scinklja/staking-arena-site](https://github.com/scinklja/staking-arena-site). It contains only the compiled website and a `.nojekyll` marker. The source repository `scinklja/bch-staking` remains private, and its `v0.2.0-regtest` milestone is unchanged.
 
 The existing live URL is <https://scinklja.github.io/staking-arena-site/>. GitHub Pages serves the `main` branch root of the public hosting repository. GitHub hosts the static assets independently of the Omarchy VM. No Cloudflare account, API, RPC, keeper, Pages Function or custom DNS record is used.
