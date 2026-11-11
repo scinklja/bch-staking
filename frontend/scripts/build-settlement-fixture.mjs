@@ -1,0 +1,10 @@
+import {readFile} from 'node:fs/promises';
+import {spawn} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import {resolve} from 'node:path';
+const root=fileURLToPath(new URL('..',import.meta.url));
+const live=process.argv.includes('--live');
+const data=JSON.parse(await readFile(new URL(live?'../../.chipnet/browser-settlement-fixture.json':'../../tests/fixtures/settlement-chipnet.json',import.meta.url),'utf8'));
+const configs=live?[data.config]:data.configs;
+const child=spawn(process.execPath,[resolve(root,'node_modules/vite/bin/vite.js'),'build','--outDir',live?'.static-test/settlement-live':'.static-test/settlement'],{cwd:root,stdio:'inherit',env:{...process.env,VITE_INDEXER_MODE:'electrum',VITE_ELECTRUM_ENDPOINTS:live?'wss://chipnet.bch.ninja:50004,wss://chipnet.imaginary.cash:50004':'wss://127.0.0.1:4177,wss://localhost:4177',VITE_ARENA_VAULTS:JSON.stringify(configs),VITE_ELECTRUM_POLL_MS:live?'15000':'1000',VITE_ELECTRUM_TIMEOUT_MS:live?'10000':'2000'}});
+child.once('error',error=>{throw error;});child.once('exit',code=>{process.exitCode=code??1;});

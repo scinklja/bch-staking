@@ -86,9 +86,13 @@ test('v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restart
   // The complete state preimage prevents omitting a higher-ranked offer or changing committed terms.
   for (const offset of [SNAPSHOT + RECORD_SIZE + 47, SNAPSHOT + RECORD_SIZE + 37]) {
     const fake = Buffer.from(index.vaults[0]!.witness, 'hex'); fake[offset] = fake[offset]! ^ 1;
-    const candidate = await sponsored.build({ ...index.vaults[0]!, witness: fake.toString('hex') });
+    await assert.rejects(() => sponsored.build({ ...index.vaults[0]!, witness: fake.toString('hex') }), /source state mismatch|Local covenant validation/);
+    // Retain independent BCHN rejection coverage without adding an unsafe builder bypass.
+    const candidate = await sponsored.build(index.vaults[0]!);
     assert.ok(candidate);
-    const [result] = await rpc('testmempoolaccept', [[candidate.raw]]);
+    const corrupt = candidate.raw.replace(index.vaults[0]!.witness, fake.toString('hex'));
+    assert.notEqual(corrupt, candidate.raw);
+    const [result] = await rpc('testmempoolaccept', [[corrupt]]);
     assert.equal(result.allowed, false); assert.match(result['reject-reason'], /mandatory-script/);
   }
   // Sequential automated catch-up: no test code constructs or selects a settlement.

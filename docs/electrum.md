@@ -21,7 +21,7 @@ Configuration:
 - `ARENA_ELECTRUM_TIMEOUT_MS=10000` bounds each connection and protocol request. Failed connections are closed. The entire snapshot retries on the next endpoint; sessions never switch servers halfway through a snapshot. Polling reconnects after failure. Concurrent API/indexer sessions are serialized.
 - Service JSON retains `vaults`, `checkpoint`, `port`, `pollMs`, and `keeper`. Set `keeper:false`; Electrum mode rejects keeper activation or a sponsor key before starting the service.
 
-All broadcasts are deliberately disabled in this adapter, including chipnet. The `NetworkProvider.sendRawTransaction` method exists for interface compatibility and rejects. Wallet write endpoints return the existing read-only 405 response in Electrum mode. No Chaingraph integration, browser settlement, mainnet, website change, or deployment is included.
+The Node read-only service keeps broadcasting disabled by default. The shared adapter now permits explicitly enabled, identity-pinned chipnet broadcast for the [browser keeper](browser-settlement.md). Wallet write endpoints retain the read-only 405 response in Node Electrum mode. Mainnet transactions, Chaingraph and deployment remain outside this implementation.
 
 ## Existing BCHN dependency audit
 
@@ -35,11 +35,11 @@ All broadcasts are deliberately disabled in this adapter, including chipnet. The
 | Network assertion used by these components | `getblockchaininfo`, `getblockhash` (genesis and chipnet fork), plus readiness `getnetworkinfo` and `getconnectioncount`; Electrum uses protocol negotiation, header pins and tip freshness. |
 | `arena.ts` | Contract construction/record decoding/ranking itself makes no RPC call; provider injection avoids BCHN reads when contracts are used by Electrum. |
 | Existing wallet write routes | Node-backed plans, `gettxout`, `testmempoolaccept`, `sendrawtransaction`, and signing/broadcast readiness; disabled in Electrum mode. No node-backed wallet functionality is added to the read-only commit. |
-| Keeper | Remains on BCHN with its existing transaction construction, policy checks, UTXO checks and broadcasting. Not migrated or changed. |
+| Keeper | Node retains BCHN policy/UTXO checks and broadcasting. Transaction construction and local covenant validation are shared with the chipnet browser keeper. |
 
 ## Architecture and verification
 
-`src/electrum.ts` implements CashScript's `NetworkProvider` interface using libauth's transaction decoder. CashScript 0.14's `ElectrumNetworkProvider` was examined: it provides raw transactions and CashToken UTXOs, but not the histories, proofs, header ranges, or pinned failover snapshots required by this indexer. A bounded persistent JSON-lines socket transport exposes those documented methods without adding a dependency. Contract instances can receive either provider; the existing keeper's provider and implementation remain unchanged.
+`src/electrum.ts` implements CashScript's `NetworkProvider` interface using libauth's transaction decoder. CashScript 0.14's `ElectrumNetworkProvider` was examined: it provides raw transactions and CashToken UTXOs, but not the histories, proofs, header ranges, or pinned failover snapshots required by this indexer. A bounded persistent JSON-lines socket transport exposes those documented methods without adding a dependency. Contract instances can receive either provider; the Node keeper keeps its BCHN provider and uses the shared portable transaction builder.
 
 Exact satoshi integers and CashToken fungible amounts come from transaction bytes. Satoshis are stored as decimal strings in decoded outputs; `satoshis()` and `utxo()` use these exact values. The historical `value` BCH number is retained for response compatibility, but never used for Electrum accounting. Token categories, capabilities, and NFT commitments retain libauth's display byte order. UTXO responses supply outpoints; their amounts are checked against decoded raw outputs and their transactions' proofs. Unsafe JSON integer values are rejected. Token amounts from verbose server JSON are not trusted.
 
@@ -80,7 +80,7 @@ All existing GET vault endpoints and response fields remain available. `/health`
 
 There is no global vault enumeration, server-independent mempool view, guaranteed historical transaction retention, or reliable orphan/dropped classification. Unconfirmed transactions are observational only. An absent or unconfirmed configured genesis withholds the new snapshot; it is never admitted optimistically.
 
-The Node implementation is an HTTP service with TCP/TLS and filesystem persistence. A shared browser implementation is now available as documented above. It needs a running process wherever the frontend obtains its API, but can run on a local computer and does not require Railway, a VPS, or deployment. The browser reader uses WSS and IndexedDB with the same portable protocol/replay/view logic; only the Node TCP transport and process/file persistence remain platform-specific. Browser keeper settlement is outside this phase.
+The Node implementation is an HTTP service with TCP/TLS and filesystem persistence. A shared browser implementation is now available as documented above. It needs a running process wherever the frontend obtains its API, but can run on a local computer and does not require Railway, a VPS, or deployment. The browser reader uses WSS and IndexedDB with the same portable protocol/replay/view logic; only the Node TCP transport and process/file persistence remain platform-specific. Optional browser keeper settlement now needs no application backend while a supported browser is open; see [fees and liveness limits](browser-settlement.md).
 
 ## Verification
 

@@ -1,0 +1,114 @@
+{
+  "startedAt": "2026-11-11T15:56:05.828Z",
+  "network": "chipnet",
+  "config": {
+    "stakingCategory": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+    "epoch": 1794409274,
+    "periodSeconds": 60,
+    "periods": 2,
+    "cap": 2000,
+    "genesis": "0590c06a8c72ac695bf646f551c7f642490da79f5ff6023b87303082d53a6686"
+  },
+  "category": "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4",
+  "initialVaultSatoshis": "60000",
+  "backendPortsListening": {
+    "3100": false,
+    "18443": false,
+    "48332": false
+  },
+  "independentBrowserRace": true,
+  "closedAndResumed": true,
+  "attempts": [
+    {
+      "browser": "A",
+      "txid": "66786908b7479f611dee4215bef7adeb79e5e8f81c6ccfdccc08738554b983aa",
+      "action": 2,
+      "period": 0,
+      "slot": 0,
+      "phaseAtFirstObservation": "prepared",
+      "confirmedInCanonicalLineage": true
+    },
+    {
+      "browser": "resumed A",
+      "txid": "bc30818e04837416a2e8dbdeb4374b3cc7c529179c933f70b35509b0d6b8cad3",
+      "action": 3,
+      "period": 0,
+      "slot": 0,
+      "phaseAtFirstObservation": "prepared",
+      "confirmedInCanonicalLineage": true
+    },
+    {
+      "browser": "resumed A",
+      "txid": "34974f5d227f30ade043e13a41d1aa8e770a6b11539e11c06569a30e6be71fc1",
+      "action": 2,
+      "period": 1,
+      "slot": 0,
+      "phaseAtFirstObservation": "submitted",
+      "confirmedInCanonicalLineage": true
+    },
+    {
+      "browser": "resumed A",
+      "txid": "1a7243f9e078c08696b7217fc68bce30354e7f0ffcc292647f330b1c0b323d51",
+      "action": 3,
+      "period": 1,
+      "slot": 0,
+      "phaseAtFirstObservation": "submitted",
+      "confirmedInCanonicalLineage": true
+    }
+  ],
+  "confirmed": [
+    {
+      "txid": "66786908b7479f611dee4215bef7adeb79e5e8f81c6ccfdccc08738554b983aa",
+      "action": 2,
+      "slot": 0,
+      "period": 0,
+      "height": 331891
+    },
+    {
+      "txid": "bc30818e04837416a2e8dbdeb4374b3cc7c529179c933f70b35509b0d6b8cad3",
+      "action": 3,
+      "slot": 0,
+      "period": 0,
+      "height": 331892
+    },
+    {
+      "txid": "34974f5d227f30ade043e13a41d1aa8e770a6b11539e11c06569a30e6be71fc1",
+      "action": 2,
+      "slot": 0,
+      "period": 1,
+      "height": 331893
+    },
+    {
+      "txid": "1a7243f9e078c08696b7217fc68bce30354e7f0ffcc292647f330b1c0b323d51",
+      "action": 3,
+      "slot": 0,
+      "period": 1,
+      "height": 331895
+    }
+  ],
+  "pageErrors": [],
+  "apiRequests": [],
+  "completed": true,
+  "broadcastAcknowledgementIsConfirmation": false,
+  "lastStatus": "Confirmed \u00b7 Confirmed on the canonical registry lineage",
+  "lastObservedAt": "2026-11-11T16:17:29.028Z",
+  "allocations": [
+    {
+      "id": "bc30818e04837416a2e8dbdeb4374b3cc7c529179c933f70b35509b0d6b8cad3:3",
+      "terms": "03b8862eaed4d4fba715b9b0b8cb0ccefea32841fcbcf847be960e34545de1fd25b4fa9808ff4f83e6ffa599ce5b971f25abbfbe8159dec21edb8ca5bbff5cb6ea0000000000d00700007683f46a31c422577ec8127eba6af5c1414e455a019d52e19940d4c211423bbb635b5048",
+      "amount": "2000"
+    },
+    {
+      "id": "1a7243f9e078c08696b7217fc68bce30354e7f0ffcc292647f330b1c0b323d51:3",
+      "terms": "03b8862eaed4d4fba715b9b0b8cb0ccefea32841fcbcf847be960e34545de1fd25b4fa9808ff4f83e6ffa599ce5b971f25abbfbe8159dec21edb8ca5bbff5cb6ea0001000000d0070000b283f46a31c422577ec8127eba6af5c1414e455a019d52e19940d4c211423bbb635b5048",
+      "amount": "2000"
+    }
+  ],
+  "finalVaultSatoshis": "14000",
+  "canonicalMinerFees": "40000",
+  "rewardSatoshis": "2000",
+  "allocationCarrierSatoshis": "4000",
+  "completedAt": "2026-11-11T16:17:29.036Z",
+  "allocationMaturitiesVerified": true,
+  "notes": "Chipnet BCHN and API were stopped before browser processing. A separate isolated regtest node was started later for the regression suite; the browser made zero API/RPC requests throughout. Race contexts were independent browser storage partitions; closing/relaunching restored a write-ahead intent."
+}

@@ -8,7 +8,7 @@ export const scriptHash = (script: string) => sha256Bytes(Buffer.from(script, 'h
 export const headerHash = (hex: string) => hash256(Buffer.from(hex, 'hex')).reverse().toString('hex');
 export interface Header { height: number; hex: string; hash: string; parent: string; time: number; merkle: string }
 export interface HistoryEntry { tx_hash: string; height: number }
-export interface ElectrumOptions { network?: 'chipnet' | 'mainnet'; endpoints?: string[]; timeoutMs?: number; maxTipAgeSeconds?: number; maxHistoryEntries?: number; maxTransactions?: number; maxRawBytes?: number }
+export interface ElectrumOptions { network?: 'chipnet' | 'mainnet'; endpoints?: string[]; timeoutMs?: number; maxTipAgeSeconds?: number; maxHistoryEntries?: number; maxTransactions?: number; maxRawBytes?: number; allowBroadcast?: boolean }
 export type ElectrumRequest = (method: string, ...params: (string | number | boolean)[]) => Promise<any>;
 const isHash = (s: unknown): s is string => typeof s === 'string' && /^[a-f0-9]{64}$/.test(s);
 export function decodeRawTransaction(raw: string, expected?: string) {
@@ -32,8 +32,11 @@ export class ElectrumCore implements NetworkProvider {
   readonly maxRawBytes: number;
   private rawBytes = 0;
   endpoint = '';
+  private activeChipnetSession=false;
+  readonly allowBroadcast: boolean;
   request: ElectrumRequest = async () => { throw Error('Electrum operation requires a session'); };
   constructor(readonly connectionFactory: ConnectionFactory, options: ElectrumOptions = {}) {
+    this.allowBroadcast=options.allowBroadcast===true;
     if ((options.network ?? 'chipnet') !== 'chipnet') throw Error('Mainnet Electrum is disabled');
     this.endpoints = options.endpoints ?? ['wss://chipnet.bch.ninja:50004', 'wss://chipnet.imaginary.cash:50004'];
     this.timeoutMs = options.timeoutMs ?? 10000;
@@ -46,14 +49,15 @@ export class ElectrumCore implements NetworkProvider {
   }
   private rawCache?: Map<string,string>;
   private queue: Promise<unknown> = Promise.resolve();
-  session<T>(work: () => Promise<T>): Promise<T> {
-    const result = this.queue.then(() => this.runSession(work));
+  session<T>(work: () => Promise<T>, endpoint?: string): Promise<T> {
+    const result = this.queue.then(() => this.runSession(work,endpoint));
     this.queue = result.catch(() => undefined);
     return result;
   }
-  private async runSession<T>(work: () => Promise<T>): Promise<T> {
+  private async runSession<T>(work: () => Promise<T>, pinnedEndpoint?: string): Promise<T> {
     const errors: string[] = [];
-    for (const endpoint of this.endpoints) {
+    if(pinnedEndpoint && !this.endpoints.includes(pinnedEndpoint))throw Error('Unconfigured Electrum endpoint');
+    for (const endpoint of pinnedEndpoint?[pinnedEndpoint]:this.endpoints) {
       const connection = this.connectionFactory(endpoint, this.timeoutMs);
       try {
         this.rawCache = new Map(); this.rawBytes = 0;
@@ -62,9 +66,10 @@ export class ElectrumCore implements NetworkProvider {
         if (!Array.isArray(version) || !/^1\.(?:[5-9]|[1-9][0-9])(?:\.|$)/.test(version[1])) throw Error('Electrum Cash protocol 1.5.0 required: ' + JSON.stringify(version));
         if ((await this.header(0)).hash !== '000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b'
           || (await this.header(121957)).hash !== '0000000056087dee73fb66178ca70da89dfd0be098b1a63cf6fe93934cd04c78') throw Error('Electrum chipnet identity mismatch');
+        this.activeChipnetSession=true;
         return await work();
       } catch (e) { errors.push(`${endpoint}: ${String(e)}`); }
-      finally { connection.close(); this.rawCache = undefined; this.request = async () => { throw Error('Electrum session closed'); }; }
+      finally { this.activeChipnetSession=false; connection.close(); this.rawCache = undefined; this.request = async () => { throw Error('Electrum session closed'); }; }
     }
     throw Error(errors.join('; '));
   }
@@ -171,5 +176,11 @@ export class ElectrumCore implements NetworkProvider {
     }
     return outputs;
   }
-  async sendRawTransaction(_hex: string): Promise<string> { throw Error('Electrum broadcasting disabled in read-only phase'); }
+  async sendRawTransaction(raw: string): Promise<string> {
+    if(!this.allowBroadcast)throw Error('Electrum broadcasting disabled');
+    if(!this.activeChipnetSession || this.network!==Network.CHIPNET)throw Error('Broadcast requires a verified active chipnet session');
+    const tx=decodeRawTransaction(raw),result=await this.request('blockchain.transaction.broadcast',raw);
+    if(result!==tx.txid)throw Error('Electrum broadcast response does not match transaction ID; acceptance is uncertain');
+    return result;
+  }
 }

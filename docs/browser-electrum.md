@@ -1,6 +1,6 @@
-# Browser Electrum indexing (chipnet, read-only)
+# Browser Electrum indexing (chipnet)
 
-The GitHub Pages build can read Staking Arena directly from public chipnet Electrum servers. A Node API, BCHN node, VPS, Railway account, Chaingraph service, spending key, and browser keeper are **not required**. This phase has not deployed anything. The existing Node API and BCHN/regtest paths remain available.
+The GitHub Pages build can read Staking Arena directly from public chipnet Electrum servers. A Node API, BCHN node, VPS, Railway account, Chaingraph service, spending key, and browser keeper are **not required**. Optional permissionless browser activation/settlement is documented in [browser settlement](browser-settlement.md); it needs no wallet signature and defaults off. Nothing has been deployed. The existing Node API and BCHN/regtest paths remain available.
 
 ## Build and run locally
 
@@ -77,7 +77,7 @@ In secure contexts with Web Locks, one worker per configuration owns the indexin
 
 Confirmed and unconfirmed state stay separate. Pending spends are identified by their actual inputs, not applied optimistically to offers or withdrawals. The whole read snapshot stays on one endpoint. Failover discards an incomplete attempt and reconstructs against the next server. Every completed pass rechecks histories and headers and links inactive block gaps to the selected tip; shorter-chain rollback and replacement branches at the same height use the same recovery logic as Node. An orphaned/unconfirmed configured genesis withholds new state until it can be confirmed again.
 
-The UI reports phase, transaction count, indexed height, endpoint, follower status, last successful update, stale cache, provider and storage errors. Browser mode labels wallet actions unavailable; existing creation/offer forms are previews. Wallet connection/write/status integration remains in API mode. No browser settlement, transaction construction, signing or broadcast was added.
+The UI reports phase, transaction count, indexed height, endpoint, follower status, last successful update, stale cache, provider and storage errors. Browser mode labels wallet actions unavailable; existing creation/offer forms are previews. Wallet connection/write/status integration remains in API mode. Owner wallet signing remains separate. Permissionless period activation/settlement now uses the same verified reader in this worker; see [settlement controls, fees and safeguards](browser-settlement.md).
 
 ## Trust and performance limits
 

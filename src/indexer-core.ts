@@ -50,6 +50,7 @@ export interface CheckpointStore { load(): Promise<Checkpoint | undefined>; save
 /** Portable confirmed-state reader. Transport and atomic persistence are injected. */
 export class ElectrumIndexer {
   blocks: Block[] = [];
+  histories = new Map<string, HistoryEntry[]>();
   vaults: VaultState[] = [];
   health = { connected: false, error: '', updatedAt: '', stale: true, syncing: false, provider: 'electrum', endpoint: '', unconfirmed: [] as string[], phase: 'Connecting', transactions: 0 };
   protected busy = false;
@@ -175,7 +176,7 @@ export class ElectrumIndexer {
     else candidate.push({ height: tip.height, hash: tip.hash, parent: tip.parent, mtp, transactions: [] });
     const updatedAt = new Date().toISOString();
     await this.store?.save({ version: 2, network: 'chipnet', configs: this.configs, blocks: candidate, vaults, updatedAt });
-    this.blocks = candidate; this.vaults = vaults;
+    this.blocks = candidate; this.vaults = vaults; this.histories = histories;
     this.health = { ...this.health, connected: true, stale: false, error: '', updatedAt, endpoint: p.endpoint, phase: 'Synchronized', unconfirmed: [...unconfirmed] };
   }
 }

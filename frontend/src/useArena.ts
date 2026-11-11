@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { envelopeSchema, type Envelope } from './model';
+import { envelopeSchema, keeperSchema, type Envelope } from './model';
 import { browserConfig, indexerSource } from './browserConfig';
 import { apiBaseUrl } from './api';
 import { loadSnapshot, saveSnapshot } from './snapshot';
@@ -13,6 +13,10 @@ export function useArena() {
   const [saved] = useState(() => endpoint ? loadSnapshot(endpoint) : undefined);
   const [data,setData] = useState<Envelope | undefined>(saved?.data);
   const [fromSnapshot,setFromSnapshot] = useState(!!saved);
+  const [automatic,setAutomaticState]=useState(()=>{try{return localStorage.getItem('arena-chipnet-automatic-settlement')==='true';}catch{return false;}});
+  const automaticRef=useRef(automatic);automaticRef.current=automatic;
+  const [settlements,setSettlements]=useState<import('zod').z.infer<typeof keeperSchema>['statuses']>({});
+  const controls=useRef<(message:unknown)=>void>(()=>{});
   const [providerStatus,setProviderStatus] = useState('Connecting');
   const [error,setError] = useState<string|null>(null);
   const [pending,setPending] = useState(!!endpoint || config.source === 'electrum');
@@ -28,9 +32,11 @@ export function useArena() {
         worker = new Worker(new URL('./arena.worker.ts',import.meta.url),{type:'module'});
         startup=setTimeout(()=>{setError('Browser indexer worker did not become ready. Reload or use API mode.');setProviderStatus('Worker unavailable');setPending(false);},30000);
         worker.onmessage = event => {
-          if(event.data?.type==='ready') {clearTimeout(startup);worker?.postMessage({type:'start',config:settings});return;}
+          if(event.data?.type==='ready') {clearTimeout(startup);worker?.postMessage({type:'start',config:settings,automatic:automaticRef.current});return;}
           if(event.data?.type==='error') { setError(event.data.error);setPending(false);return; }
           if(event.data?.type!=='snapshot')return;
+          const keeper=keeperSchema.safeParse(event.data.keeper);
+          if(keeper.success) {setSettlements(keeper.data.statuses);setAutomaticState(keeper.data.automatic);}
           const parsed=envelopeSchema.safeParse(event.data.envelope);
           if(!parsed.success || parsed.data.chain!=='chipnet') {setError('Browser indexer returned an incompatible response');setPending(false);return;}
           const h=parsed.data.health;
@@ -42,10 +48,11 @@ export function useArena() {
         };
         worker.onerror=event=>{clearTimeout(startup);setError(`Browser indexer worker failed: ${event.message}`);setPending(false);};
         request.current=()=>worker?.postMessage({type:'refresh'});
+        controls.current=message=>worker?.postMessage(message);
       } catch(error) {setError(String(error));setPending(false);}
       const reconnect=()=>{if(document.visibilityState==='visible')request.current();};
       document.addEventListener('visibilitychange',reconnect);window.addEventListener('online',reconnect);
-      return ()=>{worker?.terminate();clearTimeout(startup);clearInterval(clock);request.current=()=>{};document.removeEventListener('visibilitychange',reconnect);window.removeEventListener('online',reconnect);};
+      return ()=>{worker?.terminate();controls.current=()=>{};clearTimeout(startup);clearInterval(clock);request.current=()=>{};document.removeEventListener('visibilitychange',reconnect);window.removeEventListener('online',reconnect);};
     }
     if (!endpoint) {
       setError(config.error ?? 'No API is configured for this static website.');
@@ -81,5 +88,7 @@ export function useArena() {
     document.addEventListener('visibilitychange',reconnect); window.addEventListener('online',reconnect);
     return () => { stopped = true; clearTimeout(timer); clearInterval(clock); controller?.abort(); document.removeEventListener('visibilitychange',reconnect); window.removeEventListener('online',reconnect); };
   },[endpoint, config.error, config.source]);
-  return { data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };
+  const setAutomatic=useCallback((value:boolean)=>{automaticRef.current=value;setAutomaticState(value);try{localStorage.setItem('arena-chipnet-automatic-settlement',String(value));}catch{}controls.current({type:'keeper-settings',automatic:value});},[]);
+  const processPeriod=useCallback((category:string)=>controls.current({type:'process-period',category}),[]);
+  return { automatic, setAutomatic, settlements, processPeriod, data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };
 }

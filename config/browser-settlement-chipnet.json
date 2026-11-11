@@ -1,0 +1,10 @@
+[
+  {
+    "stakingCategory": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+    "epoch": 1794409274,
+    "periodSeconds": 60,
+    "periods": 2,
+    "cap": 2000,
+    "genesis": "0590c06a8c72ac695bf646f551c7f642490da79f5ff6023b87303082d53a6686"
+  }
+]

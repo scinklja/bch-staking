@@ -63,3 +63,6 @@ export function staleReason(data: Envelope | undefined, now: number, lastError: 
   if (!data.tip || !Number.isFinite(updated) || now - updated > 30000 || updated - now > 30000) return 'Indexer data is stale or its clock is out of sync. Check the indexer before relying on this view.';
   return null;
 }
+
+export const settlementStatusSchema=z.object({phase:z.enum(['waiting','activation-required','settlement-required','broadcasting','pending','confirmed','retrying','blocked','complete']),message:z.string(),updatedAt:z.string(),txid:hex.optional(),period:natural.optional(),action:natural.max(5).optional(),slot:natural.max(15).optional(),nextRetryAt:natural.optional(),fee:units.optional()});
+export const keeperSchema=z.object({automatic:z.boolean(),statuses:z.record(hex,settlementStatusSchema)});
