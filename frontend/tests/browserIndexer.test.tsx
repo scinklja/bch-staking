@@ -32,6 +32,12 @@ it('uses worker envelopes, labels cached state, displays errors, refreshes and t
   act(()=>hook.result.current.refresh());expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'refresh'});
   act(()=>worker!.onmessage?.({data:{type:'error',error:'IndexedDB unavailable'}} as MessageEvent));expect(hook.result.current.error).toContain('IndexedDB unavailable');
   act(()=>hook.result.current.setAutomatic(true));expect(localStorage.getItem('arena-chipnet-automatic-settlement')).toBe('true');expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'keeper-settings',automatic:true});
+  const settlementPacket=(automatic:boolean)=>({data:{type:'snapshot',envelope:data,keeper:{automatic,statuses:{}}}} as MessageEvent);
+  act(()=>worker!.onmessage?.(settlementPacket(false)));expect(hook.result.current.automatic).toBe(true);
+  act(()=>worker!.onmessage?.(settlementPacket(true)));expect(hook.result.current.automatic).toBe(true);
+  act(()=>hook.result.current.setAutomatic(false));
+  act(()=>worker!.onmessage?.(settlementPacket(true)));expect(hook.result.current.automatic).toBe(false);
+  act(()=>worker!.onmessage?.(settlementPacket(false)));expect(hook.result.current.automatic).toBe(false);
   act(()=>hook.result.current.processPeriod('a'.repeat(64)));expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'process-period',category:'a'.repeat(64)});
   hook.unmount();expect(worker!.terminate).toHaveBeenCalledOnce();expect(fetcher).not.toHaveBeenCalled();
 });

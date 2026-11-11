@@ -15,6 +15,7 @@ export function useArena() {
   const [fromSnapshot,setFromSnapshot] = useState(!!saved);
   const [automatic,setAutomaticState]=useState(()=>{try{return localStorage.getItem('arena-chipnet-automatic-settlement')==='true';}catch{return false;}});
   const automaticRef=useRef(automatic);automaticRef.current=automatic;
+  const pendingAutomatic=useRef<boolean|undefined>(undefined);
   const [settlements,setSettlements]=useState<import('zod').z.infer<typeof keeperSchema>['statuses']>({});
   const controls=useRef<(message:unknown)=>void>(()=>{});
   const [providerStatus,setProviderStatus] = useState('Connecting');
@@ -36,7 +37,13 @@ export function useArena() {
           if(event.data?.type==='error') { setError(event.data.error);setPending(false);return; }
           if(event.data?.type!=='snapshot')return;
           const keeper=keeperSchema.safeParse(event.data.keeper);
-          if(keeper.success) {setSettlements(keeper.data.statuses);setAutomaticState(keeper.data.automatic);}
+          if(keeper.success) {
+            setSettlements(keeper.data.statuses);
+            // Messages queued before a control change cannot undo that preference while its acknowledgement is pending.
+            if(pendingAutomatic.current===undefined || keeper.data.automatic===pendingAutomatic.current) {
+              pendingAutomatic.current=undefined;setAutomaticState(keeper.data.automatic);
+            }
+          }
           const parsed=envelopeSchema.safeParse(event.data.envelope);
           if(!parsed.success || parsed.data.chain!=='chipnet') {setError('Browser indexer returned an incompatible response');setPending(false);return;}
           const h=parsed.data.health;
@@ -88,7 +95,7 @@ export function useArena() {
     document.addEventListener('visibilitychange',reconnect); window.addEventListener('online',reconnect);
     return () => { stopped = true; clearTimeout(timer); clearInterval(clock); controller?.abort(); document.removeEventListener('visibilitychange',reconnect); window.removeEventListener('online',reconnect); };
   },[endpoint, config.error, config.source]);
-  const setAutomatic=useCallback((value:boolean)=>{automaticRef.current=value;setAutomaticState(value);try{localStorage.setItem('arena-chipnet-automatic-settlement',String(value));}catch{}controls.current({type:'keeper-settings',automatic:value});},[]);
+  const setAutomatic=useCallback((value:boolean)=>{pendingAutomatic.current=value;automaticRef.current=value;setAutomaticState(value);try{localStorage.setItem('arena-chipnet-automatic-settlement',String(value));}catch{}controls.current({type:'keeper-settings',automatic:value});},[]);
   const processPeriod=useCallback((category:string)=>controls.current({type:'process-period',category}),[]);
   return { automatic, setAutomatic, settlements, processPeriod, data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };
 }
