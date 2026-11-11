@@ -56,7 +56,18 @@ rpcport=18446
     await rpc('setnetworkactive', [true]);
     await rpc('addnode', ['127.0.0.1:18445', 'onetry']);
     const tip = (await rpc('getblockchaininfo')).bestblockhash;
-    await until(async () => (await peer('getblockchaininfo')).bestblockhash === tip, 'initial block sync');
+    // RPC readiness can precede the peer's P2P listener; retry loopback dialing if necessary.
+    let lastDial=Date.now(), observed: any;
+    try {
+      await until(async () => {
+        observed=await peer('getblockchaininfo');
+        if(observed.bestblockhash===tip)return true;
+        if(Date.now()-lastDial>2000 && !(await peer('getpeerinfo')).length) {
+          lastDial=Date.now();await rpc('addnode',['127.0.0.1:18445','onetry']);
+        }
+        return false;
+      }, 'initial block sync', 180000);
+    } catch(error) { throw Error(`${String(error)}; local tip ${tip}; peer ${JSON.stringify(observed)}`); }
     assert.equal((await peer('getnetworkinfo')).connections, 1);
     return { directory, peer, until, close };
   } catch (error) { await close(); throw error; }

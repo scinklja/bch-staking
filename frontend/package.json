@@ -9,13 +9,17 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
-    "test:browser": "playwright test",
-    "screenshots": "node scripts/screenshots.mjs",
-    "test:static": "npm run build && VITE_API_BASE_URL=https://indexer.example.test/read-only vite build --outDir .static-test/api && playwright test --config playwright.static.config.ts",
+    "test:browser": "node scripts/run-browser.mjs",
+    "screenshots": "node scripts/run-browser.mjs --script scripts/screenshots.mjs",
+    "test:static": "VITE_INDEXER_MODE=off npm run build && VITE_API_BASE_URL=https://indexer.example.test/read-only vite build --outDir .static-test/api && node scripts/run-browser.mjs --config playwright.static.config.ts",
     "test:static:dom": "node scripts/verify-static.mjs dist && node scripts/verify-static.mjs .static-test/api configured",
-    "test:static:browser": "node scripts/verify-browser.mjs"
+    "test:static:browser": "node scripts/run-browser.mjs --script scripts/verify-browser.mjs",
+    "test:electrum": "tsc --noEmit && VITE_INDEXER_MODE=electrum VITE_ELECTRUM_ENDPOINTS=wss://127.0.0.1:4177,wss://localhost:4177 VITE_ELECTRUM_TIMEOUT_MS=2000 VITE_ELECTRUM_MAX_HISTORY=100 vite build --outDir .static-test/electrum && node scripts/run-browser.mjs --config playwright.electrum.config.ts",
+    "verify:electrum:live": "npm run build && node scripts/verify-electrum-browser.mjs"
   },
   "dependencies": {
+    "@bitauth/libauth": "3.1.0-next.8",
+    "@wizardconnect/react": "0.2.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "zod": "4.6.7"
@@ -27,10 +31,12 @@
     "@types/node": "26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@types/ws": "8.18.1",
     "@vitejs/plugin-react": "6.3.0",
     "jsdom": "31.0.0",
     "typescript": "7.0.2",
     "vite": "8.3.7",
-    "vitest": "5.1.0"
+    "vitest": "5.1.0",
+    "ws": "8.22.2"
   }
 }

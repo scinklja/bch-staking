@@ -39,16 +39,16 @@ it('calculates the offer preview with exact BCH conversion and never submits a t
  await screen.findByRole('heading',{name:'Make an Offer'});
  for(const [name,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const) fireEvent.change(screen.getByRole('textbox',{name}),{target:{value}});
  expect(screen.getByText('6')).toBeInTheDocument();expect(screen.getByText('9,000 raw token units')).toBeInTheDocument();
- expect(screen.getByRole('button',{name:'Offer submission unavailable'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'Make an Offer'})).toBeDisabled();
  fireEvent.change(screen.getByRole('textbox',{name:/^Reward requested/}),{target:{value:'0'}});
  expect(screen.getByText(/Requested reward must be at least/)).toBeInTheDocument();
- expect(screen.getByText('Form preview')).toBeInTheDocument();
+ expect(screen.getByText('Chipnet test funds only')).toBeInTheDocument();
 });
 it('offers a creation preview even offline and only supports native BCH rewards',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('offline')));window.location.hash='#/create';render(<App/>);
  await screen.findByRole('heading',{name:'Create Vault'});
  expect(screen.getAllByRole('option')).toHaveLength(1);expect(screen.getByRole('combobox')).toBeDisabled();
- expect(screen.getByRole('button',{name:'Vault publication unavailable'})).toBeDisabled();
+ expect(screen.getByRole('button',{name:'Create Vault'})).toBeDisabled();
  fireEvent.change(screen.getByRole('textbox',{name:/^Staking asset category/}),{target:{value:'e'.repeat(64)}});
  fireEvent.change(screen.getByRole('textbox',{name:/^Maximum reward/}),{target:{value:'0.00001000'}});
  fireEvent.change(screen.getByRole('textbox',{name:/^Number of periods/}),{target:{value:'3'}});

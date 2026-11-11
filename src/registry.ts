@@ -1,10 +1,10 @@
-import { createHash } from 'node:crypto';
+import { Buffer, hash256 } from './bytes.js';
 export const RECORD_SIZE = 49;
 export const LIVE = 6;
 export const SNAPSHOT = LIVE + 16 * RECORD_SIZE;
 export const STATE_SIZE = SNAPSHOT + 16 * RECORD_SIZE;
 export function hashState(state: Uint8Array): string {
-  return createHash('sha256').update(createHash('sha256').update(state).digest()).digest('hex');
+  return hash256(state).toString('hex');
 }
 export function uint(value: number, size: number) {
   const b = Buffer.alloc(size); b.writeUIntLE(value, 0, size); return b;

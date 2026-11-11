@@ -1,0 +1,144 @@
+import { binToHex, hexToBin } from '@bitauth/libauth';
+import { transactionApi, wizardWireTransaction, type WalletTransactions } from './walletTransactions';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AlphanumericQRCode, useWizardConnect } from '@wizardconnect/react';
+import type { WalletReadyMessage } from '@wizardconnect/core';
+import { assertChipnetTransactionSession, createStakingTransactionBoundary, NETWORK_NAMES, CHIPNET_NETWORK, WalletNetworkSession, type NetworkRequirement } from './walletNetwork';
+
+function PairingDialog({ uri, qrUri, onClose }: { uri: string; qrUri: string; onClose: () => void }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [copyStatus, setCopyStatus] = useState('');
+  useEffect(() => {
+    const element = dialog.current!;
+    element.showModal();
+    return () => element.close();
+  }, []);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(uri);
+      setCopyStatus('Connection URI copied.');
+    } catch {
+      setCopyStatus('Select and copy the connection URI below.');
+    }
+  }
+
+  return <dialog ref={dialog} className="wallet-dialog" aria-labelledby="wallet-title" aria-describedby="wallet-instructions" onCancel={event => { event.preventDefault(); onClose(); }}>
+    <div className="wallet-dialog-heading"><h2 id="wallet-title">Connect with WizardConnect</h2><button className="refresh" type="button" onClick={onClose} aria-label="Cancel wallet connection">Close</button></div>
+    <p id="wallet-instructions">Scan with a WizardConnect-compatible wallet, or paste the connection URI into your wallet.</p>
+    <div className="wallet-qr"><AlphanumericQRCode value={qrUri} size={240}/></div>
+    <label>Connection URI<input aria-label="Connection URI" value={uri} readOnly onFocus={event => event.target.select()}/></label>
+    <div className="wallet-dialog-actions"><button type="button" className="refresh" onClick={() => { void copy(); }}>Copy connection URI</button><a className="button" href={uri}>Open wallet</a></div>
+    <p role="status">{copyStatus || 'Waiting for wallet approval…'}</p>
+    <small>Connecting shares public wallet information. Use a chipnet development wallet and chipnet test funds only. Mainnet keys are rejected before transaction signing.</small>
+  </dialog>;
+}
+
+const defaultRequirement = () => CHIPNET_NETWORK;
+
+export default function WalletConnect({ getRequiredNetwork = defaultRequirement, targetLabel = 'Application', onTransactions }: { getRequiredNetwork?: () => NetworkRequirement | null; targetLabel?: string; onTransactions?: (client: WalletTransactions | null) => void }) {
+  const control = useRef<HTMLDivElement>(null);
+  const wasActive = useRef(false);
+  const wallet = useWizardConnect({
+    dappName: 'Staking Arena',
+    dappIcon: new URL('./arena.svg', window.location.href).href,
+    sessionKey: 'staking-arena-wizardconnect-v1',
+  });
+  const requirement = useRef(getRequiredNetwork);
+  requirement.current = getRequiredNetwork;
+  const networkSession = useMemo(() => new WalletNetworkSession(() => wallet.manager?.getSessionPaths() ?? []), [wallet.manager]);
+  const transactions = useMemo(() => createStakingTransactionBoundary(networkSession, () => requirement.current()), [networkSession]);
+  const [, refreshNetwork] = useState(0);
+  useEffect(() => {
+    const manager = wallet.manager;
+    if (!manager) return;
+    const ready = (message: WalletReadyMessage) => {
+      const session = message.session.hdwalletv1 as { extensions?: unknown };
+      networkSession.accept(session.extensions);
+      refreshNetwork(version => version + 1);
+    };
+    const invalidate = () => { networkSession.invalidate(); refreshNetwork(version => version + 1); };
+    manager.on('walletready', ready);
+    manager.on('reconnecting', invalidate);
+    manager.on('disconnect', invalidate);
+    // A live handshake may precede this effect; cached paths alone are never trusted.
+    if (manager.protocol === 'hdwalletv1' && manager.isWalletDiscovered()) {
+      networkSession.accept();
+      refreshNetwork(version => version + 1);
+    }
+    return () => {
+      networkSession.invalidate();
+      manager.off('walletready', ready);
+      manager.off('reconnecting', invalidate);
+      manager.off('disconnect', invalidate);
+    };
+  }, [wallet.manager, networkSession]);
+  useEffect(() => {
+    const manager = wallet.manager;
+    if (!manager || !onTransactions) return;
+    function check() {
+      assertChipnetTransactionSession(networkSession, requirement.current());
+    }
+    const publicKey = () => {
+      check();
+      const key = manager!.getPubkey(0,0n);
+      if (!key) throw Error('Wallet receive key is unavailable');
+      return binToHex(key);
+    };
+    onTransactions({ publicKey, async execute(intent) {
+      check();
+      const key = publicKey(), paths = JSON.stringify(manager.getSessionPaths());
+      const prepared = await transactionApi('plan',{...intent,publicKey:key});
+      check();
+      if (prepared.network !== 'chipnet' || prepared.genesis !== CHIPNET_NETWORK.genesisHash || JSON.stringify(manager.getSessionPaths()) !== paths) throw Error('Network or wallet changed during transaction preparation');
+      const plan = JSON.parse(JSON.stringify(prepared.plan),(_k,v) => v && typeof v === 'object' && 'bytes' in v ? hexToBin(v.bytes) : v && typeof v === 'object' && 'bigint' in v ? BigInt(v.bigint) : v && v.type === 'Buffer' ? new Uint8Array(v.data) : v);
+      const result = await manager.signTransaction({transaction:wizardWireTransaction(plan.request),inputPaths:plan.inputPaths});
+      check();
+      if (JSON.stringify(manager.getSessionPaths()) !== paths) throw Error('Wallet changed while signing');
+      if (result.error || !result.signedTransaction) throw Error('Wallet declined transaction signing');
+      return transactionApi('submit',{id:prepared.id,signedTransaction:result.signedTransaction});
+    }});
+    return () => onTransactions(null);
+  }, [wallet.manager, networkSession, onTransactions]);
+  const network = networkSession.read().network;
+  const compatibility = transactions.check();
+  const required = getRequiredNetwork();
+  const [closing, setClosing] = useState(false);
+  const [error, setError] = useState('');
+  const active = wallet.state === 'connected' || wallet.state === 'connecting' || wallet.state === 'reconnecting';
+  useEffect(() => {
+    const manager = wallet.manager;
+    if (!active) manager?.destroy();
+    return () => manager?.destroy();
+  }, [wallet.manager, active]);
+  useEffect(() => {
+    if (wasActive.current && !active) control.current?.querySelector('button')?.focus();
+    wasActive.current = active;
+  }, [active]);
+
+  async function disconnect() {
+    if (closing) return;
+    setClosing(true);
+    setError('');
+    try { await wallet.disconnect(); }
+    catch { setError('Could not disconnect the wallet. Try again.'); }
+    finally { setClosing(false); }
+  }
+
+  return <div ref={control} className="wallet-control">
+    {active ? <>
+      <span className="wallet-status" role="status">{wallet.state === 'connected' ? `Connected to ${wallet.walletName || 'wallet'}` : wallet.state === 'reconnecting' || !wallet.uri ? 'Reconnecting to wallet…' : 'Waiting for wallet…'}</span>
+      <button type="button" className="refresh" disabled={closing} onClick={() => { void disconnect(); }}>{closing ? 'Disconnecting…' : wallet.state === 'connected' ? 'Disconnect' : 'Cancel connection'}</button>
+    </> : <>
+      <button type="button" className="refresh" onClick={() => { setError(''); wallet.connect(); }}>Connect Wallet</button>
+      {wallet.state === 'disconnected' && <small role="status">Wallet disconnected</small>}
+    </>}
+    {active && <section className="wallet-network-note" role="status" aria-label="Wallet network compatibility">
+      <strong>Wallet network: {network.label}</strong>
+      <span>{targetLabel} requires: {required ? NETWORK_NAMES[required.network] : 'Unknown'}</span>
+      <p>{networkSession.read().connected && network.network === 'testnet' && required?.network === 'chipnet' ? 'Testnet key family. Before each signing request, the backend verifies transaction inputs on synchronized chipnet. The wallet protocol does not attest its exact test network.' : compatibility.reason}</p>
+    </section>}
+    {(error || wallet.error) && <small className="wallet-error" role="alert">{error || 'Wallet connection failed. Try again.'}</small>}
+    {wallet.state === 'connecting' && wallet.uri && wallet.qrUri && <PairingDialog uri={wallet.uri} qrUri={wallet.qrUri} onClose={() => { void disconnect(); }}/>}
+  </div>;
+}

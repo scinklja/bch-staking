@@ -1,5 +1,7 @@
 # Electrum indexer and read-only API
 
+The read-only reader also runs in a browser worker over WSS with IndexedDB; see [browser Electrum](browser-electrum.md). Node remains an optional API and regression backend.
+
 Run the existing service on chipnet without a BCHN node, RPC credentials, spending keys, a keeper, or a cloud account:
 
 ```sh
@@ -78,7 +80,7 @@ All existing GET vault endpoints and response fields remain available. `/health`
 
 There is no global vault enumeration, server-independent mempool view, guaranteed historical transaction retention, or reliable orphan/dropped classification. Unconfirmed transactions are observational only. An absent or unconfirmed configured genesis withholds the new snapshot; it is never admitted optimistically.
 
-The current implementation is a Node HTTP service with TCP/TLS and filesystem persistence. It needs a running process wherever the frontend obtains its API, but can run on a local computer and does not require Railway, a VPS, or deployment. A future browser reader could use WSS Electrum endpoints, browser storage, and the same pure transaction/state logic. This transport and process/file persistence are not browser-compatible. Browser keeper settlement is outside this phase.
+The Node implementation is an HTTP service with TCP/TLS and filesystem persistence. A shared browser implementation is now available as documented above. It needs a running process wherever the frontend obtains its API, but can run on a local computer and does not require Railway, a VPS, or deployment. The browser reader uses WSS and IndexedDB with the same portable protocol/replay/view logic; only the Node TCP transport and process/file persistence remain platform-specific. Browser keeper settlement is outside this phase.
 
 ## Verification
 

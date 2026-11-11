@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-11-11T15:09:16.899Z",
+  "network": "chipnet",
+  "endpoint": "ssl://chipnet.bch.ninja:50002",
+  "bchn": {
+    "url": "http://127.0.0.1:1/",
+    "cookie": "/nonexistent-electrum-verification-cookie",
+    "availableToProcess": false
+  },
+  "tip": {
+    "height": 331885,
+    "hash": "00000000000004727981e99944b0cefb99ccbc0191c028005f8f5ccc0df7a12a",
+    "mtp": 1794408809
+  },
+  "restartIdentical": true,
+  "checks": {
+    "/health": 200,
+    "/vaults": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/offers": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/rankings": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/periods": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/allocations": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/withdrawals": 200,
+    "/vaults/a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5/history": 200,
+    "/transactions/128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74": 200,
+    "POST /transactions/plan": 405
+  },
+  "vaults": [
+    {
+      "genesis": "128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74",
+      "category": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "actions": [
+        {
+          "txid": "f7ecc070ed2d6e2692bf4aca310b2cac47b03473d31d49dd33a04955c7792697",
+          "action": 0,
+          "height": 331820
+        },
+        {
+          "txid": "f02d1bb3f72720be50c8f0b0a0852e93e776a33e0623221cb5e2f4fc56087a7e",
+          "action": 2,
+          "height": 331820
+        },
+        {
+          "txid": "3f0e6a98a295252d505a310c47f0e7625561308e135d216c72c6f82d4b9505a2",
+          "action": 3,
+          "height": 331820
+        }
+      ],
+      "allocations": [
+        {
+          "id": "3f0e6a98a295252d505a310c47f0e7625561308e135d216c72c6f82d4b9505a2:3",
+          "withdrawal": "12c8344a17517c2d233bd4b503ee7e375328780925650425ef0fe4441accce32"
+        }
+      ],
+      "bchSatoshis": "151000"
+    }
+  ],
+  "broadcasts": 0,
+  "trustModel": "Server-selected linked headers and Merkle inclusion; server-trusted complete history and unspent status. Not full consensus validation."
+}

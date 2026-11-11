@@ -17,7 +17,7 @@ export const vaultSchema = z.object({
   allocations: z.array(z.object({ id: z.string().regex(/^[a-f0-9]{64}:\d+$/i), terms: z.string().regex(/^[a-f0-9]{220}$/i), owner: z.string(), slot: natural, period: natural, stake: natural, maturity: timestamp, eligible: z.boolean(), requiresOwnerSignature: z.boolean(), withdrawal: hex.optional() })),
   withdrawals: z.object({ commitments: z.array(z.object({ slot: natural, amount: units, eligible: z.boolean(), requiresOwnerSignature: z.boolean() })) }),
 });
-export const envelopeSchema = z.object({ chain: z.literal('regtest'), confirmedOnly: z.literal(true), tip: z.object({ height: natural, hash: hex, mtp: timestamp }).nullable(), health: z.object({ connected: z.boolean(), error: z.string(), updatedAt: z.string() }), vaults: z.array(vaultSchema) });
+export const envelopeSchema = z.object({ chain: z.enum(['chipnet', 'regtest']), confirmedOnly: z.literal(true), tip: z.object({ height: natural, hash: hex, mtp: timestamp }).nullable(), health: z.object({ connected: z.boolean(), error: z.string(), updatedAt: z.string(), stale:z.boolean().optional(), syncing:z.boolean().optional(), endpoint:z.string().optional(), phase:z.string().optional(), transactions:natural.optional(), unconfirmed:z.array(hex).optional(), role:z.enum(['leader','follower','waiting']).optional() }), vaults: z.array(vaultSchema) });
 export type Offer = z.infer<typeof offerSchema>;
 export type Vault = z.infer<typeof vaultSchema>;
 export type Envelope = z.infer<typeof envelopeSchema>;
@@ -58,7 +58,7 @@ export function activationSnapshot(event: ChainEvent): Offer[] {
 export function staleReason(data: Envelope | undefined, now: number, lastError: string | null) {
   if (lastError) return data ? 'Refresh failed. Showing the last successful response; eligibility and rankings may have changed.' : 'Unable to read the indexer. No confirmed vault data has been loaded.';
   if (!data) return null;
-  if (!data.health.connected) return 'Indexer is not synchronized. Values refer to the last successful indexed block.';
+  if (!data.health.connected || data.health.stale) return 'Indexer is not synchronized. Values refer to the last successful indexed block.';
   const updated = Date.parse(data.health.updatedAt);
   if (!data.tip || !Number.isFinite(updated) || now - updated > 30000 || updated - now > 30000) return 'Indexer data is stale or its clock is out of sync. Check the indexer before relying on this view.';
   return null;

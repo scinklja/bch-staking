@@ -1,8 +1,10 @@
-# BCH regtest development environment
+# Staking Arena — BCH chipnet integration
 
-The read-only React frontend is developed on `feature/frontend`. See [local startup, units, API proxy, testing and frontend limitations](docs/frontend.md). Run `mise exec -- npm --prefix frontend ci` followed by `mise exec -- npm run frontend` with BCHN running; open http://127.0.0.1:5173.
+Chipnet is now the primary integration environment. See [chipnet startup, wallet flows, network checks and verification limits](docs/chipnet.md). `npm run dev` now uses `.chipnet/frontend/config.json` and localhost BCHN RPC 48332. Mainnet is prohibited; regtest data and tests remain reference material. The [live chipnet audit](docs/chipnet-e2e-verification.json) records 10 confirmed project transactions through reward payment and independent withdrawal; [local VM tests](docs/chipnet-local-verification.json) are recorded separately. The historical setup sections below describe the retained regtest environment; use `ARENA_NETWORK=regtest` explicitly to run it.
 
-Staking Arena v0.3.0 backend development is on `feature/keeper-indexer`: see [keeper/indexer architecture, operation and limitations](docs/keeper-indexer.md). The read-only API and automated keeper are regtest-only; the v0.2.0 covenants are unchanged. The independent adversarial review remains deferred; the frontend is a separate read-only development branch.
+The read-only React frontend can index chipnet directly in a browser worker over public WSS, without BCHN or an application API. See [browser startup, configuration and trust limits](docs/browser-electrum.md). The optional Node/API development environment still starts with `npm run dev`; open http://127.0.0.1:5173.
+
+Staking Arena v0.3.0 backend development is on `feature/keeper-indexer`: see [keeper/indexer architecture, operation and limitations](docs/keeper-indexer.md). The read-only Node API supports chipnet Electrum, and the BCHN/regtest keeper workflow remains available and unchanged; the v0.2.0 covenants are unchanged. The independent adversarial review remains deferred; the frontend is a separate read-only development branch.
 
 Verified on Omarchy / Arch Linux, x86_64. This project includes the original infrastructure example and a bounded staking architecture experiment. Read [the architecture and limitations](docs/staking-architecture.md) before using the prototype. It is not a production staking platform. The [cancellation deadline investigation](docs/cancellation-deadlines.md) includes a BCHN-mined counterexample to UTC upper-bound cancellation checks and an irrevocable period-state experiment.
 
@@ -10,17 +12,50 @@ The [16-offer authenticated registry](docs/registry.md) adds protocol-assigned s
 
 ## Restart after VM boot
 
+On this VM, `staking-arena-dev.service` is installed as a persistent user service and enabled at boot. User lingering is enabled, so it starts before login and stays running when terminals close. It uses the same saved configuration and launcher described below. No terminal command is needed after reboot.
+
+```bash
+systemctl --user status staking-arena-dev
+systemctl --user restart staking-arena-dev
+journalctl --user -u staking-arena-dev -n 40 --no-pager
+```
+
+To stop it now, use `npm run dev:stop` or `systemctl --user stop staking-arena-dev`. A deliberate stop does not trigger automatic restart; it will start again on the next boot. To disable future boot startup, run `systemctl --user disable --now staking-arena-dev`. To restore it, run `systemctl --user enable --now staking-arena-dev`.
+
+The unit template is [scripts/staking-arena-dev.service](scripts/staking-arena-dev.service), installed at `~/.config/systemd/user/staking-arena-dev.service`; it assumes this checkout is `~/bch-staking` and the project's Node 24 installation is available through mise. To install it again on this layout, copy the template there, run `systemctl --user daemon-reload`, `loginctl enable-linger "$USER"`, then `systemctl --user enable --now staking-arena-dev`.
+
+For manual foreground startup:
+
 ```bash
 cd ~/bch-staking
-mise exec -- npm run node:start
-mise exec -- npm test
+FRONTEND_HOST=0.0.0.0 npm run dev
 ```
 
-Start is idempotent, creates/loads the isolated `dev` wallet and mines up to height 101 on first use. No service is enabled at boot. Stop gracefully before shutting down the VM:
+Use `mise exec --` before npm if your terminal has not activated the project's Node 24 version. `FRONTEND_HOST` defaults to `0.0.0.0`, so plain `npm run dev` also works. In Windows Chrome, use **http://localhost:5173** if your existing QEMU forwarding maps Windows port 5173 to guest port 5173; otherwise use its existing Windows-side port. This command does not modify QEMU forwarding or publish a site. `FRONTEND_HOST=127.0.0.1 npm run dev` restricts the UI to the guest's loopback interface.
+
+The launcher starts BCHN, waits for regtest RPC, loads the existing `dev` wallet if needed, starts the read-only indexer and waits for its health check, then starts Vite and verifies the API proxy. It reads **`.regtest/frontend/config.json`** and its existing checkpoint. Missing configuration, checkpoint, wallet or dependencies produces an error; startup never generates replacements, mines blocks, creates vaults, or resets the chain. Normal indexer synchronization preserves checkpoint history and atomically saves updates. BCHN RPC stays on **127.0.0.1:18443**, the indexer on **127.0.0.1:3100**; only the UI listens on `0.0.0.0:5173`. The browser accesses the read-only API through Vite's `/api` proxy.
+
+Healthy instances from this checkout and configuration are reused. Repeating `npm run dev` while everything is running reports their status and exits without creating duplicates. Concurrent launchers serialize startup; the existing checkpoint writer lock also prevents independent indexers from sharing the checkpoint. Unrelated processes and listeners with incompatible bindings are left untouched and reported as conflicts.
+
+**Ctrl+C** stops only services started by that invocation, in reverse order. Services already running before that command remain running. To stop all services started by any development launcher, including after a launcher crash, use:
 
 ```bash
-mise exec -- npm run node:stop
+npm run dev:stop
 ```
+
+`dev:stop` uses recorded process identities, requests graceful shutdown and never deletes blockchain, wallet or checkpoint data. Repeated stop is safe. Manually started services are left running; use `npm run node:stop` separately to stop a manually started BCHN. If a service started by a foreground launcher exits unexpectedly, it reports the failure and shuts down its other owned services; run `npm run dev` again to recover. The installed user service restarts the launcher after failures, with a limit of five starts per five minutes. A force-killed launcher can leave healthy services behind; a new invocation reuses them and `dev:stop` can still stop them.
+
+Logs are appended to `.regtest/dev/BCHN.log`, `.regtest/dev/indexer.log` and `.regtest/dev/Vite.log`; BCHN's own log remains `.regtest/regtest/debug.log`. Health checks:
+
+```bash
+curl -fsS http://127.0.0.1:3100/health
+curl -fsS http://127.0.0.1:5173/api/health
+ss -lntp '( sport = :18443 or sport = :3100 or sport = :5173 )'
+```
+
+If dependencies are missing, run `mise exec -- npm ci` and `mise exec -- npm --prefix frontend ci`. `npm run frontend` is a compatibility alias for the same launcher and honors `FRONTEND_HOST`.
+
+The opt-in **`npm run test:dev`** checks real startup, simultaneous/repeated startup, Ctrl+C ownership, repeated stop, each service's interruption/recovery and port conflicts. All three service ports must be free before running it. It uses the existing saved chain/configuration, never mines, verifies the complete checkpoint and config remain unchanged, and leaves services stopped. See [verification results](docs/dev-startup-verification.md). The older `npm run node:start` remains available for infrastructure tests; unlike `dev`, it may create the initial wallet and mine maturity blocks on first use. Do not use `npm test` as a startup command: integration tests append blocks.
 
 ## Commands
 
@@ -67,9 +102,9 @@ Sources:
 
 Every CLI invocation explicitly selects this project's data directory and regtest. `connect=0`, `listen=0`, `dnsseed=0`, `discover=0`, UPnP/NAT-PMP disabled prevent automatic peers or inbound P2P connections. RPC binds IPv4 localhost only and uses BCHN's generated cookie; no fixed password is stored. Startup also calls `setnetworkactive false` to disable P2P processing. No public blockchain or preexisting wallet was opened. Keep this configuration private to regtest.
 
-The standard CashScript Electrum provider speaks the Electrum protocol, not BCHN JSON-RPC, and does not supply a default regtest endpoint in 0.14.0. This project implements the SDK interface directly over local RPC, checking the chain is regtest. It uses `scantxoutset` with raw locking scripts, merges matching mempool outputs and filters spent outputs with `gettxout`. `txindex=1` enables raw transaction retrieval after confirmation. There is no Electrum service to start.
+The standard CashScript Electrum provider speaks the Electrum protocol, not BCHN JSON-RPC, and does not supply a default regtest endpoint in 0.14.0. The reference BCHN adapter implements the SDK interface over local RPC, checking the configured chipnet or regtest identity. Public Node/browser Electrum is available separately as documented below. It uses `scantxoutset` with raw locking scripts, merges matching mempool outputs and filters spent outputs with `gettxout`. `txindex=1` enables raw transaction retrieval after confirmation. There is no Electrum service to start.
 
-This adapter suits a small private chain: scans are not an address index, must not overlap, and do not offer Electrum subscriptions. It explicitly rejects CashToken UTXOs; extend token handling and tests before developing token contracts. Scan/mempool queries are not an atomic snapshot. Use a serial development workflow. Coinbase maturity filtering is not provided for arbitrary mining-address queries; contract funding in this example uses mature wallet funds.
+This adapter suits a small private chain: scans are not an address index, must not overlap, and do not offer Electrum subscriptions. The BCH-only adapter explicitly rejects CashToken UTXOs; the separate token-aware adapter supports the existing token contracts and regression tests. Scan/mempool queries are not an atomic snapshot. Use a serial development workflow. Coinbase maturity filtering is not provided for arbitrary mining-address queries; contract funding in this example uses mature wallet funds.
 
 ## Troubleshooting
 
@@ -85,10 +120,18 @@ This adapter suits a small private chain: scans are not an address index, must n
 
 ## Independent static website hosting
 
-Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, explicit offline/last-known confirmed snapshot behavior, account configuration and backend-free verification. The production default makes no API requests. Nothing has been published; local development and VM port forwarding remain available.
+Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, account configuration and historical snapshot behavior. The current default is the [browser Electrum reader](docs/browser-electrum.md); use `VITE_INDEXER_MODE=off` for an explicitly offline preview. The browser guide contains current backend-free verification. The production default makes no API requests. Nothing has been published; local development and VM port forwarding remain available.
 
 ### Electrum read-only chipnet API
 
 Run `ARENA_PROVIDER=electrum ARENA_NETWORK=chipnet npm run arena -- config/electrum-chipnet.json`
 without BCHN or RPC credentials. The example pins a real chipnet vault; keeper and broadcasts
 are disabled in this mode. See [Electrum configuration, verification and trust limits](docs/electrum.md).
+
+### Browser Electrum indexing
+
+A production frontend build now defaults to direct chipnet WSS indexing when no API URL is configured.
+Install root and frontend dependencies, then run `npm --prefix frontend run build` and
+`npm --prefix frontend run preview`. Use `VITE_INDEXER_MODE=electrum` for direct browser reads during Vite development.
+The worker shares validation/replay with Node, uses IndexedDB, and coordinates tabs without a hosted API.
+See [browser configuration, trust assumptions and verification](docs/browser-electrum.md).

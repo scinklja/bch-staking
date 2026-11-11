@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, rename } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:net';
@@ -17,7 +17,9 @@ if (!Array.isArray(config.vaults) || !config.checkpoint || (config.pollMs ?? 200
 // Linux abstract sockets are released by the OS on exit, including SIGKILL: no stale lock deletion race.
 const lock = createServer();
 await new Promise<void>((resolveLock, reject) => {
-  lock.once('error', reject);
+  lock.once('error', error => reject(new Error(
+    `Cannot lock checkpoint ${resolve(config.checkpoint)}: ${error.message}. Another indexer may already own it; use npm run dev to reuse healthy services.`,
+  )));
   lock.listen('\0staking-arena-' + createHash('sha256').update(resolve(config.checkpoint)).digest('hex'), resolveLock);
 });
 const useElectrum = process.env.ARENA_PROVIDER === 'electrum';
@@ -25,6 +27,7 @@ if (useElectrum && (config.keeper || process.env.ARENA_SPONSOR_KEY || process.en
 const index = new Indexer(config.vaults, config.checkpoint, useElectrum ? new ElectrumProvider() : undefined);
 await index.load();
 let sponsorship: Sponsorship | undefined;
+if (process.env.ARENA_HOSTED === '1' && process.env.ARENA_SPONSOR_KEY) throw Error('Hosted service must not hold spending keys');
 if (process.env.ARENA_SPONSOR_KEY) {
   if (!/^[0-9a-f]{64}$/i.test(process.env.ARENA_SPONSOR_KEY)) throw Error('Sponsor key must be 32-byte hex');
   const key = new SignatureTemplate(Buffer.from(process.env.ARENA_SPONSOR_KEY, 'hex'));
@@ -42,8 +45,12 @@ if (process.env.ARENA_SPONSOR_KEY) {
     return undefined;
   };
 }
-const keeper = new Keeper(index, sponsorship), server = api(index);
-server.listen(config.port ?? 3100, '127.0.0.1');
+const keeper = new Keeper(index, sponsorship), server = api(index, async vault => {
+  const updated = { ...config, vaults: [...config.vaults.filter(v => v.genesis !== vault.genesis), vault] };
+  await writeFile(`${file}.tmp`, json(updated), { mode: 0o600 });
+  await rename(`${file}.tmp`, file);
+});
+server.listen(config.port ?? 3100, process.env.ARENA_BIND ?? '127.0.0.1');
 let stopped = false, polling = false, timer: NodeJS.Timeout | undefined;
 function stop() { stopped = true; if (timer) clearTimeout(timer); server.close(); if (!polling) lock.close(); }
 process.once('SIGINT', stop); process.once('SIGTERM', stop);

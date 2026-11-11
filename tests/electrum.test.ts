@@ -7,69 +7,14 @@ import { createServer } from 'node:net';
 import { once } from 'node:events';
 import { encodeTransaction, binToHex } from '@bitauth/libauth';
 import { ElectrumProvider, decodeRawTransaction, headerHash, scriptHash } from '../src/electrum.js';
+import { ElectrumIndexer } from '../src/indexer-core.js';
 import { Indexer } from '../src/indexer.js';
 import { api, vaultView } from '../src/api.js';
 import { json, records } from '../src/arena.js';
 
 process.env.ARENA_NETWORK = 'chipnet';
 process.env.BCH_RPC_COOKIE = '/nonexistent-electrum-test-cookie';
-const fixture = JSON.parse(await readFile(new URL('./fixtures/electrum-chipnet.json', import.meta.url), 'utf8'));
-const key = (method: string, ...params: unknown[]) => JSON.stringify([method,...params]);
-const headers = new Map<number, string>();
-for (const [k,v] of Object.entries(fixture.responses)) {
-  const [method,start] = JSON.parse(k);
-  if (method === 'blockchain.block.header') headers.set(start,v as string);
-  if (method === 'blockchain.block.headers') {
-    const result = v as {hex:string;count:number};
-    for (let i=0;i<result.count;i++) headers.set(start+i,result.hex.slice(i*160,(i+1)*160));
-  }
-}
-const raw = new Map<string, string>();
-const heights = new Map<string, number>();
-for (const [k,v] of Object.entries(fixture.responses)) {
-  const [method,id,height] = JSON.parse(k);
-  if (method === 'blockchain.transaction.get') raw.set(id,v as string);
-  if (method === 'blockchain.transaction.get_merkle') heights.set(id,height);
-}
-class Replay extends ElectrumProvider {
-  height = fixture.expected.tip.height;
-  fail = '';
-  corruptProof = false;
-  corruptHeader = false;
-  reverseHistory = false;
-  pending = false;
-  cutoff?: number;
-  omit?: string;
-  forks = new Map<number,string>();
-  getHeader(height: number) { return this.forks.get(height) ?? headers.get(height); }
-  constructor() { super({maxTipAgeSeconds: Number.MAX_SAFE_INTEGER}); this.endpoint = 'fixture://captured-chipnet'; }
-  override async session<T>(work: () => Promise<T>): Promise<T> { return work(); }
-  override request = async (method: string, ...params: (string|number|boolean)[]): Promise<any> => {
-    if (this.fail) throw Error(this.fail);
-    if (method === 'server.version') return ['Fulcrum fixture','1.5'];
-    if (method === 'blockchain.headers.subscribe') return {height:this.height,hex:this.getHeader(this.height)};
-    if (method === 'blockchain.block.header') return this.getHeader(Number(params[0]));
-    if (method === 'blockchain.block.headers') {
-      const hex = Array.from({length:Number(params[1])},(_,i)=>this.getHeader(Number(params[0])+i)).join('');
-      return {count:params[1],hex:this.corruptHeader ? '00'+hex.slice(2) : hex};
-    }
-    const response = structuredClone(fixture.responses[key(method,...params)]);
-    if (response === undefined && !(method === 'blockchain.scripthash.listunspent' && (this.cutoff ?? this.height) < fixture.expected.tip.height)) throw Error(`Unrecorded fixture request ${key(method,...params)}`);
-    if (method === 'blockchain.scripthash.get_history') {
-      const filtered = response.filter((r:any)=>r.height<=(this.cutoff ?? this.height) && r.tx_hash !== this.omit);
-      if (this.pending) filtered.push({tx_hash:'ab'.repeat(32),height:0});
-      return this.reverseHistory ? filtered.reverse() : filtered;
-    }
-    if (method === 'blockchain.scripthash.listunspent' && (this.cutoff ?? this.height) < fixture.expected.tip.height) {
-      // Derive the UTXO set before the rollback boundary, including outputs later spent.
-      const txs = [...raw].filter(([id])=>(heights.get(id)??Infinity)<=(this.cutoff ?? this.height)).map(([id,hex])=>decodeRawTransaction(hex,id));
-      const spent = new Set(txs.flatMap(tx=>tx.vin.map(i=>`${i.txid}:${i.vout}`)));
-      return txs.flatMap(tx=>tx.vout.filter(o=>scriptHash(o.scriptPubKey.hex)===params[0]&&!spent.has(`${tx.txid}:${o.n}`)).map(o=>({tx_hash:tx.txid,tx_pos:o.n,height:heights.get(tx.txid),value:Number(o.satoshis)})));
-    }
-    if (method === 'blockchain.transaction.get_merkle' && this.corruptProof) response.merkle = ['00'.repeat(32)];
-    return response;
-  };
-}
+import { fixture, Replay, headers, heights } from './fixtures/electrum-replay.js';
 
 test('wire decoding preserves exact CashToken amounts, NFT category/commitment, and satoshis', () => {
   const tx = {version:2,locktime:0,inputs:[{outpointIndex:0,outpointTransactionHash:new Uint8Array(32).fill(3),sequenceNumber:0xffffffff,unlockingBytecode:new Uint8Array()}],outputs:[{lockingBytecode:new Uint8Array([81]),valueSatoshis:2100000000000000n,token:{category:new Uint8Array(32).fill(7),amount:9223372036854775807n,nft:{capability:'mutable' as const,commitment:new Uint8Array([1,2,3])}}}]};
@@ -106,6 +51,10 @@ test('captured real chipnet vault: lineage, immutable snapshot, allocations, wit
       const health = await fetch(base+'/health'); assert.equal(health.status,503); assert.equal((await health.json()).health.stale,true);
     } finally { server.close(); await once(server,'close'); }
     assert.equal(vaultView(index,index.vaults[0]!.category)!.bchSatoshis,'151000');
+    let failPersistence=false;
+    const portable=new ElectrumIndexer(fixture.configs,new Replay(),{load:async()=>undefined,save:async()=>{if(failPersistence)throw Error('Atomic checkpoint failed');}});
+    await portable.sync();const committed=json(portable.vaults);failPersistence=true;
+    await assert.rejects(portable.sync(),/Atomic checkpoint failed/);assert.equal(json(portable.vaults),committed);assert.equal(portable.health.stale,true);
   } finally { await rm(dir,{recursive:true,force:true}); }
 });
 
@@ -144,6 +93,9 @@ test('disconnects, stale tips, invalid proofs and changed ancestry fail closed, 
   await assert.rejects(stale.tip(),/Stale/);
   await assert.rejects(stale.sendRawTransaction('00'),/disabled/);
   assert.throws(()=>new ElectrumProvider({network:'mainnet'}),/disabled/);
+  for(const [options,error] of [[{maxHistoryEntries:1},/history exceeds/],[{maxTransactions:1},/history exceeds/],[{maxRawBytes:10},/byte limit/]] as const) {
+    await assert.rejects(new ElectrumIndexer(fixture.configs,new Replay(options)).sync(),error);
+  }
 });
 
 test('protocol negotiation, chipnet identity, timeout, reconnect and server failover use the real socket transport',async()=>{

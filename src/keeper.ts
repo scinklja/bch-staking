@@ -1,6 +1,7 @@
+import { recordChipnetBroadcast } from './chain-evidence.js';
 import { TransactionBuilder, type SpendableUtxo, type Unlocker } from 'cashscript';
 import { encodeCashAddress, hash160 } from '@bitauth/libauth';
-import { rpc, assertRegtest } from './rpc.js';
+import { rpc, assertNetwork, networkConfig } from './rpc.js';
 import { Indexer, type VaultState } from './indexer.js';
 import { contracts, contract, rankings, termsFor, utxo, provider } from './arena.js';
 import { hashState, nextState, remainingCommitment, periodBoundary } from './registry.js';
@@ -10,7 +11,7 @@ export type Sponsorship = (vault: VaultState, action: number) => Promise<Sponsor
 export class Keeper {
   constructor(readonly index: Indexer, readonly sponsor?: Sponsorship) {}
   async build(vault: VaultState) {
-    await assertRegtest();
+    await assertNetwork();
     const state = Buffer.from(vault.witness, 'hex'), period = state.readUInt32LE(0);
     if (period >= vault.config.periods) return;
     const mtp = (await rpc('getblockchaininfo')).mediantime;
@@ -32,7 +33,7 @@ export class Keeper {
     builder.addOutput({ to: cs.pool.tokenAddress, amount: 1000n, ...(remaining ? { token: { category: vault.config.stakingCategory, amount: remaining } } : {}) });
     if (action === 3) {
       const winner = ranked[0]!;
-      const address = encodeCashAddress({ prefix: 'bchreg', type: 'p2pkh', payload: hash160(Buffer.from(winner.owner, 'hex')) });
+      const address = encodeCashAddress({ prefix: networkConfig().prefix, type: 'p2pkh', payload: hash160(Buffer.from(winner.owner, 'hex')) });
       if (typeof address === 'string') throw Error(address);
       builder.addOutput({ to: address.address, amount: reward });
       const allocation = await contract('StakeAllocation', [termsFor(vault.config, vault.category, state, slot)]);
@@ -53,6 +54,7 @@ export class Keeper {
         const [accept] = await rpc('testmempoolaccept', [[candidate.raw]]);
         if (!accept.allowed) { results.push({ category: v.category, status: 'rejected', error: accept['reject-reason'] }); continue; }
         const txid = await rpc<string>('sendrawtransaction', [candidate.raw]);
+        await recordChipnetBroadcast(`keeper-action-${candidate.action}`,txid);
         results.push({ category: v.category, status: 'broadcast', txid });
       } catch (e) { results.push({ category: v.category, status: 'retry', error: String(e) }); }
     }

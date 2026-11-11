@@ -1,5 +1,7 @@
 // Verify the actual project prefix in a browser, locally or on GitHub Pages.
 import { chromium } from 'playwright-core';
+import { recordEvidence, finishEvidence } from './browser-evidence.mjs';
+import { launchOptions } from './browser-options.mjs';
 import { createServer } from 'node:http';
 import { readFile,mkdir,writeFile } from 'node:fs/promises';
 import { resolve,extname,dirname } from 'node:path';
@@ -7,7 +9,7 @@ import assert from 'node:assert/strict';
 const target=process.argv[2]??'https://scinklja.github.io/staking-arena-site/';
 const base=new URL(target),prefix=base.pathname;
 assert.equal(prefix,'/staking-arena-site/');
-let server,browser;
+let server,browser,page,testFailed=false;
 if(process.argv[3]) {
  const root=resolve(process.argv[3]);
  server=createServer(async(req,res)=>{
@@ -22,26 +24,27 @@ if(process.argv[3]) {
 }
 const errors=[],failed=[],requests=[];
 try {
- browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH,timeout:180000,args:['--no-sandbox','--disable-gpu','--single-process','--no-zygote','--js-flags=--max-old-space-size=64']});
- const page=await browser.newPage({viewport:{width:1280,height:900}});
- page.setDefaultTimeout(120000);page.setDefaultNavigationTimeout(120000);
+ browser=await chromium.launch(launchOptions);
+ page=await browser.newPage({viewport:{width:1280,height:900}});
+ await recordEvidence(page.context());
+ page.setDefaultTimeout(15000);page.setDefaultNavigationTimeout(30000);
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push({url:r.url(),method:r.method()}));page.on('response',r=>{if(r.status()>=400)failed.push({url:r.url(),status:r.status()});});
  const go=hash=>page.goto(target+hash,{waitUntil:'domcontentloaded'});
- const waitHeading=name=>page.getByRole('heading',{name,level:1,exact:true}).waitFor({state:'attached'});
+ const waitHeading=name=>page.getByRole('heading',{name,level:1,exact:true}).waitFor();
  const response=await go('');assert.equal(response.status(),200);
  await waitHeading('Staking Arena');
- await page.getByText('Offline · no API configured',{exact:true}).waitFor({state:'attached'});
+ await page.getByText('Offline · no API configured',{exact:true}).waitFor();
  assert.equal(await page.getByRole('link',{name:'Create Vault',exact:true}).getAttribute('href'),'#/create');
  await page.waitForFunction(()=>getComputedStyle(document.body).margin==='0px');
  assert.match(await page.title(),/Vault marketplace/);
  console.log('PASS: marketplace HTML, JavaScript and CSS load below '+prefix);
  await go('#/create');await waitHeading('Create Vault');
  await page.reload({waitUntil:'domcontentloaded'});await waitHeading('Create Vault');
- assert.equal(await page.getByRole('button',{name:'Vault publication unavailable'}).isDisabled(),true);
+ assert.equal(await page.getByRole('button',{name:'Create Vault'}).isDisabled(),true);
  console.log('PASS: direct creation route and reload retain the GitHub Pages prefix');
  const hash='#/vault/'+'0'.repeat(64);
- await go(hash);await page.getByRole('heading',{name:'Vault data unavailable',exact:true}).waitFor({state:'attached'});
- await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Vault data unavailable',exact:true}).waitFor({state:'attached'});
+ await go(hash);await page.getByRole('heading',{name:'Vault data unavailable',exact:true}).waitFor();
+ await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Vault data unavailable',exact:true}).waitFor();
  assert.equal(new URL(page.url()).hash,hash);
  await page.setViewportSize({width:390,height:844});await go('#/create');await waitHeading('Create Vault');
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
@@ -51,4 +54,4 @@ try {
  const report={url:target,prefix,httpStatus:response.status(),marketplace:true,creationPreview:true,directVaultRoute:true,reload:true,mobile:true,offline:true,noBackendRequests:true,javascriptErrors:errors,failedResponses:failed,requests:requests.length};
  const reportPath=process.env.PAGES_REPORT??'test-results/github-pages-check.json';await mkdir(dirname(reportPath),{recursive:true});await writeFile(reportPath,JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify(report,null,2));
-} finally {if(browser)await browser.close();if(server)await new Promise(done=>server.close(done));}
+} catch(error) {testFailed=true;throw error;} finally {await finishEvidence(page,testFailed);if(browser)await browser.close();if(server)await new Promise(done=>server.close(done));}

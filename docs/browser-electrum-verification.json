@@ -1,0 +1,47 @@
+{
+  "verifiedAt": "2026-11-11T15:06:42.121Z",
+  "sitePrefix": "/staking-arena-site/",
+  "backendPortsListening": {
+    "3100": false,
+    "18443": false,
+    "48332": false
+  },
+  "publicProviderStatus": "Browser Electrum · read-only · Synchronized · indexed height 331884 · 5 transactions checked · chipnet.bch.ninja:50004",
+  "firstSyncMs": 11680,
+  "workerUrls": [
+    "http://127.0.0.1:4180/staking-arena-site/assets/arena.worker-bxhIoF9x.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/arena.worker-bxhIoF9x.js"
+  ],
+  "indexedDbCheckpoints": 1,
+  "reload": true,
+  "confirmedWithdrawal": true,
+  "offlineState": "Historical snapshot · not current\n\nRefresh failed. Showing the last successful response; eligibility and rankings may have changed.\n\nError: wss://chipnet.bch.ninja:50004: Error: Electrum WSS connection failed; wss://chipnet.imaginary.cash:50004: Error: Electrum WSS connection failed",
+  "providerRecovery": true,
+  "multipleTabs": true,
+  "leaderTakeover": true,
+  "apiRequests": 0,
+  "pageErrors": [],
+  "httpRequests": [
+    "http://127.0.0.1:4180/staking-arena-site/",
+    "http://127.0.0.1:4180/staking-arena-site/assets/index-BLNCHSgW.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-CJC3jsjT.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-BMhYeEQ0.css",
+    "http://127.0.0.1:4180/staking-arena-site/arena.svg",
+    "http://127.0.0.1:4180/staking-arena-site/assets/arena.worker-bxhIoF9x.js",
+    "http://127.0.0.1:4180/staking-arena-site/",
+    "http://127.0.0.1:4180/staking-arena-site/assets/index-BLNCHSgW.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-CJC3jsjT.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-BMhYeEQ0.css",
+    "http://127.0.0.1:4180/staking-arena-site/arena.svg",
+    "http://127.0.0.1:4180/staking-arena-site/assets/arena.worker-bxhIoF9x.js",
+    "http://127.0.0.1:4180/staking-arena-site/",
+    "http://127.0.0.1:4180/staking-arena-site/assets/index-BLNCHSgW.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-CJC3jsjT.js",
+    "http://127.0.0.1:4180/staking-arena-site/assets/app-entry-BMhYeEQ0.css",
+    "http://127.0.0.1:4180/staking-arena-site/arena.svg",
+    "http://127.0.0.1:4180/staking-arena-site/assets/arena.worker-bxhIoF9x.js"
+  ],
+  "settlementImplemented": false,
+  "broadcasts": 0,
+  "deployed": false
+}
