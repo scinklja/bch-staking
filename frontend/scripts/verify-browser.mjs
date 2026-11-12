@@ -30,13 +30,13 @@ try {
  await page.getByText('9,000 raw token units',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Make an Offer'}).isEnabled(),false);
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  if(process.env.ARENA_CAPTURE_SCREENSHOTS==='1'&&!process.env.ARENA_SKIP_SCREENSHOTS)await page.screenshot({path:'test-results/marketplace-offer-mobile.png',fullPage:true});
- online=false;await page.reload({waitUntil:'domcontentloaded'});await page.getByText('Last-known confirmed snapshot · not current',{exact:true}).waitFor();
+ online=false;await page.reload({waitUntil:'domcontentloaded'});await page.getByText('Last-known indexed snapshot · not current',{exact:true}).waitFor();
  // Observe an actual scheduled refresh rather than assuming it completed after 11 seconds.
  await page.getByRole('button',{name:'Refresh data',exact:true}).waitFor();
  const failedPoll=page.waitForEvent('requestfailed',r=>r.url()==='https://indexer.example.test/read-only/vaults');
  await page.clock.fastForward(10000);await failedPoll;
  await page.getByRole('button',{name:'Refresh data',exact:true}).waitFor();
- await page.getByText('Last-known confirmed snapshot · not current',{exact:true}).waitFor();
+ await page.getByText('Last-known indexed snapshot · not current',{exact:true}).waitFor();
  await page.clock.resume();
  await go('/configured/#/vault/'+id);await page.getByText('Period at snapshot',{exact:true}).waitFor();
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

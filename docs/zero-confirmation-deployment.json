@@ -1,0 +1,87 @@
+{
+  "verifiedAt": "2026-11-12T18:55:33.149574+00:00",
+  "validationNetwork": "local BCHN regtest and offline/loopback Electrum mocks only",
+  "liveChipnetVerification": false,
+  "liveChipnetQueries": false,
+  "chipnetBroadcasts": false,
+  "mainnetEnabled": false,
+  "covenantsModified": false,
+  "minDisplayConfirmations": 0,
+  "tests": {
+    "regressions": {
+      "distinctCasesPassed": 52,
+      "initialRun": {
+        "passed": 51,
+        "failed": 1,
+        "reason": "allocations precondition required networkactive=false; node initially had true"
+      },
+      "allocationsRerun": {
+        "passed": 1,
+        "setup": "scripts/node.sh start; ARENA_RELAY_CACHE=1 ARENA_NETWORK=regtest"
+      }
+    },
+    "mempoolRegtest": {
+      "passed": 1,
+      "command": "npm run test:mempool",
+      "checks": [
+        "0-conf genesis",
+        "0-conf offers",
+        "unconfirmed CashToken chains",
+        "thresholds 0/1/2",
+        "confirmed-to-pending display separation",
+        "stable identity on confirmation",
+        "reload before/after confirmation",
+        "drops",
+        "conflicts",
+        "replacements",
+        "VM rejection",
+        "provider disagreement",
+        "peer transport failover",
+        "outage removes pending and retains stale confirmed state",
+        "factory is not a vault"
+      ]
+    },
+    "frontend": {
+      "fullSuitePassed": 53,
+      "receiptRecheckPassed": 3,
+      "receiptRecheckIncludesOneAdditionalCase": true,
+      "automaticJournalRecoveryRecheckPassed": 2,
+      "presentationRecheckPassed": 15
+    },
+    "browser": {
+      "distinctCasesPassed": 14,
+      "runResults": [
+        {
+          "passed": 13,
+          "failed": 1,
+          "reason": "IndexedDB test targeted pre-bootstrap worker name; corrected target and retained stale confirmed projection"
+        },
+        {
+          "passed": 1,
+          "selection": "IndexedDB write failure"
+        }
+      ],
+      "scope": "marketplace/indexer/wallet/mandatory settlement; five unchanged v2 native-worker scenarios excluded from this browser run; v2 covered by node/regtest regressions"
+    },
+    "typechecks": [
+      "root TypeScript passed",
+      "frontend TypeScript passed"
+    ]
+  },
+  "deployment": {
+    "status": "pending production build",
+    "repository": "scinklja/staking-arena-site",
+    "branch": "main",
+    "rollbackCommit": "53dc760a6e16bc162ad9a0e76829fe5163ab9e46",
+    "rollbackBranch": "rollback/pre-zero-conf-2026-11-12",
+    "localRollbackBundle": ".pages-release/pre-zero-conf-2026-11-12.bundle"
+  },
+  "limitations": [
+    "Catalog-based discovery rather than global enumeration",
+    "Pending visibility requires agreement from two configured hosts and follows polling",
+    "Invalid, contradictory or oversized pending graphs withhold pending listings for that scan",
+    "Funding, wallet spending and settlement still require confirmed inputs",
+    "Separate v2 recovery UI unchanged",
+    "No live chipnet transaction verification performed"
+  ]
+}

@@ -8,8 +8,8 @@ import { hashState, periodBoundary, STATE_SIZE } from './registry.js';
 export interface GenesisParameters {
   stakingCategory: string; epoch: number; periodSeconds: number; periods: number; cap: number;
 }
-/** Admit only an active-chain, covenant-created instance. Callers must pin the returned genesis outpoints. */
-export async function verifyRegistryGenesis(txid: string, parameters: GenesisParameters, read: (txid: string) => Promise<any>, networkProvider: NetworkProvider) {
+/** Verify a covenant-created instance. Confirmation is required by default; only the display replay opts out after mempool VM validation. */
+export async function verifyRegistryGenesis(txid: string, parameters: GenesisParameters, read: (txid: string) => Promise<any>, networkProvider: NetworkProvider, allowUnconfirmed = false) {
   const transaction = read;
   const { stakingCategory, epoch, periodSeconds, periods, cap } = parameters;
   if (!/^[0-9a-f]{64}$/i.test(txid) || !/^[0-9a-f]{64}$/i.test(stakingCategory)
@@ -17,7 +17,7 @@ export async function verifyRegistryGenesis(txid: string, parameters: GenesisPar
       || !Number.isInteger(cap) || cap < 1000 || cap > 1000000) throw Error('Invalid genesis parameters');
   periodBoundary(parameters, 2 * periods - 1);
   const tx = await transaction(txid);
-  if (!(tx.confirmations > 0) || tx.vin.length !== 1 || tx.vin[0].vout !== 0 || tx.vout.length !== 2) throw Error('Unconfirmed or malformed genesis');
+  if ((!allowUnconfirmed && !(tx.confirmations > 0)) || tx.vin.length !== 1 || tx.vin[0].vout !== 0 || tx.vout.length !== 2) throw Error('Unconfirmed or malformed genesis');
   const category: string = tx.vin[0].txid;
   if (category === stakingCategory) throw Error('State and staking categories must differ');
   const previous = await transaction(category);

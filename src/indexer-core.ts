@@ -1,3 +1,4 @@
+import { mempoolProjection } from './mempool.js';
 import { Buffer } from './bytes.js';
 import type { NetworkProvider } from 'cashscript';
 import { ElectrumCore, type HistoryEntry } from './electrum-core.js';
@@ -8,12 +9,12 @@ export interface Allocation { id: string; terms: string; output: any; withdrawal
 export interface VaultState { config: VaultConfig; category: string; witness: string; transaction: any; history: { txid: string; height: number; action: number; slot: number; period: number; witness: string }[]; allocations: Allocation[] }
 export interface Block { height: number; hash: string; parent?: string; mtp: number; transactions: any[] }
 export interface Checkpoint { network?: string; version: number; configs: VaultConfig[]; blocks: Block[]; vaults?: VaultState[]; updatedAt?: string }
-export async function projectVaults(configs: VaultConfig[], blocks: Block[], read: (id: string) => Promise<any>, provider: NetworkProvider) {
+export async function projectVaults(configs: VaultConfig[], blocks: Block[], read: (id: string) => Promise<any>, provider: NetworkProvider, allowUnconfirmed = false) {
     const vaults: VaultState[] = [];
     const admitted = new Map<string, Awaited<ReturnType<typeof contracts>>>();
     for (const block of blocks) for (const tx of block.transactions) {
       for (const config of configs.filter(c => c.genesis === tx.txid)) {
-        const verified = await verifyRegistryGenesis(config.genesis, config, read, provider);
+        const verified = await verifyRegistryGenesis(config.genesis, config, read, provider, allowUnconfirmed);
         const cs = await contracts(config, verified.category, provider);
         admitted.set(verified.category, cs);
         vaults.push({ config, category: verified.category, witness: Buffer.alloc(STATE_SIZE).toString('hex'), transaction: tx, history: [], allocations: [] });
@@ -52,10 +53,14 @@ export class ElectrumIndexer {
   blocks: Block[] = [];
   histories = new Map<string, HistoryEntry[]>();
   vaults: VaultState[] = [];
+  displayVaults?: VaultState[];
+  displayError = '';
   health = { connected: false, error: '', updatedAt: '', stale: true, syncing: false, provider: 'electrum', endpoint: '', unconfirmed: [] as string[], phase: 'Connecting', transactions: 0 };
   protected busy = false;
   onChange?: () => void;
-  constructor(readonly configs: VaultConfig[], readonly electrum?: ElectrumCore, readonly store?: CheckpointStore) {}
+  constructor(readonly configs: VaultConfig[], readonly electrum?: ElectrumCore, readonly store?: CheckpointStore, readonly minDisplayConfirmations = 1) {
+    if (!Number.isSafeInteger(minDisplayConfirmations) || minDisplayConfirmations < 0) throw Error('Invalid minimum display confirmations');
+  }
   get tip() { return this.blocks.at(-1); }
   async load() {
     const saved = await this.store?.load();
@@ -68,8 +73,41 @@ export class ElectrumIndexer {
     if (this.busy) throw Error('Index sync already running');
     if (!this.electrum) throw Error('Electrum provider required');
     this.busy = true; this.health.syncing = true; this.health.phase = 'Connecting'; this.health.transactions = 0; this.onChange?.();
-    try { await this.electrum.session(() => this.replay()); }
-    catch (error) { this.health = { ...this.health, connected: false, stale: true, phase: 'Disconnected', error: String(error) }; throw error; }
+    try {
+      await this.electrum.session(() => this.replay());
+      // Settlement always reads this.vaults, which remains confirmed-only.
+      try {
+        const scripts = [...this.histories.keys()];
+        const primary = await this.electrum.session(() => mempoolProjection(this.electrum!, this.configs, this.blocks, scripts, this.minDisplayConfirmations));
+        const endpoint = this.electrum.endpoint;
+        const peers = this.electrum.endpoints.filter(e => e !== endpoint && new URL(e).hostname !== new URL(endpoint).hostname);
+        if (primary.pending.length && !peers.length) throw Error('Pending display requires two independent Electrum hosts');
+        let corroborated = primary.pending.length === 0;
+        const unavailable: string[] = [];
+        for (const peer of primary.pending.length ? peers : []) {
+          try { await this.electrum.session(async () => {
+            if ((await this.electrum!.tip()).hash !== primary.tip) throw Error('Electrum providers disagree on tip');
+            for (const [script, entries] of primary.histories) {
+              const normalize = (h: HistoryEntry[]) => json([...h].map(e => ({...e, height: Math.max(0,e.height)})).sort((a,b) => a.tx_hash.localeCompare(b.tx_hash)));
+              if (normalize(await this.electrum!.history(script)) !== normalize(entries)) throw Error('Electrum providers disagree on mempool history');
+            }
+            if ((await this.electrum!.tip()).hash !== primary.tip) throw Error('Peer tip changed during mempool verification');
+          }, peer); corroborated = true; break; }
+          catch (error) {
+            if (/providers disagree|Peer tip changed/.test(String(error))) throw error;
+            unavailable.push(String(error));
+          }
+        }
+        if (!corroborated) throw Error('Pending display could not be reconciled: '+unavailable.join('; '));
+        this.displayVaults = primary.vaults; this.displayError = '';
+      } catch (error) {
+        // Withhold pending entries immediately on disagreement/outage. Confirmed
+        // state remains usable only under its existing verification rules.
+        this.displayVaults = await this.electrum.session(() => projectVaults(this.configs, this.blocks.map(b => ({...b, transactions:b.transactions.filter(tx => this.tip!.height-tx.height+1 >= Math.max(1,this.minDisplayConfirmations))})), id => this.electrum!.transactionStatus(id), this.electrum!));
+        this.displayError = String(error);
+      }
+    }
+    catch (error) { this.displayVaults = this.vaults.filter(v => this.tip!.height-v.transaction.height+1 >= Math.max(1,this.minDisplayConfirmations)); this.displayError = String(error); this.health = { ...this.health, connected: false, stale: true, phase: 'Disconnected', error: String(error) }; throw error; }
     finally { this.busy = false; this.health.syncing = false; this.onChange?.(); }
   }
   async verifyUtxos() { await this.sync(); }
@@ -96,8 +134,16 @@ export class ElectrumIndexer {
     };
     this.health.phase = 'Reading vault history'; this.onChange?.();
     for (const config of this.configs) {
-      const genesis = await p.transactionStatus(config.genesis);
-      if (!genesis.confirmations) throw Error('Configured genesis is unconfirmed');
+      let genesis;
+      try { genesis = await p.transactionStatus(config.genesis); }
+      catch (error) { if (/no such.*transaction|not found|unknown transaction|Transaction status unavailable/i.test(String(error))) continue; throw error; }
+      if (!genesis.confirmations) {
+        const category = genesis.vin[0]?.txid;
+        if (!category) throw Error('Malformed genesis');
+        const cs = await contracts(config, category, p);
+        await readHistory(cs.registry.lockingBytecode); await readHistory(cs.pool.lockingBytecode);
+        continue;
+      }
       transactions.set(genesis.txid, genesis);
       const category = genesis.vin[0]?.txid;
       if (!category) throw Error('Malformed genesis');

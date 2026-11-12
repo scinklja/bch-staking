@@ -10,13 +10,13 @@ export function loadSnapshot(endpoint: string): Snapshot | undefined {
     const saved = JSON.parse(localStorage.getItem(snapshotKey(endpoint)) ?? 'null');
     if (!saved || !Number.isSafeInteger(saved.receivedAt) || saved.receivedAt < 0 || saved.receivedAt > Date.now()) return;
     const data = envelopeSchema.parse(saved.data);
-    if (!data.health.connected || !data.tip || staleReason(data, saved.receivedAt, null)) return;
+    if (!data.confirmedOnly || !data.health.connected || !data.tip || staleReason(data, saved.receivedAt, null)) return;
     return { data, receivedAt: saved.receivedAt };
   } catch { /* Storage can be unavailable, corrupt or from an older schema. */ }
 }
 
 export function saveSnapshot(endpoint: string, data: Envelope, receivedAt: number) {
-  if (staleReason(data, receivedAt, null)) return;
+  if (!data.confirmedOnly || staleReason(data, receivedAt, null)) return;
   try { localStorage.setItem(snapshotKey(endpoint), JSON.stringify({ data, receivedAt })); }
   catch { /* A storage quota or privacy setting must not break the live viewer. */ }
 }

@@ -13,8 +13,9 @@ import {WalletFixture} from './fixtures/wallet-chain.js';
 test('browser wallet: two-step factory creation, exact reserve accounting, restart and canonical local import',async()=>{
  const f=new WalletFixture(),p=f.parameters(),quote=vaultFunding(p);assert.equal(quote.total,82000n);await f.engine.scan(f.keys);
  let op=await f.engine.create(p,f.keys);assert.equal(op.plan!.fee,'2000');assert.equal((op.plan!.request.transaction as Transaction).outputs[0].token,undefined);
- op=await f.engine.submit(op.id,f.sign(op.plan!),f.keys);assert.equal(op.stage,'pending');assert.ok(f.journal.get(op.id)!.raw);assert.equal((await f.engine.get(op.id)).stage,'pending');
- const pendingId=op.txid!;f.chain.mine();f.restart();op=await f.engine.advance(op.id,[]);assert.equal(op.pregenesis,pendingId);assert.equal(op.step,'genesis');assert.equal(op.stage,'pending');
+ op=await f.engine.submit(op.id,f.sign(op.plan!),f.keys);assert.equal(op.stage,'pending');assert.equal(op.observation,'submitted');assert.ok(f.journal.get(op.id)!.raw);assert.equal((await f.engine.get(op.id)).observation,'unconfirmed');
+ f.chain.pending.delete(op.txid!);assert.equal((await f.engine.get(op.id)).observation,'dropped-or-replaced');f.chain.fail=true;assert.equal((await f.engine.get(op.id)).observation,'unavailable');f.chain.fail=false;f.chain.pending.add(op.txid!);assert.equal((await f.engine.get(op.id)).observation,'unconfirmed');
+ const pendingId=op.txid!;f.chain.mine();f.restart();op=await f.engine.advance(op.id,[]);assert.equal(op.pregenesis,pendingId);assert.equal(op.step,'genesis');assert.equal(op.stage,'pending');assert.equal(op.observation,'submitted');
  f.chain.mine();op=await f.engine.get(op.id);assert.equal(op.step,'complete');assert.equal(op.config!.genesis,op.genesis);const tx=f.chain.transactions.get(op.genesis!)!;assert.equal(tx.vout[0].satoshis,quote.reserve.toString());assert.equal(tx.vout[1].satoshis,'1000');assert.equal(tx.vout[0].tokenData!.category,pendingId);
  assert.equal((await f.engine.importVault(op.config!)).category,pendingId);assert.equal(f.chain.broadcasts.length,2);
 });

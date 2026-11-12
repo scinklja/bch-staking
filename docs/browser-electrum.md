@@ -33,7 +33,7 @@ API selection is explicit or inferred from a configured API URL, rather than sil
 ARENA_PROVIDER=electrum ARENA_NETWORK=chipnet npm run arena -- config/electrum-chipnet.json
 ```
 
-No deployment workflow was invoked. The manual-only Pages workflow is prepared with an Electrum/API source choice, defaulting to Electrum without an API prerequisite, and installs root plus frontend dependencies. API mode retains its live API health check. No automatic push deployment was enabled. These local workflow edits are for review; this task does not publish or change the public website.
+The manual-only Pages workflow remains available with an Electrum/API source choice. Current compiled-only releases use `frontend/scripts/build-pages.mjs` and the separate public GitHub Pages artifact repository. API mode in the optional workflow retains its API health check. See the [0-conf release notes](zero-confirmation-visibility.md) for this change’s regtest-only validation and release record.
 
 ## Public configuration
 
@@ -42,6 +42,7 @@ All `VITE_*` values are public and fixed at build time. See `frontend/.env.examp
 | Setting | Default / behavior |
 | --- | --- |
 | `VITE_INDEXER_MODE` | `electrum` in a production build with no API URL; `api` when an API base is configured, including the existing Vite development proxy; `off` explicitly disables network reads for previews. |
+| `VITE_MIN_DISPLAY_CONFIRMATIONS` | `0`: show validated mempool vaults and offers as pending. `1` or higher gates display by confirmation depth. This does not change spending or settlement requirements. |
 | `VITE_ARENA_NETWORK` | `chipnet`. Any other value is rejected in browser mode. |
 | `VITE_ELECTRUM_ENDPOINTS` | `wss://chipnet.bch.ninja:50004,wss://chipnet.imaginary.cash:50004`. One to four credential-free WSS endpoints, with optional path. Plain WS, embedded credentials, query and fragment are rejected. |
 | `VITE_ARENA_VAULTS` | JSON array of genesis IDs and immutable parameters; defaults to the real chipnet vault in `config/electrum-chipnet.json`. `[]` checks connectivity with no admitted vaults. Up to 32 distinct genesis configurations. |
@@ -52,7 +53,7 @@ All `VITE_*` values are public and fixed at build time. See `frontend/.env.examp
 | `VITE_ELECTRUM_MAX_RAW_BYTES` | 16 MiB total raw transaction bytes per session. Configurable up to 64 MiB. |
 | `VITE_API_BASE_URL` | Optional independent API URL or existing `/api` path; irrelevant when Electrum mode is explicitly selected. Never put RPC credentials in this value. |
 
-Configuration is validated before starting a connection. Genesis discovery has the same scope as the Node Electrum implementation: it begins from explicitly configured genesis IDs, verifies their factory parents, then discovers canonical descendants and allocation spends through script history. There is no global vault enumeration or browser admission/write endpoint. Adding a genesis configuration requires rebuilding. The shipped example is an existing completed chipnet vault, not an invented listing.
+Configuration is validated before starting a connection. Genesis discovery has the same scope as the Node Electrum implementation: it begins from explicitly configured genesis IDs, verifies their factory parents, then discovers canonical descendants and allocation spends through script history. There is no global vault enumeration or browser admission/write endpoint. Deployment configurations require rebuilding; created and imported candidates are also retained in the browser-local catalog and verified before display. The shipped example is an existing completed chipnet vault, not an invented listing.
 
 ## One implementation, two environments
 
@@ -75,7 +76,7 @@ On reload, a saved projection can be displayed immediately as **historical and n
 
 In secure contexts with Web Locks, one worker per configuration owns the indexing lock. Other tabs use BroadcastChannel to receive envelopes/status and request refreshes. Closing the owner automatically releases the lock; another tab takes over and revalidates. Closing a tab terminates its worker, timers and sockets. All followers apply normal stale-time rules even if a leader stops making progress. Without Web Locks, tabs use independent readers and session-specific storage keys, with atomic writes; duplicated tabs may share their inherited session key, but every newly displayed current state still requires a fresh replay. Cross-tab sharing requires BroadcastChannel; without it followers wait for ownership and retain explicitly stale cache data.
 
-Confirmed and unconfirmed state stay separate. Pending spends are identified by their actual inputs, not applied optimistically to offers or withdrawals. The whole read snapshot stays on one endpoint. Failover discards an incomplete attempt and reconstructs against the next server. Every completed pass rechecks histories and headers and links inactive block gaps to the selected tip; shorter-chain rollback and replacement branches at the same height use the same recovery logic as Node. An orphaned/unconfirmed configured genesis withholds new state until it can be confirmed again.
+Confirmed spending/settlement state and marketplace display state stay separate. With the default display threshold of zero, raw mempool transactions and dependencies are VM-validated and reconciled across two configured hosts before pending vaults or offers appear. Confirmation requirements for spending are unchanged. Each primary read snapshot stays on one endpoint, and failover reconstructs incomplete attempts. Confirmed Merkle proofs, header linkage and reorganization handling remain in force. Pending entries are rebuilt from current reports after reload, dropped on failed validation, and never persisted as confirmed. See [configurable 0-conf visibility](zero-confirmation-visibility.md) for the local regtest tests and limitations.
 
 The UI reports phase, transaction count, indexed height, endpoint, follower status, last successful update, stale cache, provider and storage errors. Browser mode labels wallet actions unavailable; existing creation/offer forms are previews. Wallet connection/write/status integration remains in API mode. Owner wallet signing remains separate. Permissionless period activation/settlement now uses the same verified reader in this worker; see [settlement controls, fees and safeguards](browser-settlement.md).
 

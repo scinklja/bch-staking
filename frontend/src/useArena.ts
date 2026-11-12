@@ -66,7 +66,6 @@ export function useArena() {
             const parsed=envelopeSchema.safeParse(event.data.envelope);
             if(!parsed.success || parsed.data.chain!=='chipnet') {setError('Browser indexer returned an incompatible response');setPending(false);return;}
             const h=parsed.data.health;
-            if(h.connected&&!h.stale&&!h.syncing&&settings.vaults.some(c=>!parsed.data.vaults.some(v=>v.config.genesis===c.genesis))){setError('Indexer response is incomplete for the updated vault catalog. Refresh to rebuild confirmed vault discovery.');setPending(false);return;}
             setProviderStatus(`${h.phase||'Connecting'}${event.data.role==='follower'?' · following another tab':''}${parsed.data.tip?` · indexed height ${parsed.data.tip.height}`:''}${h.transactions?` · ${h.transactions} transactions checked`:''}${h.endpoint?` · ${new URL(h.endpoint).host}`:''}`);
             if(parsed.data.tip) {setData({...parsed.data,health:{...h,role:event.data.role}});setFromSnapshot(!!event.data.cached);}
             setPending(!!h.syncing || (!parsed.data.tip && !h.error));
@@ -100,7 +99,7 @@ export function useArena() {
         const response = await fetch(url, { cache:'no-store', credentials:'omit', signal:controller.signal });
         if (!response.ok) throw Error(`Indexer returned HTTP ${response.status}.`);
         const parsed = envelopeSchema.safeParse(await response.json());
-        if (!parsed.success) throw Error('The indexer response is incompatible or malformed. Expected the confirmed-only v0.3.0 chipnet/regtest API.');
+        if (!parsed.success) throw Error('The indexer response is incompatible or malformed. Expected a compatible v0.3.0 chipnet/regtest envelope with transaction confirmation metadata.');
         if (!stopped) {
           const received = Date.now();
           setData(parsed.data); setReceivedAt(received); setFromSnapshot(false); setError(null);

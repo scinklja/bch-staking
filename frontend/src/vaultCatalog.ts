@@ -9,7 +9,7 @@ export function saveLocalVault(config:VaultConfig,category?:string) {
  validateVaultParameters(config);if(!category||!/^[a-f0-9]{64}$/.test(category)||!/^[a-f0-9]{64}$/.test(config.genesis))throw Error('Canonical category required for discovery');
  if(localVaultRecords().some(v=>v.category===category&&JSON.stringify(v.config)===JSON.stringify(config)))return;
  const current=localVaultRecords().filter(v=>v.category!==category&&v.config.genesis!==config.genesis);if(current.length>=30)throw Error('Local vault limit reached; export existing links before removing entries');
- try{localStorage.setItem(key,JSON.stringify([...current,{category,config}]));}catch{throw Error('Vault confirmed but local discovery could not be saved. Export the recovery/configuration record and import it later.');}
+ try{localStorage.setItem(key,JSON.stringify([...current,{category,config}]));}catch{throw Error('Vault discovery could not be saved. Export the recovery/configuration record and import it later.');}
  window.dispatchEvent(new Event('arena-vault-catalog'));
 }
 export function sharedVault():VaultConfig|undefined {

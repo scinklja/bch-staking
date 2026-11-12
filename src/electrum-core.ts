@@ -23,7 +23,7 @@ export function decodeRawTransaction(raw: string, expected?: string) {
  * Sessions pin a server; failover retries the whole read snapshot. No automatic broadcasting.
  */
 export class ElectrumCore implements NetworkProvider {
-  network = Network.CHIPNET;
+  network: Network = Network.CHIPNET;
   readonly endpoints: string[];
   readonly timeoutMs: number;
   readonly maxTipAgeSeconds: number;

@@ -41,7 +41,8 @@
     "chipnet:wait": "tsx scripts/chipnet-wait-confirmation.ts",
     "chipnet:verify": "tsx scripts/chipnet-verify-e2e.ts",
     "compile:v2": "node scripts/compile-v2.mjs",
-    "test:v2": "npm run compile:v2 && ARENA_NETWORK=regtest tsx --test --test-concurrency=1 tests/generalized-assets*.test.ts"
+    "test:v2": "npm run compile:v2 && ARENA_NETWORK=regtest tsx --test --test-concurrency=1 tests/generalized-assets*.test.ts",
+    "test:mempool": "ARENA_NETWORK=regtest tsx --test --test-concurrency=1 tests/mempool-regtest.test.ts"
   },
   "keywords": [],
   "author": "",

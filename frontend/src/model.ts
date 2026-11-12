@@ -4,10 +4,10 @@ const natural = z.number().int().nonnegative();
 const units = z.string().regex(/^\d+$/);
 const timestamp = natural.max(2147483647);
 const stateWitness = z.string().regex(/^[a-f0-9]{3148}$/i).refine(value => parseInt(value.slice(8,10),16) <= 1 && parseInt(value.slice(10,12),16) <= 16, 'Invalid state phase or roster count');
-export const offerSchema = z.object({ slot: natural.max(15), owner: z.string().regex(/^[a-f0-9]{66}$/i), stake: natural.positive(), duration: natural.positive(), reward: natural.positive(), maxWins: natural.positive(), wins: natural, cancelled: z.boolean(), refunded: z.boolean() });
+export const offerSchema = z.object({ confirmations:natural.optional(), transactionStatus:z.enum(['unconfirmed','confirmed']).optional(), slot: natural.max(15), owner: z.string().regex(/^[a-f0-9]{66}$/i), stake: natural.positive(), duration: natural.positive(), reward: natural.positive(), maxWins: natural.positive(), wins: natural, cancelled: z.boolean(), refunded: z.boolean() });
 const eventSchema = z.object({ txid: hex, height: natural, action: natural.max(5), slot: natural.max(15), period: natural, witness: stateWitness });
 export const vaultSchema = z.object({
-  category: hex, config: z.object({ genesis: hex, stakingCategory: hex, epoch: timestamp, periodSeconds: natural.positive(), periods: natural.positive().max(16), cap: natural.positive() }),
+  confirmations:natural.optional(), transactionStatus:z.enum(['unconfirmed','confirmed']).optional(), category: hex, config: z.object({ genesis: hex, stakingCategory: hex, epoch: timestamp, periodSeconds: natural.positive(), periods: natural.positive().max(16), cap: natural.positive() }),
   period: natural.max(16), phase: z.enum(['open','activated']), bchSatoshis: units, escrowTokens: units,
   stateOutpoint: z.string(), poolOutpoint: z.string(), witness: stateWitness,
   unsettledPeriods: z.array(natural), readyPeriods: z.array(natural),
@@ -17,7 +17,10 @@ export const vaultSchema = z.object({
   allocations: z.array(z.object({ id: z.string().regex(/^[a-f0-9]{64}:\d+$/i), terms: z.string().regex(/^[a-f0-9]{220}$/i), owner: z.string(), slot: natural, period: natural, stake: natural, maturity: timestamp, eligible: z.boolean(), requiresOwnerSignature: z.boolean(), withdrawal: hex.optional() })),
   withdrawals: z.object({ commitments: z.array(z.object({ slot: natural, amount: units, eligible: z.boolean(), requiresOwnerSignature: z.boolean() })) }),
 });
-export const envelopeSchema = z.object({ chain: z.enum(['chipnet', 'regtest']), confirmedOnly: z.literal(true), tip: z.object({ height: natural, hash: hex, mtp: timestamp }).nullable(), health: z.object({ connected: z.boolean(), error: z.string(), updatedAt: z.string(), stale:z.boolean().optional(), syncing:z.boolean().optional(), endpoint:z.string().optional(), phase:z.string().optional(), transactions:natural.optional(), unconfirmed:z.array(hex).optional(), role:z.enum(['leader','follower','waiting']).optional() }), vaults: z.array(vaultSchema) });
+export const envelopeSchema = z.object({ chain: z.enum(['chipnet', 'regtest']), confirmedOnly: z.boolean(), minDisplayConfirmations:natural.optional(), displayError:z.string().optional(), tip: z.object({ height: natural, hash: hex, mtp: timestamp }).nullable(), health: z.object({ connected: z.boolean(), error: z.string(), updatedAt: z.string(), stale:z.boolean().optional(), syncing:z.boolean().optional(), endpoint:z.string().optional(), phase:z.string().optional(), transactions:natural.optional(), unconfirmed:z.array(hex).optional(), role:z.enum(['leader','follower','waiting']).optional() }), vaults: z.array(vaultSchema) }).refine(data => data.confirmedOnly || (data.minDisplayConfirmations === 0 && data.vaults.every(v => v.confirmations !== undefined && v.transactionStatus !== undefined)), 'Pending display envelopes require explicit confirmation metadata').refine(data => data.vaults.every(v => {
+ const consistent = (item:{confirmations?:number;transactionStatus?:string}) => item.confirmations === undefined ? item.transactionStatus === undefined : item.transactionStatus === (item.confirmations > 0 ? 'confirmed' : 'unconfirmed') && (!data.confirmedOnly || item.confirmations > 0);
+ return consistent(v) && [...v.offers,...v.rankings,...(v.snapshot??[])].every(consistent);
+}), 'Contradictory transaction confirmation metadata');
 export type Offer = z.infer<typeof offerSchema>;
 export type Vault = z.infer<typeof vaultSchema>;
 export type Envelope = z.infer<typeof envelopeSchema>;
@@ -56,7 +59,7 @@ export function activationSnapshot(event: ChainEvent): Offer[] {
   });
 }
 export function staleReason(data: Envelope | undefined, now: number, lastError: string | null) {
-  if (lastError) return data ? 'Refresh failed. Showing the last successful response; eligibility and rankings may have changed.' : 'Unable to read the indexer. No confirmed vault data has been loaded.';
+  if (lastError) return data ? 'Refresh failed. Showing the last successful response; eligibility and rankings may have changed.' : 'Unable to read the indexer. No validated vault data has been loaded.';
   if (!data) return null;
   if (!data.health.connected || data.health.stale) return 'Indexer is not synchronized. Values refer to the last successful indexed block.';
   const updated = Date.parse(data.health.updatedAt);

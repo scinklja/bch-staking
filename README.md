@@ -133,7 +133,7 @@ This adapter suits a small private chain: scans are not an address index, must n
 
 ## Independent static website hosting
 
-Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, account configuration and historical snapshot behavior. The current default is the [browser Electrum reader](docs/browser-electrum.md); use `VITE_INDEXER_MODE=off` for an explicitly offline preview. The browser guide contains current backend-free verification. The production default makes no API requests. Nothing has been published; local development and VM port forwarding remain available.
+Staking Arena can be served from Cloudflare Pages while this VM is shut down. See [Cloudflare setup and deployment steps](docs/cloudflare-pages.md) for GitHub build settings, `VITE_API_BASE_URL`, account configuration and historical snapshot behavior. The current default is the [browser Electrum reader](docs/browser-electrum.md); use `VITE_INDEXER_MODE=off` for an explicitly offline preview. The browser guide contains current backend-free verification. The production default makes no API requests. Compiled releases are published separately to the existing GitHub Pages artifact repository; local development and VM port forwarding remain available.
 
 ### Electrum read-only chipnet API
 
@@ -147,4 +147,5 @@ A production frontend build now defaults to direct chipnet WSS indexing when no 
 Install root and frontend dependencies, then run `npm --prefix frontend run build` and
 `npm --prefix frontend run preview`. Use `VITE_INDEXER_MODE=electrum` for direct browser reads during Vite development.
 The worker shares validation/replay with Node, uses IndexedDB, and coordinates tabs without a hosted API.
+Marketplace display defaults to `VITE_MIN_DISPLAY_CONFIRMATIONS=0`; set it to `1` or higher at build time for confirmation-gated vaults and offers. Spending and settlement still require confirmed inputs. See [0-conf visibility, regtest validation and limits](docs/zero-confirmation-visibility.md).
 See [browser configuration, trust assumptions and verification](docs/browser-electrum.md).

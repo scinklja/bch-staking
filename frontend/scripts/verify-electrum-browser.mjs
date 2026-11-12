@@ -34,7 +34,7 @@ try {
   await context.setOffline(true);await page.getByRole('button',{name:'Refresh data',exact:true}).click();
   await page.getByRole('alert').filter({hasText:'Electrum WSS'}).waitFor({timeout:60000});
   const disconnected=await page.getByRole('alert').innerText();
-  assert.match(await page.locator('body').innerText(),/Last-known confirmed snapshot/);
+  assert.match(await page.locator('body').innerText(),/Last-known indexed snapshot/);
   await context.setOffline(false);await page.getByRole('button',{name:'Refresh data',exact:true}).click();await ready(page);
   await page.reload({waitUntil:'domcontentloaded'});await ready(page);await page.getByRole('button',{name:'Withdrawn'}).waitFor();
   const second=await context.newPage();await second.goto(`http://127.0.0.1:4180${prefix}`);await ready(second);

@@ -21,9 +21,9 @@ test('mobile preview forms are usable without suggesting wallet functionality',a
 });
 test('retains snapshot labels across outage, reload and navigation, then recovers',async({page})=>{
  let offline=false;await page.route('**/api/vaults',route=>offline?route.abort():route.fulfill({json:fixture()}));
- await page.goto('/#/vault/'+id,{waitUntil:'domcontentloaded'});await expect(page.getByText('Confirmed indexer data',{exact:true})).toBeVisible();
+ await page.goto('/#/vault/'+id,{waitUntil:'domcontentloaded'});await expect(page.getByText('Verified indexer data',{exact:true})).toBeVisible();
  offline=true;await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByRole('alert')).toContainText('not current');
- await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByRole('alert')).toContainText('Saved confirmed snapshot');await expect(page.getByText('Period at snapshot',{exact:true})).toBeVisible();
+ await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByRole('alert')).toContainText('Saved indexed snapshot');await expect(page.getByText('Period at snapshot',{exact:true})).toBeVisible();
  await page.getByRole('link',{name:'Make an Offer'}).click();await expect(page.getByRole('alert')).toContainText('not current');
  await expect(page.getByRole('button',{name:'Refresh data',exact:true})).toBeEnabled();
  offline=false;await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByRole('alert')).toHaveCount(0);

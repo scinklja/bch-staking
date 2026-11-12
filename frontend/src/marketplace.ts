@@ -17,10 +17,10 @@ export function vaultSchedule(v:Vault,tip:Envelope['tip'],now=Date.now()) {
  return tip?scheduledPolicy(v.config,v.period,v.phase==='activated',now/1000,tip.mtp):undefined;
 }
 export function vaultStatus(v:Vault,tip:Envelope['tip'],now=Date.now()) {
- return v.period>=v.config.periods?'Completed — all periods processed on-chain':vaultSchedule(v,tip,now)?.status??'Status unavailable';
+ return v.transactionStatus==='unconfirmed'?'Pending / Unconfirmed (0-conf)':v.period>=v.config.periods?'Completed — all periods processed on-chain':vaultSchedule(v,tip,now)?.status??'Status unavailable';
 }
 export function registrationAllowed(v:Vault,tip:Envelope['tip'],stale:boolean,now=Date.now()) {
- return !stale&&v.offers.length<16&&!!vaultSchedule(v,tip,now)?.offersAllowed;
+ return v.transactionStatus!=='unconfirmed'&&!stale&&v.offers.length<16&&!!vaultSchedule(v,tip,now)?.offersAllowed;
 }
 export const competingOffers=(v:Vault)=>ranked(v.phase==='activated'?(v.snapshot??v.rankings):v.offers);
 export function integer(value:string):bigint|null {

@@ -11,7 +11,7 @@ import {scanWallet,chooseBch,chooseTokens,verifyCoinsAcrossPeers,verifyCoins,con
 import {vaultFunding,validateVaultParameters,validateOfferTerms,type OfferTerms} from './wallet-terms.js';
 export interface WalletOperation {
  version:1;network:'chipnet';id:string;kind:'create'|'offer';step:'funding'|'genesis'|'preparation'|'register'|'complete';stage:'review'|'ready'|'pending'|'confirmed'|'conflict'|'error'|'cancelled';
- owner?:WalletKey;change?:WalletKey;parameters:GenesisParameters;config?:VaultConfig;terms?:OfferTerms;coins:WalletCoin[];clock?:KeeperClock;plan?:BrowserPlan;raw?:string;txid?:string;
+ observation?:'submitted'|'unconfirmed'|'confirmed'|'dropped-or-replaced'|'conflicted'|'unavailable'; owner?:WalletKey;change?:WalletKey;parameters:GenesisParameters;config?:VaultConfig;terms?:OfferTerms;coins:WalletCoin[];clock?:KeeperClock;plan?:BrowserPlan;raw?:string;txid?:string;
  pregenesis?:string;preparation?:string;genesis?:string;registration?:string;updatedAt:number;error?:string;
 }
 export interface WalletOperationStore {list():Promise<WalletOperation[]>;save(operation:WalletOperation):Promise<void>}
@@ -100,26 +100,31 @@ export class BrowserWallet {
    if(!op.plan||walletPlanIdentity(canonical)!==walletPlanIdentity(op.plan))throw Error('Stored plan differs from the canonical transaction; rebuild and approve again');
    const result=validateWalletSigned(canonical,raw,clock);op.plan=canonical;
    if(op.step==='funding'&&result.txid===op.parameters.stakingCategory)throw Error('State and staking categories would collide; rebuild before funding');
-   op.raw=raw;op.txid=result.txid;op.stage='ready';op.error=undefined;await this.save(op); // mandatory write ahead of wire
+   op.raw=raw;op.txid=result.txid;op.observation=undefined;op.stage='ready';op.error=undefined;await this.save(op); // mandatory write ahead of wire
    return await this.relay(op,clock);
-  } catch(error) {op.stage=String(error).includes('conflict')||String(error).includes('spent')?'conflict':'error';op.error=String(error);await this.save(op);throw error;}
+  } catch(error) {op.stage=String(error).includes('conflict')||String(error).includes('spent')?'conflict':'error';op.observation=op.stage==='conflict'?'conflicted':'unavailable';op.error=String(error);await this.save(op);throw error;}
  }
  private async relay(op:WalletOperation,clock:KeeperClock) {
   const p=this.provider,decoded=decodeRawTransaction(op.raw!),coins=op.step==='genesis'?[utxo(decodeRawTransaction((await confirmedWalletTransaction(p,op.pregenesis!)).hex),0)]:op.plan!.request.sourceOutputs.map((source,n)=>({txid:decoded.vin[n].txid,vout:decoded.vin[n].vout,satoshis:source.valueSatoshis,lockingBytecode:binToHex(source.lockingBytecode),...(source.token?{token:{category:binToHex(source.token.category),amount:source.token.amount,...(source.token.nft?{nft:{capability:source.token.nft.capability,commitment:binToHex(source.token.nft.commitment)}}:{})}}:{})}));
   if(op.kind==='offer')await this.eligibleVault(op.config!);
   const quorum=await verifyCoinsAcrossPeers(p,coins);
   if(op.kind==='offer')this.offerCutoff(op.config!,quorum);
-  try {await p.session(async()=>{const current=await verifyCoins(p,coins,walletPeers(p)[0]);if(current.hash!==quorum.hash||current.mtp!==quorum.mtp)throw Error('Tip changed after provider agreement; reconcile before retry');if(op.step==='genesis')validateKeeperTransaction(op.raw!,coins.map(sourceOutput),current,10000n);else validateWalletSigned(op.plan!,op.raw!,current);if(op.kind==='offer')this.offerCutoff(op.config!,current);this.onProgress?.('Broadcasting approved chipnet transaction; confirmation is not implied');await p.sendRawTransaction(op.raw!);},walletPeers(p)[0]);op.stage='pending';op.error=undefined;}
-  catch(error){op.stage='error';op.error='Submission rejected or acknowledgement uncertain. Reconcile before retrying. '+String(error);}
+  try {await p.session(async()=>{const current=await verifyCoins(p,coins,walletPeers(p)[0]);if(current.hash!==quorum.hash||current.mtp!==quorum.mtp)throw Error('Tip changed after provider agreement; reconcile before retry');if(op.step==='genesis')validateKeeperTransaction(op.raw!,coins.map(sourceOutput),current,10000n);else validateWalletSigned(op.plan!,op.raw!,current);if(op.kind==='offer')this.offerCutoff(op.config!,current);this.onProgress?.('Broadcasting approved chipnet transaction; confirmation is not implied');await p.sendRawTransaction(op.raw!);},walletPeers(p)[0]);op.stage='pending';op.observation='submitted';op.error=undefined;}
+  catch(error){op.stage='error';op.observation='unavailable';op.error='Submission rejected or acknowledgement uncertain. Reconcile before retrying. '+String(error);}
   return this.save(op);
  }
  async get(id:string) {
   const op=await this.operation(id);if(op.stage==='cancelled'||!op.txid)return op;
-  try {const tx=await confirmedWalletTransaction(this.provider,op.txid);op.stage=tx.confirmations>0?'confirmed':'pending';op.error=undefined;
+  try {const tx=await confirmedWalletTransaction(this.provider,op.txid);op.stage=tx.confirmations>0?'confirmed':'pending';op.observation=tx.confirmations>0?'confirmed':'unconfirmed';op.error=undefined;
    if(tx.confirmations>0&&op.kind==='create'&&['genesis','complete'].includes(op.step)){const config={...op.parameters,genesis:op.genesis??op.txid};await this.importVault(config);op.config=config;op.step='complete';}
    if(tx.confirmations>0&&op.kind==='offer'&&['register','complete'].includes(op.step)){const vault=await this.freshVault(op.config!);if(!vault.history.some(h=>h.txid===op.txid&&h.action===0))throw Error('Confirmed transaction is absent from canonical registration lineage');op.registration=op.txid;op.step='complete';}
   }
-  catch(error){op.stage=op.stage==='conflict'?'conflict':'error';op.error=(missing(error)?'Transaction is not currently proven on both providers. Signed bytes are retained. ':'Provider unavailable or disagrees; no transaction sent. ')+String(error);}
+  catch(error){
+   const previouslyObserved=['unconfirmed','confirmed','dropped-or-replaced'].includes(op.observation??'');
+   const reports=await Promise.allSettled(walletPeers(this.provider).map(peer=>this.provider.session(()=>this.provider.transactionStatus(op.txid!),peer)));
+   const absent=reports.every(r=>r.status==='rejected'&&missing(r.reason));
+   op.observation=op.stage==='conflict'?'conflicted':absent?(previouslyObserved?'dropped-or-replaced':'submitted'):'unavailable';
+   op.stage=op.stage==='conflict'?'conflict':'error';op.error=(missing(error)?'Transaction is not currently proven on both providers. Signed bytes are retained. ':'Provider unavailable or disagrees; no transaction sent. ')+String(error);}
   return this.save(op);
  }
  async advance(id:string,keys:WalletKey[]) {
@@ -140,7 +145,7 @@ export class BrowserWallet {
   }
   if(op.step==='preparation') {
    op.preparation=op.txid;const tx=await confirmedWalletTransaction(this.provider,op.txid!),clock=await verifyCoinsAcrossPeers(this.provider,[utxo(tx,0)]);
-   op.coins=[{...op.owner!,utxo:utxo(tx,0)}];op.step='register';op.raw=undefined;op.txid=undefined;op.plan=undefined;op.clock=clock;
+   op.coins=[{...op.owner!,utxo:utxo(tx,0)}];op.step='register';op.raw=undefined;op.txid=undefined;op.observation=undefined;op.plan=undefined;op.clock=clock;
    try{op.plan=await this.canonicalPlan(op,keys,clock);op.stage='review';op.error=undefined;}catch(error){op.stage='conflict';op.error='Preparation remains wallet-owned and reusable. '+String(error);}
    return this.save(op);
   }
@@ -154,16 +159,23 @@ export class BrowserWallet {
   if(children.length>1)throw Error('Conflicting confirmed factory spends');
   if(children.length){const config={...op.parameters,genesis:children[0]};await this.importVault(config);op.genesis=children[0];op.txid=children[0];op.raw=(await confirmedWalletTransaction(p,children[0])).hex;op.config=config;op.step='complete';op.stage='confirmed';return this.save(op);}
   const clock=await verifyCoinsAcrossPeers(p,[utxo(parent,0)]),raw=await buildGenesis(op.parameters,parent,p,clock);
-  op.step='genesis';op.raw=raw;op.txid=decodeRawTransaction(raw).txid;op.genesis=op.txid;op.clock=clock;op.stage='ready';await this.save(op);return this.relay(op,clock);
+  op.step='genesis';op.observation=undefined;op.raw=raw;op.txid=decodeRawTransaction(raw).txid;op.genesis=op.txid;op.clock=clock;op.stage='ready';await this.save(op);return this.relay(op,clock);
  }
  async recover(parameters:GenesisParameters,pregenesis:string) {
   validateVaultParameters(parameters);const parent=await confirmedWalletTransaction(this.provider,pregenesis),clock=await this.provider.session(async()=>{const tip=await this.provider.tip();return {height:tip.height,mtp:await this.provider.medianTime(tip.height,tip.hash)};},walletPeers(this.provider)[0]);
   await buildGenesis(parameters,parent,this.provider,clock); // prove the exact factory and feasible reserve before saving recovery
   const op:WalletOperation={version:1,network:'chipnet',id:crypto.randomUUID(),kind:'create',step:'funding',stage:parent.confirmations>0?'confirmed':'pending',parameters,pregenesis,txid:pregenesis,coins:[],updatedAt:this.now()};return this.save(op);
  }
- async importVault(config:VaultConfig) {
+ async importVault(config:VaultConfig, allowPending=false) {
   validateVaultParameters(config);if(!/^[a-f0-9]{64}$/.test(config.genesis))throw Error('Invalid genesis transaction ID');
-  const confirmed=await confirmedWalletTransaction(this.provider,config.genesis);if(confirmed.confirmations<=0)throw Error('Genesis must be confirmed');
+  const confirmed=await confirmedWalletTransaction(this.provider,config.genesis);
+  if(confirmed.confirmations<=0){
+   if(!allowPending)throw Error('Genesis must be confirmed for operation completion');
+   const display=new ElectrumIndexer([config],this.provider,undefined,0);await display.sync();
+   const vault=display.displayVaults?.find(v=>v.config.genesis===config.genesis);
+   if(display.displayError||!vault)throw Error(display.displayError||'Unconfirmed genesis could not be validated');
+   return {config,category:vault.category};
+  }
   let category='';for(const peer of walletPeers(this.provider))await this.provider.session(async()=>{const proof=await verifyRegistryGenesis(config.genesis,config,id=>this.provider.transactionStatus(id),this.provider);if(proof.confirmationBlock!==confirmed.blockhash)throw Error('Genesis confirmation disagreement');if(category&&category!==proof.category)throw Error('Genesis provider disagreement');category=proof.category;},peer);
   return {config,category};
  }

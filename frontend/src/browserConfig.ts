@@ -4,7 +4,7 @@ import type { VaultConfig } from '../../src/arena-core';
 export type IndexerSource = 'api' | 'electrum' | 'off';
 export interface BrowserIndexerConfig {
   network: 'chipnet'; vaults: VaultConfig[]; endpoints: string[]; timeoutMs: number; pollMs: number;
-  maxHistoryEntries: number; maxTransactions: number; maxRawBytes: number; tabId: string;
+  minDisplayConfirmations?: number; maxHistoryEntries: number; maxTransactions: number; maxRawBytes: number; tabId: string;
 }
 export function indexerSource(base: string | null, mode = import.meta.env.VITE_INDEXER_MODE): IndexerSource {
   if (mode && !['api','electrum','off'].includes(mode)) throw Error('VITE_INDEXER_MODE must be api, electrum or off');
@@ -32,7 +32,7 @@ export function browserConfig(env: Record<string, string | undefined> = import.m
   let tabId: string;
   try { tabId = sessionStorage.getItem('arena-electrum-tab') ?? crypto.randomUUID(); sessionStorage.setItem('arena-electrum-tab',tabId); }
   catch { tabId=crypto.randomUUID(); }
-  return { network:'chipnet', vaults, endpoints, tabId,
+  return { network:'chipnet', vaults, endpoints, tabId, minDisplayConfirmations:integer('VITE_MIN_DISPLAY_CONFIRMATIONS',0,0,1000000),
     timeoutMs:integer('VITE_ELECTRUM_TIMEOUT_MS',10000,100,60000), pollMs:integer('VITE_ELECTRUM_POLL_MS',15000,1000,60000),
     maxHistoryEntries:integer('VITE_ELECTRUM_MAX_HISTORY',50000,1,100000), maxTransactions:integer('VITE_ELECTRUM_MAX_TRANSACTIONS',20000,1,50000), maxRawBytes:integer('VITE_ELECTRUM_MAX_RAW_BYTES',16777216,1024,67108864) };
 }

@@ -15,7 +15,9 @@ test.beforeAll(async()=>{sockets.on('connection',socket=>socket.on('message',asy
 test.afterAll(async()=>{for(const socket of sockets.clients)socket.terminate();sockets.close();server.close();await once(server,'close');rmSync(dir,{recursive:true,force:true});});
 test.beforeEach(()=>{fixture=new WalletFixture();});
 async function start(page:Page){
- await page.goto('/settlement/');const file=readdirSync('.static-test/settlement/assets').find(f=>f.startsWith('wallet.worker-'))!;expect(file).toBeTruthy();
+ // Isolate native wallet tests from the page's independent automatic keeper.
+ await page.route('**/wallet-worker-test',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><title>Wallet worker test</title>'}));
+ await page.goto('/wallet-worker-test');const file=readdirSync('.static-test/settlement/assets').find(f=>f.startsWith('wallet.worker-'))!;expect(file).toBeTruthy();
  await page.evaluate(async({file,config})=>{const worker=new Worker('/settlement/assets/'+file,{type:'module'}),pending=new Map<number,{resolve:(v:any)=>void;reject:(e:Error)=>void}>();let sequence=0;
   (window as any).walletCall=(method:string,...args:unknown[])=>new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject});worker.postMessage({id,method,args});});
   await new Promise<void>((resolve,reject)=>{worker.onmessage=event=>{if(event.data.type==='ready'){resolve();return;}const task=pending.get(event.data.id);if(!task)return;pending.delete(event.data.id);event.data.error?task.reject(Error(event.data.error)):task.resolve(event.data.result);};worker.onerror=e=>reject(Error(e.message));});
@@ -48,4 +50,30 @@ for(const pair of ['token-bch','bch-token','token-token','bch-bch','same-categor
  await finish(await v2({operation:'keeper',config}));const activated=await v2({operation:'sync',config});expect(activated.instance.state[4]).toBe(1);
  await finish(await v2({operation:'withdraw',config,allocation:snapshot.allocations[0].id}));const withdrawn=await v2({operation:'sync',config});expect(withdrawn.allocations[0].withdrawal).toBeTruthy();expect(withdrawn.instance.inputs[0].txid).toBe(activated.instance.inputs[0].txid);
  expect((await v2({operation:'list'})).filter((o:any)=>o.step==='complete')).toHaveLength(6);
+});
+
+for(const minimum of [0,1])test(`mock Electrum browser: pending genesis visibility at threshold ${minimum}, reload and confirmation keep one listing`,async({page})=>{
+ // Construct locally signed transactions against the offline protocol fixture.
+ // Every Electrum request is served by the loopback WSS server above.
+ await fixture.engine.scan(fixture.keys);
+ let op=await fixture.engine.create(fixture.parameters(),fixture.keys);
+ op=await fixture.engine.submit(op.id,fixture.sign(op.plan!),fixture.keys);
+ fixture.chain.mine();op=await fixture.engine.advance(op.id,fixture.keys);
+ const config={...op.parameters,genesis:op.genesis!},category=op.pregenesis!;
+ await page.addInitScript(({config,category,minimum})=>{
+  localStorage.setItem('arena-chipnet-local-vaults-v1',JSON.stringify([{config,category}]));
+  const original=Worker.prototype.postMessage;
+  Worker.prototype.postMessage=function(message:any,...rest:any[]){
+   return original.call(this,message?.type==='start'?{...message,config:{...message.config,minDisplayConfirmations:minimum}}:message,...rest as []);
+  };
+ },{config,category,minimum});
+ await page.goto('/settlement/');
+ await expect(page.getByTestId('electrum-status')).toContainText('Synchronized',{timeout:60000});
+ const listing=page.locator(`a.vault-row[href="#/vault/${category}"]`);
+ if(minimum===0){await expect(listing).toContainText('Unconfirmed (0-conf)');}else await expect(listing).toHaveCount(0);
+ await page.reload();await expect(page.getByTestId('electrum-status')).toContainText('Synchronized',{timeout:60000});
+ await expect(listing).toHaveCount(minimum===0?1:0);
+ fixture.chain.mine();await page.getByRole('button',{name:'Refresh data',exact:true}).click();
+ await expect(listing).toHaveCount(1,{timeout:60000});await expect(listing).toContainText('Confirmed');await expect(listing).not.toContainText('Unconfirmed');
+ await page.reload();await expect(listing).toHaveCount(1,{timeout:60000});await expect(listing).toContainText('Confirmed');
 });

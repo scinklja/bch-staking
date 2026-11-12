@@ -27,7 +27,7 @@ try{
   await page.goto(target+'#/vault/'+vault.category,{waitUntil:'domcontentloaded'});await ready();await page.getByRole('heading',{name:'Vault '+vault.category.slice(0,6)+'…'+vault.category.slice(-6),exact:true}).waitFor();
   const checkbox=page.getByRole('checkbox',{name:'Enable automatic settlement on chipnet'});assert.equal(await checkbox.isChecked(),false);assert.equal(await checkbox.isEnabled(),true);await page.getByRole('button',{name:'Process Period',exact:true}).waitFor();
   const status=await page.getByTestId('settlement-status').innerText();assert.match(status,/All periods processed|Confirmed|Waiting for the next period|Activation required|Settlement required|Blocked/);
-  const body=await page.locator('body').innerText();assert.match(body,/competing offers/i);assert.match(body,/Confirmed indexer data/);
+  const body=await page.locator('body').innerText();assert.match(body,/competing offers/i);assert.match(body,/Verified indexer data/);
   if(vault.period>=vault.config.periods)assert.equal(await page.getByRole('button',{name:'Process Period',exact:true}).isDisabled(),true);
   const inactive=page.locator('summary').filter({hasText:'Inactive live registrations'});if(await inactive.count()){await inactive.click();for(const offer of vault.offers)await page.getByRole('rowheader',{name:'Offer #'+String(offer.slot).padStart(2,'0'),exact:true}).waitFor();}
   const ranked=page.getByRole('table',{name:'Competing offers ranked by priority'});
@@ -38,7 +38,7 @@ try{
  await page.goto(target+'#/create',{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Create Vault',exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Create Vault',exact:true}).isDisabled(),true);
  await page.goto(target+'#/vault/'+packet.envelope.vaults[0].category,{waitUntil:'domcontentloaded'});await ready();
  report.indexedDbCheckpoints=await page.evaluate(()=>new Promise((done,reject)=>{const r=indexedDB.open('staking-arena-electrum-v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const tx=r.result.transaction('checkpoints'),q=tx.objectStore('checkpoints').count();q.onsuccess=()=>done(q.result);tx.oncomplete=()=>r.result.close();};}));assert.ok(report.indexedDbCheckpoints>=1);
- await context.setOffline(true);await page.getByRole('button',{name:'Refresh data',exact:true}).click();await page.getByRole('alert').filter({hasText:'Electrum WSS'}).waitFor({timeout:90000});assert.match(await page.locator('body').innerText(),/Last-known confirmed snapshot/);report.offlineState=await page.getByRole('alert').innerText();await page.getByRole('button',{name:'Refresh data',exact:true}).waitFor();
+ await context.setOffline(true);await page.getByRole('button',{name:'Refresh data',exact:true}).click();await page.getByRole('alert').filter({hasText:'Electrum WSS'}).waitFor({timeout:90000});assert.match(await page.locator('body').innerText(),/Last-known indexed snapshot/);report.offlineState=await page.getByRole('alert').innerText();await page.getByRole('button',{name:'Refresh data',exact:true}).waitFor();
  await context.setOffline(false);await ready();report.reconnection=true;
  await page.reload({waitUntil:'domcontentloaded'});await ready();assert.equal(await page.getByRole('checkbox',{name:'Enable automatic settlement on chipnet'}).isChecked(),false);report.reload=true;
  // Read-only protocol probes also verify the second configured production WSS endpoint.

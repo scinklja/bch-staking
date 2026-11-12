@@ -29,10 +29,10 @@ scope.postMessage({type:'ready'});
 async function start(config: BrowserIndexerConfig) {
   if (config.network !== 'chipnet') throw Error('Browser indexing is chipnet-only');
   const {tabId,...identity}=config;
-  const fingerprint=sha256Bytes(Buffer.from(JSON.stringify({version:4,...identity}))).toString('hex');
+  const fingerprint=sha256Bytes(Buffer.from(JSON.stringify({version:5,...identity}))).toString('hex');
   const lockName=`arena-electrum-mandatory-v1-${fingerprint}`, locks=scope.navigator.locks;
   const store = new IndexedDbCheckpoints(locks ? fingerprint : `${fingerprint}:${tabId}`);
-  const provider = new BrowserElectrumProvider({...config,allowBroadcast:true}), index = new ElectrumIndexer(config.vaults,provider,store);
+  const provider = new BrowserElectrumProvider({...config,allowBroadcast:true}), index = new ElectrumIndexer(config.vaults,provider,store,config.minDisplayConfirmations ?? 0);
   const keeper=new BrowserKeeper(index,new IndexedDbSettlementStore(),async(category,work)=>{
     if(!locks || typeof BroadcastChannel==='undefined')throw Error('Browser settlement requires Web Locks and BroadcastChannel coordination');
     return locks.request('arena-chipnet-settlement:'+category,{ifAvailable:true},async lock=>{if(!lock)return false;await work();return true;});
@@ -44,7 +44,7 @@ async function start(config: BrowserIndexerConfig) {
   }
   let verified=false, cached: ReturnType<typeof indexEnvelope> | undefined, leader=false;
   const publish = () => {
-    const envelope=indexEnvelope(index);
+    const envelope=indexEnvelope({...index, vaults:index.displayVaults ?? index.vaults, tip:index.tip, displayError:index.displayError, minDisplayConfirmations:config.minDisplayConfirmations ?? 0});
     const value = !verified && cached ? {...cached,health:envelope.health} : envelope;
     const packet={type:'snapshot',envelope:value,cached:!verified,role:leader?'leader':'waiting',keeper:{automatic:true,statuses:keeper.statuses}};
     scope.postMessage(packet);
@@ -53,7 +53,7 @@ async function start(config: BrowserIndexerConfig) {
   try {
     await index.load();
     index.health.updatedAt=store.cached?.updatedAt ?? '';
-    if(store.cached?.vaults && index.blocks.length) cached=indexEnvelope({...index,vaults:store.cached.vaults,tip:index.tip});
+    if(store.cached?.vaults && index.blocks.length) cached=indexEnvelope({...index,vaults:store.cached.vaults.filter(v => index.tip!.height-v.transaction.height+1 >= Math.max(1,config.minDisplayConfirmations ?? 0)),tip:index.tip});
   } catch(error) { index.blocks=[]; index.health.error=`Saved checkpoint unavailable; rebuilding. ${String(error)}`; }
   if (locks && typeof BroadcastChannel !== 'undefined') {
     channel = new BroadcastChannel(lockName);

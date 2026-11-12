@@ -70,7 +70,7 @@ it('retains historical terms on polling failure, labels a restored snapshot and 
  await act(async()=>{await vi.advanceTimersByTimeAsync(REFRESH_MS);});
  expect(screen.getByRole('alert')).toHaveTextContent('Refresh failed');expect(screen.getByText('Expired — awaiting on-chain processing · at snapshot')).toBeInTheDocument();first.unmount();vi.useRealTimers();
  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const restored=render(<App/>);
- expect(screen.getByRole('alert')).toHaveTextContent('Saved confirmed snapshot');expect(screen.getByText('Last-known confirmed snapshot · not current')).toBeInTheDocument();
+ expect(screen.getByRole('alert')).toHaveTextContent('Saved indexed snapshot');expect(screen.getByText('Last-known indexed snapshot · not current')).toBeInTheDocument();
  await navigate('/vault/'+data.vaults[0].category);expect(screen.getByText('Period at snapshot')).toBeInTheDocument();restored.unmount();
  vi.stubGlobal('fetch',vi.fn(()=>response(fixture())));render(<App/>);await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());
 });

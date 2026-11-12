@@ -54,7 +54,7 @@ test('static worker reuses protocol/state validation and IndexedDB across reload
     request.onsuccess=()=>{const tx=request.result.transaction('checkpoints');const count=tx.objectStore('checkpoints').count();count.onsuccess=()=>resolve(count.result);tx.oncomplete=()=>request.result.close();};request.onerror=()=>reject(request.error);
   }));expect(count).toBe(1);
   replay.fail='Provider disconnected for fixture';
-  await page.reload();await expect(page.getByRole('alert')).toContainText('Saved confirmed snapshot');
+  await page.reload();await expect(page.getByRole('alert')).toContainText('Saved indexed snapshot');
   await expect(page.getByRole('alert')).toContainText('Provider disconnected for fixture');
   expect(wire.endpoints.some(e=>e.includes('localhost'))).toBe(true);
   replay.fail='';await page.getByRole('button',{name:'Refresh data',exact:true}).click();await ready(page);await expect(page.getByRole('alert')).toHaveCount(0);
@@ -104,10 +104,10 @@ test('large histories fail at the configured cap without publishing partial stat
 test('an IndexedDB write failure preserves the last committed snapshot and marks it stale',async({context,page})=>{
   await serveReplay(currentFixture());await page.goto('./');await ready(page);
   // The wallet worker is independent; inject failure into the indexing worker only.
-  const worker=page.workers().find(worker=>/\/arena\.worker-/.test(worker.url()));expect(worker).toBeDefined();
+  const worker=page.workers().find(worker=>/\/(?:arena|indexer\.bootstrap)\.worker-/.test(worker.url()));expect(worker).toBeDefined();
   await worker!.evaluate(()=>{IDBDatabase.prototype.transaction=function(){throw Error('IndexedDB quota failure for fixture');};});
   await page.getByRole('button',{name:'Refresh data',exact:true}).click();
   await expect(page.getByRole('alert')).toContainText('IndexedDB quota failure');
   await expect(page.getByText('0.00002000 BCH')).toBeVisible();
-  await expect(page.getByText('Last-known confirmed snapshot · not current')).toBeVisible();
+  await expect(page.getByText('Last-known indexed snapshot · not current')).toBeVisible();
 });
