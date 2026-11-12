@@ -1,37 +1,153 @@
 {
-  "verifiedAt": "2026-11-12T11:23:01.307Z",
+  "verifiedAt": "2026-11-12T12:31:10.120Z",
   "node": "/Bitcoin Cash Node:29.2.0/",
   "network": "regtest",
   "publicWalletVerified": false,
   "evidence": [
     {
+      "label": "token->bch underfunded genesis reserve",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->bch genesis",
-      "txid": "56c33550ad1f9f2bac04b3ecd763fcb34d50fd304bb37dd9b6daab596688dbfe",
-      "bytes": 5597
+      "txid": "606bdc8fa658aedf023925c4533894c676666e9cc65dbe1d7ad3cfaf557e6970",
+      "bytes": 5623
     },
     {
       "label": "token->bch register first"
     },
     {
       "label": "token->bch register first",
-      "txid": "564035e6c0aeda2108ad9a4168546cb135601a1d992bda7ca218126d7fb62b8f",
-      "bytes": 5664
+      "txid": "a869252f1c90c5371e2ffae513b81b4e345cda72bc5bf4f715b763c149d411f4",
+      "bytes": 5690
     },
     {
       "label": "token->bch register exact tie"
     },
     {
       "label": "token->bch register exact tie",
-      "txid": "063a0eda8381ab94107fc2b3af9827670d2fd47c1eb4509e9a76bc01431a091d",
-      "bytes": 5664
+      "txid": "17efac67257d188d86d385200283cdb6584d3f7341c2442a21c4604ab8d0d7f0",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 2"
+    },
+    {
+      "label": "token->bch register full-roster slot 2",
+      "txid": "c9d8bbd2634b30a8d0722da7550d443f78b61e78ab1696acaec164d31d62b0ba",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 3"
+    },
+    {
+      "label": "token->bch register full-roster slot 3",
+      "txid": "77f94d6bf36d93e0ba3b31f44a6a8ff7e99c8964dbb9bc7a99a71050dd10b4b9",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 4"
+    },
+    {
+      "label": "token->bch register full-roster slot 4",
+      "txid": "9bada328320bb7f76ae7cd76892687154d1cb4a6562374646626cde9bc650e34",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 5"
+    },
+    {
+      "label": "token->bch register full-roster slot 5",
+      "txid": "3ab43cc3317e7e3df1dbaec53d019fd6e26141cc19cd1502520cff0d253beb61",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 6"
+    },
+    {
+      "label": "token->bch register full-roster slot 6",
+      "txid": "5f1f25deee1c2d0a2ed52ace0964e73087e5385b7a45e483b77c84abe1f068f3",
+      "bytes": 5690
+    },
+    {
+      "label": "token->bch register full-roster slot 7"
+    },
+    {
+      "label": "token->bch register full-roster slot 7",
+      "txid": "f4e3b5f6d93967d2076137073b17678c46c6a74c7a01cd8996a7a4033fc920ff",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 8"
+    },
+    {
+      "label": "token->bch register full-roster slot 8",
+      "txid": "0894b2b211380ce56d69712503e7ce38f938a63bf4182636d0f36be5438f52d3",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 9"
+    },
+    {
+      "label": "token->bch register full-roster slot 9",
+      "txid": "987ffda4d6d315e9fe234852bf48bab8965bf5f0d19db35044608fd0f0f79456",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 10"
+    },
+    {
+      "label": "token->bch register full-roster slot 10",
+      "txid": "68de03894af3eca26d398f44fad1910fc082583edfb542044b97a2b72f290f05",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 11"
+    },
+    {
+      "label": "token->bch register full-roster slot 11",
+      "txid": "ccd4acb816b07672004f6c1167b998d758fa43b3953b04b944f34f8806f0c5b6",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 12"
+    },
+    {
+      "label": "token->bch register full-roster slot 12",
+      "txid": "c233bc4994da0373a7fd17330b0b59be34f823f429a91f424a787875623fe491",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 13"
+    },
+    {
+      "label": "token->bch register full-roster slot 13",
+      "txid": "0e9d3d4655fb14ba0fde72aecc5c2f14ecce5058e1d48defb8f4c6d22718f642",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 14"
+    },
+    {
+      "label": "token->bch register full-roster slot 14",
+      "txid": "1fa321c67f9a1392959c0f0e966c5fd5c98f170a638e5e38b71d08185f9bbe55",
+      "bytes": 5692
+    },
+    {
+      "label": "token->bch register full-roster slot 15"
+    },
+    {
+      "label": "token->bch register full-roster slot 15",
+      "txid": "bc2872b9f6d8e90f43c983d2e411b5a8c06428fac97338915b9422066f9b6fc4",
+      "bytes": 5692
     },
     {
       "label": "token->bch activate"
     },
     {
       "label": "token->bch activate",
-      "txid": "ca97232dbdf5ac6a3c14b4ebbcd21f7385262b7981091acd35f3a7b2b4e2efad",
-      "bytes": 5472
+      "txid": "ab1ce52a19e51da7f56d7c85750a61abc91ed519213a07f58c0a54802d8335e8",
+      "bytes": 5500
     },
     {
       "label": "token->bch rejects later tied winner",
@@ -42,11 +158,37 @@
     },
     {
       "label": "token->bch cancel frozen loser",
-      "txid": "cbd497e3dfe99ec2c871789fcecb57691ce171444b847f1f56e2d68ce740c805",
-      "bytes": 5472
+      "txid": "351ccab2ffedff1b473f080fe5e58b21e57ac770f711bf66f0e38c555ed3a4e2",
+      "bytes": 5500
     },
     {
       "label": "token->bch rejects active refund",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->bch rejects incorrect sponsor fee -1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->bch rejects incorrect sponsor fee 1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->bch noncanonical role 1 donation",
+      "txid": "e0adbfcbf289070c5d4855b47e448305f469b7e447ca981a376fc5895cc3c56a",
+      "bytes": 423
+    },
+    {
+      "label": "token->bch rejects equivalent noncanonical role 1 parent",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->bch noncanonical role 2 donation",
+      "txid": "b0e9c3658c534b38030096b338e137ea4f9f7d5621de54ac48dfa245064387f1",
+      "bytes": 428
+    },
+    {
+      "label": "token->bch rejects equivalent noncanonical role 2 parent",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
@@ -66,6 +208,10 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
+      "label": "token->bch rejects swapped asset roles",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->bch rejects wrong fee",
       "rejected": "64: dust"
     },
@@ -77,17 +223,17 @@
       "label": "token->bch settle first",
       "vm": [
         {
-          "arithmeticCost": 606,
+          "arithmeticCost": 2223,
           "definedFunctions": 0,
-          "densityControlLength": 4789,
-          "evaluatedInstructionCount": 7699,
+          "densityControlLength": 4815,
+          "evaluatedInstructionCount": 7725,
           "hashDigestIterations": 117,
-          "maximumHashDigestIterations": 2394,
-          "maximumOperationCost": 3831200,
-          "maximumSignatureCheckCount": 111,
-          "operationCost": 1035362,
+          "maximumHashDigestIterations": 2407,
+          "maximumOperationCost": 3852000,
+          "maximumSignatureCheckCount": 112,
+          "operationCost": 1320059,
           "signatureCheckCount": 0,
-          "stackPushedBytes": 242392
+          "stackPushedBytes": 522872
         },
         {
           "arithmeticCost": 0,
@@ -132,8 +278,8 @@
     },
     {
       "label": "token->bch settle first",
-      "txid": "46cd1a17fa4eada35f2d6a3b331e962cb30ed22709de6581c3ca7691bc6516f1",
-      "bytes": 5587
+      "txid": "a9f481a4787fdc563be5ea9f36623854c6add6fb9a1d3e7963901e1fa8a3452e",
+      "bytes": 5615
     },
     {
       "label": "token->bch rejects duplicate settlement",
@@ -144,48 +290,60 @@
     },
     {
       "label": "token->bch refund cancelled remainder",
-      "txid": "04406e35fa9e46d929e7d184f1a7b7ba1d0a36be8b0f0bfdd034df696180b865",
-      "bytes": 5543
+      "txid": "c5a1c02ed39025debe422ed4201025ec37828d78df609475855fae07de8ec437",
+      "bytes": 5571
     },
     {
       "label": "token->bch activate 1"
     },
     {
       "label": "token->bch activate 1",
-      "txid": "013ca65ee1117950e97766f6672175f70739fff1ba9def074ba9743baebae3ac",
-      "bytes": 5472
+      "txid": "ce38a60b3a8c6e2dc5afc9c943270ee32be133e493873f4e0f385e4c46e3b9b4",
+      "bytes": 5500
     },
     {
       "label": "token->bch settle 1"
     },
     {
       "label": "token->bch settle 1",
-      "txid": "f7fe1e9a0a2d991cee3799ee6b861a5681cbdd7bacd536a5b7da3082d695998a",
-      "bytes": 5587
+      "txid": "ec01e2efa801880a2e75db97ac2103e4aeb3ec78d1972a530d2d2499daaca5fa",
+      "bytes": 5615
     },
     {
       "label": "token->bch activate 2"
     },
     {
       "label": "token->bch activate 2",
-      "txid": "2ad44a463965d006047b62acdca7271962921e9e995406df7a02344619f7d112",
-      "bytes": 5472
+      "txid": "1f43075dba06987d847810d17fbd7b54de155f0c3ffebb0cb04410bd12df50fd",
+      "bytes": 5500
+    },
+    {
+      "label": "token->bch cancel activated winner for future periods"
+    },
+    {
+      "label": "token->bch cancel activated winner for future periods",
+      "txid": "0320c7e89ef7602e85bb0545f8ed85378ff5e79ba218b2a34cf23610c5bb3bab",
+      "bytes": 5500
     },
     {
       "label": "token->bch settle 2"
     },
     {
       "label": "token->bch settle 2",
-      "txid": "25463557b2a678b818f09d3ecdbffb607992be14f7ec8abbee07e36ec7c1d2ce",
-      "bytes": 5550
+      "txid": "6925aa3b264e68b01de65adc828305ac1e267b8e1706e27bbec3b50aad66e521",
+      "bytes": 5615
     },
     {
       "label": "token->bch rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->bch independent withdrawal 0",
-      "txid": "55048ec235e3fbf321eeeddd30b7e7eec0090caa833df2a01f41b442f03cf2ef",
+      "txid": "f72d1e117624b0138ecec7113bc7fcf3a2a0c971863fd1639218ff63b0d9a392",
       "bytes": 664
     },
     {
@@ -195,10 +353,14 @@
     {
       "label": "token->bch rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->bch independent withdrawal 1",
-      "txid": "842439a4926de46135322a3fd1674958a0bf5934e14f4741e2a6fd0777e3ff7a",
+      "txid": "b291e2a2df4881823807cae0df7ec8098bd556a8cbb8875867d28e9d9a5b0abe",
       "bytes": 664
     },
     {
@@ -210,8 +372,12 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
     },
     {
+      "label": "token->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
+    },
+    {
       "label": "token->bch independent withdrawal 2",
-      "txid": "4b8e6594809c417e9a0e9db4667a839bf40eb887a79e1ae99625cbe8dda6fb5d",
+      "txid": "1ed4e5b53a4eeb23e5a16fcc118b8b3014d155c7eb241d26351dbb7c9d2ba621",
       "bytes": 664
     },
     {
@@ -219,52 +385,60 @@
       "rejected": "18: txn-already-known"
     },
     {
+      "label": "token->bch withdrawal reorganization restored",
+      "block": "22c680d8c2ebcf03ecb17ec8dd4119433f74d34c74a605b35236682177d66478"
+    },
+    {
       "label": "token->bch",
-      "finalEscrow": "0",
+      "finalEscrow": "126000",
       "finalRewards": "3000",
       "allocations": [
         {
-          "outpoint": "46cd1a17fa4eada35f2d6a3b331e962cb30ed22709de6581c3ca7691bc6516f1:4",
-          "maturity": 1794472103
+          "outpoint": "a9f481a4787fdc563be5ea9f36623854c6add6fb9a1d3e7963901e1fa8a3452e:4",
+          "maturity": 1794476076
         },
         {
-          "outpoint": "f7fe1e9a0a2d991cee3799ee6b861a5681cbdd7bacd536a5b7da3082d695998a:4",
-          "maturity": 1794472113
+          "outpoint": "ec01e2efa801880a2e75db97ac2103e4aeb3ec78d1972a530d2d2499daaca5fa:4",
+          "maturity": 1794476086
         },
         {
-          "outpoint": "25463557b2a678b818f09d3ecdbffb607992be14f7ec8abbee07e36ec7c1d2ce:4",
-          "maturity": 1794472123
+          "outpoint": "6925aa3b264e68b01de65adc828305ac1e267b8e1706e27bbec3b50aad66e521:4",
+          "maturity": 1794476096
         }
       ]
     },
     {
+      "label": "bch->token underfunded genesis reserve",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "bch->token genesis",
-      "txid": "826bdf1843abf596f49955145b7174216f9095aad60c1d42b70d8b705f61dff7",
-      "bytes": 5630
+      "txid": "57a2e2dfe49d4b6cfc48955649700c63da01542439ac219b48d3b0cba009db82",
+      "bytes": 5656
     },
     {
       "label": "bch->token register first"
     },
     {
       "label": "bch->token register first",
-      "txid": "5f58a4e780721a14f756bd8f6d9fe3de8476b43bcad8b72c882c3ff9d650492d",
-      "bytes": 5660
+      "txid": "c8c7885ad0e0e76229b20adea25c1706b0b5c06aafc483832d9a292a11cb1c98",
+      "bytes": 5686
     },
     {
       "label": "bch->token register exact tie"
     },
     {
       "label": "bch->token register exact tie",
-      "txid": "d3d47a9726a4686f24aa39987d880e20ffe0e8ccf8a8549d44a184b175152ffe",
-      "bytes": 5660
+      "txid": "98d08c840d99385bc92f5105498021595a7734569fa6fea2930fbceed8801299",
+      "bytes": 5686
     },
     {
       "label": "bch->token activate"
     },
     {
       "label": "bch->token activate",
-      "txid": "2f29c31549e1bea2c8f9ae26fdb3a5fbcdc4f2456acd0ed223feeede6067d061",
-      "bytes": 5468
+      "txid": "5d7ec9f77deaf1f581501b23c3d2b4fc73ae35d257c36827e5febaad9110a841",
+      "bytes": 5494
     },
     {
       "label": "bch->token rejects later tied winner",
@@ -275,11 +449,37 @@
     },
     {
       "label": "bch->token cancel frozen loser",
-      "txid": "6c55e29b16c9b963a1aa5883b99e5d4e37be49df0ed0864e915bcda0975d8b27",
-      "bytes": 5468
+      "txid": "81ca556ad1dd16b2e792588af41867fa74080fbd8991ee0f70bed3277b327f1b",
+      "bytes": 5494
     },
     {
       "label": "bch->token rejects active refund",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "bch->token rejects incorrect sponsor fee -1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "bch->token rejects incorrect sponsor fee 1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "bch->token noncanonical role 1 donation",
+      "txid": "642dfb932cdf42a103534f02b3864734b6aad1dc4aca2130dc991ba9a595ca37",
+      "bytes": 384
+    },
+    {
+      "label": "bch->token rejects equivalent noncanonical role 1 parent",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "bch->token noncanonical role 2 donation",
+      "txid": "7fccbb62a3d3f2465080e7e02db91efd4e420229b2975ae01a9d412beab6e666",
+      "bytes": 463
+    },
+    {
+      "label": "bch->token rejects equivalent noncanonical role 2 parent",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
@@ -299,12 +499,20 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
+      "label": "bch->token rejects swapped asset roles",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "bch->token rejects wrong fee",
       "rejected": "64: dust"
     },
     {
       "label": "bch->token rejects missing genuine reward",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "bch->token rejects unintended reward minting",
+      "rejected": "16: bad-txns-token-in-belowout"
     },
     {
       "label": "bch->token rejects reward token burn",
@@ -319,8 +527,8 @@
     },
     {
       "label": "bch->token settle first",
-      "txid": "f3e9a92241b400d0bfa37ecda503b0cd81143e4c50c7b6d03886b876a06fb721",
-      "bytes": 5581
+      "txid": "976ecdbd1be969220e9c69c798129d2f5bfecb78ca0260b138d3b265a19c8d84",
+      "bytes": 5607
     },
     {
       "label": "bch->token rejects duplicate settlement",
@@ -331,48 +539,60 @@
     },
     {
       "label": "bch->token refund cancelled remainder",
-      "txid": "22bda5c32966ace60349813311a6a861389ab6e81dfde8bdb7294ec60e375a9f",
-      "bytes": 5502
+      "txid": "579b10ade38325f6b831531e318cb122d484b3463b0a3a05d8ee1fd196d3a2e6",
+      "bytes": 5528
     },
     {
       "label": "bch->token activate 1"
     },
     {
       "label": "bch->token activate 1",
-      "txid": "2958fcac13c9496ca7a2ade55c301303b73c7e89f47605478caf6543c1082db0",
-      "bytes": 5468
+      "txid": "285f7a0ef08493c0af49a32f2c16601da6d94458b59d0e947a5dbd4d4a2fea17",
+      "bytes": 5494
     },
     {
       "label": "bch->token settle 1"
     },
     {
       "label": "bch->token settle 1",
-      "txid": "db86322056353b857efac9907251868727c15d97ae3fb033256db142bd143669",
-      "bytes": 5581
+      "txid": "51d67ae4bebd63f9692b8be26a1303b863210d3c92ff20b968bed58ef1de7c70",
+      "bytes": 5607
     },
     {
       "label": "bch->token activate 2"
     },
     {
       "label": "bch->token activate 2",
-      "txid": "cbc6cc2d8553a721f37d45b2917f745b85504b92f57fd8cff307d71ae2b7bf89",
-      "bytes": 5468
+      "txid": "4c55dbc750dfbeb13716a894c6cadd2f017ca035d546a228a30b1af55737f39e",
+      "bytes": 5494
+    },
+    {
+      "label": "bch->token cancel activated winner for future periods"
+    },
+    {
+      "label": "bch->token cancel activated winner for future periods",
+      "txid": "2731b875d87e84dd6b14510290a41280f6c0d825b165e0a1b2a571d76374abb6",
+      "bytes": 5494
     },
     {
       "label": "bch->token settle 2"
     },
     {
       "label": "bch->token settle 2",
-      "txid": "c4145df190e30f1f15721d4d402ee94d501354e207b8e47ec1fbb613835a3b2c",
-      "bytes": 5581
+      "txid": "d90dfedcceb2497823bd98e8689a2b1548156ca3d1225bbcbfc814357665dd24",
+      "bytes": 5607
     },
     {
       "label": "bch->token rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "bch->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "bch->token independent withdrawal 0",
-      "txid": "a49ed032fbd92c005faa9083747ee849943acf071ce8a7852775f8c940d4b08f",
+      "txid": "aa3889945661f0d71c0d6bff6cf8ee9c6abd58051b1f3b9462c923c99fb29c4b",
       "bytes": 627
     },
     {
@@ -382,10 +602,14 @@
     {
       "label": "bch->token rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "bch->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "bch->token independent withdrawal 1",
-      "txid": "c4081e057801cb2740aecff5efbdc72d6d1caba5cc6afd4a24fdedf40c57b7f4",
+      "txid": "2c032d9f6f2bcb8528a3ff10e6eb43b16b74747d9b3d07fb533b50458c6afea4",
       "bytes": 627
     },
     {
@@ -397,13 +621,21 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
     },
     {
+      "label": "bch->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
+    },
+    {
       "label": "bch->token independent withdrawal 2",
-      "txid": "29d9e07b1fe7f1317a44ca166ba79e0682471742c695fa78698580f13a1d692b",
+      "txid": "c7a5ea59a7cd3c63e4b1ae43c729fe46c6952d0c5736e8f748b572dddf05a64a",
       "bytes": 627
     },
     {
       "label": "bch->token duplicate withdrawal",
       "rejected": "18: txn-already-known"
+    },
+    {
+      "label": "bch->token withdrawal reorganization restored",
+      "block": "59c39ba94aacc5571933f82d4346fb0a3682b30ec85854329b1694abf2d2b2f8"
     },
     {
       "label": "bch->token",
@@ -411,47 +643,51 @@
       "finalRewards": "9",
       "allocations": [
         {
-          "outpoint": "f3e9a92241b400d0bfa37ecda503b0cd81143e4c50c7b6d03886b876a06fb721:4",
-          "maturity": 1794472352
+          "outpoint": "976ecdbd1be969220e9c69c798129d2f5bfecb78ca0260b138d3b265a19c8d84:4",
+          "maturity": 1794476475
         },
         {
-          "outpoint": "db86322056353b857efac9907251868727c15d97ae3fb033256db142bd143669:4",
-          "maturity": 1794472362
+          "outpoint": "51d67ae4bebd63f9692b8be26a1303b863210d3c92ff20b968bed58ef1de7c70:4",
+          "maturity": 1794476485
         },
         {
-          "outpoint": "c4145df190e30f1f15721d4d402ee94d501354e207b8e47ec1fbb613835a3b2c:4",
-          "maturity": 1794472372
+          "outpoint": "d90dfedcceb2497823bd98e8689a2b1548156ca3d1225bbcbfc814357665dd24:4",
+          "maturity": 1794476495
         }
       ]
     },
     {
+      "label": "token->token underfunded genesis reserve",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->token genesis",
-      "txid": "ede5d629de22d0b7bdd0cd9cc66a289c03dbf5a16bb2dfd3fbe189f02f3a98a8",
-      "bytes": 5630
+      "txid": "8d496e860e2204edf3f8f349f5d4fdb874f0444e88e6ab8d7d677309aca6b75e",
+      "bytes": 5656
     },
     {
       "label": "token->token register first"
     },
     {
       "label": "token->token register first",
-      "txid": "2085e27bd914a0e28df699092c866e5e4c75ca87e84f63ef7962d16e5c663da2",
-      "bytes": 5697
+      "txid": "3193e2057b68064fabcc54f9bd33c4cdf7e90f0974fda5ce3aa4fd167a970911",
+      "bytes": 5723
     },
     {
       "label": "token->token register exact tie"
     },
     {
       "label": "token->token register exact tie",
-      "txid": "f688eef6754b8723ea78034c8b77a175a310e67d9e0a6663dbf479a599bab79a",
-      "bytes": 5697
+      "txid": "d29bcc36eb2bd312e57a4829cd79496feea254a6167ebd8ac40b542498a9da76",
+      "bytes": 5723
     },
     {
       "label": "token->token activate"
     },
     {
       "label": "token->token activate",
-      "txid": "d7d1a2bfb5b592226797064fd1ef3ddce8d11143143051799550717b5144c93d",
-      "bytes": 5505
+      "txid": "3720344c87494fd9a9394d0e684d7f81545d7ae92924c14c77759ed385fac398",
+      "bytes": 5531
     },
     {
       "label": "token->token rejects later tied winner",
@@ -462,11 +698,37 @@
     },
     {
       "label": "token->token cancel frozen loser",
-      "txid": "9c20d52f29310be6e3e7280eb075a857351b25f9a153b6e958f8e2e352b01d4d",
-      "bytes": 5505
+      "txid": "910aaa3605922a46636a51fbcc079dca4faf4a029e64a926c4110e7f29fb5853",
+      "bytes": 5531
     },
     {
       "label": "token->token rejects active refund",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token rejects incorrect sponsor fee -1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->token rejects incorrect sponsor fee 1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->token noncanonical role 1 donation",
+      "txid": "2ef4164177169023449b2fda4257b6b3caa08b6a2a664338e24033f5762a2591",
+      "bytes": 421
+    },
+    {
+      "label": "token->token rejects equivalent noncanonical role 1 parent",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token noncanonical role 2 donation",
+      "txid": "d5a0f77e409a600e7eede8ed72fa8d4afa9fac3576b221443220c8c08c09c304",
+      "bytes": 463
+    },
+    {
+      "label": "token->token rejects equivalent noncanonical role 2 parent",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
@@ -486,12 +748,20 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
+      "label": "token->token rejects swapped asset roles",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->token rejects wrong fee",
       "rejected": "64: dust"
     },
     {
       "label": "token->token rejects missing genuine reward",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token rejects unintended reward minting",
+      "rejected": "16: bad-txns-token-in-belowout"
     },
     {
       "label": "token->token rejects reward token burn",
@@ -510,8 +780,8 @@
     },
     {
       "label": "token->token settle first",
-      "txid": "61245b8d843c3dd64a5bfb23b6b1be82e45565161a1879871e9767ae8f6761bf",
-      "bytes": 5655
+      "txid": "b4f42dd0e1a1b9744d6c022ad42e8b7b1cff6c2115517c541e0eefdf6d4dab74",
+      "bytes": 5681
     },
     {
       "label": "token->token rejects duplicate settlement",
@@ -522,48 +792,60 @@
     },
     {
       "label": "token->token refund cancelled remainder",
-      "txid": "45291bb9d480b2f005f66236b3ffde520f25fde013b897145f03ea494c2bbaa0",
-      "bytes": 5576
+      "txid": "30c3a624edaf93c025809a789aae85997af6f3344aab4c3666ef3b0bee31829f",
+      "bytes": 5602
     },
     {
       "label": "token->token activate 1"
     },
     {
       "label": "token->token activate 1",
-      "txid": "7e2e2e2154fc68f46637ec6d41a187a5f08ccdb13d450ccf2ba0444b06eaed63",
-      "bytes": 5505
+      "txid": "c21eb93ace880914c429ac7020e653f30b6b39374c924ceb059f63a8cf8d4012",
+      "bytes": 5531
     },
     {
       "label": "token->token settle 1"
     },
     {
       "label": "token->token settle 1",
-      "txid": "f6215e5229b3edc92360254aa05a2550555cbac9d51ca53641d5f5e921003890",
-      "bytes": 5655
+      "txid": "3b29e72a29d2d6d9f6524d14d23ebecb5ff2f83b7f412f11290b171f79859362",
+      "bytes": 5681
     },
     {
       "label": "token->token activate 2"
     },
     {
       "label": "token->token activate 2",
-      "txid": "834bfead4fe9a87f52bc1f5eee8cc34bc0108ef25221fe914dc22475958ca3a7",
-      "bytes": 5505
+      "txid": "e1ace49d09689de110df73922202cf55e0d6ecb74ea2121d7728f2861641fa95",
+      "bytes": 5531
+    },
+    {
+      "label": "token->token cancel activated winner for future periods"
+    },
+    {
+      "label": "token->token cancel activated winner for future periods",
+      "txid": "fb639298d667cbad0a9d2e39b0fa730d308e112da1bb43579433ee8c9dcd3007",
+      "bytes": 5531
     },
     {
       "label": "token->token settle 2"
     },
     {
       "label": "token->token settle 2",
-      "txid": "9a78d4b9bfcdfc312f7cde6f99082b8016e887970b174b0aa00a970b27da3128",
-      "bytes": 5618
+      "txid": "33ddac37a3f8ed27d25a7e41886966fb382a6d179878b50dde08fc92919361be",
+      "bytes": 5644
     },
     {
       "label": "token->token rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->token independent withdrawal 0",
-      "txid": "8cd46e2695f9b82f3aacce94f49c3b7c766dbd2be94ebbc03e4be106ff762074",
+      "txid": "c25472f370fe77f42a2210c852fdfe0271aebf808268c952ee701dde4700fdd4",
       "bytes": 664
     },
     {
@@ -573,10 +855,14 @@
     {
       "label": "token->token rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->token independent withdrawal 1",
-      "txid": "747e4f056d7e0f046fb817e01c8ff7c690278e37d91aa1f6290527a2a5418c30",
+      "txid": "3a9fdc5f61661e4a78ea06b7b3f213d256e45ff1f42b11f313018686c0f9d1cb",
       "bytes": 664
     },
     {
@@ -588,13 +874,21 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
     },
     {
+      "label": "token->token rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
+    },
+    {
       "label": "token->token independent withdrawal 2",
-      "txid": "ece1ad79678f17d7271476e3357e9870fea0e5c5011cad32e83acaa86077e639",
+      "txid": "2386fab8a3a2d15d0339317f069135ab5121ef26cabc30d211f8faacd6efce77",
       "bytes": 664
     },
     {
       "label": "token->token duplicate withdrawal",
       "rejected": "18: txn-already-known"
+    },
+    {
+      "label": "token->token withdrawal reorganization restored",
+      "block": "0d1a81f08179a95f9e1b3afc4d193ae2473d1968c3872529d8e8fa442b70bcf4"
     },
     {
       "label": "token->token",
@@ -602,47 +896,51 @@
       "finalRewards": "9",
       "allocations": [
         {
-          "outpoint": "61245b8d843c3dd64a5bfb23b6b1be82e45565161a1879871e9767ae8f6761bf:4",
-          "maturity": 1794472421
+          "outpoint": "b4f42dd0e1a1b9744d6c022ad42e8b7b1cff6c2115517c541e0eefdf6d4dab74:4",
+          "maturity": 1794476524
         },
         {
-          "outpoint": "f6215e5229b3edc92360254aa05a2550555cbac9d51ca53641d5f5e921003890:4",
-          "maturity": 1794472431
+          "outpoint": "3b29e72a29d2d6d9f6524d14d23ebecb5ff2f83b7f412f11290b171f79859362:4",
+          "maturity": 1794476534
         },
         {
-          "outpoint": "9a78d4b9bfcdfc312f7cde6f99082b8016e887970b174b0aa00a970b27da3128:4",
-          "maturity": 1794472441
+          "outpoint": "33ddac37a3f8ed27d25a7e41886966fb382a6d179878b50dde08fc92919361be:4",
+          "maturity": 1794476544
         }
       ]
     },
     {
+      "label": "bch->bch underfunded genesis reserve",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "bch->bch genesis",
-      "txid": "9160e6620881824065592649ac974603cd59bb906380138024586fb916275f5c",
-      "bytes": 5597
+      "txid": "0358d442f5d34a4ba2b1b4e5301b8f3469bca76bd4ecafffa0256d3ed1eae280",
+      "bytes": 5623
     },
     {
       "label": "bch->bch register first"
     },
     {
       "label": "bch->bch register first",
-      "txid": "c364c739a3ce722cccc9ed3912d49af32ecec5a7ae6a63001f57ac0ab1ee1203",
-      "bytes": 5627
+      "txid": "3b5fcf56204f072e75a8e9a9358df2361214a0e240013777a30f3edd044fedd2",
+      "bytes": 5653
     },
     {
       "label": "bch->bch register exact tie"
     },
     {
       "label": "bch->bch register exact tie",
-      "txid": "6dd1199d9e8924406be0ae7e26beca5eb8e0fba24344fe9a90d130df1b48466e",
-      "bytes": 5627
+      "txid": "a097d8305bf0d30bd3eff106a81e2fecc85505ed348104681ead95ce18b64422",
+      "bytes": 5653
     },
     {
       "label": "bch->bch activate"
     },
     {
       "label": "bch->bch activate",
-      "txid": "1fa40cd8732d9c4a0a485457b408d7b42211070df4947e43bab100fddf9c32c2",
-      "bytes": 5435
+      "txid": "72bce3aa9b5221a29efe9bce051eeafc1087bc08cb242c50a97a84091029afe6",
+      "bytes": 5461
     },
     {
       "label": "bch->bch rejects later tied winner",
@@ -653,11 +951,37 @@
     },
     {
       "label": "bch->bch cancel frozen loser",
-      "txid": "1853d0445837295a3aeff83bf36701d62035a92b01ea38ecc2e5fe00f724f518",
-      "bytes": 5435
+      "txid": "71361360e07044ced6ded608261f7c7446023bb502edba464269f5e5dcf5aab8",
+      "bytes": 5461
     },
     {
       "label": "bch->bch rejects active refund",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "bch->bch rejects incorrect sponsor fee -1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "bch->bch rejects incorrect sponsor fee 1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "bch->bch noncanonical role 1 donation",
+      "txid": "1fa9c90337bef677846f66c6f3740b1f19aac1577c25bc99ab7a88fd0db79e65",
+      "bytes": 384
+    },
+    {
+      "label": "bch->bch rejects equivalent noncanonical role 1 parent",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "bch->bch noncanonical role 2 donation",
+      "txid": "363755c40878e005f3289d45e04d99f02fcedffa712421b5ebf399e39158b045",
+      "bytes": 428
+    },
+    {
+      "label": "bch->bch rejects equivalent noncanonical role 2 parent",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
@@ -677,6 +1001,10 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
+      "label": "bch->bch rejects swapped asset roles",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "bch->bch rejects wrong fee",
       "rejected": "64: dust"
     },
@@ -685,8 +1013,8 @@
     },
     {
       "label": "bch->bch settle first",
-      "txid": "b761cc1d5ae275160c0ad7a79640197b1918ad62fede55a4f4bf1b3ed1908ce6",
-      "bytes": 5513
+      "txid": "9347bf9b257faff7a2c8022bc19f123287db89df3896f195a15fcbc55bbaaae7",
+      "bytes": 5539
     },
     {
       "label": "bch->bch rejects duplicate settlement",
@@ -697,48 +1025,60 @@
     },
     {
       "label": "bch->bch refund cancelled remainder",
-      "txid": "62ed1ba91e8c2d7ccbcf8cf29709805224e04d0b28dd7fc73d24380a6c98c5ac",
-      "bytes": 5469
+      "txid": "80df271b7d6671d163dcb9ea5d0dada58340055d07897076cca101fb34e5736e",
+      "bytes": 5495
     },
     {
       "label": "bch->bch activate 1"
     },
     {
       "label": "bch->bch activate 1",
-      "txid": "171f013b2054dbf100ad3d13249f6ec089f27202f48d048c5a278963790b7264",
-      "bytes": 5435
+      "txid": "87c128347d2d272a13c72f50378f0a1c8cff3280c99b062000e0ee28adcf074e",
+      "bytes": 5461
     },
     {
       "label": "bch->bch settle 1"
     },
     {
       "label": "bch->bch settle 1",
-      "txid": "52e95cd0fd15b181a6820d8ff8744e94cd0035fdd89eab772eca71817d14384c",
-      "bytes": 5513
+      "txid": "7197017841d81e0d1128b217158589ef66e65a1ec0939bc853066bb17442ca2b",
+      "bytes": 5539
     },
     {
       "label": "bch->bch activate 2"
     },
     {
       "label": "bch->bch activate 2",
-      "txid": "66b0e45926c37c89f46f4913253498b72242b7bce4f0f4379b09e0b29ed75663",
-      "bytes": 5435
+      "txid": "62fe19e3301fa34089cdc068f473a0376514f10e9b60557ab0c16d2f5c0b896a",
+      "bytes": 5461
+    },
+    {
+      "label": "bch->bch cancel activated winner for future periods"
+    },
+    {
+      "label": "bch->bch cancel activated winner for future periods",
+      "txid": "83feee5a78822339b6115904577b5f3cd5fe3eb9e3610bcf814f8c7d1bcb12b7",
+      "bytes": 5461
     },
     {
       "label": "bch->bch settle 2"
     },
     {
       "label": "bch->bch settle 2",
-      "txid": "737dd1df1e5abe82ac0259811232c00348ca5e2357c7d0de97f405e66aa25cf8",
-      "bytes": 5513
+      "txid": "0b5dac7decd4d1bc109d3339f89f28ddc84f0e99b6428f7d0bbe818d5e232acd",
+      "bytes": 5539
     },
     {
       "label": "bch->bch rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "bch->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "bch->bch independent withdrawal 0",
-      "txid": "3ac02ee3f656cd6a39715cb653469b82dc1b85e88f4bf4e336e94f03b3b79c76",
+      "txid": "1409e0ac1ec1ba128d29b3cbf52824afbf43c5b2ddcf7bcb930039ba23387dab",
       "bytes": 627
     },
     {
@@ -748,10 +1088,14 @@
     {
       "label": "bch->bch rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "bch->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "bch->bch independent withdrawal 1",
-      "txid": "53e6e4c2f9853af7b18fadcb67971a4bc187950438d2d0b2841399c877e3d0ec",
+      "txid": "86785c48d07b0d65b24c180908344c98150d600b21108188c8f026a66866c3ec",
       "bytes": 627
     },
     {
@@ -763,13 +1107,21 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
     },
     {
+      "label": "bch->bch rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
+    },
+    {
       "label": "bch->bch independent withdrawal 2",
-      "txid": "b85e6ba1fae732a02dd461c2c77a83dd6562d29bfcb87825f8f0438ed1b7c5bd",
+      "txid": "f1eb20c18b057c6c49a68f74da85d26339435d6e0a50cddf0aa477c12336e929",
       "bytes": 627
     },
     {
       "label": "bch->bch duplicate withdrawal",
       "rejected": "18: txn-already-known"
+    },
+    {
+      "label": "bch->bch withdrawal reorganization restored",
+      "block": "60b23284cac1d92958419f8511c00b8dac42c8775a5a89ac62f70d169539173b"
     },
     {
       "label": "bch->bch",
@@ -777,47 +1129,51 @@
       "finalRewards": "3000",
       "allocations": [
         {
-          "outpoint": "b761cc1d5ae275160c0ad7a79640197b1918ad62fede55a4f4bf1b3ed1908ce6:4",
-          "maturity": 1794472482
+          "outpoint": "9347bf9b257faff7a2c8022bc19f123287db89df3896f195a15fcbc55bbaaae7:4",
+          "maturity": 1794476571
         },
         {
-          "outpoint": "52e95cd0fd15b181a6820d8ff8744e94cd0035fdd89eab772eca71817d14384c:4",
-          "maturity": 1794472492
+          "outpoint": "7197017841d81e0d1128b217158589ef66e65a1ec0939bc853066bb17442ca2b:4",
+          "maturity": 1794476581
         },
         {
-          "outpoint": "737dd1df1e5abe82ac0259811232c00348ca5e2357c7d0de97f405e66aa25cf8:4",
-          "maturity": 1794472502
+          "outpoint": "0b5dac7decd4d1bc109d3339f89f28ddc84f0e99b6428f7d0bbe818d5e232acd:4",
+          "maturity": 1794476591
         }
       ]
     },
     {
+      "label": "token->token same-category underfunded genesis reserve",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->token same-category genesis",
-      "txid": "308fdfb5971e943ff2dc2ea409556da06bfd2ed232382fd9cef87fa0ac56b0e8",
-      "bytes": 5630
+      "txid": "2631fd2bb8e955778a47c6963c61cd3f58d444be90c6661b0bcc95d060c0fbfa",
+      "bytes": 5656
     },
     {
       "label": "token->token same-category register first"
     },
     {
       "label": "token->token same-category register first",
-      "txid": "07c75c636257cd119b98cd91f0b54af5bd904d6583c0d502d4f7616f3a5d65de",
-      "bytes": 5697
+      "txid": "d3e792cb707e433f549de82cbfc0128f9507a1357f8908f000c13b9b040e6100",
+      "bytes": 5723
     },
     {
       "label": "token->token same-category register exact tie"
     },
     {
       "label": "token->token same-category register exact tie",
-      "txid": "0f53bb5723e015c31602f02972dae344711d949558b8a2b7e16e068964d7eecc",
-      "bytes": 5697
+      "txid": "21d69aa2a0bd75c778d1875fadb1b3d03b303a30aa3f17ec312d9df329032d99",
+      "bytes": 5723
     },
     {
       "label": "token->token same-category activate"
     },
     {
       "label": "token->token same-category activate",
-      "txid": "8cd66ce7941aca6518e5989a37f0d625bb0b7b2cf32265d789049dd763ccd6df",
-      "bytes": 5505
+      "txid": "a7a700131a7fcab829ffb986667fcea6bd8fa9daa2913f93687b700cbc73fcf5",
+      "bytes": 5531
     },
     {
       "label": "token->token same-category rejects later tied winner",
@@ -828,11 +1184,37 @@
     },
     {
       "label": "token->token same-category cancel frozen loser",
-      "txid": "e575578040926dc5524c21fb982d8475e9f8897aef54444830d5cb9fa5b178e9",
-      "bytes": 5505
+      "txid": "71838f52a9e63e7720f6908a2389329acfa2dec1b05319012a2e461dfd315ebf",
+      "bytes": 5531
     },
     {
       "label": "token->token same-category rejects active refund",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token same-category rejects incorrect sponsor fee -1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->token same-category rejects incorrect sponsor fee 1",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
+    },
+    {
+      "label": "token->token same-category noncanonical role 1 donation",
+      "txid": "f292b8b42881f051e5b0da0f3aaa15791b503204454ff6cc955c943f9b6e86b1",
+      "bytes": 421
+    },
+    {
+      "label": "token->token same-category rejects equivalent noncanonical role 1 parent",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token same-category noncanonical role 2 donation",
+      "txid": "c57d30fdd54b245cc78f9469cec3bb75b483c3a7b98dc180f86fee8519cd8d64",
+      "bytes": 463
+    },
+    {
+      "label": "token->token same-category rejects equivalent noncanonical role 2 parent",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
@@ -852,12 +1234,20 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
     },
     {
+      "label": "token->token same-category rejects swapped asset roles",
+      "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
       "label": "token->token same-category rejects wrong fee",
       "rejected": "64: dust"
     },
     {
       "label": "token->token same-category rejects missing genuine reward",
       "rejected": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
+    },
+    {
+      "label": "token->token same-category rejects unintended reward minting",
+      "rejected": "16: bad-txns-token-in-belowout"
     },
     {
       "label": "token->token same-category rejects reward token burn",
@@ -876,8 +1266,8 @@
     },
     {
       "label": "token->token same-category settle first",
-      "txid": "9b2cabc537cc60380b5aea56d944b86f71606b3063eb6b871b155c4138718a19",
-      "bytes": 5655
+      "txid": "2c1a7c40fbb339adef52cab5266d38c1d1b3aa273d798753006746db3c60cadb",
+      "bytes": 5681
     },
     {
       "label": "token->token same-category rejects duplicate settlement",
@@ -888,48 +1278,60 @@
     },
     {
       "label": "token->token same-category refund cancelled remainder",
-      "txid": "36bb7247d22c2c99ec552c7fe8b1c306379c39229db73256d2e52be50f48f5e4",
-      "bytes": 5576
+      "txid": "98fed29a905dc285f2fd81f42c88378c50dd36fbc5ba92922a875cf3501d0703",
+      "bytes": 5602
     },
     {
       "label": "token->token same-category activate 1"
     },
     {
       "label": "token->token same-category activate 1",
-      "txid": "d8b5bfa1e57eead1d888f7a95c56f6daf1787d938a6884fe522511ae2c8d5309",
-      "bytes": 5505
+      "txid": "a1ee06a9015f3aad90ef1a6ef2e9df3e41817ff34dec6452f6651f4c877ac815",
+      "bytes": 5531
     },
     {
       "label": "token->token same-category settle 1"
     },
     {
       "label": "token->token same-category settle 1",
-      "txid": "d754645133e945fae44c6014b73fad5b20608095384afefa4e526aad47e6a286",
-      "bytes": 5655
+      "txid": "5feba19761e9d8a1778ad2890f1d9e0f5d17aa90e0b5282c2046de5a258fbb33",
+      "bytes": 5681
     },
     {
       "label": "token->token same-category activate 2"
     },
     {
       "label": "token->token same-category activate 2",
-      "txid": "883806e6faa4a35cfa0abf0c49ccfa25fb1255b56c206b475a60b56d88608bc3",
-      "bytes": 5505
+      "txid": "677fbfc3520673c9504278140ca8bb145824789062008f59428ba80334e5297f",
+      "bytes": 5531
+    },
+    {
+      "label": "token->token same-category cancel activated winner for future periods"
+    },
+    {
+      "label": "token->token same-category cancel activated winner for future periods",
+      "txid": "46a92bbee372d43a41ce2df287cfee240aa411e22b10b9761e051870f574fde9",
+      "bytes": 5531
     },
     {
       "label": "token->token same-category settle 2"
     },
     {
       "label": "token->token same-category settle 2",
-      "txid": "10b270802b54ef754a3a203fa907b45bbb85b87dfe5fb7a0a34fa031b4d2e500",
-      "bytes": 5618
+      "txid": "0c097c87b507f731e2fd50716c4b5a6fd26f2979d5c604160b09e2cb2cf38708",
+      "bytes": 5644
     },
     {
       "label": "token->token same-category rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->token same-category rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->token same-category independent withdrawal 0",
-      "txid": "b6dafeda7e6da88aa569fc2b05e6eaf6a81922032e4eb1063851aba5ce773259",
+      "txid": "3ed839ce94768e4bb7ba7b6e608979136977ff2616ef7e373c035698e66dfe25",
       "bytes": 664
     },
     {
@@ -939,10 +1341,14 @@
     {
       "label": "token->token same-category rejects invalid withdrawal signature",
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
+    },
+    {
+      "label": "token->token same-category rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
     },
     {
       "label": "token->token same-category independent withdrawal 1",
-      "txid": "97720c95f267126c20c67eacc3f6c28aed897713e3bc763a339634c83f839bd0",
+      "txid": "ceaa8fab6556e46f4ba955423db796f2070c4c88a01b5fd69e962724e002e671",
       "bytes": 664
     },
     {
@@ -954,13 +1360,21 @@
       "rejected": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
     },
     {
+      "label": "token->token same-category rejects early maturity",
+      "rejected": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
+    },
+    {
       "label": "token->token same-category independent withdrawal 2",
-      "txid": "351479a24a7d47746f6225dab926008af2b5021f47a7923e1a0973dc61c21582",
+      "txid": "72fe6397b7ba279b073f1566949c22f61fb8248530cee79d8a79c5aa35c23750",
       "bytes": 664
     },
     {
       "label": "token->token same-category duplicate withdrawal",
       "rejected": "18: txn-already-known"
+    },
+    {
+      "label": "token->token same-category withdrawal reorganization restored",
+      "block": "21efb3f13c46a1056e94e05681a35bec274aa7921eb0aab4180830abc0a6783f"
     },
     {
       "label": "token->token same-category",
@@ -968,18 +1382,68 @@
       "finalRewards": "9",
       "allocations": [
         {
-          "outpoint": "9b2cabc537cc60380b5aea56d944b86f71606b3063eb6b871b155c4138718a19:4",
-          "maturity": 1794472530
+          "outpoint": "2c1a7c40fbb339adef52cab5266d38c1d1b3aa273d798753006746db3c60cadb:4",
+          "maturity": 1794476626
         },
         {
-          "outpoint": "d754645133e945fae44c6014b73fad5b20608095384afefa4e526aad47e6a286:4",
-          "maturity": 1794472540
+          "outpoint": "5feba19761e9d8a1778ad2890f1d9e0f5d17aa90e0b5282c2046de5a258fbb33:4",
+          "maturity": 1794476636
         },
         {
-          "outpoint": "10b270802b54ef754a3a203fa907b45bbb85b87dfe5fb7a0a34fa031b4d2e500:4",
-          "maturity": 1794472550
+          "outpoint": "0c097c87b507f731e2fd50716c4b5a6fd26f2979d5c604160b09e2cb2cf38708:4",
+          "maturity": 1794476646
         }
       ]
     }
-  ]
+  ],
+  "contractBodies": {
+    "RegistryV2": {
+      "executableBodySha256": "ebc699fb9daf1c63c0a945428002ea8ba200075c43b59e7ad669c999dbdcaaf5",
+      "bodyBytes": 3013,
+      "compiler": {
+        "name": "cashc",
+        "version": "0.14.0",
+        "options": {
+          "enforceFunctionParameterTypes": true,
+          "enforceLocktimeGuard": true
+        }
+      }
+    },
+    "RegistryGenesisV2": {
+      "executableBodySha256": "1a32defc3dabb63179d274844fc330a7ef01fbc97575dc8c026618050c2bafae",
+      "bodyBytes": 5150,
+      "compiler": {
+        "name": "cashc",
+        "version": "0.14.0",
+        "options": {
+          "enforceFunctionParameterTypes": true,
+          "enforceLocktimeGuard": true
+        }
+      }
+    },
+    "AssetRoleV2": {
+      "executableBodySha256": "17dc5fe5f8ed138f9f0ad5e214b27e8298f9498cc0127b7cc1c70473e043f0b9",
+      "bodyBytes": 37,
+      "compiler": {
+        "name": "cashc",
+        "version": "0.14.0",
+        "options": {
+          "enforceFunctionParameterTypes": true,
+          "enforceLocktimeGuard": true
+        }
+      }
+    },
+    "StakeAllocationV2": {
+      "executableBodySha256": "096ce1bcb1678c09887a24bf131de7d2c892fcf05d6405480ea00ac9881e7631",
+      "bodyBytes": 216,
+      "compiler": {
+        "name": "cashc",
+        "version": "0.14.0",
+        "options": {
+          "enforceFunctionParameterTypes": true,
+          "enforceLocktimeGuard": true
+        }
+      }
+    }
+  }
 }

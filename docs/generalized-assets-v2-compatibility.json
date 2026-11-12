@@ -1,0 +1,127 @@
+{
+  "baseline": "27b621b",
+  "checkedAt": "2026-11-12T11:49:35.302368+00:00",
+  "legacyArtifactsComparedExcluding": "updatedAt only",
+  "legacyCovenants": [
+    {
+      "path": "artifacts/DeadlineProbe.json",
+      "unchanged": true,
+      "sha256": "c455f7f876c6c40706f03826eae8d971f7a539185a075147d353d8272e0f7c5c"
+    },
+    {
+      "path": "artifacts/Example.json",
+      "unchanged": true,
+      "sha256": "2e8c9fa862aa3b7a217c941688b6b44b6eaf52fecae3ea5a5e578190fe1dea7f"
+    },
+    {
+      "path": "artifacts/LegacyRegistry.json",
+      "unchanged": true,
+      "sha256": "8ccae6389293f95f930e9676ebfe0349441e7ccef860afc10fbd00e57a1f3c75"
+    },
+    {
+      "path": "artifacts/PeriodOpen.json",
+      "unchanged": true,
+      "sha256": "56604c96a53fff815f58370fab7d02aa074e86ae10a97aa7b936fb1d2ad5d6af"
+    },
+    {
+      "path": "artifacts/Registry.json",
+      "unchanged": true,
+      "sha256": "0f4fff79105456d03cee09c224480ef5d96484da6f6e006951c9d4a5c786a78e"
+    },
+    {
+      "path": "artifacts/RegistryDeposit.json",
+      "unchanged": true,
+      "sha256": "cb75a8bf745b41d1369ef2b8cb51070c1d123028335026f5bfc35875ecbf289c"
+    },
+    {
+      "path": "artifacts/RegistryGenesis.json",
+      "unchanged": true,
+      "sha256": "1b52d85bcac06ab3e6008a76b8eea412bc2dc64f3ea6778c0c36c4dfb790bfe9"
+    },
+    {
+      "path": "artifacts/StakeAllocation.json",
+      "unchanged": true,
+      "sha256": "64e7a3643e1f9f52944d9e468417951a5b90e7cb276d1318b75f088dd036563a"
+    },
+    {
+      "path": "artifacts/StakeLock.json",
+      "unchanged": true,
+      "sha256": "47980e063b6739426c88851e1d153c2eb4acaa34c3f49c2fc1b81027b8973ce6"
+    },
+    {
+      "path": "artifacts/StakePool.json",
+      "unchanged": true,
+      "sha256": "a56e580de9b07d681fbdece0d9f35c69bc85d94e3893cb3bc6660ed15088450b"
+    },
+    {
+      "path": "artifacts/Vault.json",
+      "unchanged": true,
+      "sha256": "cc648931705c7588cc2a95c17748792165e240f661c66f945c5385b425236814"
+    },
+    {
+      "path": "contracts/DeadlineProbe.cash",
+      "unchanged": true,
+      "sha256": "e319b70ceda7ef96a34bb289cf93d920ccf59c032bb8551b7e11ce5d6fe3357e"
+    },
+    {
+      "path": "contracts/Example.cash",
+      "unchanged": true,
+      "sha256": "001cc656efd6f9317b81b4e7f075c14d18ba7028bd1bb8513dccdf6d6e422c11"
+    },
+    {
+      "path": "contracts/LegacyRegistry.cash",
+      "unchanged": true,
+      "sha256": "85b561359b4e07666df02c9a2e77f6bd2523744d61bd99d97c41ad83133d0f91"
+    },
+    {
+      "path": "contracts/PeriodOpen.cash",
+      "unchanged": true,
+      "sha256": "cc1409c7fd87013d7dd5755d7ace229bc6e0a58e619478873bfd7d11d4fe0ec0"
+    },
+    {
+      "path": "contracts/Registry.cash",
+      "unchanged": true,
+      "sha256": "bbbe6eec48ced170746fbb5ee0564ec19a53bce3072e2e7cd451dcff177beccb"
+    },
+    {
+      "path": "contracts/Registry.template.cash",
+      "unchanged": true,
+      "sha256": "098e6c4e3d2c53644ead05bd3c85b713792937bcace012b89033afdad3cd40bc"
+    },
+    {
+      "path": "contracts/RegistryDeposit.cash",
+      "unchanged": true,
+      "sha256": "a4f9d0be83792a945df3338db69699e40a9ef0b4db0e65c7e60b78fe6ccdb2ce"
+    },
+    {
+      "path": "contracts/RegistryGenesis.cash",
+      "unchanged": true,
+      "sha256": "1cb711fac51f1746c0363750b41c779b8880dbf6de04130dc35202653f139cf7"
+    },
+    {
+      "path": "contracts/RegistryGenesis.template.cash",
+      "unchanged": true,
+      "sha256": "7d89bde5a72180437898566abdedc6a9600ba6e0e989462057519e211f141bcb"
+    },
+    {
+      "path": "contracts/StakeAllocation.cash",
+      "unchanged": true,
+      "sha256": "d2dd8ab842ef8635f972c6508fd7136e2be2f42f5dab7beba19d08cc0d9440d2"
+    },
+    {
+      "path": "contracts/StakeLock.cash",
+      "unchanged": true,
+      "sha256": "25caed9b9b28491cd397177a7f13e6d27b54c0cdcd5c081aac61e9da7704764c"
+    },
+    {
+      "path": "contracts/StakePool.cash",
+      "unchanged": true,
+      "sha256": "95b448b1915fd5f511b60e78f3fdca5437ad75e09d2be263b2770617e5ed9dd9"
+    },
+    {
+      "path": "contracts/Vault.cash",
+      "unchanged": true,
+      "sha256": "4a3efd6bbb73c3ba54fceeb61d05131fc45e4c082bcf5358a9738ae939eabaaa"
+    }
+  ]
+}

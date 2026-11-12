@@ -10,7 +10,7 @@ import { TokenRegtestProvider } from '../src/token-provider.js';
 import { allocationTerms, hashState, LIVE, nextState, offer, periodBoundary, RECORD_SIZE, remainingCommitment, SNAPSHOT, STATE_SIZE } from '../src/registry.js';
 
 const recoveryOnly = process.env.STAKING_RECOVERY_ONLY === '1';
-test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 600000 }, async () => {
+test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 1800000 }, async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const checkpoint = await rpc('getblockchaininfo');
@@ -36,6 +36,8 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
   const confirmedIds: string[] = [];
   const scriptFailure = /(?:non-)?mandatory-script-verify/;
   const mine = (n = 1) => rpc('generatetoaddress', [n, mining]);
+  let mockTime: number | undefined;
+  async function setTime(value: number) {mockTime = value;await rpc('setmocktime', [value]);await relay.peer('setmocktime', [value]);}
   function script(address: string) {
     const decoded = cashAddressToLockingBytecode(address);
     if (typeof decoded === 'string') throw Error(decoded);
@@ -66,7 +68,14 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
   }
   async function send(raw: string) {
     const txid = await provider.sendRawTransaction(raw);
-    await relay.until(async () => (await relay.peer<string[]>('getrawmempool')).includes(txid), `transaction ${txid}`);
+    // Relay inventory scheduling uses the mock clock too; tick it without wall-clock drift.
+    if (mockTime !== undefined) await setTime(mockTime + 1);
+    let nextTick = Date.now() + 1000;
+    await relay.until(async () => {
+      if ((await relay.peer<string[]>('getrawmempool')).includes(txid)) return true;
+      if (mockTime !== undefined && Date.now() >= nextTick) {await setTime(mockTime + 1);nextTick = Date.now() + 1000;}
+      return false;
+    }, `transaction ${txid}`);
     confirmedIds.push(txid); return txid;
   }
   // Mint a finite real fungible-token supply; no minting NFT is created or retained.
@@ -212,7 +221,8 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
     }
     async function activate() {
       const p = state.readUInt32LE(0);
-      while (Date.now() / 1000 <= boundary(p) + 2) await new Promise(resolve => setTimeout(resolve, 250));
+      const target = Math.max(boundary(p) + 3, (await rpc('getblockchaininfo')).mediantime + 1, (mockTime ?? 0) + 1);
+      await setTime(target);
       await mine(12);
       assert.ok((await rpc('getblockchaininfo')).mediantime > boundary(p));
       await apply(await build(2), `activate period ${p}`);
@@ -244,7 +254,9 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
   // Register all sixteen slots and rank the entire immutable roster as before.
   const now = Math.max(Date.now() / 1000, (await rpc('getblockchaininfo')).mediantime);
   console.log('Allocation verification: token genesis ready');
-  const f = await fixture('live allocations', { epoch: Math.floor(now / 60) * 60, periodSeconds: 60 });
+  const liveEpoch = Math.ceil(now / 60) * 60 + 60;
+  await setTime(liveEpoch + 3);
+  const f = await fixture('live allocations', { epoch: liveEpoch, periodSeconds: 60 });
   const records = owners.map((owner, i) => offer(owner.publicKey, i === 0 || i === 15 ? 6000 : 1000, 3, 1000, i === 0 ? 3 : 2));
   const wrongDeposit = await otherTokens.fundingTokens(18000n);
   await check((await f.build(0, 0, records[0]!, { funding: wrongDeposit, poolCategory: otherTokens.category })).raw,
@@ -444,5 +456,8 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
     accepted: evidence.filter(e => e.result?.allowed === true).length, rejected: evidence.filter(e => e.result?.allowed === false).length,
     confirmedTransactions: confirmedIds.length, relayedTransactions: confirmedIds.length, relayPeerDatadir: relay.directory, standardPolicy: 'acceptnonstdtxn=0 on both nodes', ...(contractSizes ?? { registryBytes: recovery.registry.bytesize, poolBytes: recovery.pool.bytesize, allocationBytes: recoveredAllocation.contract.bytesize }),
     feePayerPublicKey: binToHex(feePayer.publicKey), initialFunderPublicKey: binToHex(depositor.publicKey), stakeOwnerPublicKey: binToHex(owners[1]!.publicKey), stateBytes: STATE_SIZE, evidence }, null, 2) + '\n');
-  } finally { await relay.close(); }
+  } finally {
+    await rpc('setmocktime', [0]);
+    try { await relay.peer('setmocktime', [0]); } finally { await relay.close(); }
+  }
 });

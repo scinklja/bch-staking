@@ -157,3 +157,35 @@ actual wallet support for Schnorr ALL|UTXOS signing of these contract layouts,
 and verify recovery/reorg behavior on the public providers. A supported signing
 method is checked before requesting approval, and incompatible returned signatures
 are rejected locally. Local simulated-wallet success is not real-wallet evidence.
+
+The accumulated local regtest chain now includes thousands of historical covenant
+transactions. A clean, independently validating loopback relay peer exceeded the
+old three-minute initial-sync deadline before reaching the current tip. The local
+relay fixture now allows ten minutes for initial sync, prints progress, and the
+two relay-dependent tests have longer outer deadlines. Consensus, mempool policy,
+independent validation and assertion coverage are unchanged.
+
+The v2 keeper coordinator is `src/v2/keeper.ts`. Read-only polling reports waiting,
+complete, pending, or sponsorship-required. Processing always refreshes canonical
+state and asks the wallet funding flow to sponsor the exact next activation or
+settlement. It holds no private key and never automatically requests wallet
+approval. Existing v1 background keeper operation is unchanged. The UI and v2
+worker modules load lazily; legacy vault pages do not load the v2 covenant family.
+Signed funding plans and bytes are retained after confirmation as well as signed
+action transactions, so a removed funding confirmation remains recoverable.
+
+Wallet funding validation also rechecks persisted preparations: the exact factory,
+full reserve or S×W commitment, exact BCH sponsor, no NFTs or unrelated categories,
+all fungible change conserved, and all wallet change returned to the owner.
+The fixed covenant fee is 10,000 satoshis. It is not a floating fee-rate target;
+a future relay policy requiring more than that absolute fee for these templates
+would require a new covenant version rather than drawing from protected funds.
+
+A review hardened v2 pairing at the covenant layer: inputs 0/1/2 must spend
+outputs 0/1/2 of the *same parent transaction*. Equivalent externally donated
+escrow or reserve UTXOs cannot replace that lineage. This matches browser
+validation and prevents accepted raw transitions that the browser cannot project.
+The test uses genuine separately funded escrow with a freshly valid sponsor
+signature, then verifies BCHN rejection of the substitution. Standalone donations
+to role addresses are outside the canonical protocol and are not recoverable;
+normal funding always uses the explicit preparation/genesis/registration layouts.

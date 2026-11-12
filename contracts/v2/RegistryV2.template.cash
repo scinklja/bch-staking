@@ -1,12 +1,15 @@
 pragma cashscript ^0.14.0;
 // V2: three protected roles and mandatory external fee funding.
-// Inputs: 0 registry NFT, 1 token pool, [2 registration tokens], [optional BCH fee sponsor].
-// Outputs: 0 registry NFT, 1 token pool, [2 reward/refund], [3 independent allocation].
-// State: period(4), phase(1), count(1), live(16*49), snapshot(16*49).
-// Record: pubkey(33), S token units(4), T periods(4), R BCH sats(4), W(1), wins(1), cancelled(1), refunded(1).
+// Inputs: 0 state NFT, 1 escrow, 2 reserve, [3 registration commitment], last BCH sponsor.
+// Outputs: 0 state NFT, 1 escrow, 2 reserve, [3 reward/refund], [4 independent allocation].
+// State: period(4), phase(1), count(1), live(16*49), snapshot(16*49), reward units(4).
+// Record: pubkey(33), S raw units(4), T periods(4), R raw units(4), W(1), wins(1), cancelled(1), refunded(1).
 contract RegistryV2(bytes32 category, bytes64 assets, int epoch, int periodSeconds, int periods, int cap) {
     function transition(bytes state, int action, int slot, bytes record, sig authorization) {
         require(this.activeInputIndex == 0);
+        require(tx.inputs[0].outpointIndex == 0);
+        require(tx.inputs[1].outpointTransactionHash == tx.inputs[0].outpointTransactionHash && tx.inputs[1].outpointIndex == 1);
+        require(tx.inputs[2].outpointTransactionHash == tx.inputs[0].outpointTransactionHash && tx.inputs[2].outpointIndex == 2);
         require(epoch >= 500000000 && periodSeconds > 0);
         require(periods > 0 && periods <= 16 && cap >= 1 && cap <= 1000000);
         // Four-byte positive Script numbers, including the latest possible maturity.

@@ -7,7 +7,7 @@ import { rpc, assertRegtest } from '../src/rpc.js';
 import { TokenRegtestProvider } from '../src/token-provider.js';
 import { relayPeer } from '../src/relay-peer.js';
 
-test('BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms', { timeout: 120000 }, async () => {
+test('BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms', { timeout: 900000 }, async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const checkpoint = await rpc('getblockchaininfo');

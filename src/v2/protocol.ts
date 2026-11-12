@@ -1,3 +1,5 @@
+import {ZERO,FEE,CARRIER,assetId,assetBytes,validateParameters,validateTerms,exactPriority,decision,type Asset,type Parameters,type Terms} from './model.js';
+export {ZERO,FEE,CARRIER,assetId,assetBytes,validateParameters,validateTerms,exactPriority,decision,type Asset,type Parameters,type Terms} from './model.js';
 import {Buffer} from '../bytes.js';
 import {Contract,Network,TransactionBuilder,type NetworkProvider,type SpendableUtxo,type SignatureTemplate,type Unlocker} from 'cashscript';
 import {binToHex,encodeCashAddress,hash160} from '@bitauth/libauth';
@@ -8,22 +10,8 @@ import StakeAllocationV2 from '../../artifacts/StakeAllocationV2.json' with {typ
 import {allocationTerms,hashState,nextState,offer,periodBoundary,remainingCommitment,STATE_SIZE,uint} from '../registry.js';
 import {records,rankings} from '../arena-core.js';
 import {sourceOutput,validateKeeperTransaction,type KeeperClock,type Sponsor} from '../keeper-core.js';
-export type Asset={kind:'bch'}|{kind:'token';category:string};
-export interface Parameters {version:2;stakingAsset:Asset;rewardAsset:Asset;epoch:number;periodSeconds:number;periods:number;cap:bigint}
 export interface Instance {parameters:Parameters;category:string;state:Buffer;inputs:[SpendableUtxo,SpendableUtxo,SpendableUtxo]}
-export interface Terms {stake:bigint;duration:number;reward:bigint;maxWins:number}
-export const ZERO='00'.repeat(32),FEE=10000n,CARRIER=1000n,V2_STATE_SIZE=STATE_SIZE+4;
-export function assetId(asset:Asset):string {
- if(asset.kind==='bch')return ZERO;
- if(asset.kind!=='token'||!/^[a-f0-9]{64}$/.test(asset.category)||asset.category===ZERO)throw Error('Invalid fungible asset category');
- return asset.category;
-}
-export function assetBytes(asset:Asset){return Buffer.from(assetId(asset),'hex').reverse();}
-export function validateParameters(p:Parameters) {
- if(p.version!==2)throw Error('Unsupported covenant version');assetId(p.stakingAsset);assetId(p.rewardAsset);
- if(typeof p.cap!=='bigint'||p.cap<(p.rewardAsset.kind==='bch'?1000n:1n)||p.cap>1000000n||!Number.isInteger(p.periods)||p.periods<1||p.periods>16)throw Error('Invalid period count or raw reward cap');
- periodBoundary(p,2*p.periods-1);return p;
-}
+export const V2_STATE_SIZE=STATE_SIZE+4;
 export function initialState(p:Parameters){validateParameters(p);return Buffer.concat([Buffer.alloc(STATE_SIZE),uint(Number(p.cap*BigInt(p.periods)),4)]);}
 export function rewardRemaining(state:Uint8Array){if(state.length!==V2_STATE_SIZE)throw Error('Invalid v2 state length');return BigInt(Buffer.from(state).readUInt32LE(STATE_SIZE));}
 export function advance(state:Uint8Array,action:number,slot=0,record=new Uint8Array()) {
@@ -32,11 +20,6 @@ export function advance(state:Uint8Array,action:number,slot=0,record=new Uint8Ar
  if(q<reward)throw Error('Reward reserve exhausted');
  return Buffer.concat([nextState(s.subarray(0,STATE_SIZE),action,slot,record),uint(Number(q-reward),4)]);
 }
-export function validateTerms(p:Parameters,t:Terms){
- if(typeof t.stake!=='bigint'||typeof t.reward!=='bigint'||t.stake<1000n||t.stake>1000000n||t.reward<(p.rewardAsset.kind==='bch'?1000n:1n)||t.reward>p.cap||!Number.isInteger(t.duration)||t.duration<1||t.duration>p.periods||!Number.isInteger(t.maxWins)||t.maxWins<1||t.maxWins>p.periods)throw Error('Invalid offer raw units or periods');
- return t.stake*BigInt(t.maxWins);
-}
-export function exactPriority(t:Terms){return {numerator:t.stake*BigInt(t.duration),denominator:t.reward};}
 function network(p:NetworkProvider){if(p.network!==Network.REGTEST&&p.network!==Network.CHIPNET)throw Error('V2 is regtest/chipnet only');}
 const artifacts={RegistryV2,RegistryGenesisV2,AssetRoleV2,StakeAllocationV2};
 export function covenant(name:keyof typeof artifacts,args:(bigint|Uint8Array)[],provider:NetworkProvider){network(provider);return new Contract(artifacts[name],args,{provider,contractType:'p2sh32'});}
@@ -97,5 +80,4 @@ export function withdrawalBuilder(input:SpendableUtxo,terms:Buffer,owner:Signatu
  if(input.lockingBytecode!==a.lockingBytecode||!matches(input,asset,amount,asset.kind==='bch'?0n:CARRIER)||sponsor.input.token||sponsor.input.satoshis!==FEE)throw Error('Invalid withdrawal source or external fee');
  return new TransactionBuilder({provider}).setLocktime(terms.readUInt32LE(74)).addInput(input,a.unlock.withdraw(owner)).addInput(sponsor.input,sponsor.unlocker).addOutput({to:ownerAddress(terms.subarray(0,33),provider),...assetOutput(asset,amount,asset.kind==='bch'?0n:CARRIER)});
 }
-export function decision(v:Instance,clock:KeeperClock){const period=v.state.readUInt32LE(0);if(period>=v.parameters.periods)return {phase:'complete'} as const;if(!v.state[4]&&clock.mtp<=periodBoundary(v.parameters,period))return {phase:'waiting'} as const;const ranked=rankings(v.state,true);return {phase:'ready',action:v.state[4]?(ranked.length?3:5):2,slot:v.state[4]&&ranked.length?ranked[0]!.slot:0} as const;}
 export function validateBuilt(raw:string,inputs:SpendableUtxo[],clock:KeeperClock){return validateKeeperTransaction(raw,inputs.map(sourceOutput),clock,FEE);}

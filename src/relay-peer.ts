@@ -1,13 +1,15 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { rpc } from './rpc.js';
 
 /** Temporary loopback-only BCHN peer. Never shares or replaces the development datadir. */
 export async function relayPeer() {
-  const directory = await mkdtemp(join(tmpdir(), 'staking-standard-relay-'));
+  const cached = globalThis.process.env.ARENA_RELAY_CACHE === '1';
+  const directory = cached ? join(globalThis.process.cwd(), '.regtest/relay-policy') : await mkdtemp(join(tmpdir(), 'staking-standard-relay-'));
+  if(cached)await mkdir(directory,{recursive:true,mode:0o700});
   await writeFile(join(directory, 'bitcoin.conf'), `regtest=1
 server=1
 listen=1
@@ -57,16 +59,17 @@ rpcport=18446
     await rpc('addnode', ['127.0.0.1:18445', 'onetry']);
     const tip = (await rpc('getblockchaininfo')).bestblockhash;
     // RPC readiness can precede the peer's P2P listener; retry loopback dialing if necessary.
-    let lastDial=Date.now(), observed: any;
+    let lastDial=Date.now(), lastSyncReport=Date.now(), observed: any;
     try {
       await until(async () => {
         observed=await peer('getblockchaininfo');
         if(observed.bestblockhash===tip)return true;
+        if(Date.now()-lastSyncReport>30000){lastSyncReport=Date.now();console.log(`Loopback relay initial sync: height ${observed.blocks}, headers ${observed.headers}`);}
         if(Date.now()-lastDial>2000 && !(await peer('getpeerinfo')).length) {
           lastDial=Date.now();await rpc('addnode',['127.0.0.1:18445','onetry']);
         }
         return false;
-      }, 'initial block sync', 180000);
+      }, 'initial block sync', 600000);
     } catch(error) { throw Error(`${String(error)}; local tip ${tip}; peer ${JSON.stringify(observed)}`); }
     assert.equal((await peer('getnetworkinfo')).connections, 1);
     return { directory, peer, until, close };

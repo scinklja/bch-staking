@@ -29,18 +29,32 @@ test('v2 real BCHN: four asset pairs and same-category tokens with protected bal
   console.log('Testing',label);const info=await rpc('getblockchaininfo'),p:Parameters={version:2,stakingAsset,rewardAsset,epoch:info.mediantime-10000,periodSeconds:10,periods:3,cap:rewardAsset.kind==='bch'?2000n:10n};
   const factory=covenant('RegistryGenesisV2',parameterArgs(p),provider),fund=await bch(22000n),pre=await new TransactionBuilder({provider}).addInput(fund,deposit.unlock.spend(owner)).addOutput({to:factory.address,amount:12000n}).send();
   const rewardFunding=await funds(rewardAsset,p.cap*3n),g=genesisBuilder(p,await out(pre.txid),unlock(rewardFunding),provider);
-  const genesis=await send(g.builder.build(),label+' genesis');let v:Instance={parameters:p,category:pre.txid,state:g.state,inputs:[await out(genesis,0),await out(genesis,1),await out(genesis,2)]};
+  const genesisRaw=g.builder.build(),badGenesis=decodeTransaction(hexToBin(genesisRaw));if(typeof badGenesis==='string')throw Error(badGenesis);
+  const badReserve=structuredClone(badGenesis);if(rewardAsset.kind==='bch')badReserve.outputs[2]!.valueSatoshis-=1n;else badReserve.outputs[2]!.token!.amount-=1n;
+  await reject(binToHex(encodeTransaction(badReserve)),label+' underfunded genesis reserve');
+  const genesis=await send(genesisRaw,label+' genesis');let v:Instance={parameters:p,category:pre.txid,state:g.state,inputs:[await out(genesis,0),await out(genesis,1),await out(genesis,2)]};
   validateInstance(v,provider);const allocations:{input:SpendableUtxo;terms:Buffer}[]=[];
   const terms={stake:3000n,duration:2,reward:rewardAsset.kind==='bch'?1000n:7n,maxWins:3};
   assert.deepEqual(exactPriority(terms),{numerator:6000n,denominator:terms.reward});
-  async function build(action:number,slot=0,signer=owner){const clock={height:(await rpc('getblockcount')),mtp:(await rpc('getblockchaininfo')).mediantime};const sponsor=unlock(await bch(sponsorAmount(v,action))),registration=action===0?{owner:signer.publicKey,terms,funding:unlock(await funds(stakingAsset,9000n,0n))}:undefined;
+  async function build(action:number,slot=0,signer=owner,feeDelta=0n){const clock={height:(await rpc('getblockcount')),mtp:(await rpc('getblockchaininfo')).mediantime};const sponsor=unlock(await bch(sponsorAmount(v,action)+feeDelta)),registration=action===0?{owner:signer.publicKey,terms,funding:unlock(await funds(stakingAsset,9000n,0n))}:undefined;
    const built=transitionBuilder(v,action,slot,provider,clock,sponsor,signer,registration);return {...built,clock};}
   async function apply(built:Awaited<ReturnType<typeof build>>,name:string){console.log(label,name);const raw=built.builder.build();validateBuilt(raw,built.sources,built.clock);const usage=label==='token->bch'&&name==='settle first'?built.builder.getVmResourceUsage():undefined;evidence.push({label:label+' '+name,vm:usage});const id=await send(raw,label+' '+name);if(built.terms)allocations.push({input:await out(id,4),terms:built.terms});v={...v,state:built.state,inputs:[await out(id,0),await out(id,1),await out(id,2)]};validateInstance(v,provider);assert.equal(v.inputs[0].satoshis,1000n);return {raw,id};}
   await apply(await build(0,0),'register first');await apply(await build(0,1),'register exact tie');assert.equal(remainingCommitment(v.state),18000n);assert.equal(rankings(v.state)[0]!.slot,0);
+  const extraEscrow=label==='token->bch'?126000n:0n;
+  if(extraEscrow)for(let slot=2;slot<16;slot++)await apply(await build(0,slot),'register full-roster slot '+slot);
   await apply(await build(2),'activate');await reject(binToHex(encodeTransaction(((await build(3,1)).builder as any).buildLibauthTransaction(true))),label+' rejects later tied winner');
   const beforeCancel=Buffer.from(v.state.subarray(790,1574));await apply(await build(1,1),'cancel frozen loser');assert.deepEqual(v.state.subarray(790,1574),beforeCancel);
   await reject(binToHex(encodeTransaction(((await build(4,1)).builder as any).buildLibauthTransaction(true))),label+' rejects active refund');
+  for(const delta of [-1n,1n])await reject(binToHex(encodeTransaction(((await build(3,0,owner,delta)).builder as any).buildLibauthTransaction(true))),label+' rejects incorrect sponsor fee '+delta);
   const settlement=await build(3,0),valid=settlement.builder.build(),decoded=decodeTransaction(hexToBin(valid));assert.notEqual(typeof decoded,'string');if(typeof decoded==='string')throw Error(decoded);
+  // A separately funded, equivalent escrow cannot replace the canonical paired outpoint.
+  const cs=(await import('../src/v2/protocol.js')).family(p,v.category,provider);
+  for(const index of [1,2] as const){const asset=index===1?stakingAsset:rewardAsset,amount=index===1?remainingCommitment(v.state):rewardRemaining(v.state),donor=await funds(asset,amount),donorFee=await bch(10000n+BigInt(index)*1000n);
+   const donation=new TransactionBuilder({provider}).addInput(donor,deposit.unlock.spend(owner)).addInput(donorFee,deposit.unlock.spend(owner));for(let i=0;i<index;i++)donation.addOutput({to:deposit.address,amount:1000n});donation.addOutput({to:index===1?cs.escrow.tokenAddress:cs.reserve.tokenAddress,...assetOutput(asset,amount)});
+   const donated=await send(donation.build(),label+' noncanonical role '+index+' donation'),replacement=await out(donated,index),substituted=structuredClone(decoded),subSources=settlement.sources.map(sourceOutput);substituted.inputs[index]!.outpointTransactionHash=hexToBin(replacement.txid);substituted.inputs[index]!.outpointIndex=index;subSources[index]=sourceOutput(replacement);
+   substituted.inputs[3]!.unlockingBytecode=deposit.unlock.spend(owner).generateUnlockingBytecode({transaction:substituted,sourceOutputs:subSources,inputIndex:3});
+   await reject(binToHex(encodeTransaction(substituted)),label+' rejects equivalent noncanonical role '+index+' parent');
+  }
   const mutate=async(name:string,change:(tx:Transaction)=>void)=>{const tx=structuredClone(decoded);change(tx);await reject(binToHex(encodeTransaction(tx)),label+' '+name);};
   await mutate('rejects diverted reward',tx=>{tx.outputs[3]!.valueSatoshis-=1n;});
   await mutate('rejects diverted escrow',tx=>{tx.outputs[1]!.valueSatoshis-=1n;});
@@ -56,9 +70,9 @@ test('v2 real BCHN: four asset pairs and same-category tokens with protected bal
   }
   if(stakingAsset.kind==='token')await mutate('rejects wrong stake category',tx=>{tx.outputs[4]!.token!.category=hexToBin('ab'.repeat(32));});
   const settled=await apply(settlement,'settle first');await reject(settled.raw,label+' rejects duplicate settlement');
-  assert.equal(remainingCommitment(v.state),15000n);assert.equal(rewardRemaining(v.state),p.cap*3n-terms.reward);
-  await apply(await build(4,1),'refund cancelled remainder');assert.equal(remainingCommitment(v.state),6000n);
-  for(let i=1;i<3;i++){await apply(await build(2),'activate '+i);await apply(await build(3),'settle '+i);assert.equal(remainingCommitment(v.state),BigInt(2-i)*3000n);assert.equal(rewardRemaining(v.state),p.cap*3n-BigInt(i+1)*terms.reward);}
+  assert.equal(remainingCommitment(v.state),15000n+extraEscrow);assert.equal(rewardRemaining(v.state),p.cap*3n-terms.reward);
+  await apply(await build(4,1),'refund cancelled remainder');assert.equal(remainingCommitment(v.state),6000n+extraEscrow);
+  for(let i=1;i<3;i++){await apply(await build(2),'activate '+i);if(i===2)await apply(await build(1,0),'cancel activated winner for future periods');await apply(await build(3),'settle '+i);assert.equal(remainingCommitment(v.state),BigInt(2-i)*3000n+extraEscrow);assert.equal(rewardRemaining(v.state),p.cap*3n-BigInt(i+1)*terms.reward);}
   assert.equal(allocations.length,3);assert.equal(new Set(allocations.map(a=>a.input.txid)).size,3);
   for(let i=0;i<3;i++){
    const allocation=allocations[i]!;assert.equal(allocation.terms.readUInt32LE(74),p.epoch+(i+2)*10);
