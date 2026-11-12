@@ -1,8 +1,11 @@
 import { EventEmitter } from 'node:events';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { initiateDappRelay, PROTOCOL_NAME, RelayMsgAction } from '@wizardconnect/core';
 import WalletConnect from '../src/WalletConnect';
+import { browserWalletClient } from '../src/browserWalletClient';
+
+vi.mock('../src/browserWalletClient', () => ({ browserWalletClient: vi.fn(() => ({ browser:true, close:vi.fn() })) }));
 
 // Exercise the real SDK hook and handshake manager with a local relay transport.
 vi.mock('@wizardconnect/core', async importOriginal => ({
@@ -50,11 +53,11 @@ it('starts pairing only on click and cancels with cleanup and cleared credential
   render(<WalletConnect/>);
   expect(initiateDappRelay).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole('button', { name: 'Connect Wallet' }));
-  expect(screen.getByRole('dialog')).toBeVisible();
-  expect(screen.getByRole('textbox', { name: 'Connection URI' })).toHaveValue(uri);
-  expect(screen.getByRole('link', { name: 'Open wallet' })).toHaveAttribute('href', uri);
+  const dialog=screen.getByRole('dialog');expect(dialog).toBeVisible();
+  expect(within(dialog).getByLabelText('Connection URI')).toHaveValue(uri);
+  expect(within(dialog).getByRole('link', { name: 'Open wallet' })).toHaveAttribute('href', uri);
   expect(localStorage.getItem(sessionKey)).toContain('test-private-key');
-  fireEvent.click(screen.getByRole('button', { name: 'Cancel wallet connection' }));
+  fireEvent.click(within(dialog).getByRole('button', { name: 'Cancel wallet connection' }));
   await screen.findByRole('button', { name: 'Connect Wallet' });
   expect(cleanup).toHaveBeenCalledOnce();
   expect(localStorage.getItem(sessionKey)).toBeNull();
@@ -72,6 +75,18 @@ it('handles a real SDK wallet-ready handshake, persists the session and disconne
   expect(client.relay).toHaveBeenCalledWith(expect.objectContaining({ action: RelayMsgAction.Disconnect }));
   expect(client.relay.mock.calls.every(([message]) => message.action !== RelayMsgAction.SignTransactionRequest)).toBe(true);
   expect(localStorage.getItem(sessionKey)).toBeNull();
+});
+
+it('keeps the browser worker across repeated identical wallet-ready messages', async () => {
+  const onTransactions=vi.fn();
+  render(<WalletConnect browser onTransactions={onTransactions}/>);
+  fireEvent.click(screen.getByRole('button', { name: 'Connect Wallet' }));
+  await walletReady();
+  vi.mocked(browserWalletClient).mockClear();
+  onTransactions.mockClear();
+  await walletReady();
+  expect(browserWalletClient).not.toHaveBeenCalled();
+  expect(onTransactions).not.toHaveBeenCalled();
 });
 
 it('restores a paired session without showing another QR code', async () => {

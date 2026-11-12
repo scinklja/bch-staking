@@ -111,19 +111,20 @@ export class BrowserKeeper {
       this.set(vault.category,{phase:relayFeeFailure(String(error))?'blocked':'retrying',message:(relayFeeFailure(String(error))?'Fixed fee rejected; an external BCH fee sponsor is required. ':'Submission rejected or acknowledgement uncertain; reconciling before retry. ')+String(error),txid:intent.txid,nextRetryAt:intent.nextRetryAt,...details});
     }
   }
-  private async verifyCurrent(p:ElectrumCore,vault:VaultState) {
-    const expected=this.index.tip!,tip=await p.tip();
+  private async verifyCurrent(p:ElectrumCore,vault:VaultState) {return verifyCanonicalVault(this.index,p,vault);}
+}
+export async function verifyCanonicalVault(index:ElectrumIndexer,p:ElectrumCore,vault:VaultState) {
+    const expected=index.tip!,tip=await p.tip();
     if(tip.height!==expected.height || tip.hash!==expected.hash || await p.medianTime(tip.height,tip.hash)!==expected.mtp)throw Error('Electrum tip/MTP disagreement or stale indexed state');
     const tx=await p.transaction(vault.transaction.txid,vault.transaction.height);
     if(tx.height!==vault.transaction.height || tx.blockhash!==vault.transaction.blockhash || tx.confirmations<=0 || tx.height>tip.height)throw Error('Covenant input confirmation mismatch');
     for(const n of [0,1]) {
       const expectedUtxo=utxo(vault.transaction,n),script=expectedUtxo.lockingBytecode!;
-      const history=await p.history(script),known=this.index.histories.get(script);
+      const history=await p.history(script),known=index.histories.get(script);
       if(!known || historyKey(history)!==historyKey(known))throw Error('Electrum script history disagreement; resynchronization required');
       const actual=(await p.getUtxosForLockingBytecode(script)).find(u=>u.txid===expectedUtxo.txid&&u.vout===n);
       if(!actual || !sameUtxo(expectedUtxo,actual))throw Error('Covenant output is spent, pending, or disagrees across providers');
     }
     await p.verifyHeaderChain(tx.height,tip,new Map([[tx.height,tx.blockhash]]));
     if((await p.tip()).hash!==tip.hash)throw Error('Chain changed before settlement broadcast');
-  }
 }

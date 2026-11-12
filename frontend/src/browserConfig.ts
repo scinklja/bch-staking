@@ -1,3 +1,4 @@
+import {localVaultRecords} from './vaultCatalog';
 import defaults from '../../config/electrum-chipnet.json';
 import type { VaultConfig } from '../../src/arena-core';
 export type IndexerSource = 'api' | 'electrum' | 'off';
@@ -17,7 +18,8 @@ export function browserConfig(env: Record<string, string | undefined> = import.m
     const url = new URL(endpoint);
     if (url.protocol !== 'wss:' || url.username || url.password || url.hash || url.search) throw Error('Browser Electrum endpoints must be credential-free WSS URLs');
   }
-  const vaults: VaultConfig[] = env.VITE_ARENA_VAULTS ? JSON.parse(env.VITE_ARENA_VAULTS) : defaults.vaults;
+  const configured: VaultConfig[] = env.VITE_ARENA_VAULTS ? JSON.parse(env.VITE_ARENA_VAULTS) : defaults.vaults;
+  const vaults: VaultConfig[] = [...configured,...localVaultRecords().map(v=>v.config).filter(v=>!configured.some(c=>c.genesis===v.genesis))];
   if (!Array.isArray(vaults) || vaults.length > 32 || vaults.some(v=>!v || !/^[a-f0-9]{64}$/i.test(v.genesis) || !/^[a-f0-9]{64}$/i.test(v.stakingCategory)
     || !Number.isInteger(v.epoch) || v.epoch < 500000000 || !Number.isInteger(v.periodSeconds) || v.periodSeconds < 1
     || !Number.isInteger(v.periods) || v.periods < 1 || v.periods > 16 || !Number.isInteger(v.cap) || v.cap < 1000 || v.cap > 1000000

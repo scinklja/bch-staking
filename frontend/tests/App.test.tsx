@@ -37,10 +37,10 @@ it('keeps frozen snapshot competitors after a live cancellation',async()=>{
 it('calculates the offer preview with exact BCH conversion and never submits a transaction',async()=>{
  const data=fixture();window.location.hash='#/vault/'+data.vaults[0].category+'/offer';live(data);
  await screen.findByRole('heading',{name:'Make an Offer'});
- for(const [name,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const) fireEvent.change(screen.getByRole('textbox',{name}),{target:{value}});
+ for(const [name,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const) fireEvent.change(screen.getByLabelText(name),{target:{value}});
  expect(screen.getByText('6')).toBeInTheDocument();expect(screen.getByText('9,000 raw token units')).toBeInTheDocument();
  expect(screen.getByRole('button',{name:'Make an Offer'})).toBeDisabled();
- fireEvent.change(screen.getByRole('textbox',{name:/^Reward requested/}),{target:{value:'0'}});
+ fireEvent.change(screen.getByLabelText(/^Reward requested/),{target:{value:'0'}});
  expect(screen.getByText(/Requested reward must be at least/)).toBeInTheDocument();
  expect(screen.getByText('Chipnet test funds only')).toBeInTheDocument();
 });

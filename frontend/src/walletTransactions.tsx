@@ -3,8 +3,14 @@ import { stringify } from '@bitauth/libauth';
 import { createContext, useContext } from 'react';
 import { apiBaseUrl } from './api';
 export interface WalletTransactions {
+  browser?:boolean;
+  inventory?(limit?:number):Promise<import('../../src/electrum-wallet').WalletInventory>;
+  operations?():Promise<import('../../src/browser-wallet').WalletOperation[]>;
+  inspect?(id:string):Promise<import('../../src/browser-wallet').WalletOperation>;
+  importVault?(config:import('../../src/arena-core').VaultConfig):Promise<{config:import('../../src/arena-core').VaultConfig;category:string}>;
+  close?():void;
   publicKey(): string;
-  execute(intent: Record<string,unknown>): Promise<{txid:string;status:string}>;
+  execute(intent: Record<string,unknown>): Promise<{txid:string;status:string;operation?:import('../../src/browser-wallet').WalletOperation}>;
 }
 export const WalletTransactionsContext = createContext<WalletTransactions|null>(null);
 export const useWalletTransactions = () => useContext(WalletTransactionsContext);

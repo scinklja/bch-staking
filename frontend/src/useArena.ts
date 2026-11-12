@@ -5,6 +5,8 @@ import { apiBaseUrl } from './api';
 import { loadSnapshot, saveSnapshot } from './snapshot';
 export const REFRESH_MS = 10000;
 export function useArena() {
+  const [catalogVersion,setCatalogVersion]=useState(0);
+  useEffect(()=>{const changed=(event:Event)=>{if(event.type==='storage'&&(event as StorageEvent).key!=='arena-chipnet-local-vaults-v1')return;setPending(true);setCatalogVersion(v=>v+1);};window.addEventListener('arena-vault-catalog',changed);window.addEventListener('storage',changed);return()=>{window.removeEventListener('arena-vault-catalog',changed);window.removeEventListener('storage',changed);};},[]);
   const [config] = useState(() => {
     try { const base = apiBaseUrl(); return { base, source:indexerSource(base), error: null }; }
     catch (e) { return { base: null, source:'off' as const, error: (e as Error).message }; }
@@ -94,7 +96,7 @@ export function useArena() {
     const reconnect = () => { if (document.visibilityState === 'visible') void refresh(); };
     document.addEventListener('visibilitychange',reconnect); window.addEventListener('online',reconnect);
     return () => { stopped = true; clearTimeout(timer); clearInterval(clock); controller?.abort(); document.removeEventListener('visibilitychange',reconnect); window.removeEventListener('online',reconnect); };
-  },[endpoint, config.error, config.source]);
+  },[endpoint, config.error, config.source,catalogVersion]);
   const setAutomatic=useCallback((value:boolean)=>{pendingAutomatic.current=value;automaticRef.current=value;setAutomaticState(value);try{localStorage.setItem('arena-chipnet-automatic-settlement',String(value));}catch{}controls.current({type:'keeper-settings',automatic:value});},[]);
   const processPeriod=useCallback((category:string)=>controls.current({type:'process-period',category}),[]);
   return { automatic, setAutomatic, settlements, processPeriod, data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };

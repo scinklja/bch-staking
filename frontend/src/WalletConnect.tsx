@@ -1,3 +1,4 @@
+import {browserWalletClient} from './browserWalletClient';
 import { binToHex, hexToBin } from '@bitauth/libauth';
 import { transactionApi, wizardWireTransaction, type WalletTransactions } from './walletTransactions';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -36,7 +37,7 @@ function PairingDialog({ uri, qrUri, onClose }: { uri: string; qrUri: string; on
 
 const defaultRequirement = () => CHIPNET_NETWORK;
 
-export default function WalletConnect({ getRequiredNetwork = defaultRequirement, targetLabel = 'Application', onTransactions }: { getRequiredNetwork?: () => NetworkRequirement | null; targetLabel?: string; onTransactions?: (client: WalletTransactions | null) => void }) {
+export default function WalletConnect({ browser=false, getRequiredNetwork = defaultRequirement, targetLabel = 'Application', onTransactions }: { browser?:boolean; getRequiredNetwork?: () => NetworkRequirement | null; targetLabel?: string; onTransactions?: (client: WalletTransactions | null) => void }) {
   const control = useRef<HTMLDivElement>(null);
   const wasActive = useRef(false);
   const wallet = useWizardConnect({
@@ -48,14 +49,17 @@ export default function WalletConnect({ getRequiredNetwork = defaultRequirement,
   requirement.current = getRequiredNetwork;
   const networkSession = useMemo(() => new WalletNetworkSession(() => wallet.manager?.getSessionPaths() ?? []), [wallet.manager]);
   const transactions = useMemo(() => createStakingTransactionBoundary(networkSession, () => requirement.current()), [networkSession]);
-  const [, refreshNetwork] = useState(0);
+  const [networkRevision, refreshNetwork] = useState(0);
   useEffect(() => {
     const manager = wallet.manager;
     if (!manager) return;
     const ready = (message: WalletReadyMessage) => {
       const session = message.session.hdwalletv1 as { extensions?: unknown };
+      const previous = JSON.stringify(networkSession.read());
       networkSession.accept(session.extensions);
-      refreshNetwork(version => version + 1);
+      // Wallets may repeat an identical handshake. Keep ongoing public scans and
+      // explicit approvals alive unless the accepted identity/network changes.
+      if (JSON.stringify(networkSession.read()) !== previous) refreshNetwork(version => version + 1);
     };
     const invalidate = () => { networkSession.invalidate(); refreshNetwork(version => version + 1); };
     manager.on('walletready', ready);
@@ -75,10 +79,12 @@ export default function WalletConnect({ getRequiredNetwork = defaultRequirement,
   }, [wallet.manager, networkSession]);
   useEffect(() => {
     const manager = wallet.manager;
-    if (!manager || !onTransactions) return;
+    if (!onTransactions) return;
     function check() {
       assertChipnetTransactionSession(networkSession, requirement.current());
     }
+    if(browser) {const client=browserWalletClient(manager,check);onTransactions(client);return()=>{client.close?.();onTransactions(null);};}
+    if(!manager)return;
     const publicKey = () => {
       check();
       const key = manager!.getPubkey(0,0n);
@@ -99,7 +105,7 @@ export default function WalletConnect({ getRequiredNetwork = defaultRequirement,
       return transactionApi('submit',{id:prepared.id,signedTransaction:result.signedTransaction});
     }});
     return () => onTransactions(null);
-  }, [wallet.manager, networkSession, onTransactions]);
+  }, [wallet.manager, networkSession, onTransactions,browser,networkRevision]);
   const network = networkSession.read().network;
   const compatibility = transactions.check();
   const required = getRequiredNetwork();
@@ -136,7 +142,7 @@ export default function WalletConnect({ getRequiredNetwork = defaultRequirement,
     {active && <section className="wallet-network-note" role="status" aria-label="Wallet network compatibility">
       <strong>Wallet network: {network.label}</strong>
       <span>{targetLabel} requires: {required ? NETWORK_NAMES[required.network] : 'Unknown'}</span>
-      <p>{networkSession.read().connected && network.network === 'testnet' && required?.network === 'chipnet' ? 'Testnet key family. Before each signing request, the backend verifies transaction inputs on synchronized chipnet. The wallet protocol does not attest its exact test network.' : compatibility.reason}</p>
+      <p>{networkSession.read().connected && network.network === 'testnet' && required?.network === 'chipnet' ? 'Testnet key family. Before each signing request, the application verifies transaction inputs on synchronized chipnet. The wallet protocol does not attest its exact test network.' : compatibility.reason}</p>
     </section>}
     {(error || wallet.error) && <small className="wallet-error" role="alert">{error || 'Wallet connection failed. Try again.'}</small>}
     {wallet.state === 'connecting' && wallet.uri && wallet.qrUri && <PairingDialog uri={wallet.uri} qrUri={wallet.qrUri} onClose={() => { void disconnect(); }}/>}

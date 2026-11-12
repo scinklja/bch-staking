@@ -66,7 +66,11 @@ test('keeper daemon catches up empty periods after SIGKILL and rejects a shared 
     const deadline=Date.now()+120000;
     while(Buffer.from(observer.vaults[0]!.witness,'hex').readUInt32LE(0)<3) {
       if(Date.now()>deadline) throw Error(`Restart catch-up stalled: ${output} ${errors}`);
-      await new Promise(resolve=>setTimeout(resolve,250));await mine();await observer.sync();
+      await new Promise(resolve=>setTimeout(resolve,250));
+      // Confirm any pending spend, including one surviving SIGKILL, without starving replay
+      // with a new empty tip every 250ms while the daemon is still verifying state.
+      if((await rpc<string[]>('getrawmempool')).length)await mine();
+      await observer.sync();
     }
     assert.equal(Buffer.from(observer.vaults[0]!.witness,'hex').readUInt32LE(0),3);
     assert.equal(observer.vaults[0]!.history.filter(h=>h.action===5).length,3);

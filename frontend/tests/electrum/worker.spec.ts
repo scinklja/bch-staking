@@ -103,8 +103,9 @@ test('large histories fail at the configured cap without publishing partial stat
 
 test('an IndexedDB write failure preserves the last committed snapshot and marks it stale',async({context,page})=>{
   await serveReplay(currentFixture());await page.goto('./');await ready(page);
-  const worker=page.workers()[0];expect(worker).toBeDefined();
-  await worker.evaluate(()=>{IDBDatabase.prototype.transaction=function(){throw Error('IndexedDB quota failure for fixture');};});
+  // The wallet worker is independent; inject failure into the indexing worker only.
+  const worker=page.workers().find(worker=>/\/arena\.worker-/.test(worker.url()));expect(worker).toBeDefined();
+  await worker!.evaluate(()=>{IDBDatabase.prototype.transaction=function(){throw Error('IndexedDB quota failure for fixture');};});
   await page.getByRole('button',{name:'Refresh data',exact:true}).click();
   await expect(page.getByRole('alert')).toContainText('IndexedDB quota failure');
   await expect(page.getByText('0.00002000 BCH')).toBeVisible();
