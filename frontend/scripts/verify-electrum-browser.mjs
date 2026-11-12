@@ -26,7 +26,7 @@ try {
   const ready=page=>page.getByTestId('electrum-status').filter({hasText:'Synchronized'}).waitFor({timeout:90000});
   const began=performance.now();await page.goto(`http://127.0.0.1:4180${prefix}`,{waitUntil:'domcontentloaded'});await ready(page);
   const firstSyncMs=Math.round(performance.now()-began),status=await page.getByTestId('electrum-status').innerText();
-  assert.match(status,/chipnet\.(bch\.ninja|imaginary\.cash):50004/);
+  assert.match(status,/chipnet\.(bch\.ninja|imaginary\.cash):50004|electrum-chipnet\.optnlabs\.com/);
   await page.getByRole('link',{name:/Vault a79f2b/}).click();await page.getByRole('button',{name:'Withdrawn'}).waitFor();
   assert.equal(await page.getByRole('button',{name:'Withdrawn'}).isDisabled(),true);
   const checkpoints=await page.evaluate(async()=>new Promise((done,reject)=>{const r=indexedDB.open('staking-arena-electrum-v1',1);r.onsuccess=()=>{const tx=r.result.transaction('checkpoints');const count=tx.objectStore('checkpoints').count();count.onsuccess=()=>done(count.result);tx.oncomplete=()=>r.result.close();};r.onerror=()=>reject(r.error);}));

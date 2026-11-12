@@ -38,7 +38,7 @@ export class ElectrumCore implements NetworkProvider {
   constructor(readonly connectionFactory: ConnectionFactory, options: ElectrumOptions = {}) {
     this.allowBroadcast=options.allowBroadcast===true;
     if ((options.network ?? 'chipnet') !== 'chipnet') throw Error('Mainnet Electrum is disabled');
-    this.endpoints = options.endpoints ?? ['wss://chipnet.bch.ninja:50004', 'wss://chipnet.imaginary.cash:50004'];
+    this.endpoints = options.endpoints ?? ['wss://chipnet.imaginary.cash:50004', 'wss://electrum-chipnet.optnlabs.com', 'wss://chipnet.bch.ninja:50004'];
     this.timeoutMs = options.timeoutMs ?? 10000;
     this.maxTipAgeSeconds = options.maxTipAgeSeconds ?? 21600;
     this.maxHistoryEntries = options.maxHistoryEntries ?? 50000;

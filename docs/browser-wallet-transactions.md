@@ -69,6 +69,10 @@ Wallet scanning checks public receive/change/defi branches to a 20-unused-addres
 
 ## Verification status
 
-Deterministic protocol/VM coverage and actual wallet results will be recorded in the task verification report. The isolated Cashonize wallet was created through its public UI; seeds were never read/exported. The public faucet browser check stalled, so real end-to-end tests are awaiting user-supplied chipnet BCH/fungible test-token funding at the recorded public test address. Do not publish these flows as verified until actual creation, registration and subsequent browser settlement transactions confirm.
+Deterministic protocol/VM coverage and actual wallet results will be recorded in the task verification report. The isolated Cashonize wallet was created through its public UI; seeds were never read/exported. The first user-supplied funding transaction deposited 15,000 chipnet satoshis and no CashTokens. Real end-to-end tests still need the rest of the BCH budget and fungible test tokens at the recorded public test address. Do not publish these flows as verified until actual creation, registration and subsequent browser settlement transactions confirm.
 
 The journal is capped at 64 operations and stops safely at that limit rather than deleting recovery data. Completed/cancelled history export/pruning remains a usability limitation. Cancel is available only for truly unsigned plans; it never claims to recall signed transactions. Full wallet source signatures and outputs are displayed in the wallet, with a short explicit prompt containing the vault/category, deposit, terms and fixed fee.
+
+### Current development WSS endpoints
+
+The development default now uses `wss://chipnet.imaginary.cash:50004` and `wss://electrum-chipnet.optnlabs.com` for the two-host spending checks, with `wss://chipnet.bch.ninja:50004` retained as a third read fallback. Ninja stopped accepting connections during the live test. OPTN advertises its chipnet service at [its infrastructure page](https://www.optnlabs.com/ecosystem); the adapter independently checked protocol 1.5 negotiation, both chipnet header pins, transaction inclusion/linked headers, CashToken NFT decoding and token-aware UTXOs. Different hostnames do not prove independent upstream operators or consensus. All existing verification gates remain mandatory.

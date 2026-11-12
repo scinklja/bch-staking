@@ -12,7 +12,7 @@ export function indexerSource(base: string | null, mode = import.meta.env.VITE_I
 }
 export function browserConfig(env: Record<string, string | undefined> = import.meta.env): BrowserIndexerConfig {
   if (env.VITE_ARENA_NETWORK && env.VITE_ARENA_NETWORK !== 'chipnet') throw Error('Browser indexing is chipnet-only');
-  const endpoints = (env.VITE_ELECTRUM_ENDPOINTS ?? 'wss://chipnet.bch.ninja:50004,wss://chipnet.imaginary.cash:50004').split(',').map(s=>s.trim());
+  const endpoints = (env.VITE_ELECTRUM_ENDPOINTS ?? 'wss://chipnet.imaginary.cash:50004,wss://electrum-chipnet.optnlabs.com,wss://chipnet.bch.ninja:50004').split(',').map(s=>s.trim());
   if (!endpoints.length || endpoints.length > 4) throw Error('Configure one to four chipnet WSS endpoints');
   for (const endpoint of endpoints) {
     const url = new URL(endpoint);

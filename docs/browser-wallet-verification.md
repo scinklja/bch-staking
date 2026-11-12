@@ -89,3 +89,13 @@ tests/browser-wallet.test.ts
 tests/fixtures/settlement-chain.ts
 tests/fixtures/wallet-chain.ts
 ```
+
+## Funding continuation and provider recovery
+
+User funding transaction `daf1ef9c6c66732cb274036a94133dbf5cc02d184ae2dd498875a9db2e3a10a0` pays output 0 to the isolated test wallet: **15,000 satoshis, no CashTokens**. Confirmed at chipnet height **331985**, block `000000000000046a1551052fecef69b3ec1427ccbda5b464d752866744c65474`. Imaginary Cash and OPTN returned identical raw transaction bytes and the same confirmation block. The two-provider current-source verification passed at tip **331986**, proving the listed source was available according to both servers; this does not cryptographically prove non-spending. This transaction is funding evidence, not creation/REGISTER/settlement evidence.
+
+At least **85,000 additional chipnet satoshis** and **5,000 NFT-free fungible test-token units** are still needed for the planned 100,000-satoshi test budget. No application spending has occurred.
+
+The development WSS defaults were reordered to Imaginary Cash and OPTN, with Ninja retained third for read failover. The replacement passed the existing chipnet/protocol/proof checks, canonical genesis raw decoding and CashToken NFT UTXO retrieval. Source/VM checks were not weakened. Root/frontend typechecks, **18 protocol/wallet/keeper tests**, and the production build passed after the endpoint change. Previous complete regression/frontend results above remain the baseline; the endpoint edit does not change contracts or transaction construction.
+
+The rebuilt static frontend then completed its actual Cashonize-derived dual-provider balance scan: **61 public addresses**, **0.00015000 BCH token-free balance**, and **no eligible fungible tokens**. The UI displayed “Balances verified on both public providers,” with no saved spending operations. The reader also synchronized the two configured vaults over Imaginary Cash. BCHN and the Node API remained stopped; no wallet spending signature was requested and no transaction was broadcast by the app. Provider recovery is therefore verified; additional funding is the remaining live-transaction blocker.
