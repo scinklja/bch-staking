@@ -13,7 +13,7 @@ function setup(chain=new SettlementChain()) {
  const journal=new Map<string,SettlementIntent>();let now=Date.now();
  const store:IntentStore={load:async id=>structuredClone(journal.get(id)),save:async intent=>{journal.set(intent.category,structuredClone(intent));}};
  const index=new ElectrumIndexer([settlementConfig],chain.provider()),keeper=new BrowserKeeper(index,store,lock,()=>now);
- return {chain,index,keeper,store,journal,advance:()=>{now=Date.now();for(const [id,intent]of journal)journal.set(id,{...intent,nextRetryAt:0});}};
+ return {chain,index,keeper,store,journal,setNow:(value:number)=>{now=value;},advance:()=>{now=Date.now();for(const [id,intent]of journal)journal.set(id,{...intent,nextRetryAt:0});}};
 }
 test('browser keeper: activation, canonical tied winner, payouts, allocations, reserve and sequential confirmations',async()=>{
  const f=setup();await f.keeper.tick(false);const v=f.index.vaults[0]!,category=v.category;
@@ -60,7 +60,7 @@ test('uncertain acknowledgements survive closure, do not duplicate submissions, 
  await restored.tick(true);assert.equal(restored.statuses[category]!.phase,'pending');assert.equal(f.chain.broadcasts.length,1);
  f.chain.mine();await restored.tick(true);assert.equal(restored.statuses[category]!.phase,'confirmed');
 });
-test('disconnects, provider disagreement, persistence failures and disabled automation cannot send',async()=>{
+test('disconnects, provider disagreement, persistence failures and safety interlocks cannot send',async()=>{
  const f=setup();await f.keeper.tick(false);const category=f.index.vaults[0]!.category;
  f.chain.disagree=true;await f.keeper.tick(true);assert.match(f.keeper.statuses[category]!.message,/disagreement/);assert.equal(f.chain.broadcasts.length,0);
  f.chain.disagree=false;f.chain.fail=true;await assert.rejects(f.keeper.tick(true),/disconnected/);assert.equal(f.chain.broadcasts.length,0);
@@ -87,4 +87,15 @@ test('independent keepers racing the same UTXOs rely on blockchain validation; r
  f.chain.mine();await f.keeper.tick(true);const category=f.index.vaults[0]!.category;assert.equal(f.keeper.statuses[category]!.phase,'confirmed');
  f.chain.reorgLastBlock();await f.keeper.tick(true);assert.equal(f.keeper.statuses[category]!.phase,'retrying');
  f.advance();await f.keeper.tick(true);assert.equal(f.chain.pending.size,1);f.chain.mine();await f.keeper.tick(true);assert.equal(f.index.vaults[0]!.history.filter(h=>h.action===2).length,1);
+});
+
+test('mandatory default starts without a control and cannot consume released reward reserves for miner fees',async()=>{
+ const f=setup();await f.keeper.tick();assert.equal(f.chain.pending.size,1);f.chain.mine();await f.keeper.tick(false);
+ const v=structuredClone(f.index.vaults[0]!);v.transaction.vout[0].satoshis='16000';
+ await assert.rejects(buildKeeperTransition(v,f.index.electrum!,f.chain.clock()),/fee funding unavailable/);
+});
+
+test('verification becoming stale at the final broadcast boundary fails closed',async()=>{
+ const f=setup();f.keeper.canBroadcast=()=>{f.setNow(Date.now()+61000);return true;};
+ await f.keeper.tick();assert.equal(f.chain.broadcasts.length,0);assert.match(f.keeper.statuses[f.index.vaults[0]!.category]!.message,/became stale/);
 });

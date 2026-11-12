@@ -19,7 +19,7 @@ it('shows only actual indexed vault terms and separate v2 navigation',async()=>{
  expect(screen.queryByText('Native BCH reserves')).not.toBeInTheDocument();
 });
 it('opens a dedicated hash detail route and ranks offers by exact priority',async()=>{
- const data=fixture();window.location.hash='#/vault/'+data.vaults[0].category;live(data);
+ const data=fixture();data.vaults[0].config.epoch=Math.floor(Date.now()/1000)+3600;window.location.hash='#/vault/'+data.vaults[0].category;live(data);
  const table=await screen.findByRole('table',{name:'Competing offers ranked by priority'});
  const rows=within(table).getAllByRole('row');
  expect(rows[1]).toHaveTextContent('Offer #01');expect(rows[2]).toHaveTextContent('Offer #00');
@@ -68,7 +68,7 @@ it('retains historical terms on polling failure, labels a restored snapshot and 
  vi.stubGlobal('fetch',vi.fn().mockImplementationOnce(()=>response(data)).mockRejectedValue(Error('offline')));
  const first=render(<App/>);await act(async()=>{await vi.advanceTimersByTimeAsync(1);});
  await act(async()=>{await vi.advanceTimersByTimeAsync(REFRESH_MS);});
- expect(screen.getByRole('alert')).toHaveTextContent('Refresh failed');expect(screen.getByText('Open · at snapshot')).toBeInTheDocument();first.unmount();vi.useRealTimers();
+ expect(screen.getByRole('alert')).toHaveTextContent('Refresh failed');expect(screen.getByText('Expired — awaiting on-chain processing · at snapshot')).toBeInTheDocument();first.unmount();vi.useRealTimers();
  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const restored=render(<App/>);
  expect(screen.getByRole('alert')).toHaveTextContent('Saved confirmed snapshot');expect(screen.getByText('Last-known confirmed snapshot · not current')).toBeInTheDocument();
  await navigate('/vault/'+data.vaults[0].category);expect(screen.getByText('Period at snapshot')).toBeInTheDocument();restored.unmount();
@@ -76,7 +76,7 @@ it('retains historical terms on polling failure, labels a restored snapshot and 
 });
 it('shows stale and malformed API responses without claiming current status',async()=>{
  const data=fixture();data.health.connected=false;live(data);
- await screen.findByText('Open · at snapshot');expect(screen.getByRole('alert')).toHaveTextContent('not synchronized');
+ await screen.findByText('Expired — awaiting on-chain processing · at snapshot');expect(screen.getByRole('alert')).toHaveTextContent('not synchronized');
  vi.stubGlobal('fetch',vi.fn(()=>response({chain:'main'})));fireEvent.click(screen.getByRole('button',{name:'Refresh data'}));
  await waitFor(()=>expect(screen.getByRole('alert')).toHaveTextContent('incompatible or malformed'));
 });
@@ -88,7 +88,7 @@ it('does not declare a vault absent while the snapshot is stale or indexing has 
 });
 
 it('resolves the confirmed genesis ID as an alias without confusing it with the vault category',async()=>{
- const data=fixture();window.location.hash='#/vault/'+data.vaults[0].config.genesis;live(data);
+ const data=fixture();data.vaults[0].config.epoch=Math.floor(Date.now()/1000)+3600;window.location.hash='#/vault/'+data.vaults[0].config.genesis;live(data);
  await screen.findByRole('table',{name:'Competing offers ranked by priority'});
  expect(screen.getByRole('link',{name:'Make an Offer'})).toHaveAttribute('href','#/vault/'+data.vaults[0].category+'/offer');
  expect(screen.queryByText('Vault not found')).not.toBeInTheDocument();

@@ -25,7 +25,7 @@ test('browser wallet: token consolidation/change, 0x61 covenant authorization, c
  op=await f.engine.submit(op.id,prep,f.keys);const prepId=op.txid!;f.chain.mine();f.restart();op=await f.engine.advance(op.id,f.keys);assert.equal(op.stage,'review');assert.equal(op.step,'register');assert.deepEqual(op.plan!.inputPaths,[[0,'receive',0],[2,'receive',0]]);
  const signed=f.sign(op.plan!);validateWalletSigned(op.plan!,signed,f.chain.clock());op=await f.engine.submit(op.id,signed,f.keys);assert.equal(op.stage,'pending');f.chain.mine();op=await f.engine.get(op.id);assert.equal(op.step,'complete');
  const preparation=f.chain.transactions.get(prepId)!;assert.equal(preparation.vout[0].tokenData!.amount,'2000');assert.equal(preparation.vout[1].tokenData!.amount,'500');
- const index=new ElectrumIndexer([created.config!],f.chain.provider()),intents=new Map();const keeper=new BrowserKeeper(index,{load:async c=>intents.get(c),save:async i=>{intents.set(i.category,i);} },async(_c,work)=>{await work();return true;});
+ f.startSchedule();const index=new ElectrumIndexer([created.config!],f.chain.provider()),intents=new Map();const keeper=new BrowserKeeper(index,{load:async c=>intents.get(c),save:async i=>{intents.set(i.category,i);} },async(_c,work)=>{await work();return true;});
  for(let i=0;i<2;i++){await keeper.tick(true);assert.equal(keeper.statuses[created.pregenesis!]!.phase,'pending');f.chain.mine();await keeper.tick(false);}
  const vault=index.vaults[0]!;assert.equal(vault.allocations.length,1);assert.equal(vault.allocations[0].output.tokenData.amount,'1000');const settled=vault.transaction;assert.equal(settled.vout[2].satoshis,'1000');
  const inv=await f.engine.scan(f.keys);assert.equal(inv.coins.find(c=>c.utxo.token?.category===f.other)!.utxo.token!.amount,5000n);assert.ok(inv.coins.some(c=>c.utxo.token?.nft?.commitment==='12'));
@@ -55,9 +55,9 @@ test('browser wallet: competing registrations require a newly approved canonical
 });
 test('browser wallet: resume refreshes before approval, activated/completed vaults refuse registration, prepared funds stay recoverable',async()=>{
  const f=new WalletFixture(),created=await f.created(),terms={stake:1000,duration:1,reward:1000,maxWins:1};await f.engine.scan(f.keys);let op=await f.engine.offer(created.config!,terms,f.keys);op=await f.engine.submit(op.id,f.sign(op.plan!),f.keys);f.chain.mine();op=await f.engine.advance(op.id,f.keys);assert.equal(op.stage,'review');const stale=f.sign(op.plan!);
- const index=new ElectrumIndexer([created.config!],f.chain.provider()),intents=new Map();const keeper=new BrowserKeeper(index,{load:async c=>intents.get(c),save:async i=>{intents.set(i.category,i);}},async(_c,work)=>{await work();return true;});
+ f.startSchedule();const index=new ElectrumIndexer([created.config!],f.chain.provider()),intents=new Map();const keeper=new BrowserKeeper(index,{load:async c=>intents.get(c),save:async i=>{intents.set(i.category,i);}},async(_c,work)=>{await work();return true;});
  await keeper.tick(true);f.chain.mine();await keeper.tick(false);const before=f.chain.broadcasts.length;await assert.rejects(()=>f.engine.advance(op.id,f.keys),/closed/);assert.equal(f.chain.broadcasts.length,before);await f.engine.scan(f.keys);assert.ok(f.engine.inventory!.coins.some(c=>c.utxo.txid===op.preparation&&c.utxo.vout===0));
- await keeper.tick(true);f.chain.mine();await keeper.tick(false);op=await f.engine.advance(op.id,f.keys);assert.equal(op.stage,'review');assert.throws(()=>validateWalletSigned(op.plan!,stale,f.chain.clock()),/changed/);op=await f.engine.submit(op.id,f.sign(op.plan!),f.keys);f.chain.mine();await f.engine.get(op.id);
+ await keeper.tick(true);f.chain.mine();await keeper.tick(false);await assert.rejects(()=>f.engine.advance(op.id,f.keys),/closed/);
  for(let i=0;i<2;i++){await keeper.tick(true);f.chain.mine();await keeper.tick(false);}
  await f.engine.scan(f.keys);await assert.rejects(()=>f.engine.offer(created.config!,terms,f.keys),/closed/);
 });

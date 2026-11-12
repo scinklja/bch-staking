@@ -2,7 +2,7 @@
   {
     "name": "forged sequence: first registration claims slot 1",
     "result": {
-      "txid": "0dd7de4ef571912d78897ebb06967ee58329e63d18ff9139de093afd08bad544",
+      "txid": "c827f85bd4863ee67b9842cc57f4b2db90f62d2972d0c5286c764b0ab517bf24",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -11,7 +11,7 @@
   {
     "name": "forged initial win counter",
     "result": {
-      "txid": "b7248c63dc9b6ca7ab18596ce97f0db77cf7f3bdba418f018531061ad8c750cd",
+      "txid": "a376fc2285493c6b1f7798656c98df4c4256ce1b3110a391ac889ee6e535bfcf",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -20,7 +20,7 @@
   {
     "name": "register canonical slot 0",
     "result": {
-      "txid": "baeeb17451b57da36a3806c707fe8d48c3895a4df8a920bc89a22ef0c97e5e34",
+      "txid": "f2973e46966f8d33dc92bb7048a996193aa16ebc717543be7ed3a15b00038f9e",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -33,7 +33,7 @@
   {
     "name": "register canonical slot 1",
     "result": {
-      "txid": "d6261121fbcdc9618c6298eb91e0c6e3739873e78eabca76ca39ef17f5effdbd",
+      "txid": "afeb96955caaf8f16fd9d3635be35a22a8e2b9731ac697fdf8a48e40b2103fc8",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -46,7 +46,7 @@
   {
     "name": "register canonical slot 2",
     "result": {
-      "txid": "a1361002594908d6dba638bd0feb2aecfc06d1e00999bdbd0b86149e36431a1d",
+      "txid": "4d8a4d385d04dddbaab9551478844f53457a3055da8c0aa59b2c011b22e03954",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -59,7 +59,7 @@
   {
     "name": "register canonical slot 3",
     "result": {
-      "txid": "78a004b59700c0d9bec93a121edfdd04828540bb89712b5e0dda11227348538a",
+      "txid": "3541d74652f7c611633132893b974d1dc09a792cb21b4b7d5746a944e1705a8f",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -72,7 +72,7 @@
   {
     "name": "register canonical slot 4",
     "result": {
-      "txid": "fecc962291f05ba9db8c4e3e8a375174d1f5f6a68a3ae429d53327fbc4678f12",
+      "txid": "4cd5ce972e7e4ee88189b653026a8120e2ae6bddf29012acac68ade948e75d88",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -85,7 +85,7 @@
   {
     "name": "register canonical slot 5",
     "result": {
-      "txid": "04ebe0d6f6aae4409564ef21641dcb05baf6a8d3293b2b78aa08acd3db7e73f3",
+      "txid": "70f2b0f72c8861d89730d6946588cbea72bf55e1c864ede9274589fae4fb6ac5",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -98,7 +98,7 @@
   {
     "name": "register canonical slot 6",
     "result": {
-      "txid": "3161da65336d8f56c83cb676de709ebda0c30987ff43150933662e1442c7e56c",
+      "txid": "b2242f3bc630a5934e12530b191808c96123bd29000e32540b42b206a8df2a9b",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -111,7 +111,7 @@
   {
     "name": "register canonical slot 7",
     "result": {
-      "txid": "ca2bf123ea090dab0304bed99abfa40a905e6a2f6ad78c71c5d73149a02418ec",
+      "txid": "eff80ed6eaf9b943b49325f91bd456aa3b5a1eebd4cd87b833353f14164a38c4",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -124,7 +124,7 @@
   {
     "name": "register canonical slot 8",
     "result": {
-      "txid": "10c7f6d2ab17da04de78e016f9f46911281f420925262d3d9971e52dbfe66703",
+      "txid": "4918d264f85b059a4e945572bc61ab84366fa34bf318ec23280d52576d70082f",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -137,7 +137,7 @@
   {
     "name": "register canonical slot 9",
     "result": {
-      "txid": "e0de87f85011cd4b949d2def25deec580dd8eb4f942223393926d613076142d4",
+      "txid": "a371bd8b7f42050f85a90fc11582009061bc77d370dcf9ff7da23fe07a9e671a",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -150,7 +150,7 @@
   {
     "name": "register canonical slot 10",
     "result": {
-      "txid": "e0f7ab85fc4ef07154489e3ce41728da45c044f8ed9922ae73c50384ad00d1b1",
+      "txid": "25aa6ef5cc9d53c21db2918c6883c8eb203a9b6b97a1f6760b1512c660873815",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -163,7 +163,7 @@
   {
     "name": "register canonical slot 11",
     "result": {
-      "txid": "e718c0358448d3abd8e22991dd7d81a46da989ec34ffd8cecff1b5ded7d24789",
+      "txid": "88df8d3ffb6a7f6dbae3d9c508485096f54e65b422b93cac9172f92f82a06276",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -176,7 +176,7 @@
   {
     "name": "register canonical slot 12",
     "result": {
-      "txid": "90041f4726ea15b46ce069fcfcc0060e49c977e2064c39573a098331ee9bea49",
+      "txid": "f54f6591f370798bc11842107c4df37e9c5dca19df5aa812c3285dd5640fd84e",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -189,7 +189,7 @@
   {
     "name": "register canonical slot 13",
     "result": {
-      "txid": "6ec80179b4035f17748e7e84dbca60492e964d2ff92f495ad05fb955989471aa",
+      "txid": "90338148bb4af2763463830cb43c7439eb813b1750dc82e0a3d543ac4ba0e091",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -202,7 +202,7 @@
   {
     "name": "register canonical slot 14",
     "result": {
-      "txid": "860960f474633381bab656c6cac732a093ca752e1e56a4c0d30a138bd7f8c166",
+      "txid": "a0b374460de08abe2e7d553a1cfada100fcaf53595f72a960131183a804a39cb",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -215,7 +215,7 @@
   {
     "name": "unauthorized cancellation",
     "result": {
-      "txid": "694993750d10597eee836122adeebb06ea3c6b2664b31e6ac200c91c9b9c296b",
+      "txid": "12c3c2d41171afbc63ed967da7bee4f1c8e58e77cec7d441e54811d00d0d41da",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
@@ -224,7 +224,7 @@
   {
     "name": "premature activation with threshold locktime",
     "result": {
-      "txid": "4b498fde8aeb4ae66b00f9c8600d1b7aa9d5f865d5811c9ef1c816190405bb25",
+      "txid": "7c2c4263560c11b2d818301166c4b4c460a2e7c8861afd951a7b76a2b953f9a3",
       "allowed": false,
       "reject-reason": "64: bad-txns-nonfinal",
       "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -233,7 +233,7 @@
   {
     "name": "premature activation with backdated locktime",
     "result": {
-      "txid": "bc36de9e97cce0d993c6e663c911e2925de43b4af6cad95686b549814b8cf82b",
+      "txid": "4e885d3540576613470c76bfe8ab3f73497bf328719d31dedf3fbc9545beb61b",
       "allowed": false,
       "reject-reason": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)",
       "reject-details": "non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
@@ -242,7 +242,7 @@
   {
     "name": "post-UTC pre-activation cancellation included in snapshot",
     "result": {
-      "txid": "bf37e3b2925088c4a3940e8e6d0e74dda0fa084b8ecf319ff29b1623049f1270",
+      "txid": "c106bcf18881cc3bae9eaf84ed49241186b4980dc029afd9f696ffd18b27cc79",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -255,7 +255,7 @@
   {
     "name": "post-UTC pre-activation registration included in snapshot",
     "result": {
-      "txid": "f3ae5f79ff965a5a45458caf0172bc5e6bd66fbdaddc495886990f434e950a5c",
+      "txid": "b5df950daf691a636e832c88d13d578700cd342002dbb2489007f754249be0de",
       "allowed": true,
       "size": 3733,
       "vsize": 3733,
@@ -268,7 +268,7 @@
   {
     "name": "17th registration rejected",
     "result": {
-      "txid": "be031b70b3160034fdb11d0de4e5d509e079a87f1c7be74a7a22ee85e498ac9d",
+      "txid": "1b73aff2c3940679cbefe981a87c22a38984114e97d74b3d0422a7b4c57a872e",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -277,7 +277,7 @@
   {
     "name": "snapshot omission of last offer",
     "result": {
-      "txid": "64daca171c266a4f0fd6e1fd146141096756bbebc44281a111bf845943e8204c",
+      "txid": "82eeb88c7214df459d28131795738198421fb0eb7e0e4da655253026a0e45339",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -286,7 +286,7 @@
   {
     "name": "forged authenticated registration order",
     "result": {
-      "txid": "dd93520701a8cd14e70490a249ef6066a32733627bf8148ab0bf02ae190cc893",
+      "txid": "aa6715f574a2efacedd8b8eddb60df22a1d97e70ba2d055fd220c9b3801cb71e",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -295,7 +295,7 @@
   {
     "name": "delayed UTC activation of complete roster",
     "result": {
-      "txid": "b927ceb36e7d25d318d53f7d074b1b6ce1280e8eb83c860ca0a909e88f374065",
+      "txid": "356544e3b43258e7c8fdb977a0e990b7b4b71c084a4cc76184601f78ba52de91",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -308,7 +308,7 @@
   {
     "name": "cancellation cannot modify activated snapshot",
     "result": {
-      "txid": "2cae5241d9e78f6a7c6fbc7b67f9925af49bda9ced1485c8a9e259d77bac779a",
+      "txid": "8c3667057e8772b2c084bc86c1c9383e0f18392624c2a424f24dd705247b97ba",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -317,7 +317,7 @@
   {
     "name": "late cancellation affects future eligibility only",
     "result": {
-      "txid": "95bf8554a56ce4dcdda367548c50b620107906763d804956740887ea7538d3ff",
+      "txid": "3836d255b1ed8876e40514821c46dc1d15f53c0e724292f00cc24faf02a2fa9a",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -330,7 +330,7 @@
   {
     "name": "activated collateral cannot be withdrawn",
     "result": {
-      "txid": "d96b87116202d5449470a5d49795edea3033e7764ff7d27e52cd463a2c900ec2",
+      "txid": "9d90d709da34e3879252af8a2d1e5b97a02067ad4e2bae2f503d3ce126da0156",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -339,7 +339,7 @@
   {
     "name": "activated period cannot be reactivated",
     "result": {
-      "txid": "d32625359e22e8748cb586990ae0012e71b5c865f331337e356af9c7038c44ca",
+      "txid": "0ca95e3cedfb3b1213d020921580e75f08cf92d5735aeb1de78dcb5accb05d78",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -348,7 +348,7 @@
   {
     "name": "cannot skip nonempty activated roster",
     "result": {
-      "txid": "7273fa8ceb329dbba0937f0de44cfc5b7a1fd580f8ba4252528777c101a5f6c2",
+      "txid": "5d883e2de6e37cc12f978d66657d4277e8e8e6c1f6524ce976c92282e4aa8f15",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -357,7 +357,7 @@
   {
     "name": "lower-ranked winner rejected across full roster",
     "result": {
-      "txid": "66086d83261d925c57b61f1336b1f4efede9b00b2fe89bfa177e491fee076928",
+      "txid": "b5715dec39b8b9bc15710c03c5a3301fabd3829c56761b86c5948cda3fddb3c9",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -366,7 +366,7 @@
   {
     "name": "equal score loses to sequence zero despite late cancellation",
     "result": {
-      "txid": "5665febeb091c2cb18fa5eb1f4b4a7f983952dede6e446e96c75eed0825dfead",
+      "txid": "9e7ded04ca393fc663219429e968ebbdce787df2c3b53fe370c36a09cebd58a6",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -375,7 +375,7 @@
   {
     "name": "settlement cannot shorten fixed UTC maturity",
     "result": {
-      "txid": "5a52c39ded156050d2cebcd7e929e97bf9c3e4d622cd61c0ddde56fdb61c33ea",
+      "txid": "c8e243a76badcfb0f0551065231941db5b20bc3f6cac9e1e2e15680f0a0d8c59",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -384,7 +384,7 @@
   {
     "name": "late settlement cannot shift fixed UTC maturity",
     "result": {
-      "txid": "ac03a487f78ac1ffabec77bee421837a1787694288b465cc5dd555adc3b4936b",
+      "txid": "06a4cd11fc1b144a2c6357478758d8b2fde6a89ab6fade5aab2a55fa622f8b73",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -393,7 +393,7 @@
   {
     "name": "independently valid duplicate settlement candidate",
     "result": {
-      "txid": "39ae0396ea13d3b072dad815136f65e7fe14050c22baac27f986acb9031746ff",
+      "txid": "8f21da2579347640780c8fb68499f02d46083195c306a0686384911b8b25597f",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -406,7 +406,7 @@
   {
     "name": "earliest registered equal-score offer wins",
     "result": {
-      "txid": "839066237a1f2024c1d282fa6c59e37f3e6d8ae5e9e3faa533db223fc91c6150",
+      "txid": "70235ef216ba47deeb232440981345ca299607d16e7db04f77bb89179fabcad3",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -419,7 +419,7 @@
   {
     "name": "duplicate settlement conflicts",
     "result": {
-      "txid": "39ae0396ea13d3b072dad815136f65e7fe14050c22baac27f986acb9031746ff",
+      "txid": "8f21da2579347640780c8fb68499f02d46083195c306a0686384911b8b25597f",
       "allowed": false,
       "reject-reason": "18: txn-mempool-conflict",
       "reject-details": "txn-mempool-conflict"
@@ -428,7 +428,7 @@
   {
     "name": "second period authenticated snapshot",
     "result": {
-      "txid": "c44e703c940f79212ede4d8616404ee3a2325922f18e51006e80daa7842a668f",
+      "txid": "7c63c13c1dfba63cce27158c874e5004d4f3ffabba7cddb82da6ddb46a515994",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -441,7 +441,7 @@
   {
     "name": "maximum wins alone prevents winning again",
     "result": {
-      "txid": "6c2da89abb7ca00c2476f8c05bc97f71519231073e9b87e5f05ed5a7c4550f22",
+      "txid": "4a01cbb763056cfa2681327c2b13ee1c60f5969de31cdd6849779842d5c1937e",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -450,7 +450,7 @@
   {
     "name": "late cancellation excluded from next snapshot",
     "result": {
-      "txid": "a9b93e85b4da68d029c3abd94db932d3751abb14bc72c2d6f99ebfa49ddae36a",
+      "txid": "fc38b5f37ba38ee728e1d92e97d222120f0493013ec1c8fddd37445ac37112f2",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -459,7 +459,7 @@
   {
     "name": "cancel exhausted winner future eligibility",
     "result": {
-      "txid": "568bf296059381aa356452708442b507206523ee7def8f96102c60502db6d22d",
+      "txid": "d510d9280972fe56521d9c05725158cebf69a4502cce90fb35b974e828a07fa8",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -472,7 +472,7 @@
   {
     "name": "next complete roster selects next eligible rank",
     "result": {
-      "txid": "f66115ac7c2a2b702502369b23773ed793a637306bb3875873616e77cf1abe94",
+      "txid": "d0ae855538bc6f7e900531eca576551fabd965d83722df787de55c9f36861bed",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -485,7 +485,7 @@
   {
     "name": "future UTC maturity locktime is nonfinal",
     "result": {
-      "txid": "67b642d3eaa4d0d8ccc889ed8d5933d39ea8af5117a200779ca53cb8254e5565",
+      "txid": "f31ccb62d7ebb7f9685b0e56638e901d89c38a5eee6c12021739735f6873f532",
       "allowed": false,
       "reject-reason": "64: bad-txns-nonfinal",
       "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -494,7 +494,7 @@
   {
     "name": "backdated withdrawal cannot bypass UTC maturity",
     "result": {
-      "txid": "03e906b9e40c3eabf4913b5a7c196c536c4498c9842fae41b8278fa243f05c71",
+      "txid": "b20cc5da4cf3aaa941c3d7ccb6f7e61fd517e6fec3c41ef4c958d57210c7f887",
       "allowed": false,
       "reject-reason": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)",
       "reject-details": "non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
@@ -503,7 +503,7 @@
   {
     "name": "mature UTC collateral withdrawal despite intervening state updates",
     "result": {
-      "txid": "67b642d3eaa4d0d8ccc889ed8d5933d39ea8af5117a200779ca53cb8254e5565",
+      "txid": "f31ccb62d7ebb7f9685b0e56638e901d89c38a5eee6c12021739735f6873f532",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -516,7 +516,7 @@
   {
     "name": "duplicate collateral withdrawal",
     "result": {
-      "txid": "04cd82aa3f679c9d35f9fd278dc610f1d40250128282a159e96c5a74d5f7cd89",
+      "txid": "c4ee60f5c2c49a2e015f73205729e5be6f91ecc18c2285636c1121f632df11ed",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -525,7 +525,7 @@
   {
     "name": "third UTC period activation",
     "result": {
-      "txid": "556b25c22aca0ab9cca59c222354b4d079a7478a46751acfa59a1618b30736a3",
+      "txid": "f9fc588f72f8816bd98eb3f9adfb64ba3597dee82dc128ead1898124d600cebf",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -538,7 +538,7 @@
   {
     "name": "repeat winner extends maturity to its latest fixed period end",
     "result": {
-      "txid": "a41bb4cb5bee00fa53daaf36c24b337fab991400e551808909266a4bddd708e5",
+      "txid": "a5bb4683cd21a637cb9656b417a21f8d946a59068e0ac869959e267b6b3bf205",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -551,7 +551,7 @@
   {
     "name": "cancel future eligibility slot 1",
     "result": {
-      "txid": "d598dcaf08164563ba6681bf4b2fc5fcb3e11bac40941f5e6cac8fce90aa425f",
+      "txid": "cd3a9e2ab15ad0ab30d4875cc57d79568b36913f35609f96f22ff87a8c0b006b",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -564,7 +564,7 @@
   {
     "name": "cancel future eligibility slot 2",
     "result": {
-      "txid": "7bc64e00b6aa890963dc09a3b7d557615b894b99aa100cfa3c74dcf8359c0ab0",
+      "txid": "c4d6557abdea3ae0d94277091e6755f2a0d58a236c463e855807d8a071a0d57c",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -577,7 +577,7 @@
   {
     "name": "cancel future eligibility slot 3",
     "result": {
-      "txid": "866ffe17fbb3239d216881676d9845082069e8a13c38d24fbc2e431a27f8a51f",
+      "txid": "df1525fb8f9f592dfb6a97fe40018d2830627ca707986b64e64e57f814a04fd0",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -590,7 +590,7 @@
   {
     "name": "cancel future eligibility slot 4",
     "result": {
-      "txid": "e78202843eef48887698307e064b6cbdca2ae7aadb251d3e4a34e6baa9d74865",
+      "txid": "32b04084a89513788595e6c710ef1c79f6a3137c5c9577ea9aa9d139c5162f4e",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -603,7 +603,7 @@
   {
     "name": "cancel future eligibility slot 5",
     "result": {
-      "txid": "4c3af2760e66f10a0e56cc71552fc4c6cf47ea87116a35f654b81edbb024e62b",
+      "txid": "985184d289c7c9503be40d4590190534f9f66c32251fad6c4f4e1464e9d750e3",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -616,7 +616,7 @@
   {
     "name": "cancel future eligibility slot 6",
     "result": {
-      "txid": "108e3cb4b0750caa615e50a7e9c8708f447b49f3fbed916cab6efab8ba128968",
+      "txid": "18218b7f7653cd3ee061d188282179f4a82c4e0bce80ea016ad184ee360a77c3",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -629,7 +629,7 @@
   {
     "name": "cancel future eligibility slot 7",
     "result": {
-      "txid": "c7ce9bbfe181caa94fe3166f4d0e59ec29c73d75ddcf37bcc3ebe196f986f2c7",
+      "txid": "ee12174a9ca5330069cc8abb8ac07c4f39789284df75c4b4869a5d42fdc0fe0c",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -642,7 +642,7 @@
   {
     "name": "cancel future eligibility slot 8",
     "result": {
-      "txid": "69d3800a32fe178b465f2bbd37aadbd7d00f177d3835af52f478e3afea8dacd7",
+      "txid": "e1fe2565870ec4523910c1c15da1571244b5f8dff34b47c314ea9d172acf91e3",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -655,7 +655,7 @@
   {
     "name": "cancel future eligibility slot 9",
     "result": {
-      "txid": "23abefac57da4fef3d03f112c59a49fcabf9adfe16fefa2a40624416246a5644",
+      "txid": "70200e7951c0f9c7933bb000c1448e5749626efd878e7f737ee1c5e3ceb2bcc4",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -668,7 +668,7 @@
   {
     "name": "cancel future eligibility slot 10",
     "result": {
-      "txid": "1e18788a9c926d1ec2a9adaaea0fff500db15c63213da81e9227f4e405a5a1ab",
+      "txid": "33d020b3df30bd50730dd434715076d3520354cce8bb96ce85a334e2ea465781",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -681,7 +681,7 @@
   {
     "name": "cancel future eligibility slot 11",
     "result": {
-      "txid": "16de612af028ff440c613f13c95de673a856a4c7cfa26e6fd1fd00b03122e335",
+      "txid": "8eb54a7197e70e0dd9bcce87dea48431ef2a46bdacd37b95caa5ea04ff4d40e2",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -694,7 +694,7 @@
   {
     "name": "cancel future eligibility slot 12",
     "result": {
-      "txid": "7b9564f9d2e07d197a94bb89ca5eb198674c2d6e3ed2447a5351700e2477976e",
+      "txid": "74eb3990a1c2eb989e323cd2ec0ef7f41775ad78961954dd043d61806a725427",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -707,7 +707,7 @@
   {
     "name": "cancel future eligibility slot 13",
     "result": {
-      "txid": "6d7dea8a8abfd539e2e207a2117d7432518d45a9b40a69c440c645be2ceeed7a",
+      "txid": "39904aaf194684555cf47f2ac6ba3734b94303aedaf9cfa4d4a4e5276855f220",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -720,7 +720,7 @@
   {
     "name": "empty eligible snapshot still authenticates all 16 records",
     "result": {
-      "txid": "bd76424467d4ad05a0351973753adee9d8c0b9563ae432d611f6c0fb1134cefa",
+      "txid": "f92659eb7b0f87101a2d321c3b029df3de83b35ee92b5e61d06e6318caaffe6b",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -733,7 +733,7 @@
   {
     "name": "final empty-period advancement",
     "result": {
-      "txid": "099b26299fa4075674a1d3feb5dbe7b49b96c058a0d54873052aca94a21eae81",
+      "txid": "f54fb8c507e950bbf1c35c4c00f0e19a9be77f428015775f8232090f191c4d28",
       "allowed": true,
       "size": 3537,
       "vsize": 3537,
@@ -746,7 +746,7 @@
   {
     "name": "finite vault cannot activate extra periods",
     "result": {
-      "txid": "24f02aea1f804c0b640a6d0ba10dd0fd5b71d93242864deb76e511f14081d74d",
+      "txid": "f595eece9b0232d33a2d86425e140f8e58290229598ab243e5213b3569766643",
       "allowed": false,
       "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
       "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -755,7 +755,7 @@
   {
     "name": "repeat winner cannot use its earlier maturity",
     "result": {
-      "txid": "3d7cf7afa9d2e8d64cdaf009b1358a8c3f921f465c975db54f6ffa55743c5b23",
+      "txid": "e509014b8479c0c2806200a339df0ee1e20581a3ced3e3a5806e3b145c4c693c",
       "allowed": false,
       "reject-reason": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)",
       "reject-details": "non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
@@ -764,7 +764,7 @@
   {
     "name": "repeat winner withdraws at fixed maturity after final reward period",
     "result": {
-      "txid": "b290494874a7767fcb0e4a96a7523d652a21422046d3b97f40f965bdf9496942",
+      "txid": "17fac98406b1f9d2c126bf2c65cff5fa890bec98a9e0384ec89df8aa1cbf92dc",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -777,7 +777,7 @@
   {
     "name": "never-winning cancelled offer withdraws without maturity lock",
     "result": {
-      "txid": "86e1a2264bd2d9981bd73a207e4d5d6f86bd8fb2766aa1c06420f8a9b51c6319",
+      "txid": "7e0bd5b25105206564fb3c3889cc4a3ad6d39d4a9c4077e7e62f047c7888219d",
       "allowed": true,
       "size": 3571,
       "vsize": 3571,
@@ -788,12 +788,12 @@
     }
   },
   {
-    "genesis": "48b09baf8c5104fc3084b45f2c454baf94fa9d51b589913239eeb2a0f2948206",
-    "category": "54e5f2bee75087d6483d48cf29ff70ab6dca0cff33bf7cba4ae59d276477548f",
-    "settled": "839066237a1f2024c1d282fa6c59e37f3e6d8ae5e9e3faa533db223fc91c6150",
-    "second": "f66115ac7c2a2b702502369b23773ed793a637306bb3875873616e77cf1abe94",
+    "genesis": "2705195097c9c92115d6db15c9f0ef24dd2c07d841ab25a6c4ce5ee531868be5",
+    "category": "0c2d9d8946d00019e8847224ea92f1b9d222a6c78b096bcd4ab9a3c34c1404a0",
+    "settled": "70235ef216ba47deeb232440981345ca299607d16e7db04f77bb89179fabcad3",
+    "second": "d0ae855538bc6f7e900531eca576551fabd965d83722df787de55c9f36861bed",
     "schedule": {
-      "epoch": 1794178470,
+      "epoch": 1794501810,
       "periodSeconds": 10
     },
     "registryBytes": 1596,

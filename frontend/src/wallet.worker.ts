@@ -39,11 +39,11 @@ scope.onmessage=event=>{
     if(!scope.navigator.locks)throw Error('V2 wallet requires Web Locks');
     await scope.navigator.locks.request('arena-chipnet-wallet-submission',{ifAvailable:true},async lock=>{if(!lock)throw Error('Wallet busy in another tab');await run();});return;
    }
-   if(!['cancel','list','scan','create','offer','submit','get','advance','recover','importVault'].includes(method))throw Error('Unsupported wallet operation');
+   if(!['authorize','cancel','list','scan','create','offer','submit','get','advance','recover','importVault'].includes(method))throw Error('Unsupported wallet operation');
    const run=async()=>{const result=await (engine![method as keyof BrowserWallet] as Function).apply(engine,args??[]);scope.postMessage({id,result});};
    // Status reconciliation also writes the journal. Serialize it with submission
    // so a second tab cannot overwrite a newly saved signed transaction with an old status.
-   if(['cancel','create','offer','submit','get','advance','recover'].includes(method)) {
+   if(['authorize','cancel','create','offer','submit','get','advance','recover'].includes(method)) {
     if(!scope.navigator.locks)throw Error('Wallet transactions require Web Locks');
     // One local wallet submission at a time; independent users still rely on BCH conflict validation.
     await scope.navigator.locks.request('arena-chipnet-wallet-submission',{ifAvailable:true},async lock=>{if(!lock)throw Error('Another tab is processing a wallet transaction; wait and reconcile');await run();});

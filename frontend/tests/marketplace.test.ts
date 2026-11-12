@@ -1,12 +1,12 @@
 import { expect,it } from 'vitest';
 import { competingOffers,offerPreview,periodLength,rewardSatoshis,routeFromHash,vaultStatus } from '../src/marketplace';
 import { fixture } from './fixture';
-it('classifies vaults from confirmed cursor and indexed MTP, including delayed settlement',()=>{
- const data=fixture(),v=data.vaults[0];
- expect(vaultStatus(v,data.tip)).toBe('Open');v.period=0;
- expect(vaultStatus(v,{...data.tip!,mtp:v.config.epoch-1})).toBe('Upcoming');
- expect(vaultStatus(v,{...data.tip!,mtp:v.config.epoch+100000})).toBe('Open');
- expect(vaultStatus(v,null)).toBe('Status unavailable');v.period=3;expect(vaultStatus(v,data.tip)).toBe('Completed');
+it('classifies overdue/expired states from UTC and confirmed period without claiming completion',()=>{
+ const data=fixture(),v=data.vaults[0],at=(time:number)=>time*1000;
+ expect(vaultStatus(v,data.tip,at(v.config.epoch+90))).toBe('Overdue — awaiting activation');v.period=0;
+ expect(vaultStatus(v,{...data.tip!,mtp:v.config.epoch-1},at(v.config.epoch-1))).toBe('Scheduled — awaiting start');
+ expect(vaultStatus(v,{...data.tip!,mtp:v.config.epoch+100000},at(v.config.epoch-1))).toBe('Expired — awaiting on-chain processing');
+ expect(vaultStatus(v,null)).toBe('Status unavailable');v.period=3;expect(vaultStatus(v,data.tip)).toBe('Completed — all periods processed on-chain');
 });
 it('parses hash routes without server path rewrites',()=>{
  const id='a'.repeat(64);expect(routeFromHash('#/vault/'+id)).toEqual({page:'vault',id});

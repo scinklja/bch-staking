@@ -1,3 +1,4 @@
+import {scheduledPolicy} from '../../src/offer-policy';
 import { ranked, type Envelope, type Vault } from './model';
 export type Route = { page:'home'|'create'|'v2'|'missing' } | { page:'vault'|'offer'; id:string };
 export function routeFromHash(hash:string):Route {
@@ -12,10 +13,14 @@ export const vaultHref=(id:string)=>`#/vault/${id}`;
 export function periodLength(seconds:number) {
   return seconds===86400?'Daily':seconds===604800?'Weekly':seconds===3600?'Hourly':seconds%86400===0?`Every ${seconds/86400} days`:seconds%3600===0?`Every ${seconds/3600} hours`:seconds===60?'Every minute':seconds%60===0?`Every ${seconds/60} minutes`:`Every ${seconds} seconds`;
 }
-export function vaultStatus(v:Vault,tip:Envelope['tip']) {
-  if(v.period>=v.config.periods) return 'Completed';
-  if(!tip) return 'Status unavailable';
-  return v.period===0 && tip.mtp<v.config.epoch ? 'Upcoming':'Open';
+export function vaultSchedule(v:Vault,tip:Envelope['tip'],now=Date.now()) {
+ return tip?scheduledPolicy(v.config,v.period,v.phase==='activated',now/1000,tip.mtp):undefined;
+}
+export function vaultStatus(v:Vault,tip:Envelope['tip'],now=Date.now()) {
+ return v.period>=v.config.periods?'Completed — all periods processed on-chain':vaultSchedule(v,tip,now)?.status??'Status unavailable';
+}
+export function registrationAllowed(v:Vault,tip:Envelope['tip'],stale:boolean,now=Date.now()) {
+ return !stale&&v.offers.length<16&&!!vaultSchedule(v,tip,now)?.offersAllowed;
 }
 export const competingOffers=(v:Vault)=>ranked(v.phase==='activated'?(v.snapshot??v.rankings):v.offers);
 export function integer(value:string):bigint|null {

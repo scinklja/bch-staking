@@ -26,7 +26,7 @@ export class BrowserKeeper {
   private busy=false;
   constructor(readonly index:ElectrumIndexer,readonly intents:IntentStore,readonly lock:SettlementLock,readonly now=()=>Date.now()) {}
   private set(category:string,status:Omit<SettlementStatus,'updatedAt'>) {this.statuses[category]={...status,updatedAt:new Date(this.now()).toISOString()};this.onChange?.();}
-  async tick(automatic=false,manual?:string) {
+  async tick(automatic=true,manual?:string) {
     if(this.busy)return;
     this.busy=true;
     try {
@@ -101,7 +101,9 @@ export class BrowserKeeper {
     this.set(vault.category,{phase:'broadcasting',message:'Broadcasting a locally validated chipnet transition',txid:intent.txid,fee:'10000',...details});
     try {
       await p.session(async()=>{await this.verifyCurrent(p,vault);
-        if(this.canBroadcast && !this.canBroadcast(vault.category))throw Error('Settlement disabled before broadcast');
+        if(this.canBroadcast && !this.canBroadcast(vault.category))throw Error('Settlement safety interlock prevents broadcast');
+        const age=this.now()-Date.parse(this.index.health.updatedAt);
+        if(!Number.isFinite(age)||age>60000||age< -60000||!this.index.health.connected||this.index.health.stale)throw Error('Verified chain data became stale before broadcast; resynchronization required');
         await p.sendRawTransaction(raw);},broadcastEndpoint);
       intent={...intent,phase:'submitted',updatedAt:this.now(),error:undefined};await this.intents.save(intent);
       this.set(vault.category,{phase:'pending',message:'Broadcast accepted; pending confirmation',txid:intent.txid,fee:'10000',...details});

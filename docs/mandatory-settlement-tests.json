@@ -1,0 +1,40 @@
+{
+  "frontend": {
+    "tests": 47,
+    "files": 13,
+    "command": "npm --prefix frontend test"
+  },
+  "keeper": {
+    "tests": 8,
+    "command": "node --import tsx --test tests/browser-keeper.test.ts"
+  },
+  "wallet_and_policy": {
+    "walletTests": 7,
+    "policyTests": 2
+  },
+  "electrum_and_wallet_scan": {
+    "tests": 16
+  },
+  "nativeBrowser": {
+    "tests": 4,
+    "command": "npm --prefix frontend run test:mandatory",
+    "finalBuildRerun": "4 passed"
+  },
+  "covenants": {
+    "tests": 4,
+    "command": "ARENA_NETWORK=regtest node --import tsx --test --test-concurrency=1 tests/allocations.test.ts tests/registry.test.ts tests/registry-verification.test.ts tests/period.test.ts",
+    "allocationConfirmedAndRelayedTransactions": 113
+  },
+  "typechecks": [
+    "root tsc",
+    "frontend tsc --noEmit"
+  ],
+  "productionBuild": "frontend/scripts/build-pages.mjs",
+  "covenantsChanged": false,
+  "mainnetEnabled": false,
+  "deployedCommit": "53dc760a6e16bc162ad9a0e76829fe5163ab9e46",
+  "confirmedFinalAdvance": {
+    "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+    "height": 332038
+  }
+}

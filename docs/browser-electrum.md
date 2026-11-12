@@ -1,6 +1,6 @@
 # Browser Electrum indexing (chipnet)
 
-The GitHub Pages build can read Staking Arena directly from public chipnet Electrum servers. A Node API, BCHN node, VPS, Railway account, Chaingraph service, spending key, and browser keeper are **not required**. Optional permissionless browser activation/settlement is documented in [browser settlement](browser-settlement.md); it needs no wallet signature and defaults off. Nothing has been deployed. The existing Node API and BCHN/regtest paths remain available.
+The GitHub Pages build can read Staking Arena directly from public chipnet Electrum servers. No Node API, BCHN node, VPS, Railway account, Chaingraph service, spending key or independently hosted keeper is required for browser operation. Mandatory permissionless browser activation/settlement is documented in [browser settlement](browser-settlement.md); it starts automatically after verification, needs no wallet signature, and has no opt-out. It does not continue while the site is closed/suspended or providers are unavailable. See the current release evidence in [mandatory processing](mandatory-settlement.md). The existing Node API and BCHN/regtest paths remain available.
 
 ## Build and run locally
 

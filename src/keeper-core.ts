@@ -45,6 +45,10 @@ export async function buildKeeperTransition(vault: VaultState, provider: Network
   const cs=await contracts(vault.config,vault.category,provider),next=nextState(state,action,slot),ranked=rankings(state,true);
   const stateInput=utxo(vault.transaction,0),poolInput=utxo(vault.transaction,1);
   if(stateInput.lockingBytecode!==cs.registry.lockingBytecode || poolInput.lockingBytecode!==cs.pool.lockingBytecode || stateInput.token?.nft?.commitment!==hashState(state))throw Error('Keeper source state mismatch');
+  // Fees and allocation carriers must be covered by pre-transition excess BCH.
+  // Advancing a period may release unused rewards, but those rewards never fund this fee.
+  const protectedBefore=BigInt(vault.config.periods-period)*BigInt(vault.config.cap)+1000n;
+  if(!sponsor&&stateInput.satoshis-protectedBefore<(action===3?12000n:10000n))throw new FeeFundingUnavailable();
   const reward=action===3?BigInt(ranked[0]!.reward):0n;
   const amount=stateInput.satoshis-reward-(sponsor?0n:action===3?12000n:10000n);
   if(amount<BigInt(vault.config.periods-next.readUInt32LE(0))*BigInt(vault.config.cap)+1000n)throw new FeeFundingUnavailable();

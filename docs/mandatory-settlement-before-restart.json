@@ -1,0 +1,1339 @@
+{
+  "startedAt": "2026-11-12T16:31:12.381Z",
+  "site": "http://127.0.0.1:4189/staking-arena-site/",
+  "fixture": {
+    "config": {
+      "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+      "stakingCategory": "e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a",
+      "epoch": 1794496500,
+      "periodSeconds": 300,
+      "periods": 2,
+      "cap": 1000
+    },
+    "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+    "height": 332026,
+    "confirmationBlock": "00000000000015d58ed55eef975010b7eefee2d1820c123d4149a0ddc2b758a3"
+  },
+  "events": [
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:31:23.929Z",
+      "walletMethods": [],
+      "legacyPreference": "false",
+      "optOuts": []
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:31:29.063Z",
+      "health": {
+        "connected": false,
+        "error": "",
+        "updatedAt": "",
+        "stale": true,
+        "syncing": true,
+        "provider": "electrum",
+        "endpoint": "",
+        "unconfirmed": [],
+        "phase": "Connecting",
+        "transactions": 0
+      },
+      "tip": null,
+      "role": "leader",
+      "automatic": true,
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": []
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:32:24.076Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:32:19.509Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:32:21.729Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "at": "2026-11-12T16:33:30.668Z",
+      "control": "other"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:33:34.143Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:33:27.834Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:33:29.950Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:33:34.198Z",
+      "health": {
+        "connected": false,
+        "error": "",
+        "updatedAt": "",
+        "stale": true,
+        "syncing": true,
+        "provider": "electrum",
+        "endpoint": "",
+        "unconfirmed": [],
+        "phase": "Connecting",
+        "transactions": 0
+      },
+      "tip": null,
+      "role": "leader",
+      "automatic": true,
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": []
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:34:29.218Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:34:24.533Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:34:26.313Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:34:39.237Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:34:33.089Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:34:34.738Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "at": "2026-11-12T16:34:46.964Z",
+      "control": "reload"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:34:49.304Z",
+      "walletMethods": [],
+      "legacyPreference": null,
+      "optOuts": []
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:34:54.230Z",
+      "health": {
+        "connected": false,
+        "error": "",
+        "updatedAt": "2026-11-12T16:34:33.089Z",
+        "stale": true,
+        "syncing": true,
+        "provider": "electrum",
+        "endpoint": "",
+        "unconfirmed": [],
+        "phase": "Reading vault history",
+        "transactions": 0
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing · at snapshot"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:35:34.289Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:35:30.682Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:35:33.162Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:35:39.222Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:35:36.386Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:35:38.710Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:36:44.234Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:36:41.657Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:36:43.500Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:36:44.258Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:36:39.338Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200"
+        ],
+        "phase": "Synchronized",
+        "transactions": 15
+      },
+      "tip": {
+        "height": 332036,
+        "hash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+        "mtp": 1794496982
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:36:40.882Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "open",
+        "bchSatoshis": "47000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:37:54.289Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:37:53.452Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:36:43.500Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:37:54.309Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:37:50.761Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+        "period": 1,
+        "action": 2,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:36:40.882Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:38:04.390Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:37:50.761Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "broadcasting",
+        "message": "Broadcasting a locally validated chipnet transition",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "fee": "10000",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:38:02.581Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "at": "2026-11-12T16:38:04.473Z",
+      "control": "offline"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:38:14.353Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:37:50.761Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "Broadcast accepted; pending confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "fee": "10000",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:38:10.375Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:38:19.342Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:37:53.452Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "retrying",
+        "message": "Error: wss://electrum-chipnet.optnlabs.com: Error: Electrum WSS timeout: blockchain.block.header",
+        "updatedAt": "2026-11-12T16:38:14.427Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:38:34.347Z",
+      "health": {
+        "connected": false,
+        "error": "Error: wss://chipnet.imaginary.cash:50004: Error: Electrum WSS connection failed; wss://electrum-chipnet.optnlabs.com: Error: Electrum WSS connection failed; wss://chipnet.bch.ninja:50004: Error: Electrum WSS connection failed",
+        "updatedAt": "2026-11-12T16:37:53.452Z",
+        "stale": true,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Disconnected",
+        "transactions": 0
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "retrying",
+        "message": "Synchronization unavailable; no transaction sent. Error: wss://chipnet.imaginary.cash:50004: Error: Electrum WSS connection failed; wss://electrum-chipnet.optnlabs.com: Error: Electrum WSS connection failed; wss://chipnet.bch.ninja:50004: Error: Electrum WSS connection failed",
+        "updatedAt": "2026-11-12T16:38:31.098Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing · at snapshot"
+    },
+    {
+      "at": "2026-11-12T16:38:53.405Z",
+      "control": "online"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:39:19.667Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:39:13.440Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912"
+        ],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "Pending confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:39:15.518Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:39:44.491Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:39:41.515Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912"
+        ],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:39:43.699Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:40:29.530Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:40:24.783Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912"
+        ],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "Pending confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:40:26.420Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T16:40:49.524Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:40:46.572Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912"
+        ],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "A competing spend is pending; waiting for confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:40:48.257Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    },
+    {
+      "browser": "secondary",
+      "at": "2026-11-12T16:41:34.583Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T16:41:29.176Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [
+          "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912"
+        ],
+        "phase": "Synchronized",
+        "transactions": 16
+      },
+      "tip": {
+        "height": 332037,
+        "hash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+        "mtp": 1794498189
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "pending",
+        "message": "Pending confirmation",
+        "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+        "period": 1,
+        "action": 5,
+        "slot": 0,
+        "updatedAt": "2026-11-12T16:41:30.707Z"
+      },
+      "vault": {
+        "period": 1,
+        "phase": "activated",
+        "bchSatoshis": "37000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Expired — awaiting on-chain processing"
+    }
+  ],
+  "errors": [],
+  "walletMethods": [
+    "start"
+  ],
+  "completed": false
+}

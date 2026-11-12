@@ -14,11 +14,11 @@ it('requires explicit funding review and approval; shows exact lifecycle quote w
 });
 it('reviews S×W deposit, refuses invalid/closed offers and displays wallet rejection without retry signing',async()=>{
  const wallet=client();vi.mocked(wallet.execute).mockRejectedValue(Error('Wallet rejected signing'));
- const vault={...fixture().vaults[0],config:{...fixture().vaults[0].config,stakingCategory:asset,periods:2,cap:2000},offers:[]};
- const mounted=render(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={vault}/></WalletTransactionsContext.Provider>);
+ const vault={...fixture().vaults[0],config:{...fixture().vaults[0].config,epoch:Math.floor(Date.now()/1000)+3600,stakingCategory:asset,periods:2,cap:2000},offers:[]};
+ const mounted=render(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={vault} tip={{...fixture().tip!,mtp:Math.floor(Date.now()/1000)}} stale={false}/></WalletTransactionsContext.Provider>);
  fill('Stake amount S','1000');fill('Lock duration T','1');fill('Reward requested R (BCH)','0.00003000');fill('Maximum wins W','2');await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'Check wallet balances'}));});fireEvent.click(screen.getByRole('checkbox'));expect(screen.getByRole('button',{name:'Review offer funding in wallet'})).toBeDisabled();
  fill('Reward requested R (BCH)','0.00001000');expect(screen.getByText('2,000 raw token units')).toBeInTheDocument();await act(async()=>{fireEvent.click(screen.getByRole('button',{name:'Review offer funding in wallet'}));});await screen.findByText('Error: Wallet rejected signing');expect(wallet.execute).toHaveBeenCalledOnce();
- mounted.rerender(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={{...vault,phase:'activated'}}/></WalletTransactionsContext.Provider>);expect(screen.getByRole('button',{name:'Review offer funding in wallet'})).toBeDisabled();expect(screen.getByRole('alert')).toHaveTextContent('Registration is unavailable');
+ mounted.rerender(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={{...vault,phase:'activated'}} tip={{...fixture().tip!,mtp:Math.floor(Date.now()/1000)}} stale={false}/></WalletTransactionsContext.Provider>);expect(screen.getByRole('button',{name:'Review offer funding in wallet'})).toBeDisabled();expect(screen.getByRole('alert')).toHaveTextContent('Registration is unavailable');
 });
 it('ignores a superseded worker startup error when the live wallet client replaces it',async()=>{
  let rejectOld!:(error:Error)=>void;
@@ -40,4 +40,11 @@ it('clears a verified balance on failed refresh, displays retry progress, and en
  await act(async()=>rejectScan(Error('Wallet balances could not be verified after 3 attempts. Check wallet balances again.')));
  expect(review).toBeDisabled();expect(screen.getByText(/could not be verified after 3 attempts/)).toBeInTheDocument();
  await act(async()=>{fireEvent.click(scan);});expect(review).toBeEnabled();expect(wallet.execute).not.toHaveBeenCalled();
+});
+
+it('disables offer submission for an overdue or expired UTC schedule even while chain MTP lags',async()=>{
+ const wallet=client(),epoch=Math.floor(Date.now()/1000)-600;
+ const vault={...fixture().vaults[0],period:0,phase:'open' as const,config:{...fixture().vaults[0].config,epoch,periodSeconds:300,periods:2},offers:[]};
+ render(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={vault} tip={{...fixture().tip!,mtp:epoch-1}} stale={false}/></WalletTransactionsContext.Provider>);
+ expect(screen.getByRole('button',{name:'Review offer funding in wallet'})).toBeDisabled();expect(screen.getByRole('alert')).toHaveTextContent('scheduled cutoff');expect(wallet.execute).not.toHaveBeenCalled();
 });

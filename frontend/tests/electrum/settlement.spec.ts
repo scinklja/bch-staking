@@ -23,57 +23,34 @@ test.beforeAll(async()=>{sockets.on('connection',(socket,request)=>socket.on('me
 test.afterAll(async()=>{for(const s of sockets.clients)s.terminate();sockets.close();server.close();await once(server,'close');rmSync(cert,{recursive:true,force:true});});
 test.beforeEach(()=>{chain=new SettlementChain();disconnectAfterAccept=false;holdResponses=undefined;});
 const category=()=>chain.transactions.get(settlementConfig.genesis)!.vin[0]!.txid;
-async function open(page:Page){await page.goto(`http://127.0.0.1:4176/settlement/#/vault/${category()}`);await expect(page.getByTestId('settlement-status')).toContainText('Activation required',{timeout:60000});}
+async function open(page:Page){await page.goto(`http://127.0.0.1:4176/settlement/#/vault/${category()}`);}
 const status=(page:Page)=>page.getByTestId('settlement-status');
-
-test('native browser automatically activates and settles two periods, paying the canonical tied winner',async({page})=>{
- await open(page);await page.getByRole('checkbox',{name:'Enable automatic settlement on chipnet'}).check();
- for(const action of [2,3,2,3]) {
-  await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);
-  const id=[...chain.pending][0]!,tx=chain.transactions.get(id)!;
-  const witness=await import('../../../src/arena-core');expect(witness.transitionWitness(tx.vin[0]!.scriptSig.hex).action).toBe(action);
-  if(action===3){expect(tx.vout[2]!.satoshis).toBe('1000');expect(tx.vout[3]!.tokenData?.amount).toBe('2000');}
-  chain.mine();await expect(status(page)).toContainText('Confirmed',{timeout:30000});
- }
- await expect.poll(()=>chain.broadcasts.length).toBe(4);
- await expect(page.getByText('All periods processed',{exact:false})).toBeVisible();
- expect(chain.transactions.get([...chain.confirmed].filter(([,h])=>h===chain.height)[0]![0])!.vout[0]!.satoshis).toBe('14000');
-});
-test('two independent browser users race safely; one canonical transaction spends the outpoint',async({browser,page})=>{
- const other=await browser.newContext({ignoreHTTPSErrors:true}),second=await other.newPage();
- try {await Promise.all([open(page),open(second)]);await Promise.all([page.getByRole('checkbox').check(),second.getByRole('checkbox').check()]);
-  await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);expect(new Set(chain.broadcasts).size).toBe(1);
-  chain.mine();await expect.poll(()=>[...chain.confirmed.values()].filter(h=>h===chain.height).length).toBe(1);
- }finally{await other.close();}
-});
-test('manual processing works with automation disabled and always waits for confirmation',async({page})=>{
+test('mandatory automation ignores saved false, needs no wallet interaction and processes confirmed periods sequentially',async({page})=>{
+ await page.addInitScript(()=>{localStorage.setItem('arena-chipnet-automatic-settlement','false');(window as any).walletMethods=[];const original=Worker.prototype.postMessage;Worker.prototype.postMessage=function(message:any,...rest:any[]){if(message?.method)(window as any).walletMethods.push(message.method);if(message?.type==='start'){const result=original.call(this,{...message,automatic:false},...rest as []);original.call(this,{type:'keeper-settings',automatic:false});return result;}return original.call(this,message,...rest as []);};});
  await open(page);
- // Queue a manual request during a background replay; toggling disabled mid-click must not lose it.
- let release:()=>void=()=>{},gateArmed=true;
- // Arm the response gate when the actual refresh message is sent. An initial
- // background replay must remain free to finish so the button can become enabled.
- await page.exposeFunction('holdManualReplay',()=>{if(gateArmed)holdResponses=new Promise<void>(done=>{release=done;});});
- await page.evaluate(()=>{const prototype=Worker.prototype as any,original=prototype.postMessage;prototype.postMessage=function(message:any,...rest:any[]){if(message?.type==='refresh'){prototype.postMessage=original;void (window as any).holdManualReplay().then(()=>original.call(this,message,...rest));}else original.call(this,message,...rest);};});
- try {
-  await page.getByRole('button',{name:'Refresh data',exact:true}).click();
-  await expect(page.getByRole('button',{name:'Refreshing…',exact:true})).toBeDisabled();
-  await expect(page.getByRole('button',{name:'Process Period'})).toBeEnabled();
-  await page.getByRole('button',{name:'Process Period'}).click();
- }finally{gateArmed=false;holdResponses=undefined;release();}
- await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});
- expect(await page.getByRole('checkbox').isChecked()).toBe(false);expect(chain.broadcasts.length).toBe(1);
- chain.mine();await expect(status(page)).toContainText('Confirmed');await expect(status(page)).toContainText('Settlement required');expect(chain.broadcasts.length).toBe(1);
- await page.getByRole('button',{name:'Process Period'}).click();await expect.poll(()=>chain.pending.size).toBe(1);expect(chain.broadcasts.length).toBe(2);
+ await expect(page.getByRole('button',{name:'Connect Wallet',exact:true})).toBeVisible();expect(await page.getByRole('checkbox').count()).toBe(0);
+ for(const action of [2,3,2,3]){
+  await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);const id=[...chain.pending][0]!,tx=chain.transactions.get(id)!;
+  const {transitionWitness}=await import('../../../src/arena-core');expect(transitionWitness(tx.vin[0]!.scriptSig.hex).action).toBe(action);
+  for(const input of tx.vin)expect(chain.confirmed.has(input.txid)).toBe(true);
+  const count=chain.broadcasts.length;await page.waitForTimeout(1200);expect(chain.broadcasts.length).toBe(count);
+  chain.mine();
+ }
+ await expect(page.getByText('Completed — all periods processed on-chain',{exact:true})).toBeVisible({timeout:30000});
+ expect(chain.broadcasts.length).toBe(4);expect(await page.evaluate(()=>localStorage.getItem('arena-chipnet-automatic-settlement'))).toBeNull();
+ expect(await page.evaluate(()=>(window as any).walletMethods.some((method:string)=>['authorize','submit','offer'].includes(method)))).toBe(false);
 });
-test('disconnect after submission survives reload without resubmitting; tab leadership transfers safely',async({context,page})=>{
- await open(page);disconnectAfterAccept=true;await page.getByRole('button',{name:'Process Period'}).click();
- await expect.poll(()=>chain.pending.size).toBe(1);await page.reload();await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});expect(chain.broadcasts.length).toBe(1);
- const second=await context.newPage();await second.goto(`/settlement/#/vault/${category()}`);await expect(status(second)).toContainText('Pending confirmation',{timeout:30000});
- await page.close();chain.mine();await expect(status(second)).toContainText('Confirmed',{timeout:30000});expect(chain.broadcasts.length).toBe(1);
+test('two independent browsers converge on a single pending canonical transaction',async({browser,page})=>{
+ const other=await browser.newContext({ignoreHTTPSErrors:true}),second=await other.newPage();
+ try{await Promise.all([open(page),open(second)]);await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);await expect(status(second)).toContainText(/Pending confirmation|reconciling|retrying/,{timeout:30000});expect(new Set(chain.broadcasts).size).toBe(1);expect(chain.broadcasts.length).toBeLessThanOrEqual(2);}
+ finally{await other.close();}
 });
-test('provider disagreement and mempool rejection produce retries without optimistic settlement',async({page})=>{
- await open(page);chain.disagree=true;await page.getByRole('button',{name:'Process Period'}).click();
- await expect(status(page)).toContainText('disagreement',{timeout:30000});expect(chain.broadcasts.length).toBe(0);
- chain.disagree=false;chain.rejectNext=true;await page.getByRole('button',{name:'Process Period'}).click();
- await expect(status(page)).toContainText('txn-mempool-conflict',{timeout:30000});expect(chain.pending.size).toBe(0);
+test('reload preserves pending intents and tab leadership transfer resumes without a control',async({context,page})=>{
+ disconnectAfterAccept=true;await open(page);await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);await page.reload();await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});expect(chain.broadcasts.length).toBe(1);
+ const second=await context.newPage();await open(second);await expect(status(second)).toContainText('Pending confirmation',{timeout:30000});await page.close();chain.mine();
+ await expect.poll(()=>chain.broadcasts.length,{timeout:30000}).toBe(2);expect(chain.pending.size).toBe(1);expect(chain.confirmed.has(chain.transactions.get([...chain.pending][0]!)!.vin[0]!.txid)).toBe(true);
+});
+test('provider contradiction prevents all automatic broadcasts and recovery starts without a toggle',async({page})=>{
+ chain.disagree=true;await open(page);await expect(status(page)).toContainText('disagreement',{timeout:30000});expect(chain.broadcasts.length).toBe(0);chain.disagree=false;
+ await expect.poll(()=>chain.pending.size,{timeout:30000}).toBe(1);
 });

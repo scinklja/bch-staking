@@ -43,7 +43,10 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
   else if(intent.kind==='resume')op=await rpc('advance',intent.id,publicKeys);
   else throw Error('Unsupported browser wallet operation');
   if(op.stage==='review'&&op.plan){
-   check();if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before approval');
+   const authorization=await rpc('authorize',op.id,publicKeys);
+   check();if(authorization.deadline!==undefined&&Date.now()/1000>=authorization.deadline)throw Error('Scheduled registration cutoff passed before wallet approval');
+   if(Date.now()-authorization.verifiedAt>10000)throw Error('Wallet authorization data became stale; retry verification');
+   if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before approval');
    window.dispatchEvent(new CustomEvent('arena-wallet-operation',{detail:op}));
    window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Awaiting explicit wallet approval for '+op.plan.label}));
    const signed=await getManager().signTransaction({transaction:wizardWireTransaction(op.plan.request),inputPaths:op.plan.inputPaths},{signal:signing.signal});

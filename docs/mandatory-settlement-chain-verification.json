@@ -1,0 +1,143 @@
+{
+  "at": "2026-11-12T16:50:17.190Z",
+  "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+  "config": {
+    "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+    "stakingCategory": "e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a",
+    "epoch": 1794496500,
+    "periodSeconds": 300,
+    "periods": 2,
+    "cap": 1000
+  },
+  "providers": [
+    {
+      "peer": "wss://chipnet.imaginary.cash:50004",
+      "tip": {
+        "height": 332039,
+        "hash": "00000000000011133fe41da3a9dc52203441a5b34c1747e7a75727a38063ba42",
+        "mtp": 1794499089
+      },
+      "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+      "period": 2,
+      "phase": "complete",
+      "transitions": [
+        {
+          "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+          "parent": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+          "height": 332035,
+          "blockhash": "00000000000025349068878ee14b5cd71dcbeca9e6559517aeb64b4000a6ba3e",
+          "confirmations": 5,
+          "period": 0,
+          "action": 2,
+          "fee": "10000",
+          "stateBefore": "67000",
+          "stateAfter": "57000"
+        },
+        {
+          "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+          "parent": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+          "height": 332036,
+          "blockhash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+          "confirmations": 4,
+          "period": 0,
+          "action": 5,
+          "fee": "10000",
+          "stateBefore": "57000",
+          "stateAfter": "47000"
+        },
+        {
+          "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+          "parent": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+          "height": 332037,
+          "blockhash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+          "confirmations": 3,
+          "period": 1,
+          "action": 2,
+          "fee": "10000",
+          "stateBefore": "47000",
+          "stateAfter": "37000"
+        },
+        {
+          "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+          "parent": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+          "height": 332038,
+          "blockhash": "0000000000000da29912123261de7d9ab6042401ff54a09428d1e7daca68c597",
+          "confirmations": 2,
+          "period": 1,
+          "action": 5,
+          "fee": "10000",
+          "stateBefore": "37000",
+          "stateAfter": "27000"
+        }
+      ],
+      "finalStateOutpoint": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912:0",
+      "stateBch": "27000",
+      "poolBch": "1000"
+    },
+    {
+      "peer": "wss://electrum-chipnet.optnlabs.com",
+      "tip": {
+        "height": 332039,
+        "hash": "00000000000011133fe41da3a9dc52203441a5b34c1747e7a75727a38063ba42",
+        "mtp": 1794499089
+      },
+      "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+      "period": 2,
+      "phase": "complete",
+      "transitions": [
+        {
+          "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+          "parent": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+          "height": 332035,
+          "blockhash": "00000000000025349068878ee14b5cd71dcbeca9e6559517aeb64b4000a6ba3e",
+          "confirmations": 5,
+          "period": 0,
+          "action": 2,
+          "fee": "10000",
+          "stateBefore": "67000",
+          "stateAfter": "57000"
+        },
+        {
+          "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+          "parent": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+          "height": 332036,
+          "blockhash": "0000000000000c4f685cd319bd4d4bb5171fff8934aeff8ebdc10c375bb11d24",
+          "confirmations": 4,
+          "period": 0,
+          "action": 5,
+          "fee": "10000",
+          "stateBefore": "57000",
+          "stateAfter": "47000"
+        },
+        {
+          "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+          "parent": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+          "height": 332037,
+          "blockhash": "00000000000026d1211575cb407347631531711bbbac41491a3c2b01371523c3",
+          "confirmations": 3,
+          "period": 1,
+          "action": 2,
+          "fee": "10000",
+          "stateBefore": "47000",
+          "stateAfter": "37000"
+        },
+        {
+          "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+          "parent": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+          "height": 332038,
+          "blockhash": "0000000000000da29912123261de7d9ab6042401ff54a09428d1e7daca68c597",
+          "confirmations": 2,
+          "period": 1,
+          "action": 5,
+          "fee": "10000",
+          "stateBefore": "37000",
+          "stateAfter": "27000"
+        }
+      ],
+      "finalStateOutpoint": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912:0",
+      "stateBch": "27000",
+      "poolBch": "1000"
+    }
+  ],
+  "broadcasts": 0
+}

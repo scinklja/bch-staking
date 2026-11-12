@@ -17,9 +17,7 @@ export function useArena() {
   const [saved] = useState(() => endpoint ? loadSnapshot(endpoint) : undefined);
   const [data,setData] = useState<Envelope | undefined>(saved?.data);
   const [fromSnapshot,setFromSnapshot] = useState(!!saved);
-  const [automatic,setAutomaticState]=useState(()=>{try{return localStorage.getItem('arena-chipnet-automatic-settlement')==='true';}catch{return false;}});
-  const automaticRef=useRef(automatic);automaticRef.current=automatic;
-  const pendingAutomatic=useRef<boolean|undefined>(undefined);
+  useEffect(()=>{try{localStorage.removeItem('arena-chipnet-automatic-settlement');}catch{/* Legacy preferences never control processing. */}},[]);
   const [settlements,setSettlements]=useState<import('zod').z.infer<typeof keeperSchema>['statuses']>({});
   const controls=useRef<(message:unknown)=>void>(()=>{});
   const [providerStatus,setProviderStatus] = useState('Connecting');
@@ -54,7 +52,7 @@ export function useArena() {
           startup=setTimeout(()=>fail(workerDiagnostic('Worker readiness timed out after 30 seconds',workerUrl.href,'startup')),30000);
           worker.onmessage=event=>{
             if(!active()||failed)return;
-            if(event.data?.type==='ready'){clearTimeout(startup);worker?.postMessage({type:'start',config:settings,automatic:automaticRef.current});return;}
+            if(event.data?.type==='ready'){clearTimeout(startup);worker?.postMessage({type:'start',config:settings});return;}
             if(event.data?.type==='error'){
               if(event.data.fatal){fail(event.data.diagnostic??workerDiagnostic(event.data.error,workerUrl.href,'worker'));return;}
               setError(formatWorkerDiagnostic(workerDiagnostic(event.data.error,workerUrl.href,'indexing')));setPending(false);return;
@@ -63,10 +61,7 @@ export function useArena() {
             const keeper=keeperSchema.safeParse(event.data.keeper);
             if(keeper.success) {
               setSettlements(keeper.data.statuses);
-              // Messages queued before a control change cannot undo that preference while its acknowledgement is pending.
-              if(pendingAutomatic.current===undefined || keeper.data.automatic===pendingAutomatic.current) {
-                pendingAutomatic.current=undefined;setAutomaticState(keeper.data.automatic);
-              }
+
             }
             const parsed=envelopeSchema.safeParse(event.data.envelope);
             if(!parsed.success || parsed.data.chain!=='chipnet') {setError('Browser indexer returned an incompatible response');setPending(false);return;}
@@ -125,7 +120,6 @@ export function useArena() {
     document.addEventListener('visibilitychange',reconnect); window.addEventListener('online',reconnect);
     return () => { stopped = true; clearTimeout(timer); clearInterval(clock); controller?.abort(); document.removeEventListener('visibilitychange',reconnect); window.removeEventListener('online',reconnect); };
   },[endpoint, config.error, config.source,catalogVersion]);
-  const setAutomatic=useCallback((value:boolean)=>{pendingAutomatic.current=value;automaticRef.current=value;setAutomaticState(value);try{localStorage.setItem('arena-chipnet-automatic-settlement',String(value));}catch{}controls.current({type:'keeper-settings',automatic:value});},[]);
   const processPeriod=useCallback((category:string)=>controls.current({type:'process-period',category}),[]);
-  return { automatic, setAutomatic, settlements, processPeriod, data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };
+  return { automatic:true as const, settlements, processPeriod, data, error, pending, receivedAt, now, fromSnapshot, configured: !!endpoint || config.source === 'electrum', source:config.source, providerStatus, refresh:useCallback(() => request.current(),[]) };
 }

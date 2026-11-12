@@ -1,21 +1,21 @@
 {
-  "verifiedAt": "2026-11-09T10:25:21.153Z",
+  "verifiedAt": "2026-11-12T16:39:53.445Z",
   "node": "/Bitcoin Cash Node:29.2.0/",
   "before": {
-    "height": 1537,
-    "hash": "6db01ab497da4e558d9a5865f055a6fe41b7ffdfa2b28055558c3b35a4c0eb4d"
+    "height": 4752,
+    "hash": "21efb3f13c46a1056e94e05681a35bec274aa7921eb0aab4180830abc0a6783f"
   },
   "after": {
     "chain": "regtest",
-    "blocks": 1668,
-    "headers": 1668,
-    "bestblockhash": "7d52428cd49b27ee49949433cfcff25156993356fc7b866d6fdd00012b353514",
+    "blocks": 4883,
+    "headers": 4883,
+    "bestblockhash": "4ab0fe2d31409b51a7ff148859a29a7d3cf93578ec7de9505387d3c016757790",
     "difficulty": 4.656542373906925e-10,
-    "mediantime": 1794219871,
+    "mediantime": 1794501646,
     "verificationprogress": 1,
     "initialblockdownload": false,
-    "chainwork": "0000000000000000000000000000000000000000000000000000000000000d0a",
-    "size_on_disk": 3478138,
+    "chainwork": "0000000000000000000000000000000000000000000000000000000000002628",
+    "size_on_disk": 12916264,
     "pruned": false,
     "upgrade_status": {
       "name": "May 2027 Upgrade (regtestnet)",
@@ -33,7 +33,7 @@
   "rejected": 103,
   "confirmedTransactions": 113,
   "relayedTransactions": 113,
-  "relayPeerDatadir": "/tmp/staking-standard-relay-Rb2pf8",
+  "relayPeerDatadir": "/tmp/staking-standard-relay-93fS73",
   "standardPolicy": "acceptnonstdtxn=0 on both nodes",
   "registryBytes": 2251,
   "poolBytes": 93,
@@ -46,7 +46,7 @@
     {
       "name": "live allocations: underfunded genesis",
       "result": {
-        "txid": "2a6d4ab9591f67795793a2947fb0c53061140fd7298eb5a1a102181c7dbe84d0",
+        "txid": "efd6da0114aca0d13a7bbda0ea9e7df35a00ba727e9ccbbb64821a1f0177aa8e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -59,7 +59,7 @@
     {
       "name": "live allocations: nonempty genesis state",
       "result": {
-        "txid": "21995cfd43aed7cbbeea0cbbed07d99c1e8c14cb4ce9d5d3cdb04ed2967bdc82",
+        "txid": "38cc93e3366488baf395c26a05b79d67a0ed7819a1368285bdcf9589d7b8f932",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -72,7 +72,7 @@
     {
       "name": "live allocations: minting state authority",
       "result": {
-        "txid": "975702c9965ef1cdbcf289e0ad6dab248a11d5502a933b1d1cd00de52ffb6278",
+        "txid": "004291b60b1f85b6d75e2b82113f0860a8ae6e646eee154c743ac2caccdc1768",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -85,7 +85,7 @@
     {
       "name": "live allocations: extra minting authority",
       "result": {
-        "txid": "f87763c4557503ba553709416fe4ad224943bce279ea5dc15b46ef51386b9591",
+        "txid": "fd05f51242708608c0b285c679329f7d9c5df7e8b2fca3d38dbf2cfbccaba6a5",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -98,7 +98,7 @@
     {
       "name": "live allocations: malformed pool carrier",
       "result": {
-        "txid": "ac3731fe429b0fe234fd8f5e11a45deea401d277b9c0e1a75f1e8746293b3ede",
+        "txid": "fabec80d73f5675aabfc30ba72e7cf728ef8d2f0f799bd30b238a8cf9e936951",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -111,7 +111,7 @@
     {
       "name": "live allocations: substituted immutable cap",
       "result": {
-        "txid": "dc6b63ead4c137883c6541ecc131886fc1aeeb723a72dcc79695eae281a7330a",
+        "txid": "6b323b610aca1854431cb4909d6d89a4c15f69dc68e82781cee38ae72aa618d1",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -124,7 +124,7 @@
     {
       "name": "live allocations: substituted staking category",
       "result": {
-        "txid": "b861d2b9c1db619682f4fe102ec9bc017aca5913fb79bd41fe52e0b323f51206",
+        "txid": "f6a251c30f050eebbb0dcadb5a4bd8809581b52b6ed26614da89503b74d63f43",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -137,7 +137,7 @@
     {
       "name": "live allocations: substituted epoch",
       "result": {
-        "txid": "fde01d6385a8fec5d70fed860764628df1a07794b414d08329c7c128ea44d704",
+        "txid": "17eaef23add660d9bfe9b8a332a996824b00239deb50731e1a99150db96721db",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -150,7 +150,7 @@
     {
       "name": "live allocations: substituted period length",
       "result": {
-        "txid": "e289ca2f1b38e1c50c01b6bf7864bc93b0f71ac072ef912bd979167e9e53dd22",
+        "txid": "f1b721eb771cd4d7b817c68e53ff443e14fa3f72b08c6f9f3cda9b82dd0ea6cb",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -163,7 +163,7 @@
     {
       "name": "live allocations: substituted horizon",
       "result": {
-        "txid": "a27212d5eaf85cdada260107cbc638ac05e3e3023ce440427a5308cd78af8fc1",
+        "txid": "092d9a41b9554a09b6876ebc01aa5d78fe97f4183d6724ac778ac28c95895c69",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -176,7 +176,7 @@
     {
       "name": "live allocations: genesis cannot burn surplus reserve as fees",
       "result": {
-        "txid": "985660811102ffc759e2c000a9f9cb566dda0f5683d90ee1bc38f4ccb9939eab",
+        "txid": "f9f7085530e72f84d799a57111f2c2ca1fd5cd09599abc2bf4fc1c33245aa2d0",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -189,7 +189,7 @@
     {
       "name": "live allocations: factory authorizes genesis",
       "result": {
-        "txid": "26ee3c49af0a9d3dc1085e68745441beb07d5f62c04c9536ba6dc79816917081",
+        "txid": "3a184018c4e3edf82471ea5a99fc1358081a85648d771878e65a5c99fcb92a97",
         "allowed": true,
         "size": 2712,
         "vsize": 2712,
@@ -205,18 +205,18 @@
     },
     {
       "name": "live allocations: canonical fresh genesis",
-      "txid": "26ee3c49af0a9d3dc1085e68745441beb07d5f62c04c9536ba6dc79816917081",
-      "category": "10a9c73d945ca5e94533b3c9c7b629f4f7713a9fc2f4a2f413f36141bb1792a1",
-      "stakingCategory": "3c8e971699240a3124e107b4cb2e7fcbe888f05cb898808669f2690b4a797275",
+      "txid": "3a184018c4e3edf82471ea5a99fc1358081a85648d771878e65a5c99fcb92a97",
+      "category": "c85a906c33cb1dffc925c5545bb83807343c1bcc9409db7c0aa551f079105206",
+      "stakingCategory": "9e8e131c26915808b713ab9facd5c19c113b70441a8584d1b08ae5e2c638aff6",
       "schedule": {
-        "epoch": 1794219540,
+        "epoch": 1794501300,
         "periodSeconds": 60
       }
     },
     {
       "name": "registration rejects genuine tokens of a substituted category",
       "result": {
-        "txid": "a8248bd0fce004c87fb0c8696b3411df276563c3357a2cd95c54a3b88f84b9cb",
+        "txid": "f01a9f83f6218c445e8f2ccc94db323e9895621516eba20c714af744a07c92ad",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -231,7 +231,7 @@
     {
       "name": "registration sequence must equal authenticated count",
       "result": {
-        "txid": "a9d96e467cc2547dcd9eabf8e7a722f69930ebd418e54a542c74f6e566b7b160",
+        "txid": "e58c1d1d101d4e87f26800bba1fb1a3283a444170c9906012d14e8e2c768c1b5",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -246,7 +246,7 @@
     {
       "name": "registration requires full S times W commitment",
       "result": {
-        "txid": "c67e3f6997e4b3f4348bef2b8c0a2c641fd0445937dc20fbb3546a10d5123f11",
+        "txid": "6db21bc69d5496e4c2f02fdc90ad743cd6193ece8c509123a25d79c9e7e59c39",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -261,7 +261,7 @@
     {
       "name": "live allocations: register slot 0 with S*W",
       "result": {
-        "txid": "5435630a5fcdef59d3d7f999f554a8c34057e56bb70774d5264e00d5d84d9b38",
+        "txid": "75c900bcc70247337b99ebe6683b472217a4a93a0949ce433e6f2150120132d5",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -279,7 +279,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "5435630a5fcdef59d3d7f999f554a8c34057e56bb70774d5264e00d5d84d9b38",
+      "txid": "75c900bcc70247337b99ebe6683b472217a4a93a0949ce433e6f2150120132d5",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "18000",
@@ -288,7 +288,7 @@
     {
       "name": "live allocations: register slot 1 with S*W",
       "result": {
-        "txid": "df0fe6f8010d31d547ef0cfc7e4d1e29e11d4fdfdb50960a1ef2f45735be0816",
+        "txid": "924510e60fb114f37997158e812b8e1795d91d77268bba495498a6675b207ff6",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -306,7 +306,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "df0fe6f8010d31d547ef0cfc7e4d1e29e11d4fdfdb50960a1ef2f45735be0816",
+      "txid": "924510e60fb114f37997158e812b8e1795d91d77268bba495498a6675b207ff6",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "20000",
@@ -315,7 +315,7 @@
     {
       "name": "live allocations: register slot 2 with S*W",
       "result": {
-        "txid": "3fe62c10987d95888d23cb8b00040740529efe319a53ecfff776362ab84aa5bc",
+        "txid": "3332bc4e9492dc32d9a033a5964b6cfb420e82532673bf018acb2f6d0b33ff7c",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -333,7 +333,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "3fe62c10987d95888d23cb8b00040740529efe319a53ecfff776362ab84aa5bc",
+      "txid": "3332bc4e9492dc32d9a033a5964b6cfb420e82532673bf018acb2f6d0b33ff7c",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "22000",
@@ -342,7 +342,7 @@
     {
       "name": "live allocations: register slot 3 with S*W",
       "result": {
-        "txid": "08a6819dfc1627d82db819822e3d89dda3361715fe9a85a645b7eaeaf8dc5684",
+        "txid": "7cea92377c14eb120c7abec141716484cf171f5b75e0cb4e5f453186d6792b27",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -360,7 +360,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "08a6819dfc1627d82db819822e3d89dda3361715fe9a85a645b7eaeaf8dc5684",
+      "txid": "7cea92377c14eb120c7abec141716484cf171f5b75e0cb4e5f453186d6792b27",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "24000",
@@ -369,7 +369,7 @@
     {
       "name": "live allocations: register slot 4 with S*W",
       "result": {
-        "txid": "149d9fab01e3b252e788ed28ccca548949200b960d07c9fcdf7351cb0637ab1e",
+        "txid": "2bcd1f74227c6d9c128c47da5f01ccfe2b3888bfe8fb8a33fbc40adc3bd1f1db",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -387,7 +387,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "149d9fab01e3b252e788ed28ccca548949200b960d07c9fcdf7351cb0637ab1e",
+      "txid": "2bcd1f74227c6d9c128c47da5f01ccfe2b3888bfe8fb8a33fbc40adc3bd1f1db",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "26000",
@@ -396,7 +396,7 @@
     {
       "name": "live allocations: register slot 5 with S*W",
       "result": {
-        "txid": "bb7571714ecf6d120ac7960dd364775bb76e6bfea7fc424bbcee159250a9bef7",
+        "txid": "17db37a071af79602f70b47b84eb0e8e33ef10fbd8d1ea8931525567b482e219",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -414,7 +414,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "bb7571714ecf6d120ac7960dd364775bb76e6bfea7fc424bbcee159250a9bef7",
+      "txid": "17db37a071af79602f70b47b84eb0e8e33ef10fbd8d1ea8931525567b482e219",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "28000",
@@ -423,7 +423,7 @@
     {
       "name": "live allocations: register slot 6 with S*W",
       "result": {
-        "txid": "d0707a76871a3fad154bd39756f2cef528a27eb4a176f0d196e7e67e2cd3ba2d",
+        "txid": "b5aa744769d32dbd477d98ce7a5436896b5fe0333fa16867bb726e33ec581e9b",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -441,7 +441,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "d0707a76871a3fad154bd39756f2cef528a27eb4a176f0d196e7e67e2cd3ba2d",
+      "txid": "b5aa744769d32dbd477d98ce7a5436896b5fe0333fa16867bb726e33ec581e9b",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "30000",
@@ -450,7 +450,7 @@
     {
       "name": "live allocations: register slot 7 with S*W",
       "result": {
-        "txid": "751ba80f88b9853d4ae948ae50e37738251dbd22b36b9ee47a4f0e62002f0bcc",
+        "txid": "55030c55606ad3ff8803aef246f4140f27490c1d0ebfe2ff68d07d443aa5557e",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -468,7 +468,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "751ba80f88b9853d4ae948ae50e37738251dbd22b36b9ee47a4f0e62002f0bcc",
+      "txid": "55030c55606ad3ff8803aef246f4140f27490c1d0ebfe2ff68d07d443aa5557e",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "32000",
@@ -477,7 +477,7 @@
     {
       "name": "live allocations: register slot 8 with S*W",
       "result": {
-        "txid": "e0d489082c2b77611ba39da62db9a400310ee3a2d7d026d9b11da9a10c7ab4e0",
+        "txid": "ebd8914255cd96249c857f0496654adf5f4d06066e2118dcd70346ccaf0e8fd4",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -495,7 +495,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "e0d489082c2b77611ba39da62db9a400310ee3a2d7d026d9b11da9a10c7ab4e0",
+      "txid": "ebd8914255cd96249c857f0496654adf5f4d06066e2118dcd70346ccaf0e8fd4",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "34000",
@@ -504,7 +504,7 @@
     {
       "name": "live allocations: register slot 9 with S*W",
       "result": {
-        "txid": "ec425c4f264e7f77ffe3807f6adb3fe1ac2cad50a1d30a6a88b2ce1203b3a7a3",
+        "txid": "5497c0702b8cb5bd830dc219b02cd03f1fc1b5eedd5df6af95b3f4ddf70a599e",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -522,7 +522,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "ec425c4f264e7f77ffe3807f6adb3fe1ac2cad50a1d30a6a88b2ce1203b3a7a3",
+      "txid": "5497c0702b8cb5bd830dc219b02cd03f1fc1b5eedd5df6af95b3f4ddf70a599e",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "36000",
@@ -531,7 +531,7 @@
     {
       "name": "live allocations: register slot 10 with S*W",
       "result": {
-        "txid": "55b46f5d23e624dfd1350281f3c4126d1e770bff6eac45c4f2ec9175220d7974",
+        "txid": "e4aa88f11c7914f7d0f968ee34e739bebc2882f744c1d0a6aae02772a76cfade",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -549,7 +549,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "55b46f5d23e624dfd1350281f3c4126d1e770bff6eac45c4f2ec9175220d7974",
+      "txid": "e4aa88f11c7914f7d0f968ee34e739bebc2882f744c1d0a6aae02772a76cfade",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "38000",
@@ -558,7 +558,7 @@
     {
       "name": "live allocations: register slot 11 with S*W",
       "result": {
-        "txid": "1bdcecddba451171d46e624e8cc9becc80a32e996288b164298a1d7955566c5d",
+        "txid": "dcb27ef599666fdb041abfb3fa31371c09bd6508d8098b4dec4e9b6aa6ef8396",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -576,7 +576,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "1bdcecddba451171d46e624e8cc9becc80a32e996288b164298a1d7955566c5d",
+      "txid": "dcb27ef599666fdb041abfb3fa31371c09bd6508d8098b4dec4e9b6aa6ef8396",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "40000",
@@ -585,7 +585,7 @@
     {
       "name": "live allocations: register slot 12 with S*W",
       "result": {
-        "txid": "dc237102b5f0a59c88926a9f8a95c120db69a3354772b6d7de173cd4926ef612",
+        "txid": "2b0fdab95b8f5618ca900bb21a28cc35a4f6fb41393f6b22b89f0291dd1e9b5a",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -603,7 +603,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "dc237102b5f0a59c88926a9f8a95c120db69a3354772b6d7de173cd4926ef612",
+      "txid": "2b0fdab95b8f5618ca900bb21a28cc35a4f6fb41393f6b22b89f0291dd1e9b5a",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "42000",
@@ -612,7 +612,7 @@
     {
       "name": "live allocations: register slot 13 with S*W",
       "result": {
-        "txid": "4f48e4c33e03fffe18f53548390285c83cbcc906f6cda0623c2d9007d2488f77",
+        "txid": "9ee431c3f5f6f54699eb446fccdfdabeb31ef974a0b2bf88a3343e2ed8bda9eb",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -630,7 +630,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "4f48e4c33e03fffe18f53548390285c83cbcc906f6cda0623c2d9007d2488f77",
+      "txid": "9ee431c3f5f6f54699eb446fccdfdabeb31ef974a0b2bf88a3343e2ed8bda9eb",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "44000",
@@ -639,7 +639,7 @@
     {
       "name": "live allocations: register slot 14 with S*W",
       "result": {
-        "txid": "29027d61634a954a8530e8f0f98674564689c896f0da41b613bfdb018ea04caa",
+        "txid": "3a137c959af1481663fd21ce80d9a0f290db2b2b44e5d1e05af46db6c27a11c4",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -657,7 +657,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "29027d61634a954a8530e8f0f98674564689c896f0da41b613bfdb018ea04caa",
+      "txid": "3a137c959af1481663fd21ce80d9a0f290db2b2b44e5d1e05af46db6c27a11c4",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "46000",
@@ -666,7 +666,7 @@
     {
       "name": "live allocations: register slot 15 with S*W",
       "result": {
-        "txid": "037b1e84fd2d079cddeadf423373425744143484a702cd4cdd490aea8f6bbecd",
+        "txid": "e1341d1c3b79b488ecd0b170e7195737a71057a4a5166c9f067693461467f778",
         "allowed": true,
         "size": 4473,
         "vsize": 4473,
@@ -684,7 +684,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "037b1e84fd2d079cddeadf423373425744143484a702cd4cdd490aea8f6bbecd",
+      "txid": "e1341d1c3b79b488ecd0b170e7195737a71057a4a5166c9f067693461467f778",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "58000",
@@ -693,7 +693,7 @@
     {
       "name": "capacity cannot exceed sixteen lifetime registrations",
       "result": {
-        "txid": "7f2ae147ea83d9ef8206351fdb4f8150c3b28ebba6cd4ce89ff1c6996f08430c",
+        "txid": "de28fef0b68df05940bbbfb7d927c588c996216533e47df8449a4c60e56f225d",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -708,7 +708,7 @@
     {
       "name": "pool cannot spend without canonical registry NFT input",
       "result": {
-        "txid": "2a8291390c580906810bc4c22fd324384da011a0d8cc1285740ddb44d6b6da0b",
+        "txid": "c98a5d53ef9c83ef914fe49478fcf76c2760cef7d0fcb7ad96a7b347ed5ace4e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -722,7 +722,7 @@
     {
       "name": "live allocations: activate period 0",
       "result": {
-        "txid": "e129ccd111aea3bf7ad9809133d2fe6763df7dd9917d6b80705cb009d1aec26b",
+        "txid": "3188b1f564d4773bf5ce7e5b7827d3792fbad9c95df0aec736d82ed164e3b58b",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -739,7 +739,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "e129ccd111aea3bf7ad9809133d2fe6763df7dd9917d6b80705cb009d1aec26b",
+      "txid": "3188b1f564d4773bf5ce7e5b7827d3792fbad9c95df0aec736d82ed164e3b58b",
       "period": 0,
       "bch": "1990000",
       "remainingTokens": "58000",
@@ -748,7 +748,7 @@
     {
       "name": "cannot omit strictly higher-ranked snapshot entry",
       "result": {
-        "txid": "3bc08bd7d35d4210de58ac6119c5fd12e76ca127835410b06c6554d7bd80f683",
+        "txid": "cbf2587572dacb93c9caaabe2260c7b022645f0415f2ebaceb182bb538e76574",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -762,7 +762,7 @@
     {
       "name": "complete roster rejects lower-ranked winner",
       "result": {
-        "txid": "fceca7b3724634d858957f1b1fa20421bfd9ce02472e1b472f9ee923fd736821",
+        "txid": "b4bbb0a9255b100b4cc6bea8cdbf9ca20b6e7dc3eb570f499f806654cf706c02",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -776,7 +776,7 @@
     {
       "name": "later canonical registration loses exact-score tie",
       "result": {
-        "txid": "7f99fbd4b2cb2dc88960e10dfc314718bb2dda0f284cf4fee2c2f804fc1d9eca",
+        "txid": "f15d5c11fe12c9a1aef2778f41676dd2f6c53d78f2f2632fd2972636cb782e1f",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -790,7 +790,7 @@
     {
       "name": "cancellation cannot modify activated snapshot",
       "result": {
-        "txid": "f736fdc834ec52a619347759dded6298e86c2c339ee9aaab4560559c351d4d5d",
+        "txid": "578a6c99c2384ad9e502887aadf89a8950b6856848045a333021a11a2220233c",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -804,7 +804,7 @@
     {
       "name": "cannot reopen activated snapshot",
       "result": {
-        "txid": "7d8d44768728e8d64c442624fef47a04b446966d5f498a5c38af03f8f9466c18",
+        "txid": "6b3902339c40b970ece007fed8c8de800196f66aa88140fd66b1cfcf93ae0aae",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -818,7 +818,7 @@
     {
       "name": "cannot replace activated snapshot",
       "result": {
-        "txid": "b89bc00ad9105202ab937dcee846d7befd11ed83182b590ec6b1b63fc5c5aeab",
+        "txid": "1196363895e60b4525f52f1f5abe1b9d98f68bc1c5fdef84e0b039b0b226af30",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -832,7 +832,7 @@
     {
       "name": "unauthorized cancellation rejected",
       "result": {
-        "txid": "49e40490facedbee93559fd761105afbdf05224aff9ab395522aa7b3db3ec6bc",
+        "txid": "cf2dd0faf9db79cf78f5bf9e2e72647a6c3da168215dff77bf8c0b9f73eb0faf",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
@@ -846,7 +846,7 @@
     {
       "name": "live allocations: cancel losing offer after activation",
       "result": {
-        "txid": "d2f41b2a07d1309fd2c2672e4b681dee42629c4e2c36f1cc9561e783ea78a03f",
+        "txid": "c9838e5bfd272df7ddfe46711fca9423bedb6f550d86a94c5dfcafe421489e1e",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -863,7 +863,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "d2f41b2a07d1309fd2c2672e4b681dee42629c4e2c36f1cc9561e783ea78a03f",
+      "txid": "c9838e5bfd272df7ddfe46711fca9423bedb6f550d86a94c5dfcafe421489e1e",
       "period": 0,
       "bch": "1980000",
       "remainingTokens": "58000",
@@ -872,7 +872,7 @@
     {
       "name": "cancellation cannot release activated unsettled escrow",
       "result": {
-        "txid": "835cc8b94dbc355c76fe816d2b33b8e3554055bd81b05780ee4f9d188dfcc996",
+        "txid": "dd336c506d21aac3bb2ec8d7e9e55476e7cbba1237079d0ae51338c19db03b17",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -886,7 +886,7 @@
     {
       "name": "cannot skip nonempty frozen roster",
       "result": {
-        "txid": "8490d7dca675c62b9e4a96aa2bce10f7a9192b159af91ded02701e0418419b19",
+        "txid": "0613ccf0b4421f445bf5dca7b34405408828c33495879ccc405c672f528cd9fc",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -900,7 +900,7 @@
     {
       "name": "allocation cannot forge owner",
       "result": {
-        "txid": "1cd2e19201e3c56940d8da91cc206bb0f060f79e3383f23ed0ff60fa901a67b5",
+        "txid": "6a2b36507b2f82202ffc26ad3bbc362dc81d6d90b825f77a0a628f3dbc1998c0",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -914,7 +914,7 @@
     {
       "name": "allocation cannot forge vault ID",
       "result": {
-        "txid": "9723c0bf11df82de40603a78be39fd8d11c5e09894889a1b957192dbe4c783ca",
+        "txid": "f75d5595187ccc6d61c3e4f1becb43be4b89d99d0404e8ee49fb5635c3807c22",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -928,7 +928,7 @@
     {
       "name": "allocation cannot forge offer ID",
       "result": {
-        "txid": "4d42212c1c8934e9d73005d01c7abc831268ba667bb8e62824919ff9e40e6081",
+        "txid": "7a096ac25560a34b19849891e995d5a7583cf4bc217f18e8951d5f7e1dfbc02e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -942,7 +942,7 @@
     {
       "name": "allocation cannot forge winning period",
       "result": {
-        "txid": "1ef240f60985fc9a69e9ae18170379872ad1e0eb83632ad4f8eb30d881269c62",
+        "txid": "5f1b427b5f54fb9b99cf6264cf428fd3cfa8a1602afeb8633188e7c9c5899516",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -956,7 +956,7 @@
     {
       "name": "allocation cannot forge stake amount",
       "result": {
-        "txid": "be944e77909a52ff237c6ddb72c6c4e47d67fbf20c149d0ab7573af8c9d04f21",
+        "txid": "b7a7b4609183629f42916e1f428fad75e94a140714b456210384b8c6f960894b",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -970,7 +970,7 @@
     {
       "name": "allocation cannot forge maturity",
       "result": {
-        "txid": "143c98266eadf36f35646d2b58ae6a539db2aacea8e6f27a966f426696f146e1",
+        "txid": "dccde685560569dde7999eebe91cfaaf15544748b5f267daf3599c9371cd2f98",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -984,7 +984,7 @@
     {
       "name": "allocation cannot forge asset category",
       "result": {
-        "txid": "85e31c0952464daa06e39ec48fd84d076bab14b090bec51ac0e26989a774f48e",
+        "txid": "814ea3658e21698b741bd97f60fffd6f93410c0174660176a78ae5dc6aadec20",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -998,7 +998,7 @@
     {
       "name": "underfunded allocation rejected even with conserved total tokens",
       "result": {
-        "txid": "57e5f8e31e8695a15eb2d574dd609063d791c5b5954adafb7c7996c6d88b898a",
+        "txid": "a314c9425dbba63dceef5deb37f12ad16bb79b733786e8c16d7158959ce97248",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1012,7 +1012,7 @@
     {
       "name": "underfunded allocation BCH carrier rejected",
       "result": {
-        "txid": "2bbf3847ae5162305c1f1010b040ab1499a562127e059881aee7a0bbad3c7827",
+        "txid": "a343d71447a2cdec882e16440108ab03894cae4c297c8d2eded51989bc90b161",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1026,7 +1026,7 @@
     {
       "name": "reward cannot be underpaid",
       "result": {
-        "txid": "bb0b09454fc5a2e981030190f542bbec096fc59a16aad9cd46c9b1947cda2390",
+        "txid": "28955fe54331b9cc7443b524682411b1abdb81d7700930bf5f339ad9f5730367",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1040,7 +1040,7 @@
     {
       "name": "win cannot avoid escrow deduction or reuse stake",
       "result": {
-        "txid": "c167777909e021352abc1537f5c74093925b61ed6ca7781b1488acf58d3974cf",
+        "txid": "b1b4d62c296deb8181d7492f707f34e084d58116b78d53da9ddae4beb3e25186",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1054,7 +1054,7 @@
     {
       "name": "out-of-order settlement rejected",
       "result": {
-        "txid": "173d8e6faa26467dd1db6af2bfc2a759e60147982f14ca6634e7a9f6cfc5f84c",
+        "txid": "bb30593c9a1d790bdc4cb56d41f5b2652f0522b7ed4e9b3e1f2502cd50d91a8a",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1068,7 +1068,7 @@
     {
       "name": "reserve cannot lose an extra satoshi",
       "result": {
-        "txid": "716e96256f46d752ee5bc1a61ae814f5b8334c0820cf01daf1fb324f39e26d54",
+        "txid": "4a7a06422a27e6d3c71b4930d04b685fb6b6ec094fcda0eaec33efcfcd19dde7",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1082,7 +1082,7 @@
     {
       "name": "live allocations: settle period 0 creates allocation 0 and immediate reward",
       "result": {
-        "txid": "5d55fc11bd21d36618beca6aedd54fcf8ac4139cb33884623e695b9adbadfbe3",
+        "txid": "09d80323420bedd25254574fb94b7eaf11cdda4f22b89eb426275ebb3af493e9",
         "allowed": true,
         "size": 4396,
         "vsize": 4396,
@@ -1099,7 +1099,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "5d55fc11bd21d36618beca6aedd54fcf8ac4139cb33884623e695b9adbadfbe3",
+      "txid": "09d80323420bedd25254574fb94b7eaf11cdda4f22b89eb426275ebb3af493e9",
       "period": 1,
       "bch": "1967000",
       "remainingTokens": "52000",
@@ -1108,7 +1108,7 @@
     {
       "name": "cannot settle period 0 twice",
       "result": {
-        "txid": "d109369fe6900a03a4c45a48d625be95c12ededb460d5e1622b57d58e73774d1",
+        "txid": "2e6865f636cd0e565004a6b4d6b29f933a9162fa7da70e95dff8697fe7e9790e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1122,7 +1122,7 @@
     {
       "name": "live allocations: refund all never-winning S*W after settlement",
       "result": {
-        "txid": "ead82910a38905eec06f4020ae8b002d0cfb5502f6436f28e4d701932124c0ce",
+        "txid": "4235d3cbbb6056fbb0e6eca55f1cb757b07157a7e92eeb20287ae27a11b0634b",
         "allowed": true,
         "size": 4352,
         "vsize": 4352,
@@ -1139,7 +1139,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "ead82910a38905eec06f4020ae8b002d0cfb5502f6436f28e4d701932124c0ce",
+      "txid": "4235d3cbbb6056fbb0e6eca55f1cb757b07157a7e92eeb20287ae27a11b0634b",
       "period": 1,
       "bch": "1956000",
       "remainingTokens": "50000",
@@ -1148,7 +1148,7 @@
     {
       "name": "live allocations: activate period 1",
       "result": {
-        "txid": "baf96bd004b1881b5e42fa8de2286b98f2451ea81cdd6226873221e2df01c078",
+        "txid": "236f3907ec0e05283edef4f120afabfefce10308bf8c909ab82599226064fef4",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -1165,7 +1165,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "baf96bd004b1881b5e42fa8de2286b98f2451ea81cdd6226873221e2df01c078",
+      "txid": "236f3907ec0e05283edef4f120afabfefce10308bf8c909ab82599226064fef4",
       "period": 1,
       "bch": "1946000",
       "remainingTokens": "50000",
@@ -1174,7 +1174,7 @@
     {
       "name": "live allocations: settle period 1 creates independent allocation",
       "result": {
-        "txid": "ec3f746036c7dcaebbe685f45ece63570523f17b31587a23270429712aa996a2",
+        "txid": "10c62130a90412992df43a59871b342e4b02c85af0b46ec1c072725f6a744978",
         "allowed": true,
         "size": 4396,
         "vsize": 4396,
@@ -1191,7 +1191,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "ec3f746036c7dcaebbe685f45ece63570523f17b31587a23270429712aa996a2",
+      "txid": "10c62130a90412992df43a59871b342e4b02c85af0b46ec1c072725f6a744978",
       "period": 2,
       "bch": "1933000",
       "remainingTokens": "44000",
@@ -1200,7 +1200,7 @@
     {
       "name": "live allocations: activate period 2",
       "result": {
-        "txid": "9375db8bd5f0d244124eeedd9bb365eff59bd2b64c57bff9f5a1009fa946dd74",
+        "txid": "e4b1a456e62966ce1367b1409471bbe0ab9f312d698d8e6d510e221946a05240",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -1217,7 +1217,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "9375db8bd5f0d244124eeedd9bb365eff59bd2b64c57bff9f5a1009fa946dd74",
+      "txid": "e4b1a456e62966ce1367b1409471bbe0ab9f312d698d8e6d510e221946a05240",
       "period": 2,
       "bch": "1923000",
       "remainingTokens": "44000",
@@ -1226,7 +1226,7 @@
     {
       "name": "live allocations: settle period 2 creates independent allocation",
       "result": {
-        "txid": "3c44ddd6ad769bb5db88ab812c09b5fa66f626fd2d287d3456bb54f193159d2e",
+        "txid": "000bf64b09085b6dcc0ac3707d244a59c163acbdd94305c73929d64d5578845e",
         "allowed": true,
         "size": 4396,
         "vsize": 4396,
@@ -1243,7 +1243,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "3c44ddd6ad769bb5db88ab812c09b5fa66f626fd2d287d3456bb54f193159d2e",
+      "txid": "000bf64b09085b6dcc0ac3707d244a59c163acbdd94305c73929d64d5578845e",
       "period": 3,
       "bch": "1910000",
       "remainingTokens": "38000",
@@ -1252,7 +1252,7 @@
     {
       "name": "unmatured allocation cannot withdraw with future locktime",
       "result": {
-        "txid": "e9fbbbffe9aa8cb31a677768be6af52ff34fe2f53c46b145cac890b1ccc68d11",
+        "txid": "b730c1a9a86195ac5fb371c296b5bd2784e554002097da01a297ef7b1b322d78",
         "allowed": false,
         "reject-reason": "64: bad-txns-nonfinal",
         "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -1265,7 +1265,7 @@
     {
       "name": "backdated locktime cannot bypass maturity",
       "result": {
-        "txid": "d13be18adab98797ab36d1f66c8036e2b0b2e67cf7f643addeec366747cac0bc",
+        "txid": "3775e54f4a0c78eea100a385182a9c1b8ffe55868cc4d50282b9975e1eb36524",
         "allowed": false,
         "reject-reason": "64: non-mandatory-script-verify-flag (Locktime requirement not satisfied)",
         "reject-details": "non-mandatory-script-verify-flag (Locktime requirement not satisfied)"
@@ -1278,7 +1278,7 @@
     {
       "name": "existing allocation maturity cannot be changed by replacing redeem script",
       "result": {
-        "txid": "e37e773365f0281fc14361f0ea51216a6bda8b2e41574f30551c9c0cb554f079",
+        "txid": "309a23f7d3162791e0b92dc4c6cdd56e785d54ea410baaf7a1a490654d809fe3",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)",
         "reject-details": "mandatory-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)"
@@ -1291,7 +1291,7 @@
     {
       "name": "live allocations: activate period 3",
       "result": {
-        "txid": "52477bc93c3d5b7ad41089f77bbb5588b27522d50104ff673f9fd4133a6dc133",
+        "txid": "dcfe7cd58c57a97351eb90a57e4656a9bd8aefe3c82fe820a073ba7cfc22253e",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -1308,7 +1308,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "52477bc93c3d5b7ad41089f77bbb5588b27522d50104ff673f9fd4133a6dc133",
+      "txid": "dcfe7cd58c57a97351eb90a57e4656a9bd8aefe3c82fe820a073ba7cfc22253e",
       "period": 3,
       "bch": "1900000",
       "remainingTokens": "38000",
@@ -1317,7 +1317,7 @@
     {
       "name": "allocation withdrawal requires its owner signature",
       "result": {
-        "txid": "2101c272877b5b64bb20463ff2725f5ff4a241a321f4461886685c30d263d109",
+        "txid": "efe1144ab7d3cad5917767c90f6083a021e171c26335b313b1f7bf30ea5fa707",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Signature must be zero for failed CHECK(MULTI)SIG operation)"
@@ -1330,7 +1330,7 @@
     {
       "name": "allocation withdrawal cannot burn or divert stake",
       "result": {
-        "txid": "166e3cb1dcc1f53d5e9ae87212b634051a5b3e1f12f8b764ed4c1edbc978ed69",
+        "txid": "153538c148bb5255e9ca472ac66afd7f43978fa31dbfd05949d7f663bb359669",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)",
         "reject-details": "mandatory-script-verify-flag-failed (Script evaluated without error but finished with a false/empty top stack element)"
@@ -1343,7 +1343,7 @@
     {
       "name": "first matured allocation withdraws with unrelated period activated and unsettled",
       "result": {
-        "txid": "e9fbbbffe9aa8cb31a677768be6af52ff34fe2f53c46b145cac890b1ccc68d11",
+        "txid": "b730c1a9a86195ac5fb371c296b5bd2784e554002097da01a297ef7b1b322d78",
         "allowed": true,
         "size": 439,
         "vsize": 439,
@@ -1359,12 +1359,12 @@
     },
     {
       "name": "duplicate allocation withdrawal rejected after confirmation",
-      "txid": "e9fbbbffe9aa8cb31a677768be6af52ff34fe2f53c46b145cac890b1ccc68d11"
+      "txid": "b730c1a9a86195ac5fb371c296b5bd2784e554002097da01a297ef7b1b322d78"
     },
     {
       "name": "allocation 1 remains independently immature",
       "result": {
-        "txid": "e75f774ae749aed2535e58f88e5d3e4acdce234201b873e0986fc58d4e0d6d44",
+        "txid": "35c04e11b4337c20443525e0693f53249ed3cd0dacf0cb067f0e81c494804f42",
         "allowed": false,
         "reject-reason": "64: bad-txns-nonfinal",
         "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -1377,7 +1377,7 @@
     {
       "name": "allocation 2 remains independently immature",
       "result": {
-        "txid": "d57892b8442e5fd97e2ef8ce50acdc626a40079fa668674da83d15595933f672",
+        "txid": "74e876eaa77f8b48a5a8fb89085edf195d9fa20d99ce7a352056ca9d1f89af54",
         "allowed": false,
         "reject-reason": "64: bad-txns-nonfinal",
         "reject-details": "bad-txns-nonfinal, non-final transaction"
@@ -1390,7 +1390,7 @@
     {
       "name": "live allocations: cancel current frozen winner for future periods only",
       "result": {
-        "txid": "84c47e97358e10ea99ea3b999a322fba7a69e71cb1e3200b8a11b6f1effe3563",
+        "txid": "864ffa0223a7c50c3029eda189c1799977c129572129df8de408ab91a480862b",
         "allowed": true,
         "size": 4281,
         "vsize": 4281,
@@ -1407,7 +1407,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "84c47e97358e10ea99ea3b999a322fba7a69e71cb1e3200b8a11b6f1effe3563",
+      "txid": "864ffa0223a7c50c3029eda189c1799977c129572129df8de408ab91a480862b",
       "period": 3,
       "bch": "1890000",
       "remainingTokens": "38000",
@@ -1416,7 +1416,7 @@
     {
       "name": "activated winner commitment cannot be refunded before settlement",
       "result": {
-        "txid": "1468f4dea37e35f572b04511002d7c1a37c2fb186d79f549228811318e778f2d",
+        "txid": "7aaa113f8739a45f41bc8732fd8cec94b423243c758751dee2a6747933f25e8f",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1430,7 +1430,7 @@
     {
       "name": "exhausted maximum wins prevents fourth win",
       "result": {
-        "txid": "f59417798894e4762b29f19da45dfeea009f86e88f0083c61aedbfacd822cf27",
+        "txid": "5b4a397d65c0db410fe23d9c4c749c9a8b7d9cc9e92c9a38a77b453b1949d4ee",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1444,7 +1444,7 @@
     {
       "name": "live allocations: frozen late-cancelled winner still receives allocation and reward",
       "result": {
-        "txid": "b6a5a9a1f28be99701adeda450c26bc779879300d353a31f80fe5f96ff78917d",
+        "txid": "67c56005b92ff9f212d49454aae0b9cf7cccdd0a909b654be1effa0395c8d9a7",
         "allowed": true,
         "size": 4396,
         "vsize": 4396,
@@ -1461,7 +1461,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "b6a5a9a1f28be99701adeda450c26bc779879300d353a31f80fe5f96ff78917d",
+      "txid": "67c56005b92ff9f212d49454aae0b9cf7cccdd0a909b654be1effa0395c8d9a7",
       "period": 4,
       "bch": "1877000",
       "remainingTokens": "32000",
@@ -1470,7 +1470,7 @@
     {
       "name": "live allocations: refund only unallocated remainder after activated win",
       "result": {
-        "txid": "e103f964d416b0cd3fefad6c4ae221c7ab7e980637dc2ed5b14e96833f78f0ad",
+        "txid": "5017569aa47047dcffdaf82291e333f413141ca1f630e0a735604f3efa06b996",
         "allowed": true,
         "size": 4352,
         "vsize": 4352,
@@ -1487,7 +1487,7 @@
     },
     {
       "name": "live allocations: accounting",
-      "txid": "e103f964d416b0cd3fefad6c4ae221c7ab7e980637dc2ed5b14e96833f78f0ad",
+      "txid": "5017569aa47047dcffdaf82291e333f413141ca1f630e0a735604f3efa06b996",
       "period": 4,
       "bch": "1866000",
       "remainingTokens": "26000",
@@ -1495,46 +1495,46 @@
     },
     {
       "name": "three independent wins",
-      "vault": "10a9c73d945ca5e94533b3c9c7b629f4f7713a9fc2f4a2f413f36141bb1792a1",
+      "vault": "c85a906c33cb1dffc925c5545bb83807343c1bcc9409db7c0aa551f079105206",
       "allocations": [
         {
-          "id": "5d55fc11bd21d36618beca6aedd54fcf8ac4139cb33884623e695b9adbadfbe3:3",
-          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55a19217bb4161f313f4a2f4c29f3a71f7f429b6c7c9b33345e9a55c943dc7a910000000000070170000c89ef16a7572794a0b69f269868098b85cf088e8cb7f2ecbb407e124310a249916978e3c",
+          "id": "09d80323420bedd25254574fb94b7eaf11cdda4f22b89eb426275ebb3af493e9:3",
+          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d5506521079f051a50a7cdb0994cc1b3c340738b85b54c525c9ff1dcb336c905ac800000000007017000068ebf56af6af38c6e2e58ab0d184851a44703b119cc1d5ac9fab13b7085891261c138e9e",
           "owner": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55",
           "offer": 0,
           "period": 0,
           "tokens": "6000",
-          "maturity": 1794219720,
-          "address": "bchreg:rwc5flptas4s5cygeuucyctfuwrytadja3aa2aqhs4ahyhjgpkvqy33hl6kkx"
+          "maturity": 1794501480,
+          "address": "bchreg:r0xahaspxsn3kptzche30h8rfsveksed7nznf2lsf2emajdpkxkm7y7f5qpqx"
         },
         {
-          "id": "ec3f746036c7dcaebbe685f45ece63570523f17b31587a23270429712aa996a2:3",
-          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55a19217bb4161f313f4a2f4c29f3a71f7f429b6c7c9b33345e9a55c943dc7a910000100000070170000049ff16a7572794a0b69f269868098b85cf088e8cb7f2ecbb407e124310a249916978e3c",
+          "id": "10c62130a90412992df43a59871b342e4b02c85af0b46ec1c072725f6a744978:3",
+          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d5506521079f051a50a7cdb0994cc1b3c340738b85b54c525c9ff1dcb336c905ac8000100000070170000a4ebf56af6af38c6e2e58ab0d184851a44703b119cc1d5ac9fab13b7085891261c138e9e",
           "owner": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55",
           "offer": 0,
           "period": 1,
           "tokens": "6000",
-          "maturity": 1794219780,
-          "address": "bchreg:rwv4rgtu0ctemdgc75wl236fesr5fv3t3y5zyn0jq0s7rjcy4lf2xs32aw32w"
+          "maturity": 1794501540,
+          "address": "bchreg:rvp8wfzhc9l5w44ss7e5vmdgnrpf8t4sqe6mzvvy3l6acxf5gtzs6hjyw40kf"
         },
         {
-          "id": "3c44ddd6ad769bb5db88ab812c09b5fa66f626fd2d287d3456bb54f193159d2e:3",
-          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55a19217bb4161f313f4a2f4c29f3a71f7f429b6c7c9b33345e9a55c943dc7a910000200000070170000409ff16a7572794a0b69f269868098b85cf088e8cb7f2ecbb407e124310a249916978e3c",
+          "id": "000bf64b09085b6dcc0ac3707d244a59c163acbdd94305c73929d64d5578845e:3",
+          "terms": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d5506521079f051a50a7cdb0994cc1b3c340738b85b54c525c9ff1dcb336c905ac8000200000070170000e0ebf56af6af38c6e2e58ab0d184851a44703b119cc1d5ac9fab13b7085891261c138e9e",
           "owner": "028ab6cae041834cf12edef9eee966bce3ba95135eaead3d32d78bacadf5349d55",
           "offer": 0,
           "period": 2,
           "tokens": "6000",
-          "maturity": 1794219840,
-          "address": "bchreg:rw3adcncapm7tsa0zt5wpvclnueg84xwkpxe4flwt84cmfrl05376ngqd27c7"
+          "maturity": 1794501600,
+          "address": "bchreg:r083jzl07hgmdwne9mypmn3ckj7r0a59pg5c7hgv3wccuym0fpw7qs89zxrsk"
         }
       ],
-      "firstWithdrawal": "e9fbbbffe9aa8cb31a677768be6af52ff34fe2f53c46b145cac890b1ccc68d11",
+      "firstWithdrawal": "b730c1a9a86195ac5fb371c296b5bd2784e554002097da01a297ef7b1b322d78",
       "otherAllocationsRemainLocked": true
     },
     {
       "name": "late settlement: underfunded genesis",
       "result": {
-        "txid": "aa90027b12052476ddb20ad86078c2fffba97960ff06cb2e8f0b23d56e096f46",
+        "txid": "2f51060141d1a4e7785b7c268b7082007f465898cf12991aa16fd743bb19789c",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1547,7 +1547,7 @@
     {
       "name": "late settlement: nonempty genesis state",
       "result": {
-        "txid": "1e0cbc97da385b08b4caa886cd438b745b24116cae1a0c2c2688fe35f4781276",
+        "txid": "a0eb958c728522f667465680a8141e35fb0168e7fadc3cce47b91a31b1520932",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1560,7 +1560,7 @@
     {
       "name": "late settlement: minting state authority",
       "result": {
-        "txid": "5766d5f895f97f10272c10367f1a992caf0337aee29e2f82c59905ecc75b43e1",
+        "txid": "e671e910374c2a1caa12ef0d2ce4df869091f8f28415bce6262f3bd0f19cc7e4",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1573,7 +1573,7 @@
     {
       "name": "late settlement: extra minting authority",
       "result": {
-        "txid": "83471e8f18597dc5e8489a73928fb7d55833f3eb4bd9d4651b8fff3c3d639d22",
+        "txid": "cdfe101beb754613fe691fb315ca9cd9b01e2fdc7895fda882bdb8b381748742",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1586,7 +1586,7 @@
     {
       "name": "late settlement: malformed pool carrier",
       "result": {
-        "txid": "9c10a5c505d30cf13ed4bffdbc945794135ad8ff5cb2af39d21aadc6297dda8f",
+        "txid": "5c369312c488b76e218344904b0eada36ead6f82c3e2cafd7abca88865c5721e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1599,7 +1599,7 @@
     {
       "name": "late settlement: substituted immutable cap",
       "result": {
-        "txid": "ac209b5f9bfd959b353ea1a2fa1739186f351cbd1764b300634457a773f2be7f",
+        "txid": "a3598e67af8044dd24c6954ee7c9f3ee8e8e5b58bdabe95cd9b04a3c3529c7d5",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1612,7 +1612,7 @@
     {
       "name": "late settlement: substituted staking category",
       "result": {
-        "txid": "2188412de872b8d6fad22c4f424cee2430b86f1402d29311692c747f60759cd0",
+        "txid": "4f94607da433c41498c79ccd57dbfa8a529fcf277347f3ceb1aa250caf450c41",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1625,7 +1625,7 @@
     {
       "name": "late settlement: substituted epoch",
       "result": {
-        "txid": "7d9334d303da9d5782ea7c4e7d9c0908e0e8b72f9b548f65656001621a23579a",
+        "txid": "b727c5df2465b835ac09b2221079dd0bc475ca1458121f820a1570dfb8c12ede",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1638,7 +1638,7 @@
     {
       "name": "late settlement: substituted period length",
       "result": {
-        "txid": "5235161b8d7c84c0f3f2217108d9eab9db58a42464128d735fcc8afadf9f4845",
+        "txid": "de389cdae9ff32151b39cb3a6dde01b581088599821383088f852bf49c00b93c",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1651,7 +1651,7 @@
     {
       "name": "late settlement: substituted horizon",
       "result": {
-        "txid": "a03c8534468874d22a2aaec7e3873dd61a1a53a48b6677c1f7ac89a7a5cd9fbc",
+        "txid": "6a7a4e88298580637fd791590c38442c490cc2ace61fa0298507aabd3b49317c",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1664,7 +1664,7 @@
     {
       "name": "late settlement: genesis cannot burn surplus reserve as fees",
       "result": {
-        "txid": "ba99c367f534164cf0f63bcbbd8bd1667d1869d62c357a5efded5ffda5dc06a9",
+        "txid": "053b9fd357cdbb342e711b86074414298a02251efb29af3f6765463e779414d2",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -1677,7 +1677,7 @@
     {
       "name": "late settlement: factory authorizes genesis",
       "result": {
-        "txid": "124916db993c1ac3b0883f5205fafd9f01efacc9869fa1c758b40e2924baea5d",
+        "txid": "2e01c86eeb24106070a5b170d7f7b1f4c071bc504b585f9812a4f2da792f233d",
         "allowed": true,
         "size": 2711,
         "vsize": 2711,
@@ -1693,18 +1693,18 @@
     },
     {
       "name": "late settlement: canonical fresh genesis",
-      "txid": "124916db993c1ac3b0883f5205fafd9f01efacc9869fa1c758b40e2924baea5d",
-      "category": "12afeea4814f09df2913d497d6890bc95d7ca383db6ecf1a9385b217ff4f0c6b",
-      "stakingCategory": "3c8e971699240a3124e107b4cb2e7fcbe888f05cb898808669f2690b4a797275",
+      "txid": "2e01c86eeb24106070a5b170d7f7b1f4c071bc504b585f9812a4f2da792f233d",
+      "category": "2bf38163917c7592b2a8a3b8447d683982d22c65a8d2079a6988a774e76befdd",
+      "stakingCategory": "9e8e131c26915808b713ab9facd5c19c113b70441a8584d1b08ae5e2c638aff6",
       "schedule": {
-        "epoch": 1794209720,
+        "epoch": 1794491480,
         "periodSeconds": 10
       }
     },
     {
       "name": "late settlement: commit 18000 tokens",
       "result": {
-        "txid": "0ce9f09d3c189d408ce78a42fc71e437eaeeb09ec6601c49d40c176c7b766760",
+        "txid": "83d4084663a2fb3172702a8d0f94c2b940de0b5ed6d60c1213dc0424a2b614f4",
         "allowed": true,
         "size": 4472,
         "vsize": 4472,
@@ -1722,7 +1722,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "0ce9f09d3c189d408ce78a42fc71e437eaeeb09ec6601c49d40c176c7b766760",
+      "txid": "83d4084663a2fb3172702a8d0f94c2b940de0b5ed6d60c1213dc0424a2b614f4",
       "period": 0,
       "bch": "2000000",
       "remainingTokens": "18000",
@@ -1731,7 +1731,7 @@
     {
       "name": "late settlement: activate period 0",
       "result": {
-        "txid": "30c8daa6ba2c3cd247eba9de5d415424e745b2ceb8f2c3cdca6b081eed4cf177",
+        "txid": "015c6d3442dec40afd2c1bdc825c65db2729686926d9017f363aa1d6bffb5ba5",
         "allowed": true,
         "size": 4280,
         "vsize": 4280,
@@ -1748,7 +1748,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "30c8daa6ba2c3cd247eba9de5d415424e745b2ceb8f2c3cdca6b081eed4cf177",
+      "txid": "015c6d3442dec40afd2c1bdc825c65db2729686926d9017f363aa1d6bffb5ba5",
       "period": 0,
       "bch": "1990000",
       "remainingTokens": "18000",
@@ -1757,7 +1757,7 @@
     {
       "name": "late settlement: cancel future eligibility while preserving activated liability",
       "result": {
-        "txid": "e552c970759c5c5920acbb6b29b644fcd9367361cc79f7add537edcef49ebddc",
+        "txid": "ac18d25cc844ce9a85c39a9a8302882e90d2c747b1ef203d266e303e964f3777",
         "allowed": true,
         "size": 4280,
         "vsize": 4280,
@@ -1774,7 +1774,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "e552c970759c5c5920acbb6b29b644fcd9367361cc79f7add537edcef49ebddc",
+      "txid": "ac18d25cc844ce9a85c39a9a8302882e90d2c747b1ef203d266e303e964f3777",
       "period": 0,
       "bch": "1980000",
       "remainingTokens": "18000",
@@ -1783,7 +1783,7 @@
     {
       "name": "late activated liability still blocks commitment refund",
       "result": {
-        "txid": "5ed1929e9d7d95a679ddd76edd5e81fa39d1d245be656a1c341b32f822758445",
+        "txid": "3d575b059b65939cba6f4c4977fbfde0f288a372f49a86700187612903f226be",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -1797,7 +1797,7 @@
     {
       "name": "late settlement: settle period 0 after scheduled maturity",
       "result": {
-        "txid": "6be21782712e3c84fc4b7ab1acccf189d2bb400213a96220307511f98af030f8",
+        "txid": "6dc10d4b5052c3ad501751f50bdcb61d86e0aff73cf9acc6544fe81ce1ac708e",
         "allowed": true,
         "size": 4395,
         "vsize": 4395,
@@ -1814,7 +1814,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "6be21782712e3c84fc4b7ab1acccf189d2bb400213a96220307511f98af030f8",
+      "txid": "6dc10d4b5052c3ad501751f50bdcb61d86e0aff73cf9acc6544fe81ce1ac708e",
       "period": 1,
       "bch": "1967000",
       "remainingTokens": "12000",
@@ -1823,7 +1823,7 @@
     {
       "name": "late allocation withdraws immediately from unconfirmed settlement",
       "result": {
-        "txid": "03e8dc179bdea9bf2b72ec5dfb35b7b8be78b7a85b58fd2f8f47f3cdaddb2393",
+        "txid": "d92dace80e615506a082609310f90a7b76c0188ed8dd337c20375c84056f3bb1",
         "allowed": true,
         "size": 439,
         "vsize": 439,
@@ -1840,7 +1840,7 @@
     {
       "name": "late settlement: refund exactly 12000 unallocated tokens",
       "result": {
-        "txid": "67e44813622a8e05b5164f77a0ad51a86121a8566628c49ae5e5b8840cd0b431",
+        "txid": "9261636577c6cd32324c9b2717b6ab63ca535a7f10f2c499c2958ed03fd3867e",
         "allowed": true,
         "size": 4314,
         "vsize": 4314,
@@ -1857,7 +1857,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "67e44813622a8e05b5164f77a0ad51a86121a8566628c49ae5e5b8840cd0b431",
+      "txid": "9261636577c6cd32324c9b2717b6ab63ca535a7f10f2c499c2958ed03fd3867e",
       "period": 1,
       "bch": "1956000",
       "remainingTokens": "0",
@@ -1866,7 +1866,7 @@
     {
       "name": "duplicate commitment refund rejected",
       "result": {
-        "txid": "02559ba13d6d5bb0e294250f1482f8c457840c29fbc4e798d9f05cbe9660beae",
+        "txid": "eb2a0729a79b318f76c66ce49e008431c0ffc7e5a7c20bdaddeb9798abf3bc48",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -1879,16 +1879,16 @@
     },
     {
       "name": "late settlement and independent withdrawal in same block",
-      "settlement": "6be21782712e3c84fc4b7ab1acccf189d2bb400213a96220307511f98af030f8",
-      "withdrawal": "03e8dc179bdea9bf2b72ec5dfb35b7b8be78b7a85b58fd2f8f47f3cdaddb2393",
-      "blockhash": "16ca1010fa0048952877bfb26a23815875e6c9a9151e50d45fd79549fe132134",
-      "scheduledMaturity": 1794209740,
-      "parentMtp": 1794219742
+      "settlement": "6dc10d4b5052c3ad501751f50bdcb61d86e0aff73cf9acc6544fe81ce1ac708e",
+      "withdrawal": "d92dace80e615506a082609310f90a7b76c0188ed8dd337c20375c84056f3bb1",
+      "blockhash": "6f636b666c28ecbe2eb120231cb4658bbf5425c5b52299f216327d29a8bf9f62",
+      "scheduledMaturity": 1794491500,
+      "parentMtp": 1794501508
     },
     {
       "name": "late settlement: activate period 1",
       "result": {
-        "txid": "2763f576012a21d2cb384d03322e6d058cf90273f23f6627c2b521ab1072089c",
+        "txid": "e816c9967686fdae3cc0d396673c8be79ddeb5ca51bbc87c872a76bbb5b3594b",
         "allowed": true,
         "size": 4243,
         "vsize": 4243,
@@ -1905,7 +1905,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "2763f576012a21d2cb384d03322e6d058cf90273f23f6627c2b521ab1072089c",
+      "txid": "e816c9967686fdae3cc0d396673c8be79ddeb5ca51bbc87c872a76bbb5b3594b",
       "period": 1,
       "bch": "1946000",
       "remainingTokens": "0",
@@ -1914,7 +1914,7 @@
     {
       "name": "late settlement: advance empty period 1",
       "result": {
-        "txid": "c28024b3b0b6f5e4d269b7da9b1d683e37a3dc9efc776b2651fbffabcb13f006",
+        "txid": "a176b059599f0131cfff02ff2e8373dc244f7289b41420de9c03f63f5c8e892c",
         "allowed": true,
         "size": 4243,
         "vsize": 4243,
@@ -1931,7 +1931,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "c28024b3b0b6f5e4d269b7da9b1d683e37a3dc9efc776b2651fbffabcb13f006",
+      "txid": "a176b059599f0131cfff02ff2e8373dc244f7289b41420de9c03f63f5c8e892c",
       "period": 2,
       "bch": "1936000",
       "remainingTokens": "0",
@@ -1940,7 +1940,7 @@
     {
       "name": "late settlement: activate period 2",
       "result": {
-        "txid": "325ce908ece03907178409a6ed958323ba24c74d736c7e1b994e8b940ee68ad6",
+        "txid": "681bac13e29159ccc3a69b8122304434dd34487049b91928278572a2316caf8d",
         "allowed": true,
         "size": 4243,
         "vsize": 4243,
@@ -1957,7 +1957,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "325ce908ece03907178409a6ed958323ba24c74d736c7e1b994e8b940ee68ad6",
+      "txid": "681bac13e29159ccc3a69b8122304434dd34487049b91928278572a2316caf8d",
       "period": 2,
       "bch": "1926000",
       "remainingTokens": "0",
@@ -1966,7 +1966,7 @@
     {
       "name": "late settlement: advance empty period 2",
       "result": {
-        "txid": "b742cae1e2fab811d9df8ac3225352eb20d539075d003e64f378ad4f787eeedb",
+        "txid": "13086ae5dfccfe25653b7cefa9043271fdd4d8423b2abfc182a48f9eaaa523c7",
         "allowed": true,
         "size": 4243,
         "vsize": 4243,
@@ -1983,7 +1983,7 @@
     },
     {
       "name": "late settlement: accounting",
-      "txid": "b742cae1e2fab811d9df8ac3225352eb20d539075d003e64f378ad4f787eeedb",
+      "txid": "13086ae5dfccfe25653b7cefa9043271fdd4d8423b2abfc182a48f9eaaa523c7",
       "period": 3,
       "bch": "1916000",
       "remainingTokens": "0",
@@ -1992,7 +1992,7 @@
     {
       "name": "finite horizon prevents extra activation",
       "result": {
-        "txid": "d6fc8bdd84764ec97f2d145abf23da4fac7e16a6360b85513f9173e088366629",
+        "txid": "9b4f4ba74f8d32df368795f23c972d6c7533e8cef2ce2053d98d82d35e824e6d",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2006,7 +2006,7 @@
     {
       "name": "zero fee reserve: underfunded genesis",
       "result": {
-        "txid": "fd537a3935fcb605c8986fbde8fcb65c570be2cdc9f594258e51359539889ced",
+        "txid": "8a196b7ff1819b02b26dee2c332066b58a48e51adabdbc00e066110a2037b87d",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2019,7 +2019,7 @@
     {
       "name": "zero fee reserve: nonempty genesis state",
       "result": {
-        "txid": "414e4dedb075973eee9f0b7f03c17e57aa3affaa934fd99600a6803fd3e81c81",
+        "txid": "011cfafb01f870633d7e3e6d8e8eb03f903c067c5d2b0e980a102f35703355b4",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2032,7 +2032,7 @@
     {
       "name": "zero fee reserve: minting state authority",
       "result": {
-        "txid": "61e7916fea418b22c59d0d362aa3266a5d3d875bee300e91825f245fd6dd2eb6",
+        "txid": "505276de30c93dc79123ed83ee1cb108c07a34eb90c7dc225516f010bc574ee3",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2045,7 +2045,7 @@
     {
       "name": "zero fee reserve: extra minting authority",
       "result": {
-        "txid": "25df56b5ca2dcee7a05e994e37c1303c14cdee9e4bdd57749b9befed09d9e96d",
+        "txid": "e2da80c830325252908cbf660db74587983fef215828b939b8c5150a345ff418",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2058,7 +2058,7 @@
     {
       "name": "zero fee reserve: malformed pool carrier",
       "result": {
-        "txid": "7d968a669e5c5fa06eebbb86ff2bd1e8ee5e6d195acc4f36a3b3d1a51a180906",
+        "txid": "fcbad060f39f4948c029426089d60f6fcfaaf49a8debdeaa5da147d20aa0244d",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -2071,7 +2071,7 @@
     {
       "name": "zero fee reserve: substituted immutable cap",
       "result": {
-        "txid": "e371ad51b877c03a5f637a1d832cfdaee54c39a5f90ec9a243f502e666d7a69a",
+        "txid": "9db2c0a4b1926d9800bd53c9805287cdc60f0656e335ea2576337351744f7947",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2084,7 +2084,7 @@
     {
       "name": "zero fee reserve: substituted staking category",
       "result": {
-        "txid": "396c3686b5ac30b4f22c7d4f401c9ebb413c0129c5564da3da56d3ca1e66071c",
+        "txid": "e245795c5b9dd29acde94935f08be4a25a8195be088b3b1517eab129bc35c0a0",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2097,7 +2097,7 @@
     {
       "name": "zero fee reserve: substituted epoch",
       "result": {
-        "txid": "511caa76e9314683dec446ed4ded5005a38285f43c8aca5a0bdd90791bb49735",
+        "txid": "1a7162e73106bc33ef6d5a514a0fe92801c10fb4a6ac46f18e70bc367dee883d",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2110,7 +2110,7 @@
     {
       "name": "zero fee reserve: substituted period length",
       "result": {
-        "txid": "c4e0b02e076d8fe858342b7a1a90828356056d84b0a8d55b5ab10ec77436a642",
+        "txid": "f411c513317adfa2f4f199ccf6a865199440a601adfb4fae965d0fbdf12d5d99",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2123,7 +2123,7 @@
     {
       "name": "zero fee reserve: substituted horizon",
       "result": {
-        "txid": "c9446af72e0cb5cb77dfaca0bff8640e05d027a2aaea7b64eb70fdb2ed579889",
+        "txid": "44142b5bf903357fbfccd878bbaaea9255e05d288043f0d80c122e1250b556e1",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2136,7 +2136,7 @@
     {
       "name": "correct genesis value equation still rejects insufficient reward funding",
       "result": {
-        "txid": "b4657c89e98697b4d23c0820bdc420d16d9b8763ec3300565fb17e21631197f0",
+        "txid": "87f7a949659a95105eb33c9ac7229ee056dadb98dd05a742207379ffd35e9250",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2149,7 +2149,7 @@
     {
       "name": "zero fee reserve: factory authorizes genesis",
       "result": {
-        "txid": "59f8219d99f993c54c6d19348934030aeb853244f7526d07040545d06f0d34c2",
+        "txid": "9c1673d44c9c58841ce748ec4ecc7371d44b7ac777fd2b1cf0e289ee2bc90658",
         "allowed": true,
         "size": 2711,
         "vsize": 2711,
@@ -2165,18 +2165,18 @@
     },
     {
       "name": "zero fee reserve: canonical fresh genesis",
-      "txid": "59f8219d99f993c54c6d19348934030aeb853244f7526d07040545d06f0d34c2",
-      "category": "f110e025c41eff7283ce24e6dafdce0cd0ea1e0b0706214e811b60dc863f9913",
-      "stakingCategory": "3c8e971699240a3124e107b4cb2e7fcbe888f05cb898808669f2690b4a797275",
+      "txid": "9c1673d44c9c58841ce748ec4ecc7371d44b7ac777fd2b1cf0e289ee2bc90658",
+      "category": "9f7534e3ed51532055fb3cc7c4eaa2de7f0ff38f2ab160c0748b46e702baa3a7",
+      "stakingCategory": "9e8e131c26915808b713ab9facd5c19c113b70441a8584d1b08ae5e2c638aff6",
       "schedule": {
-        "epoch": 1794218757,
+        "epoch": 1794500531,
         "periodSeconds": 1
       }
     },
     {
       "name": "zero fee reserve: registration token carrier funds original fee",
       "result": {
-        "txid": "92f1ce7cb8475b3e697d56f7830aad807148bef13870889cd7f27c219d44c394",
+        "txid": "6097b1160fcdb4adaa43d673c50214bb9a4e7b2771da86a0fdd929655b6f2afa",
         "allowed": true,
         "size": 4472,
         "vsize": 4472,
@@ -2194,7 +2194,7 @@
     },
     {
       "name": "zero fee reserve: accounting",
-      "txid": "92f1ce7cb8475b3e697d56f7830aad807148bef13870889cd7f27c219d44c394",
+      "txid": "6097b1160fcdb4adaa43d673c50214bb9a4e7b2771da86a0fdd929655b6f2afa",
       "period": 0,
       "bch": "2000",
       "remainingTokens": "1000",
@@ -2203,7 +2203,7 @@
     {
       "name": "zero fee reserve cannot activate without sponsor",
       "result": {
-        "txid": "ce52300241cc578b0e68b5fe76e8feeb84b79211f8c63349ca5e5a7df69bae96",
+        "txid": "27726662fc476356ccef3cff9bb6c2150f1a0b81fa240dbce4d7baf3b3000fb3",
         "allowed": false,
         "reject-reason": "66: min relay fee not met",
         "reject-details": "min relay fee not met"
@@ -2217,7 +2217,7 @@
     {
       "name": "sponsor cannot add theft output",
       "result": {
-        "txid": "7f1a888192f244913acf3c264f81886003e40226fd7f4e0f1407605c35fec11b",
+        "txid": "a822550a37c993004364ce018d515aececb2db189555107fcd749373c474f1e2",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -2232,7 +2232,7 @@
     {
       "name": "second extra sponsor input rejected",
       "result": {
-        "txid": "768e6fd35978d28233fb2f0fa2dca3a7857c527735ae474258611f6a5326a74b",
+        "txid": "583cdafcba4e7c6deef6ae415eb5899b033a697af11bbeae5838d87907a862de",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2248,7 +2248,7 @@
     {
       "name": "token-bearing sponsor rejected",
       "result": {
-        "txid": "482bb7cad859f2521e8d08b1a4ac34fbf9966efb1b9b2d56c86dc374a95d9c8a",
+        "txid": "0cff1669ada25a3c451e1a5a3b0cc4c0160aca7ac7c59708e42d8864c3a89d97",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2263,7 +2263,7 @@
     {
       "name": "zero fee reserve: unrelated party sponsors activation",
       "result": {
-        "txid": "1d0cb8cce53b35c37d6e80b6d21cbf6d488488ae183c329db776e5c172a78eff",
+        "txid": "78d73b66be251a6d6c79890bc104221f5b9e2322d7a3e0177ca810002f30f97d",
         "allowed": true,
         "size": 4423,
         "vsize": 4423,
@@ -2281,7 +2281,7 @@
     },
     {
       "name": "zero fee reserve: accounting",
-      "txid": "1d0cb8cce53b35c37d6e80b6d21cbf6d488488ae183c329db776e5c172a78eff",
+      "txid": "78d73b66be251a6d6c79890bc104221f5b9e2322d7a3e0177ca810002f30f97d",
       "period": 0,
       "bch": "2000",
       "remainingTokens": "1000",
@@ -2290,7 +2290,7 @@
     {
       "name": "insufficient sponsor leaves zero fee: policy rejects",
       "result": {
-        "txid": "73d0db6c6089a0bb0221da3b1e7219e847c3a9f31136486ad7841f38171f7dcd",
+        "txid": "4809ab3d7f6140c4b89c231cefb65bcc0ed0d2ebf5851c2f0385eafcc90d73f2",
         "allowed": false,
         "reject-reason": "66: min relay fee not met",
         "reject-details": "min relay fee not met"
@@ -2305,7 +2305,7 @@
     {
       "name": "zero fee reserve: zero fee reserve settlement: sponsor also pays allocation carrier",
       "result": {
-        "txid": "e0fb0d6a1ce7f9289fb5401757c61561afc926bed4ba8f049924099f98791815",
+        "txid": "913cc9bb381da714eda6038b2c2e61f099c64f0bf1784092202aa43a5668f143",
         "allowed": true,
         "size": 4501,
         "vsize": 4501,
@@ -2323,7 +2323,7 @@
     },
     {
       "name": "zero fee reserve: accounting",
-      "txid": "e0fb0d6a1ce7f9289fb5401757c61561afc926bed4ba8f049924099f98791815",
+      "txid": "913cc9bb381da714eda6038b2c2e61f099c64f0bf1784092202aa43a5668f143",
       "period": 1,
       "bch": "1000",
       "remainingTokens": "0",
@@ -2332,7 +2332,7 @@
     {
       "name": "insufficient fee reserve: underfunded genesis",
       "result": {
-        "txid": "0a2d6cd3f8afad34e804feaee5eb8b58f873fe1cbc40c710f45b3e5546f9ab19",
+        "txid": "caa7b374bb4237e223f562e041560dab682e4b95f3d1434d83bb6952a9c5d45f",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2345,7 +2345,7 @@
     {
       "name": "insufficient fee reserve: nonempty genesis state",
       "result": {
-        "txid": "59c2464ae47b8d5784e10e45ada492d8f52b4173c03f398b09373de1ef71e34e",
+        "txid": "f4ab7392014185bed60ea34eb9a5300bf6f3697dab8008c6f3dbc74dcb3c6331",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2358,7 +2358,7 @@
     {
       "name": "insufficient fee reserve: minting state authority",
       "result": {
-        "txid": "ef6166b06f0a0958e39c87edf95c22335af5fe98680c6c4fd39594e693d7c941",
+        "txid": "c37041d5f8f619759d281570de77d3fefa350e06231367759c93fc07d2e70c59",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2371,7 +2371,7 @@
     {
       "name": "insufficient fee reserve: extra minting authority",
       "result": {
-        "txid": "62f976fc2948acd119fc1f1d36b44faa7019550fab2c9b98394dfa524ff49c11",
+        "txid": "42b1b6a3ca466183e20071ce63e061ebf53c614406c2d6cae850505e450b8da9",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2384,7 +2384,7 @@
     {
       "name": "insufficient fee reserve: malformed pool carrier",
       "result": {
-        "txid": "a9203e259d15fc0b6de98f2e34648d6d15b003e22ca1f7ebc6783af4aca0d640",
+        "txid": "ab2dc82ac15bc74799467d3785f8a283920e27b230cb92f99e33309fb1ad6953",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -2397,7 +2397,7 @@
     {
       "name": "insufficient fee reserve: substituted immutable cap",
       "result": {
-        "txid": "0a61c314112bc342e89889473ea41b1830fcd1a3d74b65835e051da68b750319",
+        "txid": "f19af58e7bfeac0384525f3de0866d4ecdd596fd1e05bedf787d2cbb93376dbb",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2410,7 +2410,7 @@
     {
       "name": "insufficient fee reserve: substituted staking category",
       "result": {
-        "txid": "809f7cddcb66b95459b6075aadde03da108a60a1c645692202e60c1ed4bf9665",
+        "txid": "a7f907962e50c120e2242bba363c53b37c410c7b0d344bd3230f0dc314acd2df",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2423,7 +2423,7 @@
     {
       "name": "insufficient fee reserve: substituted epoch",
       "result": {
-        "txid": "0cc77d7d89418992f050b3bea8ca89655b16cd4b0171b756f38ae6a69c21d4c5",
+        "txid": "2d69bbae17b18e6205b4f01670633c14eef02363e47ac4a9ce05be871a062ea0",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2436,7 +2436,7 @@
     {
       "name": "insufficient fee reserve: substituted period length",
       "result": {
-        "txid": "ebada616c949244a5ea77ad0b974dca7b710df0a99f63a413d8d06740bdc1358",
+        "txid": "dc58965c8a0f1e613da684f9aeab1b01300f915df747ed44eb3b419448d2aacb",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2449,7 +2449,7 @@
     {
       "name": "insufficient fee reserve: substituted horizon",
       "result": {
-        "txid": "5ebd35960ea36cc89f6ebd28c3994511165d8fc63106f3143bca69d750900b68",
+        "txid": "d3096ceaae425ff69fc6aba88a7a7d10f96a4b5407679f6954f6e12cc8628ffd",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2462,7 +2462,7 @@
     {
       "name": "insufficient fee reserve: factory authorizes genesis",
       "result": {
-        "txid": "d94cc117303cebd289586fa2c461f9a09684decc0891b0e3ef22110ed5038477",
+        "txid": "3bdf5ba6b8befbdb55bea47c680a9fc5b33ef4ccaf3c7b536b0044ff6fe907fa",
         "allowed": true,
         "size": 2711,
         "vsize": 2711,
@@ -2478,18 +2478,18 @@
     },
     {
       "name": "insufficient fee reserve: canonical fresh genesis",
-      "txid": "d94cc117303cebd289586fa2c461f9a09684decc0891b0e3ef22110ed5038477",
-      "category": "3d790b1f8b3113e4abb2bcdef961ddb79ea4f174f596818f03ca990ee6678158",
-      "stakingCategory": "3c8e971699240a3124e107b4cb2e7fcbe888f05cb898808669f2690b4a797275",
+      "txid": "3bdf5ba6b8befbdb55bea47c680a9fc5b33ef4ccaf3c7b536b0044ff6fe907fa",
+      "category": "3455beea67f8229fd89ba836ea6fdf64ee1aa184a309bbe60d31bb040f2ba336",
+      "stakingCategory": "9e8e131c26915808b713ab9facd5c19c113b70441a8584d1b08ae5e2c638aff6",
       "schedule": {
-        "epoch": 1794218757,
+        "epoch": 1794500531,
         "periodSeconds": 1
       }
     },
     {
       "name": "insufficient fee reserve: unrelated party sponsors registration with a 1000-satoshi token carrier",
       "result": {
-        "txid": "37da3247ab39818ccca090cba67b479cf68e369958b22b4973e25ec653e11f20",
+        "txid": "c8c9618692017d4e852f584bb81d83eace714ea0f21587a9990bfbc0d824c27c",
         "allowed": true,
         "size": 4615,
         "vsize": 4615,
@@ -2508,7 +2508,7 @@
     },
     {
       "name": "insufficient fee reserve: accounting",
-      "txid": "37da3247ab39818ccca090cba67b479cf68e369958b22b4973e25ec653e11f20",
+      "txid": "c8c9618692017d4e852f584bb81d83eace714ea0f21587a9990bfbc0d824c27c",
       "period": 0,
       "bch": "3000",
       "remainingTokens": "2000",
@@ -2517,7 +2517,7 @@
     {
       "name": "insufficient fee reserve: sponsored activation preserves reward and carrier reserve",
       "result": {
-        "txid": "b9bfa1aab2862bd54ba88e5a1268d250715eb7b79fdb7a63e44a0bef16d38bac",
+        "txid": "2dcc2ae8ffb51a87fcbde2fc2811b4eea5fe4585e0e2c2d0a0d8612daad8e13e",
         "allowed": true,
         "size": 4423,
         "vsize": 4423,
@@ -2535,7 +2535,7 @@
     },
     {
       "name": "insufficient fee reserve: accounting",
-      "txid": "b9bfa1aab2862bd54ba88e5a1268d250715eb7b79fdb7a63e44a0bef16d38bac",
+      "txid": "2dcc2ae8ffb51a87fcbde2fc2811b4eea5fe4585e0e2c2d0a0d8612daad8e13e",
       "period": 0,
       "bch": "3000",
       "remainingTokens": "2000",
@@ -2544,7 +2544,7 @@
     {
       "name": "insufficient fee reserve: sponsored settlement preserves immutable allocation and reward",
       "result": {
-        "txid": "2a3233379ae2f77514d6a62cecbc5e9ff34d7a331acd6276a75c8304244971b6",
+        "txid": "87fac33a34020bf2737c355785c3749e6381c850372dade4baad02a99998b343",
         "allowed": true,
         "size": 4538,
         "vsize": 4538,
@@ -2562,7 +2562,7 @@
     },
     {
       "name": "insufficient fee reserve: accounting",
-      "txid": "2a3233379ae2f77514d6a62cecbc5e9ff34d7a331acd6276a75c8304244971b6",
+      "txid": "87fac33a34020bf2737c355785c3749e6381c850372dade4baad02a99998b343",
       "period": 1,
       "bch": "2000",
       "remainingTokens": "1000",
@@ -2571,7 +2571,7 @@
     {
       "name": "insufficient fee reserve: sponsored cancellation",
       "result": {
-        "txid": "b1bc9c88d8b732c873f4bcbee84d2563734d94a73d022696d86d50b6aa56b09b",
+        "txid": "973b9329c37a83b41503940937f86d1719cd7f229f25b808a6096cda273e1daa",
         "allowed": true,
         "size": 4423,
         "vsize": 4423,
@@ -2589,7 +2589,7 @@
     },
     {
       "name": "insufficient fee reserve: accounting",
-      "txid": "b1bc9c88d8b732c873f4bcbee84d2563734d94a73d022696d86d50b6aa56b09b",
+      "txid": "973b9329c37a83b41503940937f86d1719cd7f229f25b808a6096cda273e1daa",
       "period": 1,
       "bch": "2000",
       "remainingTokens": "1000",
@@ -2598,7 +2598,7 @@
     {
       "name": "insufficient fee reserve: sponsored unallocated remainder refund including carrier",
       "result": {
-        "txid": "9d53bd5e6f2f9c8b820ca43c12897f00069c5b9d46cd6bae180f324dde1ef801",
+        "txid": "a6972e97bf8fbc6a25a700d025ab34738c4bafd617bbf1b91ec4d6d8c71c1c43",
         "allowed": true,
         "size": 4457,
         "vsize": 4457,
@@ -2616,7 +2616,7 @@
     },
     {
       "name": "insufficient fee reserve: accounting",
-      "txid": "9d53bd5e6f2f9c8b820ca43c12897f00069c5b9d46cd6bae180f324dde1ef801",
+      "txid": "a6972e97bf8fbc6a25a700d025ab34738c4bafd617bbf1b91ec4d6d8c71c1c43",
       "period": 1,
       "bch": "2000",
       "remainingTokens": "0",
@@ -2625,7 +2625,7 @@
     {
       "name": "token-bearing fee input",
       "result": {
-        "txid": "bd385ec2a5ed2fbda90f040fdebb8dd0b011ddb48ba34d354ec3692f7e9fe259",
+        "txid": "24d27bcd1e1704a3521efae4d80148cdb0b95b28829b03bb2049050409bffa75",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2639,7 +2639,7 @@
     {
       "name": "stolen withdrawal destination",
       "result": {
-        "txid": "77777149f31b3c688ba82035a8e8b9aa360a084f15159066de33a5e03825b09b",
+        "txid": "6d0186b8fccd9b0f5cbfe75f390c00579451e0c556407d807f6abd44f7f4fcad",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2653,7 +2653,7 @@
     {
       "name": "extra withdrawal output",
       "result": {
-        "txid": "bccc374804766eb0ec2633a09fcc3bebe4acbb4d786be1a60099c961d2344f38",
+        "txid": "e989cb1bea075b59327a10202edbdee54170aac8cc973bbaa21af1a5caf3495e",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2667,7 +2667,7 @@
     {
       "name": "substituted withdrawal token",
       "result": {
-        "txid": "fa67d8e87c01bcaa0362b9e23c61a82e9bc64114e14a24f975b78ae2fd3a1db8",
+        "txid": "dd96d8ee44387cce2abb500eb59e4c5a6bb847ecaaca1d16f844e58adce06145",
         "allowed": false,
         "reject-reason": "16: bad-txns-token-invalid-category",
         "reject-details": "bad-txns-token-invalid-category"
@@ -2681,7 +2681,7 @@
     {
       "name": "unrelated sponsor funds independent owner-authorized withdrawal",
       "result": {
-        "txid": "a4ca85db49c159e8881216c8cd8698a3ab8f11665de1e65cc56340dabc1e4230",
+        "txid": "68f68788ae478a5bfe720d7c720ce8e162b12001715206ccd2eaff3a4e4c97d0",
         "allowed": true,
         "size": 582,
         "vsize": 582,
@@ -2699,7 +2699,7 @@
     {
       "name": "maximum bounds: underfunded genesis",
       "result": {
-        "txid": "7f89b388586d1a364f2fb771add4c7bc7a798235e6bf3436ada5a8372193d2a6",
+        "txid": "5f3b2237ab10d85f81bc53672683ff2a87f4645dcc19e1dfe994e4bf7ebb2657",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2712,7 +2712,7 @@
     {
       "name": "maximum bounds: nonempty genesis state",
       "result": {
-        "txid": "1160a0d8af73f90b162d78f348291ee29de23543a9911d482f177599e033f2db",
+        "txid": "c3f247a0eed6b0c8f80e456b09ba32e0fe7a75c67ff8f844c4eca5632f83835f",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2725,7 +2725,7 @@
     {
       "name": "maximum bounds: minting state authority",
       "result": {
-        "txid": "824c946fd93ed8f002c96c27589e6260efdf84c567a6a3d8b6b2d9128a2da3c7",
+        "txid": "e17ac00d59dbe37467b6a90a62c476f161b652cb9697de22f59b21caff3a8ebb",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2738,7 +2738,7 @@
     {
       "name": "maximum bounds: extra minting authority",
       "result": {
-        "txid": "141af5e0518906cd65b72b9a0de920bf247ab71e21269976aec02bec02195095",
+        "txid": "2b38ada330f76adc7aabb5f8ceaa5d0926b50e5ec059393eae93d40a6cf75d12",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -2751,7 +2751,7 @@
     {
       "name": "maximum bounds: malformed pool carrier",
       "result": {
-        "txid": "7b59e8b5e873e9de0fb43e5aa49de94455c8bdb7374fe65281f04401ace125a1",
+        "txid": "20dd3ceb12a9fc41b2db5ca795c2596bc457e7a1a3549048324b808bc8bdbf16",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_NUMEQUALVERIFY operation)"
@@ -2764,7 +2764,7 @@
     {
       "name": "maximum bounds: substituted immutable cap",
       "result": {
-        "txid": "bbd243fb6f295eb89bb16751b9df964b8da09a43b1e2534ab85366fb20b8b97b",
+        "txid": "9da951aa2d68d0891e920f82f9a4bbb532cb55272db5c7cc5e54244cc9566669",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2777,7 +2777,7 @@
     {
       "name": "maximum bounds: substituted staking category",
       "result": {
-        "txid": "980ca6a588efcc7fa76ad8649150428045b09023cef4927f84876965679e9b94",
+        "txid": "53165e927d8e85b6c618d812ce00f99037d842ceca48a9f77e4b480a4308c021",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2790,7 +2790,7 @@
     {
       "name": "maximum bounds: substituted epoch",
       "result": {
-        "txid": "c9da5e361a94192bfdabeca60b22587668395b96a09545e9b25ad228afb43b8c",
+        "txid": "5506ea4dd20d020de10eea54dc622270e65c4c0bcd8d54789e608d2573f2edcd",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2803,7 +2803,7 @@
     {
       "name": "maximum bounds: substituted period length",
       "result": {
-        "txid": "e4c1baa4f686cacc46c200edef29b874aef1608b5b9bd9d8531ea64b77996851",
+        "txid": "62956eaba5b1d7f60737f8a1ccb2fca75f67159c7e1ac841dc34937d39d8c046",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2816,7 +2816,7 @@
     {
       "name": "maximum bounds: substituted horizon",
       "result": {
-        "txid": "7c1e54fbf1b38649cf8efa8cc885aeb9e05415c6ce3c1143720b608e7f58d93f",
+        "txid": "b42c96a2da4e208672528d251a9fd6d582a0322831bb49ad535de7eb8cdbc840",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_EQUALVERIFY operation)"
@@ -2829,7 +2829,7 @@
     {
       "name": "maximum bounds: factory authorizes genesis",
       "result": {
-        "txid": "63c6366df252cdc5c48b609e660a73ae8f2d5c72c32074c37ecb6b63e80fd5d2",
+        "txid": "dd13bb61faebf29cbb0fa673fcd0405e75f731701463259dab05e70260110af8",
         "allowed": true,
         "size": 2712,
         "vsize": 2712,
@@ -2845,18 +2845,18 @@
     },
     {
       "name": "maximum bounds: canonical fresh genesis",
-      "txid": "63c6366df252cdc5c48b609e660a73ae8f2d5c72c32074c37ecb6b63e80fd5d2",
-      "category": "26257875dba6003f0173e5fa2cdd8aadc56c9afd13b2a11070f2675891c06b3e",
-      "stakingCategory": "3c8e971699240a3124e107b4cb2e7fcbe888f05cb898808669f2690b4a797275",
+      "txid": "dd13bb61faebf29cbb0fa673fcd0405e75f731701463259dab05e70260110af8",
+      "category": "259711fece4c79c2e757e5e54115e57a6585062acb2202023bda5dad4b995809",
+      "stakingCategory": "9e8e131c26915808b713ab9facd5c19c113b70441a8584d1b08ae5e2c638aff6",
       "schedule": {
-        "epoch": 1794218757,
+        "epoch": 1794500531,
         "periodSeconds": 1
       }
     },
     {
       "name": "maximum bounds: register maximum slot 0",
       "result": {
-        "txid": "0e7931ca73144690449704245dc2ead49aa5099fde217880b8c1665851d359d2",
+        "txid": "ad14c59680a90c5bd011ffda74cbea4b98efaa6552ee8a506aa7ffaf1cdb5995",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -2875,7 +2875,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "0e7931ca73144690449704245dc2ead49aa5099fde217880b8c1665851d359d2",
+      "txid": "ad14c59680a90c5bd011ffda74cbea4b98efaa6552ee8a506aa7ffaf1cdb5995",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "16000000",
@@ -2884,7 +2884,7 @@
     {
       "name": "maximum bounds: register maximum slot 1",
       "result": {
-        "txid": "b575ce5b02e711fa82733d5ca263e5780bc32e36d700099a0598a24d3468fb45",
+        "txid": "a0c43eaa381cc3c8a9acac0509a0a0772d552c62c570d01a50838de5038e7bf6",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -2903,7 +2903,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "b575ce5b02e711fa82733d5ca263e5780bc32e36d700099a0598a24d3468fb45",
+      "txid": "a0c43eaa381cc3c8a9acac0509a0a0772d552c62c570d01a50838de5038e7bf6",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "32000000",
@@ -2912,7 +2912,7 @@
     {
       "name": "maximum bounds: register maximum slot 2",
       "result": {
-        "txid": "3a68d47e856b0766c5b666ef5ecc1ef20c68391cda4f9adc0aaaad08c7b97b40",
+        "txid": "7e43a24b7b13c0df08118f1a6033b72f86599aa0fcb695c1eab01a61ac3dd1dc",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -2931,7 +2931,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "3a68d47e856b0766c5b666ef5ecc1ef20c68391cda4f9adc0aaaad08c7b97b40",
+      "txid": "7e43a24b7b13c0df08118f1a6033b72f86599aa0fcb695c1eab01a61ac3dd1dc",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "48000000",
@@ -2940,7 +2940,7 @@
     {
       "name": "maximum bounds: register maximum slot 3",
       "result": {
-        "txid": "6ec51b0c9fea40af80882d6d730d1003e6b2751a72e61935e9855866c8f30baf",
+        "txid": "a62a3fdce9f15779f4ec25a315bf2cd85b0336bf0f57834b3b1dc895f24ee3dc",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -2959,7 +2959,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "6ec51b0c9fea40af80882d6d730d1003e6b2751a72e61935e9855866c8f30baf",
+      "txid": "a62a3fdce9f15779f4ec25a315bf2cd85b0336bf0f57834b3b1dc895f24ee3dc",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "64000000",
@@ -2968,7 +2968,7 @@
     {
       "name": "maximum bounds: register maximum slot 4",
       "result": {
-        "txid": "a334b9dc2f6d3e245f37a1cac1b090c4ef988ae48e9c2acfa0b033b6501d68b7",
+        "txid": "c9fc40f7366d4b574fe2e37fc2e9c2a6d92fc81750398379b51645fe4fa5b4c4",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -2987,7 +2987,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "a334b9dc2f6d3e245f37a1cac1b090c4ef988ae48e9c2acfa0b033b6501d68b7",
+      "txid": "c9fc40f7366d4b574fe2e37fc2e9c2a6d92fc81750398379b51645fe4fa5b4c4",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "80000000",
@@ -2996,7 +2996,7 @@
     {
       "name": "maximum bounds: register maximum slot 5",
       "result": {
-        "txid": "4eafebb2ac9ed44baf69144663e1c9fc0ec1f0f00854515d71ebcdca5214b041",
+        "txid": "cbdb434fe23c0ccb45981737b944501a92b6d97309744ee5cb69acbbb5c4f320",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3015,7 +3015,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "4eafebb2ac9ed44baf69144663e1c9fc0ec1f0f00854515d71ebcdca5214b041",
+      "txid": "cbdb434fe23c0ccb45981737b944501a92b6d97309744ee5cb69acbbb5c4f320",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "96000000",
@@ -3024,7 +3024,7 @@
     {
       "name": "maximum bounds: register maximum slot 6",
       "result": {
-        "txid": "a803403381a81a4ec0f88d9b03f67be23d1339ec014e8bd9b20288d206a153d8",
+        "txid": "01fb65cc54704a3664788de54c48deabebd8c35b38efe4a34e5fcfa184b4c5a4",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3043,7 +3043,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "a803403381a81a4ec0f88d9b03f67be23d1339ec014e8bd9b20288d206a153d8",
+      "txid": "01fb65cc54704a3664788de54c48deabebd8c35b38efe4a34e5fcfa184b4c5a4",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "112000000",
@@ -3052,7 +3052,7 @@
     {
       "name": "maximum bounds: register maximum slot 7",
       "result": {
-        "txid": "d0955089d2fbae6d88ac3dab4ac2779e661a784f87fd5b28fa58e7a5006db98a",
+        "txid": "d59fe71080d205e36750d786d45d6ffc0d46b4e440e4439f24f6cd14afdc7542",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3071,7 +3071,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "d0955089d2fbae6d88ac3dab4ac2779e661a784f87fd5b28fa58e7a5006db98a",
+      "txid": "d59fe71080d205e36750d786d45d6ffc0d46b4e440e4439f24f6cd14afdc7542",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "128000000",
@@ -3080,7 +3080,7 @@
     {
       "name": "maximum bounds: register maximum slot 8",
       "result": {
-        "txid": "2c681608dccefd8df6e3147ae43c09f434d178747b5995cc1e373371b0f13784",
+        "txid": "c2bf9f5c8c246919d0ee02d208a719a7ddd5d40993e91abc85a371a3a0e58483",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3099,7 +3099,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "2c681608dccefd8df6e3147ae43c09f434d178747b5995cc1e373371b0f13784",
+      "txid": "c2bf9f5c8c246919d0ee02d208a719a7ddd5d40993e91abc85a371a3a0e58483",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "144000000",
@@ -3108,7 +3108,7 @@
     {
       "name": "maximum bounds: register maximum slot 9",
       "result": {
-        "txid": "af3c9e7882f8a9c3e40cfae7e7bc33d2c9aaf08893729509f4ebe833f2b08a02",
+        "txid": "99f5ff93685ed34076f7260f0faac04ec396a11863e4e845431923613fd0580e",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3127,7 +3127,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "af3c9e7882f8a9c3e40cfae7e7bc33d2c9aaf08893729509f4ebe833f2b08a02",
+      "txid": "99f5ff93685ed34076f7260f0faac04ec396a11863e4e845431923613fd0580e",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "160000000",
@@ -3136,7 +3136,7 @@
     {
       "name": "maximum bounds: register maximum slot 10",
       "result": {
-        "txid": "2f9d14f5d189a933c05f2ed2cbb5fece04bd70746db5bcb13ddfd26684ce8b2f",
+        "txid": "dd0275206b1b606044d9df12b45d94fc6c65c6a64abfdca3511166799e96564a",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3155,7 +3155,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "2f9d14f5d189a933c05f2ed2cbb5fece04bd70746db5bcb13ddfd26684ce8b2f",
+      "txid": "dd0275206b1b606044d9df12b45d94fc6c65c6a64abfdca3511166799e96564a",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "176000000",
@@ -3164,7 +3164,7 @@
     {
       "name": "maximum bounds: register maximum slot 11",
       "result": {
-        "txid": "a18bcdccd0c29819ca5b70b25c1e9bccc3988cea748a56af725200431457537b",
+        "txid": "e7d47799e1a9b8f46c54021aa768920b456da40b55df4063a996b7a7d28290c4",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3183,7 +3183,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "a18bcdccd0c29819ca5b70b25c1e9bccc3988cea748a56af725200431457537b",
+      "txid": "e7d47799e1a9b8f46c54021aa768920b456da40b55df4063a996b7a7d28290c4",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "192000000",
@@ -3192,7 +3192,7 @@
     {
       "name": "maximum bounds: register maximum slot 12",
       "result": {
-        "txid": "1742eb4569b1aea71f9c948e501f6836bb808fc41119d85e7307390d42121801",
+        "txid": "1396993d9748c85fd9d73fc6553299d5b7ab48dd609be52a0d23c60919a41e1f",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3211,7 +3211,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "1742eb4569b1aea71f9c948e501f6836bb808fc41119d85e7307390d42121801",
+      "txid": "1396993d9748c85fd9d73fc6553299d5b7ab48dd609be52a0d23c60919a41e1f",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "208000000",
@@ -3220,7 +3220,7 @@
     {
       "name": "maximum bounds: register maximum slot 13",
       "result": {
-        "txid": "2662448580f7f59d93f50158d5956cb5b2ff0c272f3857cc5a7a9b50e8fb79b2",
+        "txid": "835bfedafb60f0072bb0743d9dd624e0e672f3d6daad3d81ad0c7a9ccf2ca74f",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3239,7 +3239,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "2662448580f7f59d93f50158d5956cb5b2ff0c272f3857cc5a7a9b50e8fb79b2",
+      "txid": "835bfedafb60f0072bb0743d9dd624e0e672f3d6daad3d81ad0c7a9ccf2ca74f",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "224000000",
@@ -3248,7 +3248,7 @@
     {
       "name": "maximum bounds: register maximum slot 14",
       "result": {
-        "txid": "e4f0b42e59e03da650abb1507770d94a1ab7ee3fb6b9a4dbdd5537802ddee30f",
+        "txid": "2888adaa050237967d7a4f7339ec109771b5a036636beb72acdbabb1409e99d4",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3267,7 +3267,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "e4f0b42e59e03da650abb1507770d94a1ab7ee3fb6b9a4dbdd5537802ddee30f",
+      "txid": "2888adaa050237967d7a4f7339ec109771b5a036636beb72acdbabb1409e99d4",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "240000000",
@@ -3276,7 +3276,7 @@
     {
       "name": "maximum bounds: register maximum slot 15",
       "result": {
-        "txid": "a966c3a3f3c7d95f5c58c0eaf4f357ec30bb790f51d21a7e0ad538259b9bdd09",
+        "txid": "a4486396f9c005e6e270b77814dff044d388a0d48c8501f43f3650423c7567f7",
         "allowed": true,
         "size": 4618,
         "vsize": 4618,
@@ -3295,7 +3295,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "a966c3a3f3c7d95f5c58c0eaf4f357ec30bb790f51d21a7e0ad538259b9bdd09",
+      "txid": "a4486396f9c005e6e270b77814dff044d388a0d48c8501f43f3650423c7567f7",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "256000000",
@@ -3304,7 +3304,7 @@
     {
       "name": "maximum bounds seventeenth lifetime offer rejected",
       "result": {
-        "txid": "137f55ab896fa25cd8f24dccb97a0ce4a4ff75738127bd65f259ffa072d9bd10",
+        "txid": "9cc370ad8dc52bd3ccc8585b1d141314ac9cc849b6d06b10d524b266c34238fa",
         "allowed": false,
         "reject-reason": "16: mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)",
         "reject-details": "mandatory-script-verify-flag-failed (Script failed an OP_VERIFY operation)"
@@ -3320,7 +3320,7 @@
     {
       "name": "maximum bounds: activate full maximum-bound roster",
       "result": {
-        "txid": "9434a808ff0a6a185f622125459f94c3fcfcc6786e7576e6f3f437610919b129",
+        "txid": "3a4b77fc4c0db566cb329fe2d2e4fb1f5280ca3e3f1f7da4de3b2bbbb684a310",
         "allowed": true,
         "size": 4426,
         "vsize": 4426,
@@ -3338,7 +3338,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "9434a808ff0a6a185f622125459f94c3fcfcc6786e7576e6f3f437610919b129",
+      "txid": "3a4b77fc4c0db566cb329fe2d2e4fb1f5280ca3e3f1f7da4de3b2bbbb684a310",
       "period": 0,
       "bch": "16001000",
       "remainingTokens": "256000000",
@@ -3347,7 +3347,7 @@
     {
       "name": "maximum bounds: rank all sixteen maximum-bound offers and settle canonical tie winner",
       "result": {
-        "txid": "fe278e3a13d0aab7c049e9cbcd9fffed2c578c8d22064b37a9755eae65ac5115",
+        "txid": "8fa32039e2df47f41acc830646d4ca29bf3ff2f86c7cd8170a204a634310eb4c",
         "allowed": true,
         "size": 4543,
         "vsize": 4543,
@@ -3409,7 +3409,7 @@
     },
     {
       "name": "maximum bounds: accounting",
-      "txid": "fe278e3a13d0aab7c049e9cbcd9fffed2c578c8d22064b37a9755eae65ac5115",
+      "txid": "8fa32039e2df47f41acc830646d4ca29bf3ff2f86c7cd8170a204a634310eb4c",
       "period": 1,
       "bch": "15001000",
       "remainingTokens": "255000000",

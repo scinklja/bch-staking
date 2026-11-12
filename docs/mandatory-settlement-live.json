@@ -1,0 +1,483 @@
+{
+  "startedAt": "2026-11-12T17:01:40.858Z",
+  "site": "https://scinklja.github.io/staking-arena-site/",
+  "fixture": {
+    "config": {
+      "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+      "stakingCategory": "e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a",
+      "epoch": 1794496500,
+      "periodSeconds": 300,
+      "periods": 2,
+      "cap": 1000
+    },
+    "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+    "height": 332026,
+    "confirmationBlock": "00000000000015d58ed55eef975010b7eefee2d1820c123d4149a0ddc2b758a3"
+  },
+  "events": [
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:01:46.193Z",
+      "walletMethods": [],
+      "legacyPreference": "false",
+      "optOuts": []
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:01:56.507Z",
+      "health": {
+        "connected": false,
+        "error": "",
+        "updatedAt": "",
+        "stale": true,
+        "syncing": true,
+        "provider": "electrum",
+        "endpoint": "",
+        "unconfirmed": [],
+        "phase": "Reading vault history",
+        "transactions": 0
+      },
+      "tip": null,
+      "role": "leader",
+      "automatic": true,
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": []
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:03:01.517Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T17:02:57.765Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 17
+      },
+      "tip": {
+        "height": 332040,
+        "hash": "00000000000018e6e20933bbb373260db263c1bf8ea3679a2c3d19a495071508",
+        "mtp": 1794499899
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "complete",
+        "message": "All periods processed",
+        "period": 2,
+        "updatedAt": "2026-11-12T17:02:58.150Z"
+      },
+      "vault": {
+        "period": 2,
+        "phase": "open",
+        "bchSatoshis": "27000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          },
+          {
+            "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+            "height": 332038,
+            "action": 5,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Completed — all periods processed on-chain"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:04:11.608Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T17:04:08.573Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 17
+      },
+      "tip": {
+        "height": 332040,
+        "hash": "00000000000018e6e20933bbb373260db263c1bf8ea3679a2c3d19a495071508",
+        "mtp": 1794499899
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "complete",
+        "message": "All periods processed",
+        "period": 2,
+        "updatedAt": "2026-11-12T17:04:08.805Z"
+      },
+      "vault": {
+        "period": 2,
+        "phase": "open",
+        "bchSatoshis": "27000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          },
+          {
+            "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+            "height": 332038,
+            "action": 5,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Completed — all periods processed on-chain"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:06:01.726Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T17:05:58.766Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://electrum-chipnet.optnlabs.com",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 17
+      },
+      "tip": {
+        "height": 332041,
+        "hash": "000000000000150f9caf622c179d8ba76dd6a6f800f2ab9e3d67d8bee33f6b98",
+        "mtp": 1794500716
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "complete",
+        "message": "All periods processed",
+        "period": 2,
+        "updatedAt": "2026-11-12T17:05:58.890Z"
+      },
+      "vault": {
+        "period": 2,
+        "phase": "open",
+        "bchSatoshis": "27000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          },
+          {
+            "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+            "height": 332038,
+            "action": 5,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Completed — all periods processed on-chain"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:07:06.758Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T17:07:04.122Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 17
+      },
+      "tip": {
+        "height": 332041,
+        "hash": "000000000000150f9caf622c179d8ba76dd6a6f800f2ab9e3d67d8bee33f6b98",
+        "mtp": 1794500716
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "complete",
+        "message": "All periods processed",
+        "period": 2,
+        "updatedAt": "2026-11-12T17:07:04.234Z"
+      },
+      "vault": {
+        "period": 2,
+        "phase": "open",
+        "bchSatoshis": "27000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          },
+          {
+            "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+            "height": 332038,
+            "action": 5,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Completed — all periods processed on-chain"
+    },
+    {
+      "browser": "primary",
+      "at": "2026-11-12T17:08:21.833Z",
+      "health": {
+        "connected": true,
+        "error": "",
+        "updatedAt": "2026-11-12T17:08:20.360Z",
+        "stale": false,
+        "syncing": false,
+        "provider": "electrum",
+        "endpoint": "wss://chipnet.imaginary.cash:50004",
+        "unconfirmed": [],
+        "phase": "Synchronized",
+        "transactions": 17
+      },
+      "tip": {
+        "height": 332041,
+        "hash": "000000000000150f9caf622c179d8ba76dd6a6f800f2ab9e3d67d8bee33f6b98",
+        "mtp": 1794500716
+      },
+      "role": "leader",
+      "automatic": true,
+      "status": {
+        "phase": "complete",
+        "message": "All periods processed",
+        "period": 2,
+        "updatedAt": "2026-11-12T17:08:20.745Z"
+      },
+      "vault": {
+        "period": 2,
+        "phase": "open",
+        "bchSatoshis": "27000",
+        "history": [
+          {
+            "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+            "height": 332035,
+            "action": 2,
+            "period": 0
+          },
+          {
+            "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+            "height": 332036,
+            "action": 5,
+            "period": 0
+          },
+          {
+            "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+            "height": 332037,
+            "action": 2,
+            "period": 1
+          },
+          {
+            "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+            "height": 332038,
+            "action": 5,
+            "period": 1
+          }
+        ]
+      },
+      "walletMethods": [
+        "start"
+      ],
+      "legacyPreference": null,
+      "optOuts": [],
+      "offerDisabled": "true",
+      "statusText": "Completed — all periods processed on-chain"
+    }
+  ],
+  "errors": [],
+  "walletMethods": [
+    "start"
+  ],
+  "completed": true,
+  "confirmedHistory": [
+    {
+      "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+      "height": 332035,
+      "action": 2,
+      "period": 0
+    },
+    {
+      "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+      "height": 332036,
+      "action": 5,
+      "period": 0
+    },
+    {
+      "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+      "height": 332037,
+      "action": 2,
+      "period": 1
+    },
+    {
+      "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+      "height": 332038,
+      "action": 5,
+      "period": 1
+    }
+  ],
+  "completedAt": "2026-11-12T17:08:31.860Z",
+  "final": {
+    "at": "2026-11-12T17:08:31.860Z",
+    "health": {
+      "connected": true,
+      "error": "",
+      "updatedAt": "2026-11-12T17:08:20.360Z",
+      "stale": false,
+      "syncing": false,
+      "provider": "electrum",
+      "endpoint": "wss://chipnet.imaginary.cash:50004",
+      "unconfirmed": [],
+      "phase": "Synchronized",
+      "transactions": 17
+    },
+    "tip": {
+      "height": 332041,
+      "hash": "000000000000150f9caf622c179d8ba76dd6a6f800f2ab9e3d67d8bee33f6b98",
+      "mtp": 1794500716
+    },
+    "role": "leader",
+    "automatic": true,
+    "status": {
+      "phase": "complete",
+      "message": "All periods processed",
+      "period": 2,
+      "updatedAt": "2026-11-12T17:08:20.745Z"
+    },
+    "vault": {
+      "period": 2,
+      "phase": "open",
+      "bchSatoshis": "27000",
+      "history": [
+        {
+          "txid": "f750b6dc7aed1ff950ad69759e47c3c3f37e0b0ebb344077af0bdc188c4087b9",
+          "height": 332035,
+          "action": 2,
+          "period": 0
+        },
+        {
+          "txid": "4bc7217a952bb88b7fae0b365b49837288bad73b010eedea0ada4afea5adea02",
+          "height": 332036,
+          "action": 5,
+          "period": 0
+        },
+        {
+          "txid": "b87bcdcbdae3cd00eda7ede1387f5a01de58fdc77421f9516781fa2100a22200",
+          "height": 332037,
+          "action": 2,
+          "period": 1
+        },
+        {
+          "txid": "82eddbe19b522bcb93423f972296df1f9cd85e9c832ce626c8d03db5108e3912",
+          "height": 332038,
+          "action": 5,
+          "period": 1
+        }
+      ]
+    },
+    "walletMethods": [
+      "start"
+    ],
+    "legacyPreference": null,
+    "optOuts": [],
+    "offerDisabled": "true",
+    "statusText": "Completed — all periods processed on-chain"
+  }
+}

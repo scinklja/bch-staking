@@ -32,13 +32,7 @@ it('uses worker envelopes, labels cached state, displays errors, refreshes and t
   await waitFor(()=>expect(hook.result.current.fromSnapshot).toBe(false));expect(hook.result.current.providerStatus).toContain('following another tab');
   act(()=>hook.result.current.refresh());expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'refresh'});
   act(()=>worker!.onmessage?.({data:{type:'error',error:'IndexedDB unavailable'}} as MessageEvent));expect(hook.result.current.error).toContain('IndexedDB unavailable');
-  act(()=>hook.result.current.setAutomatic(true));expect(localStorage.getItem('arena-chipnet-automatic-settlement')).toBe('true');expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'keeper-settings',automatic:true});
-  const settlementPacket=(automatic:boolean)=>({data:{type:'snapshot',envelope:data,keeper:{automatic,statuses:{}}}} as MessageEvent);
-  act(()=>worker!.onmessage?.(settlementPacket(false)));expect(hook.result.current.automatic).toBe(true);
-  act(()=>worker!.onmessage?.(settlementPacket(true)));expect(hook.result.current.automatic).toBe(true);
-  act(()=>hook.result.current.setAutomatic(false));
-  act(()=>worker!.onmessage?.(settlementPacket(true)));expect(hook.result.current.automatic).toBe(false);
-  act(()=>worker!.onmessage?.(settlementPacket(false)));expect(hook.result.current.automatic).toBe(false);
+  expect(hook.result.current.automatic).toBe(true);expect('setAutomatic' in hook.result.current).toBe(false);
   act(()=>hook.result.current.processPeriod('a'.repeat(64)));expect(worker!.postMessage).toHaveBeenLastCalledWith({type:'process-period',category:'a'.repeat(64)});
   hook.unmount();expect(worker!.terminate).toHaveBeenCalledOnce();expect(fetcher).not.toHaveBeenCalled();
 });
@@ -89,4 +83,11 @@ it('responds to another tab importing a vault and surfaces structured bootstrap 
  act(()=>worker.onmessage({data:{type:'ready'}}));expect(worker.postMessage.mock.calls[0][0].config.vaults).toContainEqual(config);
  act(()=>worker.onmessage({data:{type:'error',fatal:true,diagnostic:{message:'Module could not load',filename:'indexer.js',line:9,column:2,stack:'stack: import crypto.js',phase:'module / WASM initialization'}}}));
  expect(hook.result.current.error).toContain('Module could not load');expect(hook.result.current.error).toContain('indexer.js:9:2');expect(hook.result.current.error).toContain('stack: import crypto.js');hook.unmount();
+});
+
+it('ignores and removes a saved disable preference and provides no opt-out API',()=>{
+ vi.stubEnv('VITE_INDEXER_MODE','electrum');localStorage.setItem('arena-chipnet-automatic-settlement','false');
+ let worker:any;class FakeWorker {onmessage:any;onerror:any;onmessageerror:any;postMessage=vi.fn();terminate=vi.fn();constructor(){worker=this;}}
+ vi.stubGlobal('Worker',FakeWorker);const hook=renderHook(()=>useArena());act(()=>worker.onmessage({data:{type:'ready'}}));
+ expect(localStorage.getItem('arena-chipnet-automatic-settlement')).toBeNull();expect(hook.result.current.automatic).toBe(true);expect(hook.result.current).not.toHaveProperty('setAutomatic');expect(worker.postMessage.mock.calls[0][0]).not.toHaveProperty('automatic');hook.unmount();
 });

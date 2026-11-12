@@ -1,6 +1,6 @@
 # Browser automatic settlement — chipnet only
 
-A static Staking Arena frontend can now activate and settle configured chipnet vaults without a Node API, BCHN, hosted keeper, WizardConnect signature, spending key, or wallet approval. It reuses the existing keeper's transaction layout and covenant rules. Nothing has been deployed or published; covenant source and bytecode are unchanged.
+A static Staking Arena frontend can now activate and settle configured chipnet vaults without a Node API, BCHN, hosted keeper, WizardConnect signature, spending key, or wallet approval. It reuses the existing keeper's transaction layout and covenant rules. Browser processing is always enabled after canonical verification in supported browsers; covenant source and bytecode are unchanged. Current release evidence is in [mandatory period processing](mandatory-settlement.md).
 
 ## Running it
 
@@ -19,7 +19,7 @@ The default production source is chipnet Electrum when no API URL is configured.
 VITE_INDEXER_MODE=electrum npm --prefix frontend run dev
 ```
 
-Open a vault's details page. **Enable automatic settlement on chipnet** is initially off, persists in localStorage, and applies to all listed chipnet vaults on that origin. Enable it once to process eligible periods while the website stays open. **Process Period** requests one transition for the selected vault even when automation is off. Activation and settlement remain separate confirmed transactions. Disabling automation stops future submissions; it cannot recall a transaction already sent. Wallet creation/offer/withdrawal actions remain separate existing workflows and are not automatically signed.
+Open the website in a browser supporting Web Locks, BroadcastChannel, IndexedDB and Web Workers. Processing starts automatically for all configured/verified locally imported vaults after synchronization. No wallet connection, approval, enabling click, or user setting is required. There is no opt-out or hidden toggle; the former localStorage preference is removed and ignored. **Process Period** is only a diagnostic/retry request. Activation and settlement remain separate confirmed transactions. Wallet creation/offer/withdrawal actions remain separate workflows and are never automatically signed.
 
 The shipped default vault is already complete. To inspect the completed two-period case verified in this phase:
 
@@ -30,9 +30,9 @@ npm --prefix frontend run preview
 
 To process a different existing vault, set `VITE_ARENA_VAULTS` to its genesis and immutable parameters, as documented in [browser indexing](browser-electrum.md). Genesis must be confirmed and pass the existing factory authorization checks. There is no new global vault discovery or registration mechanism.
 
-The default WSS endpoints are `wss://chipnet.bch.ninja:50004` and `wss://chipnet.imaginary.cash:50004`. Settlement requires two different configured hostnames that agree on the exact indexed tip, MTP, current canonical input confirmation, histories and unspent outputs. A single endpoint remains usable for reading, but cannot authorize browser settlement. The selected relay must also support the documented [Electrum Cash transaction broadcast method](https://electrum-cash-protocol.readthedocs.io/en/latest/protocol-methods.html#blockchain-transaction-broadcast).
+The default WSS endpoints are `wss://chipnet.imaginary.cash:50004`, `wss://electrum-chipnet.optnlabs.com` and `wss://chipnet.bch.ninja:50004`. Settlement requires two different configured hostnames that agree on the exact indexed tip, MTP, current canonical input confirmation, histories and unspent outputs. A single endpoint remains usable for reading, but cannot authorize browser settlement. The selected relay must also support the documented [Electrum Cash transaction broadcast method](https://electrum-cash-protocol.readthedocs.io/en/latest/protocol-methods.html#blockchain-transaction-broadcast).
 
-No mainnet mode or mainnet broadcasting is enabled. Node/API mode and the existing BCHN/regtest keeper remain available; the new browser setting does not start a Node keeper.
+No mainnet mode or mainnet broadcasting is enabled. Node/API mode and the existing BCHN/regtest keeper remain available; browser automation does not start a Node keeper.
 
 ## Shared construction and validation
 
@@ -50,7 +50,7 @@ The transaction preserves the existing structure:
 
 Every browser candidate is checked by libauth's BCH 2026 VM against the exact decoded source outputs. That validates covenant scripts, frozen preimages, priorities/ties, reward destination/amount, token conservation, allocation terms and the committed reserve. A malformed indexed preimage is rejected before construction. The SDK retains standard transaction-size, implicit-burn and fee-rate checks. The local VM is version-pinned; it does not replace node policy checks, chain consensus validation, or eventual confirmation.
 
-Finality is checked separately. The candidate is version 2 with non-final, BIP68-disabled sequences. Activation uses its scheduled timestamp as locktime, only when verified chain MTP is strictly greater than that boundary. Settlement/empty advancement retains the existing `MTP - 1` locktime. Height and timestamp locktime thresholds are checked; browser wall-clock time never determines period eligibility. Wall time is used only for retry scheduling and freshness.
+Finality is checked separately. The candidate is version 2 with non-final, BIP68-disabled sequences. Activation uses its scheduled timestamp as locktime, only when verified chain MTP is strictly greater than that boundary. Settlement/empty advancement retains the existing `MTP - 1` locktime. Height and timestamp locktime thresholds are checked; browser wall-clock time never authorizes a keeper transition. Offer-admission policy separately uses UTC time and chain MTP as described below.
 
 ## Fee funding
 
@@ -68,7 +68,7 @@ The pool's 1,000-satoshi carrier is preserved. Staking tokens are never sold, bu
 NFT output BCH >= remainingPeriods × rewardCap + 1,000 satoshis
 ```
 
-This is the existing on-chain reserve invariant, independently checked by the builder and VM. The browser checks the exact 10,000-satoshi miner fee before broadcasting. Unsponsored settlement therefore works only when the vault already has enough excess BCH for that transition. Sufficient reward reserves do not imply sufficient fee funding for all future transitions, cancellations or refunds.
+This is the existing on-chain reserve invariant, independently checked by the builder and VM. The frontend additionally requires the miner fee (and a winning allocation carrier) to fit in **pre-transition excess BCH**, above all currently committed reward caps and the state carrier; rewards released by this transition cannot fund its fee. The browser checks the exact 10,000-satoshi miner fee before broadcasting. Unsponsored settlement therefore works only when the vault already has enough excess BCH for that transition. Sufficient reward reserves do not imply sufficient fee funding for all future transitions, cancellations or refunds.
 
 If the next transition would invade the reward reserve, the UI shows **Blocked: safe fee funding unavailable** and explicitly reports that an external BCH fee sponsor is required. If a server rejects the fixed fee under its relay policy, that requirement is also reported. The browser never raises the fee by weakening the reserve or asks for a wallet signature. The existing extra BCH sponsor input is still supported by the Node builder/callback, but no automatic browser sponsor/key mechanism was introduced. Even a valid fixed-fee transaction may fail a server's current relay policy; acceptance and mining cannot be guaranteed.
 
@@ -81,22 +81,32 @@ Each processing pass starts with the existing full confirmed-state Electrum sync
 3. Checks for real unconfirmed transactions spending either canonical outpoint. Our own or a competitor's pending spend causes waiting, not optimistic application or child construction.
 4. Builds and VM-validates a candidate. Two distinct configured endpoints must independently match the fresh indexed tip/MTP, source confirmation/block hash, normalized script histories and exact token-aware canonical UTXOs. Headers link each source proof to that tip.
 5. Commits a write-ahead intent containing raw bytes, transaction ID, parent outpoint, action/slot/period and retry deadline to IndexedDB **before** any submission. Failure to persist means no send.
-6. Opens one pinned, chipnet-identity-checked relay session, rechecks current data, verifies processing is still enabled/requested, and sends `blockchain.transaction.broadcast`. The returned ID must equal the locally computed ID.
+6. Opens one pinned, chipnet-identity-checked relay session, rechecks current data, rechecks the verification/coordination safety interlock, and sends `blockchain.transaction.broadcast`. The returned ID must equal the locally computed ID.
 7. Reports **Pending confirmation** after acceptance. Only a later confirmed replay including that ID on the canonical registry lineage reports **Confirmed**. The next transition starts after confirmed synchronization, with a visible confirmation step between actions.
 
 No write is automatically retried on another server within the same session. An error or disconnect after sending can mean acceptance is unknown, so the intent becomes uncertain. A later independent retry first re-synchronizes and repeats all checks, then reuses exactly the saved raw transaction and ID. Backoff starts at 30 seconds and caps at 15 minutes. Relay endpoints alternate across reconciled retries, rather than replaying a possibly accepted write during failover. Read polling also backs off after outages.
 
 This does not promise globally exactly-once network submission. Independent users, origins, profiles and Node keepers can race. Same-origin Web Locks reduce local duplication; only BCH validation and spending the unique canonical NFT/pool decide the final chain. Mempool conflicts, dropped transactions and reorganizations are reconciled through fresh histories, proofs and UTXOs. There is no fee replacement, unconfirmed ancestor chaining, or optimistic period cursor.
 
-Reader leadership and BroadcastChannel continue to share snapshots across tabs. Settlement controls are relayed to the leader, and the per-category lock/journal also cover separate reader configurations. Closing a leader transfers ownership. Worker termination/browser suspension can occur at any point; a prepared intent covers a crash before acknowledgement or before sending. On resume, fresh synchronization precedes another attempt. Web Locks and BroadcastChannel are required for browser settlement; reading still works with its prior fallbacks. The reader coordination key is versioned to prevent an older read-only tab from blocking a newer settlement-capable worker.
+Reader leadership and BroadcastChannel continue to share snapshots across tabs. Diagnostic retry requests are relayed to the leader, and the per-category lock/journal also cover separate reader configurations. Closing a leader transfers ownership. Worker termination/browser suspension can occur at any point; a prepared intent covers a crash before acknowledgement or before sending. On resume, fresh synchronization precedes another attempt. Web Locks and BroadcastChannel are required for browser settlement; reading still works with its prior fallbacks. The reader coordination key is versioned to prevent an older read-only tab from blocking a newer settlement-capable worker.
 
 Storage is separate from reader checkpoints: `staking-arena-settlement-v1`, store `intents`, keyed by category. It holds only public raw transactions and metadata, never keys. It retains the latest intent per vault; confirmed on-chain history remains the indexer's source of truth. Invalid journal metadata fails closed. Browser storage can be evicted or denied; mandatory pre-send persistence failures block sending. Loss of the journal cannot prove a transaction was never submitted, so fresh on-chain/mempool reconciliation remains necessary.
 
-## Status and settings
+## Schedule status and offer policy
 
-Vault details display waiting for the next period, activation required, settlement required, broadcasting, pending confirmation, confirmed, failed/retrying, blocked fee funding, or completed state. They also show the transaction ID and retry deadline when applicable. Existing index/provider/stale indicators remain visible. Manual processing is disabled while the view is stale, the spend is pending, or all periods are complete. Turning automation off cannot stop independent keepers or recall an already transmitted transaction.
+The UI combines immutable epoch, period duration, confirmed period/activation state, current UTC time, and verified chain MTP. Its six statuses are Scheduled — awaiting start; Open for offers; Overdue — awaiting activation; Activated — awaiting settlement; Expired — awaiting on-chain processing; and Completed — all periods processed on-chain. An elapsed lifetime never appears Open; only a confirmed period cursor equal to the configured count is Completed. It displays the next outstanding scheduled UTC boundary, remaining periods, and remaining activation/settlement steps.
 
-The `arena-chipnet-automatic-settlement` localStorage setting defaults to false. It is a processing preference, not a signing credential. The existing API wallet routes and WizardConnect workflow are unchanged and are not used for period processing.
+Registration for confirmed on-chain period `p` closes at `epoch + p × periodSeconds`. It is allowed before that boundary only if the confirmed state is open, capacity remains, and data is fresh. The first pre-start window is labelled Scheduled. After confirmed advancement, registration can reopen for a future period whose boundary has not passed. Overdue periods must be processed before another window can be considered. At `epoch + periods × periodSeconds`, offers remain permanently closed by this frontend policy, even if the on-chain cursor lags. Using the maximum of UTC time and chain MTP closes conservatively when chain time lags or the local clock is slow.
+
+**These upper cutoffs are frontend policy, not consensus-enforced deadlines under the existing covenant.** Other clients can still register after a scheduled boundary if the on-chain open-state covenant permits it. Activation freezes the immutable roster, including any valid late registration accepted by the covenant from another client; this frontend cannot retroactively exclude it. Existing priority, tie and snapshot rules remain unchanged.
+
+Browser offer preparation/registration/resume revalidates canonical state and cutoff on both providers. A fresh authorization RPC immediately precedes WizardConnect signing; the main thread checks the deadline again. Submission/broadcast repeats current input/canonical-state checks and checks the clock immediately before sending. A cutoff crossed during wallet approval blocks broadcast. Stale or contradictory data blocks the action. Prepared wallet-owned funds/journals remain recoverable if registration misses its window.
+
+## Mandatory processing and browser limitations
+
+There is no persisted processing preference, setter, message-based disable handler, or UI opt-out. Any previously saved `arena-chipnet-automatic-settlement` value has no effect and is removed. A verification outage pauses submission automatically and resumes it after fresh verification. This is a safety interlock, not a user setting. The versioned mandatory reader channel cannot follow a legacy optional/off worker; per-category locks continue coordinating same-origin submissions.
+
+Processing does **not** continue when the website is closed, the browser suspends the tab, the device goes offline, or public Electrum providers are unavailable. Guaranteed unattended settlement requires an independently operated keeper. Independent browsers can race; canonical UTXO validation and confirmed replay determine the winner. No optimistic state or unconfirmed child transactions are used.
 
 ## Testing
 
@@ -106,7 +116,7 @@ npm run node:start
 npm test
 # UI/model/controller tests and native static WSS/worker tests:
 npm --prefix frontend test
-npm --prefix frontend run test:electrum
+npm --prefix frontend run test:mandatory
 npm --prefix frontend run test:browser
 npm --prefix frontend run test:static
 ```

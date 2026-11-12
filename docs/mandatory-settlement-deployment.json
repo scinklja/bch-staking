@@ -1,0 +1,86 @@
+{
+  "verifiedAt": "2026-11-12T17:01:39.481555+00:00",
+  "commit": "53dc760a6e16bc162ad9a0e76829fe5163ab9e46",
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "assets": [
+    {
+      "path": "arena.svg",
+      "status": 200,
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "f6496c5c88db276f67b9721243eba0de0c03e9d784a56545a0dfc54838707d07"
+    },
+    {
+      "path": "assets/app-entry-CuILh06c.js",
+      "status": 200,
+      "sha256": "5a935a40472a5027b024125a347d7a12887ccfe121911afe8f39892144149509"
+    },
+    {
+      "path": "assets/index-DShCD0iQ.js",
+      "status": 200,
+      "sha256": "5ccdadae8b084e2f90415f56d471041f49995a77dc00aa7d84c95812287ca11f"
+    },
+    {
+      "path": "assets/arena.worker-Dc-h3lef.js",
+      "status": 200,
+      "sha256": "8477e02786f5f2c54938ddcf87496e1d4ef9b36f6b1cf6240fd91b67c2766f09"
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-IzYF1X5r.js",
+      "status": 200,
+      "sha256": "b88bcca3b15fcb794ab1aee9f82f2f4413b8222d091e8b0de2cdff1df482c6a9"
+    },
+    {
+      "path": "assets/wallet.worker-BGOuMGxR.js",
+      "status": 200,
+      "sha256": "d098ba3d25b821f0690519e245e0561be910a99d05223e88905a1d1c46593ee4"
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "status": 200,
+      "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee"
+    }
+  ],
+  "retainedAssets": [
+    {
+      "path": "assets/indexer.bootstrap.worker-6NRSj0dF.js",
+      "status": 200
+    },
+    {
+      "path": "assets/index-BMvdSBpJ.js",
+      "status": 200
+    },
+    {
+      "path": "assets/arena.worker-B264yQaN.js",
+      "status": 200
+    },
+    {
+      "path": "assets/app-entry-CtJnYqT2.js",
+      "status": 200
+    },
+    {
+      "path": "assets/arena.worker-D64qZsCy.js",
+      "status": 200
+    },
+    {
+      "path": "assets/app-entry-DUyX3MVj.js",
+      "status": 200
+    },
+    {
+      "path": "assets/wallet.worker-2KSZ2TYH.js",
+      "status": 200
+    },
+    {
+      "path": "assets/index-BsNBcfSe.js",
+      "status": 200
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "status": 200
+    }
+  ],
+  "allMatch": true
+}

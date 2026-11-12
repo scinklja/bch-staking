@@ -20,7 +20,7 @@ Primary sources: [WizardConnect signature requirements](https://docs.riftenlabs.
 2. Connect an HD chipnet wallet in the header and check its confirmed balances.
 3. Select a fungible category proven by a confirmed NFT-free token UTXO in the scanned wallet. Creation does not consume staking tokens. This initial implementation deliberately restricts creation to such proven categories.
 4. Enter native BCH reward cap, positive whole-second duration, 1–16 periods and the first UTC boundary. The last possible allocation maturity must fit the existing signed timestamp encoding.
-5. Review all immutable terms, the exact funding breakdown and the no-refund warning. Choose a future start and keep keeper automation off until offers confirm.
+5. Review all immutable terms, the exact funding breakdown and the no-refund warning. Choose a future start with enough time for offer preparation and registration to confirm before its scheduled UTC cutoff. Browser period processing is mandatory and cannot be disabled. A prepared offer that misses the cutoff cannot be signed/submitted as registration by this frontend; its wallet-owned preparation remains recoverable.
 6. Explicitly approve the wallet-funded transaction. Wait for confirmation, then resume creation to perform the signature-free factory spend. After confirmed canonical genesis verification, the vault is saved locally and can be opened/shared.
 
 For `P` periods and cap `C` satoshis, the initial state reserve is:

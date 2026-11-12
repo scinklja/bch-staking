@@ -1,3 +1,4 @@
+import {assertOfferCutoff} from './offer-policy.js';
 import {binToHex,hexToBin,type Transaction} from '@bitauth/libauth';
 import {ElectrumCore,decodeRawTransaction} from './electrum-core.js';
 import {ElectrumIndexer} from './indexer-core.js';
@@ -36,12 +37,33 @@ export class BrowserWallet {
  private binding(key:WalletKey,keys:WalletKey[]){if(!keys.some(k=>k.publicKey===key.publicKey&&k.path===key.path&&k.index===key.index))throw Error('The connected wallet does not control this operation’s derivation path');}
  private identity(keys:WalletKey[]){const owner=keys.find(k=>k.path==='receive'&&k.index===0),change=keys.find(k=>k.path==='change'&&k.index===0);if(!owner||!change)throw Error('Live wallet receive/change paths are required');return {owner,change};}
  private async freshVault(config:VaultConfig){if(!this.index.configs.some(c=>c.genesis===config.genesis))this.index.configs.push(config);await this.index.sync();const v=this.index.vaults.find(v=>v.config.genesis===config.genesis);if(!v)throw Error('Vault is not confirmed');for(const peer of walletPeers(this.provider))await this.provider.session(()=>verifyCanonicalVault(this.index,this.provider,v),peer);return v;}
+ private offerCutoff(config:VaultConfig,clock:KeeperClock&{hash:string}) {
+  const vault=this.index.vaults.find(v=>v.config.genesis===config.genesis),tip=this.index.tip;
+  if(!vault||!tip||!this.index.health.connected||this.index.health.stale||this.now()-Date.parse(this.index.health.updatedAt)>60000||tip.hash!==clock.hash)throw Error('Fresh, matching two-provider vault verification is required for an offer');
+  const state=hexToBin(vault.witness);return assertOfferCutoff(config,new DataView(state.buffer,state.byteOffset).getUint32(0,true),!!state[4],state[5],this.now()/1000,clock.mtp);
+ }
+ private async eligibleVault(config:VaultConfig) {
+  const vault=await this.freshVault(config),tip=this.index.tip!;
+  this.offerCutoff(config,{height:tip.height,mtp:tip.mtp,hash:tip.hash});
+  return vault;
+ }
+ /** Fresh authorization immediately before the live wallet signing request. No signing occurs here. */
+ async authorize(id:string,keys:WalletKey[]) {
+  const op=await this.operation(id);if(op.stage!=='review'||!op.plan)throw Error('Operation is not ready for wallet approval');
+  const canonical=await this.canonicalPlan(op,keys,op.clock!);
+  if(walletPlanIdentity(canonical)!==walletPlanIdentity(op.plan))throw Error('Canonical plan changed; rebuild before wallet approval');
+  const clock=await verifyCoinsAcrossPeers(this.provider,op.coins.map(c=>c.utxo));
+  const transaction=canonical.request.transaction as Transaction;
+  if(transaction.locktime>=(transaction.locktime<500000000?clock.height+1:clock.mtp))throw Error('Wallet plan is not final at the freshly verified chain clock; rebuild before signing');
+  const deadline=op.kind==='offer'?this.offerCutoff(op.config!,clock):undefined;
+  return {deadline,verifiedAt:this.now()};
+ }
  private async canonicalPlan(op:WalletOperation,keys:WalletKey[],clock:KeeperClock) {
   if(!op.owner||!op.change)throw Error('Wallet identity required');this.binding(op.owner,keys);this.binding(op.change,keys);for(const c of op.coins)this.binding(c,keys);
   if(op.step==='funding')return buildCreatePlan(op.parameters,op.coins,op.change,this.provider);
-  if(op.step==='preparation')return buildPreparation(op.coins,op.owner,op.change,op.parameters.stakingCategory,validateOfferTerms(op.parameters,op.terms!),this.provider);
+  if(op.step==='preparation'){await this.eligibleVault(op.config!);return buildPreparation(op.coins,op.owner,op.change,op.parameters.stakingCategory,validateOfferTerms(op.parameters,op.terms!),this.provider);}
   if(op.step==='register') {
-   const vault=await this.freshVault(op.config!);
+   const vault=await this.eligibleVault(op.config!);
    if(op.raw&&op.plan) {const tx=op.plan.request.transaction as Transaction;if(binToHex(tx.inputs[0].outpointTransactionHash)!==vault.transaction.txid)throw Error('Registration conflict: another confirmed state spend won. Rebuild and approve a fresh transaction.');}
    return buildRegistration(vault,op.coins[0],op.owner,op.terms!,this.provider,clock);
   }
@@ -60,7 +82,7 @@ export class BrowserWallet {
   const op:WalletOperation={version:1,network:'chipnet',id:crypto.randomUUID(),kind:'create',step:'funding',stage:'review',parameters,owner,change,coins,clock,updatedAt:this.now()};op.plan=await this.canonicalPlan(op,keys,clock);return this.save(op);
  }
  async offer(config:VaultConfig,terms:OfferTerms,keys:WalletKey[]) {
-  validateVaultParameters(config);const amount=validateOfferTerms(config,terms),{owner,change}=this.identity(keys);await this.freshVault(config);
+  validateVaultParameters(config);const amount=validateOfferTerms(config,terms),{owner,change}=this.identity(keys);await this.eligibleVault(config);
   if(!this.inventory||json(keys)!==json(this.keys))throw Error('Check this connected wallet’s chipnet balances first');
   const available=await this.availableCoins(),exact=available.find(c=>c.utxo.satoshis===10000n&&c.utxo.token?.category===config.stakingCategory&&!c.utxo.token.nft&&c.utxo.token.amount===amount);
   const coins=exact?[exact]:chooseTokens(available,config.stakingCategory,amount),clock=await verifyCoinsAcrossPeers(this.provider,coins.map(c=>c.utxo));
@@ -84,8 +106,10 @@ export class BrowserWallet {
  }
  private async relay(op:WalletOperation,clock:KeeperClock) {
   const p=this.provider,decoded=decodeRawTransaction(op.raw!),coins=op.step==='genesis'?[utxo(decodeRawTransaction((await confirmedWalletTransaction(p,op.pregenesis!)).hex),0)]:op.plan!.request.sourceOutputs.map((source,n)=>({txid:decoded.vin[n].txid,vout:decoded.vin[n].vout,satoshis:source.valueSatoshis,lockingBytecode:binToHex(source.lockingBytecode),...(source.token?{token:{category:binToHex(source.token.category),amount:source.token.amount,...(source.token.nft?{nft:{capability:source.token.nft.capability,commitment:binToHex(source.token.nft.commitment)}}:{})}}:{})}));
+  if(op.kind==='offer')await this.eligibleVault(op.config!);
   const quorum=await verifyCoinsAcrossPeers(p,coins);
-  try {await p.session(async()=>{const current=await verifyCoins(p,coins,walletPeers(p)[0]);if(current.hash!==quorum.hash||current.mtp!==quorum.mtp)throw Error('Tip changed after provider agreement; reconcile before retry');if(op.step==='genesis')validateKeeperTransaction(op.raw!,coins.map(sourceOutput),current,10000n);else validateWalletSigned(op.plan!,op.raw!,current);this.onProgress?.('Broadcasting approved chipnet transaction; confirmation is not implied');await p.sendRawTransaction(op.raw!);},walletPeers(p)[0]);op.stage='pending';op.error=undefined;}
+  if(op.kind==='offer')this.offerCutoff(op.config!,quorum);
+  try {await p.session(async()=>{const current=await verifyCoins(p,coins,walletPeers(p)[0]);if(current.hash!==quorum.hash||current.mtp!==quorum.mtp)throw Error('Tip changed after provider agreement; reconcile before retry');if(op.step==='genesis')validateKeeperTransaction(op.raw!,coins.map(sourceOutput),current,10000n);else validateWalletSigned(op.plan!,op.raw!,current);if(op.kind==='offer')this.offerCutoff(op.config!,current);this.onProgress?.('Broadcasting approved chipnet transaction; confirmation is not implied');await p.sendRawTransaction(op.raw!);},walletPeers(p)[0]);op.stage='pending';op.error=undefined;}
   catch(error){op.stage='error';op.error='Submission rejected or acknowledgement uncertain. Reconcile before retrying. '+String(error);}
   return this.save(op);
  }
