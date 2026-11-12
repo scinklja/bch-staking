@@ -69,12 +69,21 @@
     ]
   },
   "deployment": {
-    "status": "pending production build",
+    "status": "built and static assets verified",
     "repository": "scinklja/staking-arena-site",
     "branch": "main",
     "rollbackCommit": "53dc760a6e16bc162ad9a0e76829fe5163ab9e46",
     "rollbackBranch": "rollback/pre-zero-conf-2026-11-12",
-    "localRollbackBundle": ".pages-release/pre-zero-conf-2026-11-12.bundle"
+    "localRollbackBundle": ".pages-release/pre-zero-conf-2026-11-12.bundle",
+    "commit": "1d361a8d9418886e689d781aa001b3f2567aab3f",
+    "url": "https://scinklja.github.io/staking-arena-site/",
+    "pagesBuildStatus": "built",
+    "pagesBuiltAt": "2026-11-12T18:57:00Z",
+    "staticVerifiedAt": "2026-11-12T18:57:54.957085+00:00",
+    "verificationMethod": "HTTP GET and SHA-256 only; no browser or JavaScript execution",
+    "verifiedAssets": 19,
+    "rollbackBranchPublished": true,
+    "localRollbackBundleVerified": true
   },
   "limitations": [
     "Catalog-based discovery rather than global enumeration",
@@ -83,5 +92,111 @@
     "Funding, wallet spending and settlement still require confirmed inputs",
     "Separate v2 recovery UI unchanged",
     "No live chipnet transaction verification performed"
-  ]
+  ],
+  "sourceImplementationCommit": "cf360e525555087dd4b44bb84a0c3c68dee7c0b2",
+  "productionBuild": {
+    "passed": true,
+    "command": "VITE_MIN_DISPLAY_CONFIRMATIONS=0 node frontend/scripts/build-pages.mjs",
+    "compiledFiles": 19,
+    "sourceMaps": false,
+    "secretPatternAudit": true,
+    "retainsPreviouslyPublishedHashedAssets": true,
+    "assets": [
+      {
+        "path": "arena.svg",
+        "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+        "bytes": 270
+      },
+      {
+        "path": "assets/GeneralizedAssets-BvnK7YKL.js",
+        "sha256": "2650c4feed664a47bdf3ef6bb0ceb6d390091b00e28c0de6ee05d127054ec1e0",
+        "bytes": 11793
+      },
+      {
+        "path": "assets/app-entry-BMhYeEQ0.css",
+        "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee",
+        "bytes": 9836
+      },
+      {
+        "path": "assets/app-entry-Brqq688N.js",
+        "sha256": "05db4c28e02e6d5261d48239ba90396be0bad1eb76a610d109ab4fb648e26608",
+        "bytes": 871574
+      },
+      {
+        "path": "assets/arena.worker-CTxc-Eda.js",
+        "sha256": "7ef170f48e2a21e6b2f24065636e163686806ff08f5d4636c5a001e29455848c",
+        "bytes": 688413
+      },
+      {
+        "path": "assets/electrum-wallet-DjZLKb_e.js",
+        "sha256": "63398ba4d3490a5111a22692312f92ad53e7f940ad095e9e40f7f92b3a8c6143",
+        "bytes": 282399
+      },
+      {
+        "path": "assets/index-BQrnDWzL.js",
+        "sha256": "3de8ed71343b9fc1e04f63b39d8776746b30421c2e4ca90380709447d2b3676c",
+        "bytes": 1719
+      },
+      {
+        "path": "assets/indexer-BLSUFPLs.js",
+        "sha256": "eb41e42dff5a8be9ce07814ef141201106bd01c16182155932dae4319ee3d457",
+        "bytes": 45900
+      },
+      {
+        "path": "assets/indexer-Cp9wECd7.js",
+        "sha256": "9cc5a00c555c0c0db489e0a11cd7c98a056a251fa950b6369f5565d8ffe10e21",
+        "bytes": 53
+      },
+      {
+        "path": "assets/indexer.bootstrap.worker-D7vr6vWd.js",
+        "sha256": "4ce583809d4ada4b853889caa3f4febc84a88d33fe5628f938b39875cbf3d9fe",
+        "bytes": 628
+      },
+      {
+        "path": "assets/keeper-BRelbEv1.js",
+        "sha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+        "bytes": 584
+      },
+      {
+        "path": "assets/model-_T7ZtZtD.js",
+        "sha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+        "bytes": 1685
+      },
+      {
+        "path": "assets/preload-helper-DZYbdLbp.js",
+        "sha256": "4628f281be8264eb4454d5781b6706cffc720fea5604b46612d743254a940fd9",
+        "bytes": 1634
+      },
+      {
+        "path": "assets/registry-CQaCR-7z.js",
+        "sha256": "2f1c9eae32973a7cd3a78e1baffd495ca26faaae13d5822f23b36518ca721fb6",
+        "bytes": 39742
+      },
+      {
+        "path": "assets/registry-R-0oSpMz.js",
+        "sha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+        "bytes": 378307
+      },
+      {
+        "path": "assets/rolldown-runtime-WkwZ5CU-.js",
+        "sha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+        "bytes": 599
+      },
+      {
+        "path": "assets/wallet-X5w_xZFM.js",
+        "sha256": "496d494786fe19384ba2c31c4ec72151b3ecf8ee73cc63b26c2ac36fdc704523",
+        "bytes": 11895
+      },
+      {
+        "path": "assets/wallet.worker-jgamCDdG.js",
+        "sha256": "789d779ec51d28ebcf9697b41b6d88879460509afa646e58ef06d774f5778a2f",
+        "bytes": 43057
+      },
+      {
+        "path": "index.html",
+        "sha256": "b2696165eb5d801f9a3e2f36c4ed15af2dd2e48bc32e6d0b1c7cf8ea230f1c57",
+        "bytes": 1250
+      }
+    ]
+  }
 }
