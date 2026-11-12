@@ -1,0 +1,4 @@
+import {render,screen,fireEvent} from '@testing-library/react';
+import {describe,it,expect} from 'vitest';
+import GeneralizedAssets from '../src/GeneralizedAssets';
+describe('v2 generalized asset creation',()=>{it('provides BCH and CashToken choices for both protected assets',()=>{render(<GeneralizedAssets/>);const staking=screen.getByLabelText('Staking asset'),reward=screen.getByLabelText('Reward asset');expect(staking).toHaveValue('bch');expect(reward).toHaveValue('bch');fireEvent.change(staking,{target:{value:'token'}});fireEvent.change(reward,{target:{value:'token'}});expect(screen.getByLabelText('Staking token category')).toBeInTheDocument();expect(screen.getByLabelText('Reward token category')).toBeInTheDocument();expect(screen.getByRole('button',{name:'Review v2 funding in wallet'})).toBeDisabled();expect(screen.getByText(/Public wallet and chipnet compatibility remain unverified/)).toBeInTheDocument();});});

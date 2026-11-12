@@ -58,7 +58,7 @@ test('v2 competing registrations refresh unsigned slots and preserve prepared fu
 
 test('v2 removed funding confirmations retain identical signed funding for explicit recovery',async()=>{
  const f=new WalletFixture(),journal=new Map<string,Operation>(),store:Store={list:async()=>[...journal.values()],save:async o=>{journal.set(o.id,o);}},engine=new AssetWallet(f.chain.provider(),store),p:Parameters={version:2,stakingAsset:{kind:'bch'},rewardAsset:{kind:'bch'},cap:2000n,periods:2,epoch:f.chain.clock().mtp-1000,periodSeconds:10};
- let op=await engine.create(p,f.keys),fundingRaw=f.sign(op.plan!);op=await engine.submit(op.id,fundingRaw);f.chain.mine();op=await engine.resume(op.id);assert.equal(op.fundingRaw,fundingRaw);
+ let op=await engine.create(p,f.keys),fundingRaw=f.sign(op.plan!);op=await engine.submit(op.id,fundingRaw);f.chain.mine();op=await engine.resume(op.id);assert.equal(op.fundingRaw,fundingRaw);await assert.rejects(()=>engine.discard(op.id),/funded factory/);
  f.chain.reorgLastBlock();await assert.rejects(()=>engine.resume(op.id));assert.equal(journal.get(op.id)!.fundingRaw,fundingRaw);
  op=await engine.rebroadcastFunding(op.id);assert.equal(op.stage,'pending');f.chain.mine();op=await engine.resume(op.id);assert.equal(op.step,'action');assert.equal(op.stage,'review');assert.equal(f.chain.broadcasts[0],f.chain.broadcasts[1]);
 });

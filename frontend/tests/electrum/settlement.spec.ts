@@ -49,13 +49,17 @@ test('two independent browser users race safely; one canonical transaction spend
 test('manual processing works with automation disabled and always waits for confirmation',async({page})=>{
  await open(page);
  // Queue a manual request during a background replay; toggling disabled mid-click must not lose it.
- let release!:()=>void;holdResponses=new Promise<void>(done=>{release=done;});
+ let release:()=>void=()=>{},gateArmed=true;
+ // Arm the response gate when the actual refresh message is sent. An initial
+ // background replay must remain free to finish so the button can become enabled.
+ await page.exposeFunction('holdManualReplay',()=>{if(gateArmed)holdResponses=new Promise<void>(done=>{release=done;});});
+ await page.evaluate(()=>{const prototype=Worker.prototype as any,original=prototype.postMessage;prototype.postMessage=function(message:any,...rest:any[]){if(message?.type==='refresh'){prototype.postMessage=original;void (window as any).holdManualReplay().then(()=>original.call(this,message,...rest));}else original.call(this,message,...rest);};});
  try {
   await page.getByRole('button',{name:'Refresh data',exact:true}).click();
   await expect(page.getByRole('button',{name:'Refreshing…',exact:true})).toBeDisabled();
   await expect(page.getByRole('button',{name:'Process Period'})).toBeEnabled();
   await page.getByRole('button',{name:'Process Period'}).click();
- }finally{holdResponses=undefined;release();}
+ }finally{gateArmed=false;holdResponses=undefined;release();}
  await expect(status(page)).toContainText('Pending confirmation',{timeout:30000});
  expect(await page.getByRole('checkbox').isChecked()).toBe(false);expect(chain.broadcasts.length).toBe(1);
  chain.mine();await expect(status(page)).toContainText('Confirmed');await expect(status(page)).toContainText('Settlement required');expect(chain.broadcasts.length).toBe(1);

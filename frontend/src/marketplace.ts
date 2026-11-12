@@ -1,8 +1,9 @@
 import { ranked, type Envelope, type Vault } from './model';
-export type Route = { page:'home'|'create'|'missing' } | { page:'vault'|'offer'; id:string };
+export type Route = { page:'home'|'create'|'v2'|'missing' } | { page:'vault'|'offer'; id:string };
 export function routeFromHash(hash:string):Route {
   const path=hash.replace(/^#/, '').split('?')[0] || '/';
   if(path==='/') return {page:'home'};
+  if(path==='/v2') return {page:'v2'};
   if(path==='/create') return {page:'create'};
   const match=path.match(/^\/vault\/([a-f0-9]{64})(\/offer)?$/i);
   return match ? {page:match[2]?'offer':'vault',id:match[1].toLowerCase()} : {page:'missing'};

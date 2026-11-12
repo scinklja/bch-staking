@@ -189,3 +189,8 @@ The test uses genuine separately funded escrow with a freshly valid sponsor
 signature, then verifies BCHN rejection of the substitution. Standalone donations
 to role addresses are outside the canonical protocol and are not recoverable;
 normal funding always uses the explicit preparation/genesis/registration layouts.
+
+Final verification is recorded in [the verification report](generalized-assets-v2-verification.md).
+A funded creation factory cannot be discarded as an unsigned operation: its
+recovery record is retained until genesis is completed. Unsigned, unfunded
+preparations and ordinary wallet-owned prepared inputs may be explicitly discarded.

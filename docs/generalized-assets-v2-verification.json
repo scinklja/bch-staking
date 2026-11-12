@@ -1,0 +1,77 @@
+{
+  "verifiedAt": "2026-11-12T13:12:51.307883+00:00",
+  "branch": "dev/generalized-assets-v2-implementation",
+  "node": "BCHN 29.2.0",
+  "checks": {
+    "v2_reference": {
+      "passed": 8,
+      "log": "/tmp/arena-v2-release-tests.log"
+    },
+    "v2_wallet_final": {
+      "passed": 4,
+      "log": "/tmp/arena-wallet-final-check.log"
+    },
+    "legacy_reference": {
+      "passed": 29,
+      "full_sweep": "/tmp/arena-all-regressions.log",
+      "allocation_rerun": "/tmp/arena-allocations-complete.log"
+    },
+    "chipnet_local_compatibility": {
+      "passed": 3,
+      "log": "/tmp/arena-chipnet-compat-delivery.log",
+      "public_chain": false
+    },
+    "frontend_unit": {
+      "passed": 39,
+      "files": 13,
+      "log": "/tmp/arena-frontend-unit-final.log"
+    },
+    "browser_smoke": {
+      "passed": 6,
+      "log": "/tmp/arena-browser-verified.log"
+    },
+    "static_browser": {
+      "passed": 2,
+      "log": "/tmp/arena-static-final.log"
+    },
+    "static_dom": {
+      "passed": true,
+      "log": "/tmp/arena-static-dom-verified.log"
+    },
+    "standalone_production_browser": {
+      "passed": true,
+      "log": "/tmp/arena-static-browser-final.log"
+    },
+    "electrum_browser": {
+      "passed": 18,
+      "full_sweep_passed": 17,
+      "corrected_manual_test_passed": 1,
+      "logs": [
+        "/tmp/arena-electrum-browser-final.log",
+        "/tmp/arena-manual-settlement-verified.log"
+      ]
+    },
+    "development_lifecycle": {
+      "passed": true,
+      "groups": 8,
+      "log": "/tmp/arena-dev-lifecycle-final.log"
+    },
+    "root_typecheck": {
+      "passed": true,
+      "log": "/tmp/arena-typecheck-delivery.log"
+    },
+    "production_build": {
+      "passed": true,
+      "log": "/tmp/arena-build-delivery.log"
+    },
+    "git_diff_check": {
+      "passed": true
+    }
+  },
+  "bchn_accepted": 99,
+  "bchn_rejected": 130,
+  "mainnetDeployment": false,
+  "publicWebsiteReplaced": false,
+  "realWizardConnectVerified": false,
+  "newPublicChipnetVerified": false
+}

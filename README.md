@@ -1,5 +1,16 @@
 # Staking Arena — BCH chipnet integration
 
+Generalized assets v2 is developed separately on `dev/generalized-assets-v2-implementation`.
+It supports BCH or fungible CashTokens for both staking and rewards, including
+same-category token vaults, with separate state, staking escrow and reward reserve
+outputs. See the [architecture, accounting, layouts and limitations](docs/generalized-assets-v2.md)
+[local BCHN verification](docs/generalized-assets-v2-results.json), and the
+[complete verification report](docs/generalized-assets-v2-verification.md).
+Use the opt-in `#/v2` browser page; deployed v1 covenants and the public website
+are unchanged. No new public-wallet or chipnet compatibility claim is made.
+Run `npm run node:start` and `npm run test:v2` to reproduce verification without
+chipnet funds; `npm test` includes both covenant families and legacy regressions.
+
 Chipnet is now the primary integration environment. See [chipnet startup, wallet flows, network checks and verification limits](docs/chipnet.md). `npm run dev` now uses `.chipnet/frontend/config.json` and localhost BCHN RPC 48332. Mainnet is prohibited; regtest data and tests remain reference material. The [live chipnet audit](docs/chipnet-e2e-verification.json) records 10 confirmed project transactions through reward payment and independent withdrawal; [local VM tests](docs/chipnet-local-verification.json) are recorded separately. The historical setup sections below describe the retained regtest environment; use `ARENA_NETWORK=regtest` explicitly to run it.
 
 The React frontend can index chipnet directly in a browser worker over public WSS and optionally activate/settle periods without wallet signatures, BCHN or an application API. See [browser startup and trust limits](docs/browser-electrum.md) and [browser settlement, fees and chipnet evidence](docs/browser-settlement.md). The optional Node/API development environment still starts with `npm run dev`; open http://127.0.0.1:5173.

@@ -8,7 +8,7 @@ test('marketplace uses indexed terms and detail links survive reload',async({pag
  await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByText('Maximum reward per period',{exact:true})).toBeVisible();
  await expect(page.getByRole('table')).toBeVisible();
  await expect(page.getByRole('row').nth(1)).toContainText('Offer #01');
- await expect(page.getByRole('navigation').getByRole('link')).toHaveCount(1);
+ await expect(page.getByRole('navigation').getByRole('link')).toHaveCount(2);
 });
 test('mobile preview forms are usable without suggesting wallet functionality',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
@@ -64,3 +64,15 @@ test('WizardConnect pairs on demand and Escape cancels the accessible mobile dia
  expect(await page.evaluate(()=>localStorage.getItem('staking-arena-wizardconnect-v1'))).toBeNull();
  expect(errors).toEqual([]);
 });
+
+ test('v2 asset selectors show exact reserves without enabling unsigned wallet spends',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
+ await page.goto('/#/v2',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Staking Arena v2'})).toBeVisible();
+ await page.getByLabel('First period start (UTC)').fill('2027-01-01T00:00');await page.getByLabel('Period duration (seconds)').fill('60');
+ await expect(page.getByText(/Full upfront reward reserve: 6000 raw units/)).toBeVisible();
+ await page.getByRole('combobox',{name:'Reward asset',exact:true}).selectOption('token');await page.getByLabel('Reward token category').fill('ab'.repeat(32));await page.getByLabel('Maximum reward per period (raw units)').fill('7');
+ await expect(page.getByText(/Full upfront reward reserve: 21 raw units/)).toBeVisible();
+ await page.getByRole('combobox',{name:'Staking asset',exact:true}).selectOption('token');await page.getByLabel('Staking token category').fill('ab'.repeat(32));
+ await expect(page.getByRole('button',{name:'Review v2 funding in wallet'})).toBeDisabled();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ });

@@ -7,7 +7,7 @@ afterEach(()=>{vi.useRealTimers();window.history.replaceState(null,'','/');});
 const response=(data:unknown)=>Promise.resolve(new Response(JSON.stringify(data),{status:200}));
 function live(data=fixture()){vi.stubGlobal('fetch',vi.fn(()=>response(data)));return render(<App/>);}
 async function navigate(href:string){await act(async()=>{window.location.hash=href;window.dispatchEvent(new HashChangeEvent('hashchange'));});}
-it('shows only actual indexed vault terms and one primary navigation link',async()=>{
+it('shows only actual indexed vault terms and separate v2 navigation',async()=>{
  const fetcher=vi.fn(()=>response(fixture()));vi.stubGlobal('fetch',fetcher);render(<App/>);
  await screen.findByText('Maximum reward / period');
  expect(screen.getByRole('heading',{name:'Staking Arena'})).toBeInTheDocument();
@@ -15,7 +15,7 @@ it('shows only actual indexed vault terms and one primary navigation link',async
  expect(screen.getByText('0.00001000 BCH')).toBeInTheDocument();
  expect(screen.getByText('Every minute')).toBeInTheDocument();
  expect(fetcher.mock.calls[0]).toBeDefined();
- expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(1);
+ expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(2);
  expect(screen.queryByText('Native BCH reserves')).not.toBeInTheDocument();
 });
 it('opens a dedicated hash detail route and ranks offers by exact priority',async()=>{

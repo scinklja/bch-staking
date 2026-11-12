@@ -30,7 +30,7 @@ async function waitFor(check) {
 }
 await waitFor(() => document.querySelector('[role=alert]'));
 assert.match(document.body.textContent, /Vault data unavailable/);
-assert.equal(document.querySelectorAll('nav a').length, 1);
+assert.equal(document.querySelectorAll('nav a').length, 2);
 assert.equal(document.querySelector('h1').textContent, 'Staking Arena');
 window.location.hash = '/create';
 await waitFor(() => document.querySelector('h1')?.textContent === 'Create Vault');

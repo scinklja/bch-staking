@@ -19,7 +19,20 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
   window.dispatchEvent(new CustomEvent('arena-wallet-operation',{detail:op}));
   return {txid:op.txid??'',status:op.stage,operation:op};
  }
- return {browser:true,publicKey(){check();const key=getManager().getPubkey(0,0n);if(!key)throw Error('Wallet receive key unavailable');return binToHex(key);},async inventory(limit=40){if(![40,200].includes(limit))throw Error("Unsupported scan bound");scanLimit=limit;await startup;return rpc('scan',keys());},async operations(){await startup;return rpc('list');},async inspect(id){await startup;const op=await rpc('get',id) as WalletOperation;if(op.step==='complete')await finish(op);return op;},async importVault(config){await startup;const result=await rpc('importVault',config);saveLocalVault(result.config,result.category);return result;},async execute(intent){
+ return {browser:true,async v2(intent){
+   await startup;
+   if(['list','sync'].includes(String(intent.operation)))return rpc('v2',intent,[]);
+   const session=JSON.stringify(getManager().getSessionPaths());
+   const result=await rpc('v2',intent,['list','sync','resume'].includes(String(intent.operation))?[]:keys());
+   if(!result?.plan||result.stage!=='review')return result;
+   check();if(result.owner?.publicKey!==binToHex(getManager().getPubkey(0,0n)??new Uint8Array()))throw Error('Resume with the original v2 wallet owner');
+   if(typeof getManager().signTransaction!=='function')throw Error('Wallet does not support transaction signing');
+   if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before v2 approval');
+   const signed=await getManager().signTransaction({transaction:wizardWireTransaction(result.plan.request),inputPaths:result.plan.inputPaths},{signal:signing.signal});
+   check();if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed during v2 approval');
+   if(signed.error||!signed.signedTransaction)throw Error('V2 signing refused; operation remains recoverable');
+   return rpc('v2',{operation:'submit',id:result.id,raw:signed.signedTransaction},[]);
+  },publicKey(){check();const key=getManager().getPubkey(0,0n);if(!key)throw Error('Wallet receive key unavailable');return binToHex(key);},async inventory(limit=40){if(![40,200].includes(limit))throw Error("Unsupported scan bound");scanLimit=limit;await startup;return rpc('scan',keys());},async operations(){await startup;return rpc('list');},async inspect(id){await startup;const op=await rpc('get',id) as WalletOperation;if(op.step==='complete')await finish(op);return op;},async importVault(config){await startup;const result=await rpc('importVault',config);saveLocalVault(result.config,result.category);return result;},async execute(intent){
   await startup;let op:WalletOperation;
   if(intent.kind==='cancel')return finish(await rpc('cancel',intent.id));
   if(intent.kind==='recover')return finish(await rpc('recover',intent.parameters,intent.pregenesis));

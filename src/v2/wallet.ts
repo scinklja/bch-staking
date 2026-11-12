@@ -119,7 +119,7 @@ export class AssetWallet {
  async rebroadcast(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.raw||!op.plan||!op.txid||op.step==='complete')throw Error('No uncertain signed transaction');
  const reviewed={...op,stage:'review' as const};await this.store.save(reviewed);return this.submit(id,op.raw);
  }
- async discard(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)throw Error('Only unsigned operations may be discarded');const discarded={...op,step:'complete' as const,stage:'confirmed' as const,plan:undefined,error:'Unsigned operation discarded; prepared wallet coins remain spendable'};await this.store.save(discarded);return discarded;}
+ async discard(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)throw Error('Only unsigned operations may be discarded');if(op.kind==='create'&&op.funding)throw Error('A funded factory must remain recoverable; finish genesis instead of discarding it');const discarded={...op,step:'complete' as const,stage:'confirmed' as const,plan:undefined,error:'Unsigned operation discarded; prepared wallet coins remain spendable'};await this.store.save(discarded);return discarded;}
  async submit(id:string,raw:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.plan||op.stage!=='review')throw Error('No reviewed v2 plan');
  validateFundingPlan(op,this.provider);const inputs=planCoins(op.plan);
  const clock=await verifyCoinsAcrossPeers(this.provider,inputs),validated=validateWalletSigned(op.plan,raw,clock),prepared={...op,raw,txid:validated.txid,stage:'prepared' as const};await this.store.save(prepared);

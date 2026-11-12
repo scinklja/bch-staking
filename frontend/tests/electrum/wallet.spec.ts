@@ -34,3 +34,18 @@ test('native wallet worker persists signed factory intent, resumes after reload 
 test('native wallet worker reserves unsigned funding, permits explicit discard and refuses changed signed outputs',async({page})=>{
  await start(page);await call(page,'scan',fixture.keys);let op=await call(page,'create',fixture.parameters(),fixture.keys);await expect(call(page,'create',fixture.parameters(),fixture.keys)).rejects.toThrow(/Insufficient BCH/);op=await call(page,'cancel',op.id);expect(op.stage).toBe('cancelled');op=await call(page,'create',fixture.parameters(),fixture.keys);op.plan.request.transaction.outputs[0].valueSatoshis--;const raw=fixture.sign(op.plan);await expect(call(page,'submit',op.id,raw,fixture.keys)).rejects.toThrow(/changed/);expect(fixture.chain.broadcasts).toHaveLength(0);
 });
+
+for(const pair of ['token-bch','bch-token','token-token','bch-bch','same-category'])test(`v2 native worker ${pair}: reserve, offer, keeper and allocation withdrawal`,async({page})=>{
+ test.setTimeout(180000);await start(page);
+ const token={kind:'token',category:fixture.asset},other={kind:'token',category:fixture.other},native={kind:'bch'},stakingAsset=pair.startsWith('bch')?native:token,rewardAsset=pair==='same-category'?token:pair.endsWith('bch')?native:other;
+ const parameters={version:2,stakingAsset,rewardAsset,cap:rewardAsset.kind==='bch'?2000n:10n,periods:2,epoch:fixture.chain.clock().mtp-10000,periodSeconds:10};
+ const v2=(intent:Record<string,unknown>)=>call(page,'v2',intent,fixture.keys);
+ async function finish(op:any){expect(op.stage).toBe('review');op=await v2({operation:'submit',id:op.id,raw:fixture.sign(op.plan)});expect(op.stage).toBe('pending');fixture.chain.mine();op=await v2({operation:'resume',id:op.id});expect(op.step).toBe('action');expect(op.stage).toBe('review');op=await v2({operation:'submit',id:op.id,raw:fixture.sign(op.plan)});expect(op.stage).toBe('pending');fixture.chain.mine();op=await v2({operation:'resume',id:op.id});expect(op.step).toBe('complete');return op;}
+ const created=await finish(await v2({operation:'create',parameters})),config=created.config;
+ await finish(await v2({operation:'offer',config,terms:{stake:1000n,duration:1,reward:rewardAsset.kind==='bch'?1000n:7n,maxWins:2}}));
+ await finish(await v2({operation:'keeper',config}));await finish(await v2({operation:'keeper',config}));
+ const snapshot=await v2({operation:'sync',config});expect(snapshot.version).toBe(2);expect(snapshot.allocations).toHaveLength(1);expect(snapshot.pending).toHaveLength(0);expect(snapshot.allocations[0].mature).toBe(true);
+ await finish(await v2({operation:'keeper',config}));const activated=await v2({operation:'sync',config});expect(activated.instance.state[4]).toBe(1);
+ await finish(await v2({operation:'withdraw',config,allocation:snapshot.allocations[0].id}));const withdrawn=await v2({operation:'sync',config});expect(withdrawn.allocations[0].withdrawal).toBeTruthy();expect(withdrawn.instance.inputs[0].txid).toBe(activated.instance.inputs[0].txid);
+ expect((await v2({operation:'list'})).filter((o:any)=>o.step==='complete')).toHaveLength(6);
+});
