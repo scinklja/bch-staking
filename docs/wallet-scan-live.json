@@ -1,0 +1,273 @@
+{
+  "startedAt": "2026-11-12T14:18:03.430Z",
+  "target": "https://scinklja.github.io/staking-arena-site/",
+  "progress": [
+    {
+      "at": "2026-11-12T14:18:33.511Z",
+      "message": "Checking wallet balances: attempt 1/3. Verifying all 120 supplied addresses on two chipnet providers…"
+    },
+    {
+      "at": "2026-11-12T14:18:36.499Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 4/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:36.917Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 8/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:37.360Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 12/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:37.790Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 16/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:38.337Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 20/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:38.738Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 24/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:39.164Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 28/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:39.584Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 32/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:40.677Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 36/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:41.083Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 40/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:41.496Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 44/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:41.960Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 48/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:42.395Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 52/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:42.795Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 56/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:43.248Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 60/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:43.706Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 64/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:44.150Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 68/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:44.551Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 72/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:44.975Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 76/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:45.396Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 80/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:45.826Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 84/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:46.269Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 88/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:46.658Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 92/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:47.070Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 96/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:47.486Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 100/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:47.915Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 104/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:48.340Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 108/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:48.779Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 112/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:49.269Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 116/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:49.735Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 1/2, 120/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:52.959Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 4/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:53.230Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 8/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:53.504Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 12/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:53.793Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 16/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:54.066Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 20/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:54.358Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 24/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:54.643Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 28/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:54.945Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 32/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:55.223Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 36/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:55.498Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 40/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:55.789Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 44/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:56.090Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 48/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:56.449Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 52/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:56.741Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 56/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:57.033Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 60/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:57.330Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 64/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:57.613Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 68/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:57.898Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 72/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:58.203Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 76/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:58.491Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 80/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:58.784Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 84/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:59.078Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 88/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:59.373Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 92/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:18:59.751Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 96/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:00.044Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 100/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:00.365Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 104/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:00.660Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 108/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:00.965Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 112/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:01.318Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 116/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:01.600Z",
+      "message": "Checking wallet balances: attempt 1/3, provider 2/2, 120/120 addresses checked."
+    },
+    {
+      "at": "2026-11-12T14:19:03.880Z",
+      "message": "Wallet balances verified on both chipnet providers."
+    }
+  ],
+  "pageErrors": [],
+  "signingRequested": false,
+  "transactionSubmitted": false,
+  "wallet": "Cashonize",
+  "walletNetwork": "chipnet",
+  "pairingButtons": [
+    "",
+    ""
+  ],
+  "newPublicKeyPairing": true,
+  "scanMs": 31675,
+  "balances": "Token-free BCH: 0.00015000 BCH. 120 addresses checked, including all supplied children up to the per-path limit of 40.",
+  "uncheckedDisabled": true,
+  "validFormAndConfirmationEnabled": true,
+  "invalidFormDisabled": true,
+  "reviewButtonNotClicked": true,
+  "operationsText": "No saved operations on this browser.",
+  "completedAt": "2026-11-12T14:19:06.210Z",
+  "completed": true
+}

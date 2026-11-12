@@ -28,3 +28,16 @@ it('ignores a superseded worker startup error when the live wallet client replac
  await act(async()=>{rejectOld(Error('Wallet worker closed'));});
  expect(screen.queryByText(/Wallet worker closed/)).not.toBeInTheDocument();
 });
+it('clears a verified balance on failed refresh, displays retry progress, and enables funding only after recovery',async()=>{
+ const wallet=client();render(<WalletTransactionsContext.Provider value={wallet}><BrowserCreateForm/></WalletTransactionsContext.Provider>);
+ fill(/^Staking asset category/,asset);fill(/^Maximum reward per period/,'0.00002000');fill(/^Period duration/,'60');fill(/^Number of periods/,'2');fill(/^Schedule starts/,'2026-11-12T00:00');
+ const review=screen.getByRole('button',{name:'Review funding in wallet'}),scan=screen.getByRole('button',{name:'Check wallet balances'});
+ await act(async()=>{fireEvent.click(scan);});expect(review).toBeDisabled();fireEvent.click(screen.getByRole('checkbox'));expect(review).toBeEnabled();
+ let rejectScan!:(error:Error)=>void;vi.mocked(wallet.inventory!).mockImplementationOnce(()=>new Promise((_resolve,reject)=>{rejectScan=reject;}));
+ await act(async()=>{fireEvent.click(scan);});expect(review).toBeDisabled();
+ act(()=>window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Normal new block; retrying both providers (2/3)'})));
+ expect(screen.getByText(/retrying both providers/)).toBeInTheDocument();
+ await act(async()=>rejectScan(Error('Wallet balances could not be verified after 3 attempts. Check wallet balances again.')));
+ expect(review).toBeDisabled();expect(screen.getByText(/could not be verified after 3 attempts/)).toBeInTheDocument();
+ await act(async()=>{fireEvent.click(scan);});expect(review).toBeEnabled();expect(wallet.execute).not.toHaveBeenCalled();
+});

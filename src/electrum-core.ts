@@ -125,7 +125,7 @@ export class ElectrumCore implements NetworkProvider {
     const raw = await this.request('blockchain.transaction.get', txid, false);
     if (typeof raw !== 'string' || raw.length/2 + this.rawBytes > this.maxRawBytes) throw Error('Raw transaction byte limit exceeded; snapshot withheld');
     decodeRawTransaction(raw, txid);
-    if(this.rawCache) {this.rawBytes+=raw.length/2;this.rawCache.set(txid,raw);}
+    if(this.rawCache) {if(!this.rawCache.has(txid)&&this.rawCache.size>=this.maxTransactions)throw Error('Raw transaction limit exceeded');this.rawBytes+=raw.length/2;this.rawCache.set(txid,raw);}
     return raw;
   }
   async transaction(txid: string, height?: number): Promise<any> {

@@ -1,0 +1,50 @@
+{
+  "verifiedAt": "2026-11-12T14:15:59.909766+00:00",
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "commit": "b421663ce72e4155f02924746da452dcce1cf3bc",
+  "assets": [
+    {
+      "path": "arena.svg",
+      "status": 200,
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "b1293d9940e8690cd2c6fc62101cb6895f020a801361f3ee8398eac1a1b9bb71",
+      "bytes": 1146
+    },
+    {
+      "path": "assets/arena.worker-B264yQaN.js",
+      "status": 200,
+      "sha256": "97e0df05fb4d34832da87d863fd67673e68a6026398fd9b6a2bb914f7252f113",
+      "bytes": 682297
+    },
+    {
+      "path": "assets/app-entry-CtJnYqT2.js",
+      "status": 200,
+      "sha256": "17c657976a16c267e007681c63b52d1b28ae5a57a984efc4270a5382525e9bcb",
+      "bytes": 905105
+    },
+    {
+      "path": "assets/wallet.worker-2KSZ2TYH.js",
+      "status": 200,
+      "sha256": "10381fd26081939ce0be8208c86ebb3ca7856582b76c1d57edc03edd8acffff2",
+      "bytes": 694356
+    },
+    {
+      "path": "assets/index-BsNBcfSe.js",
+      "status": 200,
+      "sha256": "5028bf4aa2c505c97ef3eb18b2cea5645fd5858db906c64cd7b4e26389e1aee8",
+      "bytes": 3183
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "status": 200,
+      "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee",
+      "bytes": 9836
+    }
+  ],
+  "allMatch": true
+}
