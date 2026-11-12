@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-12T08:30:05.611Z",
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "httpStatus": 200,
+  "servesReleaseEntry": true,
+  "appAssetStatus": 200,
+  "experimentalLabelInDeliveredBundle": true,
+  "sourceCommit": "c1a70fa",
+  "publicCommit": "9b89049ff3569823dbe407eb439a7633dad2c1d7",
+  "rollbackCommit": "4c420d6c7cc555c44c39ef6badc8f4fe73f0a0c3",
+  "rollbackBranch": "rollback/pre-experimental-wallet-2026-11-12",
+  "additionalFunctionalTestsRun": false,
+  "onChainTransactionsCreated": 0
+}

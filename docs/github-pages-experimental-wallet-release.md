@@ -21,7 +21,8 @@ To roll back without rewriting history, in a clean checkout of the **public comp
 ```sh
 git switch main
 git pull --ff-only
-git restore --source=rollback/pre-experimental-wallet-2026-11-12 --staged --worktree -- .
+git fetch origin
+git restore --source=origin/rollback/pre-experimental-wallet-2026-11-12 --staged --worktree -- .
 git commit -m "Restore pre-experimental chipnet frontend"
 git push origin main
 ```
@@ -30,4 +31,12 @@ GitHub Pages publishes `main` from `/`. Do not copy the private source repositor
 
 ## Publication record
 
-Source and public commit IDs and delivery status are appended after publication.
+Deployed source: `c1a70fa`.
+
+Public compiled commit: `9b89049ff3569823dbe407eb439a7633dad2c1d7`.
+
+GitHub Pages reported this commit built successfully with no error. At `2026-11-12T08:30:05Z`, the public root and app bundle returned HTTP 200; the root referenced the new release entry and the delivered app bundle contained the experimental notice. This was a delivery check only; no browser functionality or wallet flow was retested.
+
+Receipt: [HTTP delivery metadata](github-pages-experimental-wallet-delivery.json).
+
+Only eight public files were committed: `.nojekyll`, HTML, SVG and five compiled JS/CSS assets. Contract source/debug metadata and source maps are absent from the packaged browser artifacts. The public repository contains no private source tree or wallet/runtime data.
