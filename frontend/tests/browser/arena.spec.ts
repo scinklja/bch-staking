@@ -1,6 +1,7 @@
 import { expect,test } from '@playwright/test';
-import { fixture } from '../fixture';
+import { browserFixture as fixture, browserTime } from '../fixture';
 const id='a'.repeat(64);
+test.beforeEach(async({page})=>{await page.clock.setFixedTime(browserTime);});
 test('marketplace uses indexed terms and detail links survive reload',async({page})=>{
  await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
  await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Staking Arena'})).toBeVisible();
@@ -24,7 +25,12 @@ test('retains snapshot labels across outage, reload and navigation, then recover
  await page.goto('/#/vault/'+id,{waitUntil:'domcontentloaded'});await expect(page.getByText('Verified indexer data',{exact:true})).toBeVisible();
  offline=true;await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByRole('alert')).toContainText('not current');
  await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByRole('alert')).toContainText('Saved indexed snapshot');await expect(page.getByText('Period at snapshot',{exact:true})).toBeVisible();
- await page.getByRole('link',{name:'Make an Offer'}).click();await expect(page.getByRole('alert')).toContainText('not current');
+ const offerLink=page.getByRole('link',{name:'Make an Offer'});
+ await expect(offerLink).toBeDisabled();await expect(offerLink).toHaveAttribute('aria-disabled','true');await expect(offerLink).not.toHaveAttribute('href');
+ // Preview deep links remain readable while stale data blocks submission.
+ await page.goto('/#/vault/'+id+'/offer',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Make an Offer'})).toBeVisible();await expect(page.getByRole('alert')).toContainText('not current');
+ for(const [label,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const)await page.getByRole('textbox',{name:label}).fill(value);
+ await expect(page.getByText('9,000 raw token units',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Make an Offer',exact:true})).toBeDisabled();
  await expect(page.getByRole('button',{name:'Refresh data',exact:true})).toBeEnabled();
  offline=false;await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByRole('alert')).toHaveCount(0);
 });
@@ -32,7 +38,7 @@ test('empty, malformed and stale API data never invent available vaults',async({
  let state='empty';await page.route('**/api/vaults',route=>{const data=fixture();if(state==='empty')data.vaults=[];if(state==='stale')data.health.connected=false;return route.fulfill({json:state==='invalid'?{chain:'main'}:data});});
  await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.getByText('No vaults listed',{exact:true})).toBeVisible();
  state='invalid';await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByRole('alert')).toContainText('incompatible or malformed');
- state='stale';await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByText('Open · at snapshot',{exact:true})).toBeVisible();
+ state='stale';await page.getByRole('button',{name:'Refresh data'}).click();await expect(page.getByText('Open for offers · at snapshot',{exact:true})).toBeVisible();
 });
 
 test('WizardConnect pairs on demand and Escape cancels the accessible mobile dialog',async({page})=>{

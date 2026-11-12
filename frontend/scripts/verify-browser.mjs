@@ -2,13 +2,13 @@
 import { chromium } from 'playwright-core';
 import { recordEvidence, finishEvidence } from './browser-evidence.mjs';
 import { launchOptions } from './browser-options.mjs';
-import { fixture } from '../tests/fixture.ts';
+import { browserFixture as fixture, browserTime } from '../tests/fixture.ts';
 import assert from 'node:assert/strict';
 const { server }=await import('./static-server.mjs');
 let browser, page, failed = false;
 try {
  browser=await chromium.launch(launchOptions);
- page=await browser.newPage({viewport:{width:1280,height:900}});await recordEvidence(page.context());await page.clock.install();
+ page=await browser.newPage({viewport:{width:1280,height:900}});await recordEvidence(page.context());await page.clock.install({time:browserTime});await page.clock.setFixedTime(browserTime);
  page.setDefaultTimeout(15000);page.setDefaultNavigationTimeout(30000);
  const errors=[],requests=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push({url:r.url(),method:r.method()}));
  const go=path=>page.goto('http://127.0.0.1:4174'+path,{waitUntil:'domcontentloaded'});

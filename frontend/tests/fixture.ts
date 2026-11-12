@@ -24,3 +24,12 @@ export function fixture():Envelope {
     withdrawals:{commitments:offers.map(o=>({slot:o.slot,amount:(o.stake*o.maxWins).toString(),eligible:false,requiresOwnerSignature:true}))},
   }]};
 }
+
+// Browser scenarios keep registration open independently of the machine's date.
+export const browserTime = 1794000030000;
+export function browserFixture():Envelope {
+  const data=fixture();
+  data.health.updatedAt=new Date(browserTime).toISOString();
+  data.tip!.mtp=browserTime/1000;
+  return data;
+}
