@@ -1,0 +1,56 @@
+{
+  "sourceCommit": "7b65a9b94ba8e7916fc7c123c624372242386ebf",
+  "rollbackCommit": "b421663ce72e4155f02924746da452dcce1cf3bc",
+  "base": "/staking-arena-site/",
+  "sourceMaps": false,
+  "secretPatternAudit": true,
+  "retainedAssets": [
+    "assets/arena.worker-B264yQaN.js",
+    "assets/app-entry-CtJnYqT2.js",
+    "assets/wallet.worker-2KSZ2TYH.js",
+    "assets/index-BsNBcfSe.js",
+    "assets/app-entry-BMhYeEQ0.css"
+  ],
+  "assets": [
+    {
+      "path": "arena.svg",
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270
+    },
+    {
+      "path": "index.html",
+      "sha256": "7003c95a6ef142f1121745fd49c8e87d77ffc87cb3876d4c9d572e4828fe59fc",
+      "bytes": 1146
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-6NRSj0dF.js",
+      "sha256": "6e3fdf74ad045f05a8480702aeda386dd9d3007b37d9fb4b7a746f9124fa6bed",
+      "bytes": 628
+    },
+    {
+      "path": "assets/index-BMvdSBpJ.js",
+      "sha256": "f803737512f4f4bce215625058921a173bcbf3c623acb5411ad24dcdf4eeb96c",
+      "bytes": 3183
+    },
+    {
+      "path": "assets/arena.worker-D64qZsCy.js",
+      "sha256": "b65eef2205b184df91ae967d38626f2b7d124a6c07a3365e1467bdd27d8d535b",
+      "bytes": 682718
+    },
+    {
+      "path": "assets/app-entry-DUyX3MVj.js",
+      "sha256": "eefef47bbdecbf0427e0bbebbf8a0e1987ff49541508012862b8fb13d8f6b036",
+      "bytes": 907631
+    },
+    {
+      "path": "assets/wallet.worker-2KSZ2TYH.js",
+      "sha256": "10381fd26081939ce0be8208c86ebb3ca7856582b76c1d57edc03edd8acffff2",
+      "bytes": 694356
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee",
+      "bytes": 9836
+    }
+  ]
+}

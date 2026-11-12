@@ -80,3 +80,16 @@ it('shows stale and malformed API responses without claiming current status',asy
  vi.stubGlobal('fetch',vi.fn(()=>response({chain:'main'})));fireEvent.click(screen.getByRole('button',{name:'Refresh data'}));
  await waitFor(()=>expect(screen.getByRole('alert')).toHaveTextContent('incompatible or malformed'));
 });
+it('does not declare a vault absent while the snapshot is stale or indexing has failed',async()=>{
+ const data=fixture();data.health.connected=false;data.health.stale=true;
+ window.location.hash='#/vault/'+'9'.repeat(64);live(data);
+ await screen.findByText('Vault data unavailable');expect(screen.queryByText('Vault not found')).not.toBeInTheDocument();
+ expect(screen.getByRole('alert')).toHaveTextContent('not synchronized');
+});
+
+it('resolves the confirmed genesis ID as an alias without confusing it with the vault category',async()=>{
+ const data=fixture();window.location.hash='#/vault/'+data.vaults[0].config.genesis;live(data);
+ await screen.findByRole('table',{name:'Competing offers ranked by priority'});
+ expect(screen.getByRole('link',{name:'Make an Offer'})).toHaveAttribute('href','#/vault/'+data.vaults[0].category+'/offer');
+ expect(screen.queryByText('Vault not found')).not.toBeInTheDocument();
+});

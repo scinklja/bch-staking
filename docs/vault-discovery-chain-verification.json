@@ -1,0 +1,20 @@
+{
+  "config": {
+    "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+    "stakingCategory": "e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a",
+    "epoch": 1794496500,
+    "periodSeconds": 300,
+    "periods": 2,
+    "cap": 1000
+  },
+  "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+  "height": 332026,
+  "confirmationBlock": "00000000000015d58ed55eef975010b7eefee2d1820c123d4149a0ddc2b758a3",
+  "verifiedAt": "2026-11-12T14:53:00.046000+00:00",
+  "providers": [
+    "wss://chipnet.imaginary.cash:50004",
+    "wss://electrum-chipnet.optnlabs.com"
+  ],
+  "verification": "Raw transaction ID, Merkle inclusion, active linked headers, pinned factory authorization and canonical genesis outputs independently verified on both providers.",
+  "broadcasts": 0
+}

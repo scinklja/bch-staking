@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-12T15:14:31.165943+00:00",
+  "commit": "552000382d2a99c2f863efe6802f0fe44d57b956",
+  "assets": [
+    {
+      "path": "arena.svg",
+      "status": 200,
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf"
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "sha256": "7003c95a6ef142f1121745fd49c8e87d77ffc87cb3876d4c9d572e4828fe59fc"
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-6NRSj0dF.js",
+      "status": 200,
+      "sha256": "6e3fdf74ad045f05a8480702aeda386dd9d3007b37d9fb4b7a746f9124fa6bed"
+    },
+    {
+      "path": "assets/index-BMvdSBpJ.js",
+      "status": 200,
+      "sha256": "f803737512f4f4bce215625058921a173bcbf3c623acb5411ad24dcdf4eeb96c"
+    },
+    {
+      "path": "assets/arena.worker-D64qZsCy.js",
+      "status": 200,
+      "sha256": "b65eef2205b184df91ae967d38626f2b7d124a6c07a3365e1467bdd27d8d535b"
+    },
+    {
+      "path": "assets/app-entry-DUyX3MVj.js",
+      "status": 200,
+      "sha256": "eefef47bbdecbf0427e0bbebbf8a0e1987ff49541508012862b8fb13d8f6b036"
+    },
+    {
+      "path": "assets/wallet.worker-2KSZ2TYH.js",
+      "status": 200,
+      "sha256": "10381fd26081939ce0be8208c86ebb3ca7856582b76c1d57edc03edd8acffff2"
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "status": 200,
+      "sha256": "a73e334c755a005e375f708f8e8cd761fb16e96b04dfe51d1418ab0a8f24e5ee"
+    }
+  ],
+  "retainedAssets": [
+    {
+      "path": "assets/arena.worker-B264yQaN.js",
+      "status": 200
+    },
+    {
+      "path": "assets/app-entry-CtJnYqT2.js",
+      "status": 200
+    },
+    {
+      "path": "assets/wallet.worker-2KSZ2TYH.js",
+      "status": 200
+    },
+    {
+      "path": "assets/index-BsNBcfSe.js",
+      "status": 200
+    },
+    {
+      "path": "assets/app-entry-BMhYeEQ0.css",
+      "status": 200
+    }
+  ],
+  "allMatch": true
+}

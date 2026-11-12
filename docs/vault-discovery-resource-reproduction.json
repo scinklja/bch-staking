@@ -1,0 +1,365 @@
+{
+  "at": "2026-11-12T15:01:53.899Z",
+  "target": "https://scinklja.github.io/staking-arena-site/",
+  "vault": {
+    "config": {
+      "genesis": "599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc",
+      "stakingCategory": "e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a",
+      "epoch": 1794496500,
+      "periodSeconds": 300,
+      "periods": 2,
+      "cap": 1000
+    },
+    "category": "d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04",
+    "height": 332026,
+    "confirmationBlock": "00000000000015d58ed55eef975010b7eefee2d1820c123d4149a0ddc2b758a3"
+  },
+  "errors": [],
+  "failedRequests": [
+    {
+      "url": "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js",
+      "failure": {
+        "errorText": "net::ERR_FAILED"
+      }
+    }
+  ],
+  "badResponses": [
+    {
+      "url": "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js",
+      "status": 404
+    }
+  ],
+  "workers": [
+    "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-2KSZ2TYH.js",
+    "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js",
+    "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js"
+  ],
+  "broadcasts": [],
+  "beforeImport": "Skip to content\nStaking Arena\nVaults\nCHIPNET — TEST FUNDS ONLY\nConnect Wallet\nConfirmed indexer data\nRefresh data\n\nBrowser Electrum · chipnet · Synchronized · indexed height 332027 · 12 transactions checked · chipnet.imaginary.cash:50004\n\nElectrum trust assumptions\nEXPERIMENTAL — Create Vault and Make an Offer\n\nThese wallet transaction flows have not yet passed a real-wallet end-to-end test. Use chipnet test funds only. Funding is irreversible and committed BCH has no creator refund path. Each wallet spend requires explicit approval.\n\nPublic listings are configured or imported locally; this is not globally complete discovery. Permissionless period processing remains independent.\n\nFetched 2026-11-12T15:02:30.826Z · Indexer synchronized 2026-11-12T15:02:30.826Z\n\nShared vault import\n\nThis link is a discovery hint, not proof or a globally complete listing. Verify canonical genesis on both chipnet providers before adding it locally.\n\n{\n  \"genesis\": \"599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc\",\n  \"stakingCategory\": \"e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a\",\n  \"epoch\": 1794496500,\n  \"periodSeconds\": 300,\n  \"periods\": 2,\n  \"cap\": 1000\n}\nVerify and import vault\n\nVault not found\n\nThis vault is not in the indexed response. Return to vaults\n\nStaking Arena · CHIPNET — TEST FUNDS ONLY",
+  "importVerified": true,
+  "error": "Error: Reproduced undefined worker error after imported-vault restart",
+  "body": "Skip to content\nStaking Arena\nVaults\nCHIPNET — TEST FUNDS ONLY\nConnect Wallet\nLast-known confirmed snapshot · not current\nRefresh data\n\nBrowser Electrum · chipnet · Connecting · indexed height 332027 · chipnet.imaginary.cash:50004\n\nElectrum trust assumptions\nEXPERIMENTAL — Create Vault and Make an Offer\n\nThese wallet transaction flows have not yet passed a real-wallet end-to-end test. Use chipnet test funds only. Funding is irreversible and committed BCH has no creator refund path. Each wallet spend requires explicit approval.\n\nPublic listings are configured or imported locally; this is not globally complete discovery. Permissionless period processing remains independent.\n\nHistorical snapshot · not current\n\nRefresh failed. Showing the last successful response; eligibility and rankings may have changed.\n\nBrowser indexer worker failed: undefined\n\nSnapshot fetched 2026-11-12T15:02:30.826Z · Indexer synchronized 2026-11-12T15:02:30.826Z\n\nVault not found\n\nThis vault is not in the indexed response (which is historical and may be incomplete). Return to vaults\n\nStaking Arena · CHIPNET — TEST FUNDS ONLY",
+  "instrumentation": {
+    "workers": [
+      {
+        "url": "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-2KSZ2TYH.js",
+        "messages": [
+          "ready",
+          [
+            "id",
+            "result"
+          ],
+          [
+            "id",
+            "result"
+          ]
+        ],
+        "errors": []
+      },
+      {
+        "url": "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js",
+        "messages": [
+          "ready"
+        ],
+        "errors": [],
+        "config": {
+          "network": "chipnet",
+          "vaults": [
+            {
+              "genesis": "128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74",
+              "stakingCategory": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+              "epoch": 1794380640,
+              "periodSeconds": 60,
+              "periods": 1,
+              "cap": 2000
+            },
+            {
+              "stakingCategory": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+              "epoch": 1794409274,
+              "periodSeconds": 60,
+              "periods": 2,
+              "cap": 2000,
+              "genesis": "0590c06a8c72ac695bf646f551c7f642490da79f5ff6023b87303082d53a6686"
+            }
+          ],
+          "endpoints": [
+            "wss://chipnet.imaginary.cash:50004",
+            "wss://electrum-chipnet.optnlabs.com",
+            "wss://chipnet.bch.ninja:50004"
+          ],
+          "tabId": "cec9faa6-79cd-4858-aa73-df409d8b86c9",
+          "timeoutMs": 10000,
+          "pollMs": 15000,
+          "maxHistoryEntries": 50000,
+          "maxTransactions": 20000,
+          "maxRawBytes": 16777216
+        }
+      },
+      {
+        "url": "https://scinklja.github.io/staking-arena-site/assets/arena.worker-B264yQaN.js",
+        "messages": [],
+        "errors": [
+          {
+            "error": "undefined",
+            "type": "error"
+          }
+        ]
+      }
+    ],
+    "packets": [
+      {
+        "at": "2026-11-12T15:01:58.951Z",
+        "role": "waiting",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Waiting for the indexing tab",
+          "transactions": 0
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:01:59.001Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Connecting",
+          "transactions": 0
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:01:59.002Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Connecting",
+          "transactions": 0
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:02:00.586Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Reading vault history",
+          "transactions": 0
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:02:09.887Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Reading vault history",
+          "transactions": 10
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:02:10.652Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Reconstructing confirmed state",
+          "transactions": 11
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:02:25.039Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": false,
+          "error": "",
+          "updatedAt": "",
+          "stale": true,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "",
+          "unconfirmed": [],
+          "phase": "Checking chain consistency",
+          "transactions": 12
+        },
+        "categories": []
+      },
+      {
+        "at": "2026-11-12T15:02:31.010Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Synchronized",
+          "transactions": 12
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      },
+      {
+        "at": "2026-11-12T15:02:31.139Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Synchronized",
+          "transactions": 12
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      },
+      {
+        "at": "2026-11-12T15:02:31.152Z",
+        "role": "leader",
+        "cached": true,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Synchronized",
+          "transactions": 12
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      },
+      {
+        "at": "2026-11-12T15:02:31.157Z",
+        "role": "leader",
+        "cached": false,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Synchronized",
+          "transactions": 12
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      },
+      {
+        "at": "2026-11-12T15:02:46.188Z",
+        "role": "leader",
+        "cached": false,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": false,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Synchronized",
+          "transactions": 12
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      },
+      {
+        "at": "2026-11-12T15:02:46.194Z",
+        "role": "leader",
+        "cached": false,
+        "health": {
+          "connected": true,
+          "error": "",
+          "updatedAt": "2026-11-12T15:02:30.826Z",
+          "stale": false,
+          "syncing": true,
+          "provider": "electrum",
+          "endpoint": "wss://chipnet.imaginary.cash:50004",
+          "unconfirmed": [],
+          "phase": "Connecting",
+          "transactions": 0
+        },
+        "categories": [
+          "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+          "eab65cffbba58cdb1ec2de5981bebfab251f975bce99a5ffe6834fff0898fab4"
+        ]
+      }
+    ]
+  },
+  "localCatalog": "[{\"category\":\"d5920d56cac5f28bb44f7882a95c9b96174507594862d8ea0b782304ff0a1f04\",\"config\":{\"genesis\":\"599bf07357f64c2b2dbf36c666fdf0655c1fc7bb38feb89c90a16517166853fc\",\"stakingCategory\":\"e27140c714ca01e0143c4a5d42a20dcbd356e68846b8321d680535b91219921a\",\"epoch\":1794496500,\"periodSeconds\":300,\"periods\":2,\"cap\":1000}}]"
+}

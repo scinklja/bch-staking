@@ -6,6 +6,7 @@ import { ElectrumIndexer } from '../../src/indexer-core';
 import { IndexedDbCheckpoints } from '../../src/indexeddb';
 import { sha256Bytes, Buffer } from '../../src/bytes';
 import { indexEnvelope } from '../../src/view';
+import {workerDiagnostic} from './workerDiagnostics';
 import type { BrowserIndexerConfig } from './browserConfig';
 
 const scope = self as unknown as DedicatedWorkerGlobalScope;
@@ -21,7 +22,7 @@ scope.onmessage = event => {
   if (event.data?.type === 'refresh') { if (refresh) refresh(); else channel?.postMessage({type:'refresh'}); return; }
   if (event.data?.type === 'start' && !started) {
     started=true;automatic=event.data.automatic===true;
-    void start(event.data.config).catch(error=>scope.postMessage({type:'error',error:String(error)}));
+    void start(event.data.config).catch(error=>scope.postMessage({type:'error',fatal:true,diagnostic:workerDiagnostic(error,scope.location.href,'indexer start')}));
   }
 };
 // libauth initializes WASM with top-level await. Handshake after handlers exist so the initial message cannot be lost.
