@@ -1,6 +1,6 @@
-# Browser wallet transactions — development, not published
+# Browser wallet transactions — experimental chipnet release
 
-This development branch extends implementation `0762f95` and the source at `70fb4a3`. The public compiled website remains at `4c420d6`; wallet creation/registration must not be published as working until real Cashonize chipnet end-to-end verification succeeds.
+This development branch extends implementation `0762f95` and the source at `70fb4a3`. The user subsequently authorized publication as **experimental**, without further tests. Wallet creation/registration is explicitly labeled as not verified end to end with a real wallet; it must not be described as a completed live-wallet verification. The previous public compiled commit `4c420d6` is retained for rollback.
 
 ## Architecture
 

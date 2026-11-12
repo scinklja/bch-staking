@@ -1,8 +1,8 @@
 # Browser wallet development verification — 2026-11-12
 
-Release status: **not published; real-wallet end-to-end verification pending funding**.
+Release status: **experimental publication authorized by the user without further tests; real-wallet end-to-end verification remains incomplete**. See the [experimental release record](github-pages-experimental-wallet-release.md).
 
-Base source: `70fb4a3`, including browser settlement `0762f95`. Development branch: `dev/browser-wallet-transactions`. Previous compiled production commit: `4c420d6c7cc555c44c39ef6badc8f4fe73f0a0c3`. No public source repository or deployment changes are part of this implementation.
+Base source: `70fb4a3`, including browser settlement `0762f95`. Development branch: `dev/browser-wallet-transactions`. Previous compiled production commit: `4c420d6c7cc555c44c39ef6badc8f4fe73f0a0c3`. The public repository receives compiled assets only; the experimental deployment is recorded separately.
 
 ## Implemented
 
