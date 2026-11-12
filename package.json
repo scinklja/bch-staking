@@ -14,7 +14,7 @@
     "mine": "bash scripts/node.sh mine",
     "compile": "cashc contracts/Example.cash --output artifacts/Example.json",
     "typecheck": "tsc",
-    "test": "npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run typecheck && node scripts/test-regressions.mjs",
+    "test": "npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run compile:v2 && npm run typecheck && node scripts/test-regressions.mjs",
     "compile:vault": "cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json",
     "compile:period": "cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json",
     "compile:registry": "node scripts/compile-registry.mjs",
@@ -39,7 +39,9 @@
     "chipnet:record": "tsx scripts/chipnet.ts record",
     "chipnet:fund-wallet": "tsx scripts/chipnet-fund-wallet.ts",
     "chipnet:wait": "tsx scripts/chipnet-wait-confirmation.ts",
-    "chipnet:verify": "tsx scripts/chipnet-verify-e2e.ts"
+    "chipnet:verify": "tsx scripts/chipnet-verify-e2e.ts",
+    "compile:v2": "node scripts/compile-v2.mjs",
+    "test:v2": "npm run compile:v2 && ARENA_NETWORK=regtest tsx --test --test-concurrency=1 tests/generalized-assets*.test.ts"
   },
   "keywords": [],
   "author": "",

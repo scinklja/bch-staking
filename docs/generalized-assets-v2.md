@@ -90,3 +90,70 @@ WizardConnect or public-chipnet compatibility. No mainnet or website deployment.
 References: CashScript [token introspection and burn handling](https://cashscript.org/docs/design/cashtokens),
 [covenants](https://cashscript.org/docs/design/covenants), and
 [VM resource measurements](https://cashscript.org/docs/design/optimization).
+
+## Implemented files and local use
+
+Run `npm run node:start`, then `npm run test:v2`. `npm test` compiles both
+families and runs all reference regressions; chipnet tests remain a separate
+network group. The shared browser/Node builder is `src/v2/protocol.ts`.
+`AssetIndexer` in `src/v2/indexer.ts` replays three-output lineage, validates
+transactions in the BCH VM, proves confirmed transactions, links headers and
+requires agreement between two distinct Electrum hosts. Each sync replaces the
+entire snapshot. Provider failure clears the trusted snapshot. Incoming donations
+are not mistaken for canonical state transitions. Pending spends do not change
+confirmed balances, and block further actions against the affected state.
+
+`src/v2/wallet.ts` prepares wallet-authorized funding and uses a second approval
+only after funding confirms. Token change gets its own 1000-sat output and BCH
+change is separate so future fee sponsors remain available. All source coins are
+verified on both providers before signing/submission; signed transactions are
+checked against the approved template and executed locally. Signed bytes and txid
+are durably stored before broadcast. Missing acknowledgement retains the same
+signed bytes. Resume reconciles confirmations, rebuilds unsigned action plans from
+fresh state, and never silently replaces a signed transaction. Explicit retry
+rebroadcasts identical bytes after checking that sources remain unspent.
+
+The browser's `#/v2` page is opt-in and separate from deployed v1 vault views.
+It supports both asset selectors, raw-unit funding quotes, wallet balance scans,
+exact rational priorities, canonical genesis import, sponsored period processing,
+cancellation/refunds, independent maturity/withdrawal, and public recovery records.
+Public configurations carry `version:2` and decimal string caps when exported;
+the internal API uses bigint. Discovery is local/imported, not a global listing.
+The keeper decision and transition builder are portable and permissionless; each
+transition still needs an external sponsor. No background process, API or hosted
+keeper is required.
+
+## Explicit limitations and security review requirements
+
+This is development code, not an audited release. No mainnet deployment, v1
+migration or replacement of the chipnet website is authorized or performed.
+V1 scripts and bytecode must remain identical. There is no creator refund branch
+for unused rewards or factory BCH. The 16 lifetime offer/period bounds and raw
+amount limits deliberately remain conservative. Amount decimal metadata is not
+trusted or inferred. An owner must retain the original signing wallet.
+
+CashScript token introspection cannot distinguish a fungible-only prefix from an
+immutable NFT with an empty commitment in the same category. Wallet selection and
+indexed canonical sources reject *all* NFTs in asset roles, and no canonical
+transaction introduces one. An owner deliberately funding a raw, non-client
+factory transaction with such an NFT can burn their own NFT; the covenant still
+preserves exact fungible and BCH principal. Do not claim a general NFT-preservation
+proof for arbitrary externally constructed transactions. NFTs with nonempty
+commitments or mutable/minting capability fail the asset role checks.
+
+Electrum verification uses merkle proofs, linked headers and agreement of distinct
+hosts, retaining the existing light-client trust model; it is not independent PoW
+chain selection. Imported v2 genesis must pass canonical factory/VM validation.
+UTXO races after approval can invalidate a plan; they cannot release protected
+funds. A discarded unsigned funding plan releases local reservations; already
+prepared wallet funds remain controlled by the wallet. Browser journals are
+public transaction recovery data, not key backups; exporting metadata does not
+replace preserving signed transactions or the original wallet.
+
+Before public chipnet rollout: independently review all covenant branches,
+reproduce standard-policy/resource results on the intended BCHN release, test
+real WizardConnect funding, genesis, registrations and withdrawals, confirm
+actual wallet support for Schnorr ALL|UTXOS signing of these contract layouts,
+and verify recovery/reorg behavior on the public providers. A supported signing
+method is checked before requesting approval, and incompatible returned signatures
+are rejected locally. Local simulated-wallet success is not real-wallet evidence.

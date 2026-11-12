@@ -1,0 +1,10 @@
+pragma cashscript ^0.14.0;
+// State category(32), asset ID(32), role index(1). Registry pins this script.
+contract AssetRoleV2(bytes65 binding) {
+    function spend() {
+        require(this.activeInputIndex == int(binding.slice(64,65)));
+        require(tx.inputs[0].tokenCategory == binding.slice(0,32) + 0x01);
+        require(tx.outputs[0].tokenCategory == binding.slice(0,32) + 0x01);
+        require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);
+    }
+}

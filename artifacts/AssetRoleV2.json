@@ -1,0 +1,50 @@
+{
+  "contractName": "AssetRoleV2",
+  "constructorInputs": [
+    {
+      "name": "binding",
+      "type": "bytes65"
+    }
+  ],
+  "abi": [
+    {
+      "name": "spend",
+      "inputs": []
+    }
+  ],
+  "bytecode": "OP_INPUTINDEX OP_OVER 41 OP_SPLIT OP_DROP 40 OP_SPLIT OP_NIP OP_BIN2NUM OP_NUMEQUALVERIFY OP_0 OP_UTXOTOKENCATEGORY OP_OVER 20 OP_SPLIT OP_DROP OP_1 OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_SWAP 20 OP_SPLIT OP_DROP OP_1 OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTBYTECODE OP_0 OP_UTXOBYTECODE OP_EQUAL",
+  "source": "pragma cashscript ^0.14.0;\n// State category(32), asset ID(32), role index(1). Registry pins this script.\ncontract AssetRoleV2(bytes65 binding) {\n    function spend() {\n        require(this.activeInputIndex == int(binding.slice(64,65)));\n        require(tx.inputs[0].tokenCategory == binding.slice(0,32) + 0x01);\n        require(tx.outputs[0].tokenCategory == binding.slice(0,32) + 0x01);\n        require(tx.outputs[0].lockingBytecode == tx.inputs[0].lockingBytecode);\n    }\n}\n",
+  "fingerprint": "10a28770a570a213f2f4ba04fcb731c076791943140d95784b3e506dc7c55d68",
+  "debug": {
+    "bytecode": "c07801417f7501407f77819d00ce7801207f75517e8800d17c01207f75517e8800cd00c787",
+    "sourceMap": "5:16:5:37;:45::52;:62::64;:45::65:1;;:59::61:0;:45::65:1;;:41::66;:8::68;6:26:6:27:0;:16::42:1;:46::53:0;:62::64;:46::65:1;;:68::72:0;:46:::1;:8::74;7:27:7:28:0;:16::43:1;:47::54:0;:63::65;:47::66:1;;:69::73:0;:47:::1;:8::75;8:27:8:28:0;:16::45:1;:59::60:0;:49::77:1;:8::79",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 10,
+        "line": 5
+      },
+      {
+        "ip": 19,
+        "line": 6
+      },
+      {
+        "ip": 28,
+        "line": 7
+      },
+      {
+        "ip": 34,
+        "line": 8
+      }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-12T11:24:17.330Z"
+}
