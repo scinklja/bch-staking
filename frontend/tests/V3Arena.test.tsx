@@ -13,7 +13,7 @@ function stub(phase='ready',sponsor=true){const state=advance(initialState(p),0,
 });}
 async function open(){render(<V3Arena/>);fireEvent.change(screen.getByLabelText('Public v3 configuration'),{target:{value:JSON.stringify(config,(_,v)=>typeof v==='bigint'?v.toString():v)}});await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Verify and refresh chain state'})));}
 it('permits a sponsored public claim without a connected wallet and labels broadcast as pending',async()=>{
- stub();await open();expect(screen.getByRole('button',{name:'Claim reward'})).toBeEnabled();expect(screen.getByText(/Current insertion rank:/)).toHaveTextContent('Independent lock: 4096s');
+ stub();await open();expect(screen.getByRole('button',{name:'Claim reward'})).toBeEnabled();expect(screen.getByRole('cell',{name:'513 / 1024'})).toBeInTheDocument();expect(screen.getByText(/Priority uses the requested T/)).toBeInTheDocument();expect(screen.getByText(/Current insertion rank:/)).toHaveTextContent('Independent lock: 4096s');
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Claim reward'})));expect(v3Call).toHaveBeenCalledWith({operation:'claim',config});expect(screen.getByRole('status')).toHaveTextContent('pending');expect(screen.getByRole('status')).toHaveTextContent('Broadcast acceptance is pending');
 });
 it('blocks claims when the covenant buffer is insufficient and preserves the top offer',async()=>{

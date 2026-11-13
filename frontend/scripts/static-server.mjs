@@ -7,6 +7,7 @@ const configured = resolve('.static-test/api');
 const live = resolve('.static-test/live');
 const electrum = resolve('.static-test/electrum');
 const settlement = resolve('.static-test/settlement');
+const v3 = resolve('.static-test/v3');
 export const server = createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
   if (path === '/api/vaults' && process.env.ARENA_TEST_API) {
@@ -18,8 +19,8 @@ export const server = createServer(async (req, res) => {
     } catch { res.writeHead(503).end(); }
     return;
   }
-  const base = path.startsWith('/settlement/') ? settlement : path.startsWith('/electrum/') ? electrum : path.startsWith('/configured/') ? configured : path.startsWith('/live/') ? live : root;
-  const relative = base === settlement ? path.slice('/settlement/'.length) : base === electrum ? path.slice('/electrum/'.length) : base === configured ? path.slice('/configured/'.length) : base === live ? path.slice('/live/'.length) : path.slice(1);
+  const base = path.startsWith('/v3/') ? v3 : path.startsWith('/settlement/') ? settlement : path.startsWith('/electrum/') ? electrum : path.startsWith('/configured/') ? configured : path.startsWith('/live/') ? live : root;
+  const relative = base === v3 ? path.slice('/v3/'.length) : base === settlement ? path.slice('/settlement/'.length) : base === electrum ? path.slice('/electrum/'.length) : base === configured ? path.slice('/configured/'.length) : base === live ? path.slice('/live/'.length) : path.slice(1);
   const file = resolve(base, relative || 'index.html');
   if (!file.startsWith(base + '/')) { res.writeHead(403).end(); return; }
   try {

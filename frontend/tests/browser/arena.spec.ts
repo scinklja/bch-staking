@@ -1,7 +1,7 @@
 import { expect,test } from '@playwright/test';
 import { browserFixture as fixture, browserTime } from '../fixture';
 const id='a'.repeat(64);
-test.beforeEach(async({page})=>{await page.clock.setFixedTime(browserTime);});
+test.beforeEach(async({page,context})=>{await context.routeWebSocket(/^wss:\/\/relay\./,socket=>{socket.onMessage(()=>{});});await page.clock.setFixedTime(browserTime);});
 test('marketplace uses indexed terms and detail links survive reload',async({page})=>{
  await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
  await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Staking Arena'})).toBeVisible();
@@ -9,7 +9,7 @@ test('marketplace uses indexed terms and detail links survive reload',async({pag
  await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByText('Maximum reward per period',{exact:true})).toBeVisible();
  await expect(page.getByRole('table')).toBeVisible();
  await expect(page.getByRole('row').nth(1)).toContainText('Offer #01');
- await expect(page.getByRole('navigation').getByRole('link')).toHaveCount(2);
+ await expect(page.getByRole('navigation').getByRole('link')).toHaveCount(3);
 });
 test('mobile preview forms are usable without suggesting wallet functionality',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));

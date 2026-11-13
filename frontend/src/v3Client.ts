@@ -1,7 +1,27 @@
-let worker:Worker|undefined,counter=0;
-const tasks=new Map<number,{resolve:(v:any)=>void;reject:(e:Error)=>void}>();
-/** Public read/claim API intentionally independent of a connected wallet. */
-export function v3Call(intent:Record<string,unknown>,keys:unknown[]=[]):Promise<any>{
- if(!worker){worker=new Worker(new URL('./v3.worker.ts',import.meta.url),{type:'module'});worker.onmessage=e=>{const t=tasks.get(e.data.id);if(t){tasks.delete(e.data.id);e.data.error?t.reject(Error(e.data.error)):t.resolve(e.data.result);}};worker.onerror=()=>{for(const t of tasks.values())t.reject(Error('V3 worker failed; saved operations remain recoverable'));tasks.clear();worker?.terminate();worker=undefined;};}
- return new Promise((resolve,reject)=>{const id=++counter;tasks.set(id,{resolve,reject});worker!.postMessage({id,intent,keys});});
+interface Task {resolve:(value:any)=>void;reject:(error:Error)=>void;timer:ReturnType<typeof setTimeout>}
+interface Client {worker:Worker;ready:Promise<void>;tasks:Map<number,Task>}
+let client:Client|undefined,counter=0;
+function start():Client{
+ const worker=new Worker(new URL('./v3.worker.ts',import.meta.url),{type:'module'}),tasks=new Map<number,Task>();
+ let resolveReady!:()=>void,rejectReady!:(e:Error)=>void;
+ const ready=new Promise<void>((resolve,reject)=>{resolveReady=resolve;rejectReady=reject;});
+ const current:Client={worker,ready,tasks};
+ const fail=(error:Error)=>{clearTimeout(startup);rejectReady(error);for(const task of tasks.values()){clearTimeout(task.timer);task.reject(error);}tasks.clear();worker.terminate();if(client===current)client=undefined;};
+ const startup=setTimeout(()=>fail(Error('V3 worker startup timeout; reconnect and reconcile saved operations')),30000);
+ worker.onmessage=event=>{
+  if(event.data?.type==='ready'){clearTimeout(startup);resolveReady();return;}
+  const task=tasks.get(event.data?.id);if(!task)return;tasks.delete(event.data.id);clearTimeout(task.timer);
+  event.data.error?task.reject(Error(event.data.error)):task.resolve(event.data.result);
+ };
+ worker.onerror=()=>fail(Error('V3 worker failed; saved operations remain recoverable'));
+ return current;
+}
+/** Wait for module/WASM initialization before sending a request. Claims need no wallet. */
+export async function v3Call(intent:Record<string,unknown>,keys:unknown[]=[]):Promise<any>{
+ const current=client??=start();await current.ready;
+ return new Promise((resolve,reject)=>{
+  const id=++counter,timer=setTimeout(()=>{current.tasks.delete(id);reject(Error('V3 request timed out; reconcile saved operations before retrying'));},120000);
+  current.tasks.set(id,{resolve,reject,timer});
+  try{current.worker.postMessage({id,intent,keys});}catch(e){clearTimeout(timer);current.tasks.delete(id);reject(e);}
+ });
 }
