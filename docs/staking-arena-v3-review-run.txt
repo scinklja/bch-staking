@@ -1,0 +1,689 @@
+Fresh complete review gate; one successful uninterrupted invocation. Browser engine debug chatter omitted.
+
+=== regtest-node ===
+Command: npm run node:start
+Started: 2026-11-13T16:12:49.160Z
+Finished: 2026-11-13T16:12:49.547Z
+Exit: 0
+
+> bch-staking@0.3.0 node:start
+> bash scripts/node.sh start
+
+{
+  "chain": "regtest",
+  "blocks": 7086,
+  "headers": 7086,
+  "bestblockhash": "589d4bf2d78db4041427d75f6186f33e18bcfa6a2a28e6a0a7b4ca831510cf02",
+  "difficulty": 4.656542373906925e-10,
+  "mediantime": 1794652138,
+  "verificationprogress": 1,
+  "initialblockdownload": false,
+  "chainwork": "000000000000000000000000000000000000000000000000000000000000375e",
+  "size_on_disk": 19064106,
+  "pruned": false,
+  "upgrade_status": {
+    "name": "May 2027 Upgrade (regtestnet)",
+    "mempool_activated": false,
+    "mempool_activation_mtp": 1810382400,
+    "block_preactivation_height": null,
+    "block_preactivation_hash": null,
+    "block_postactivation_height": null,
+    "block_postactivation_hash": null,
+    "software_expiration_time": 1810382400
+  },
+  "warnings": "Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues."
+}
+
+=== protocol-contracts-regtest ===
+Command: npm test
+Started: 2026-11-13T16:12:49.549Z
+Finished: 2026-11-13T16:31:31.368Z
+Exit: 0
+
+> bch-staking@0.3.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run compile:v2 && npm run compile:v3 && npm run typecheck && node scripts/test-regressions.mjs
+
+
+> bch-staking@0.3.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@0.3.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@0.3.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@0.3.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@0.3.0 compile:v2
+> node scripts/compile-v2.mjs
+
+
+> bch-staking@0.3.0 compile:v3
+> node scripts/compile-v3.mjs
+
+
+> bch-staking@0.3.0 typecheck
+> tsc
+
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (280032.475274ms)
+✔ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (11042.407077ms)
+registration replay and UTXOs verified
+three sponsored periods settled automatically
+BCHN disconnected and restarted
+withdrawal, rollback and fresh reconstruction verified
+✔ v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restarts, BCHN outage, reorg, replay, API and UTXOs (49039.071914ms)
+✔ browser keeper: activation, canonical tied winner, payouts, allocations, reserve and sequential confirmations (2449.595773ms)
+✔ local VM enforces winner, immediate reward and protected fee reserve; mainnet and non-final transactions rejected (387.843397ms)
+✔ uncertain acknowledgements survive closure, do not duplicate submissions, and confirm after restart (372.048639ms)
+✔ disconnects, provider disagreement, persistence failures and safety interlocks cannot send (867.221416ms)
+✔ mempool rejection retries the identical transaction with backoff; a competing confirmed spend supersedes it (1200.264461ms)
+✔ independent keepers racing the same UTXOs rely on blockchain validation; reorganizations recover (1020.321836ms)
+✔ mandatory default starts without a control and cannot consume released reward reserves for miner fees (298.349612ms)
+✔ verification becoming stale at the final broadcast boundary fails closed (171.347012ms)
+✔ browser wallet: two-step factory creation, exact reserve accounting, restart and canonical local import (385.827765ms)
+✔ browser wallet: token consolidation/change, 0x61 covenant authorization, canonical registration and subsequent browser settlement (2882.437778ms)
+✔ browser wallet: validation, wrong asset/balance, unsigned mutation and failed persistence never broadcast (88.057266ms)
+✔ browser wallet: missing acknowledgement, interrupted factory recovery, provider disagreement and reorgs fail closed (3240.717744ms)
+✔ browser wallet: competing registrations require a newly approved canonical slot and preserve prepared funding (3963.420722ms)
+✔ browser wallet: resume refreshes before approval, activated/completed vaults refuse registration, prepared funds stay recoverable (2846.461648ms)
+✔ browser wallet: exact REGISTER commitment/carrier and closed/capacity constraints reject before requesting signatures (1226.293827ms)
+✔ wire decoding preserves exact CashToken amounts, NFT category/commitment, and satoshis (7.526408ms)
+✔ captured real chipnet vault: lineage, immutable snapshot, allocations, withdrawal, restart and API routes without BCHN (719.90538ms)
+✔ reorganizations roll back confirmed lineage and withdrawals; recovery replays the canonical branch (555.153678ms)
+✔ disconnects, stale tips, invalid proofs and changed ancestry fail closed, preserving last committed state (309.677696ms)
+✔ protocol negotiation, chipnet identity, timeout, reconnect and server failover use the real socket transport (223.150939ms)
+✔ v2 portable Electrum replay: confirmed/pending, competing spends, provider errors and reorg recovery (25942.552796ms)
+✔ v2 raw integer bounds, exact ranking, frozen roster and conservation (9.671977ms)
+✔ same-category asset roles retain independent native and token amounts (0.801187ms)
+✔ v2 WizardConnect templates: all four pairs, same-category, durable approvals and withdrawals (25524.188484ms)
+✔ v2 wallet persists before broadcast and retains signed bytes after lost acknowledgement (126.884652ms)
+✔ v2 competing registrations refresh unsigned slots and preserve prepared funds (1051.820614ms)
+✔ v2 removed funding confirmations retain identical signed funding for explicit recovery (107.391214ms)
+Testing token->bch
+token->bch register first
+token->bch register exact tie
+token->bch register full-roster slot 2
+token->bch register full-roster slot 3
+token->bch register full-roster slot 4
+token->bch register full-roster slot 5
+token->bch register full-roster slot 6
+token->bch register full-roster slot 7
+token->bch register full-roster slot 8
+token->bch register full-roster slot 9
+token->bch register full-roster slot 10
+token->bch register full-roster slot 11
+token->bch register full-roster slot 12
+token->bch register full-roster slot 13
+token->bch register full-roster slot 14
+token->bch register full-roster slot 15
+token->bch activate
+token->bch cancel frozen loser
+token->bch settle first
+token->bch refund cancelled remainder
+token->bch activate 1
+token->bch settle 1
+token->bch activate 2
+token->bch cancel activated winner for future periods
+token->bch settle 2
+Testing bch->token
+bch->token register first
+bch->token register exact tie
+bch->token activate
+bch->token cancel frozen loser
+bch->token settle first
+bch->token refund cancelled remainder
+bch->token activate 1
+bch->token settle 1
+bch->token activate 2
+bch->token cancel activated winner for future periods
+bch->token settle 2
+Testing token->token
+token->token register first
+token->token register exact tie
+token->token activate
+token->token cancel frozen loser
+token->token settle first
+token->token refund cancelled remainder
+token->token activate 1
+token->token settle 1
+token->token activate 2
+token->token cancel activated winner for future periods
+token->token settle 2
+Testing bch->bch
+bch->bch register first
+bch->bch register exact tie
+bch->bch activate
+bch->bch cancel frozen loser
+bch->bch settle first
+bch->bch refund cancelled remainder
+bch->bch activate 1
+bch->bch settle 1
+bch->bch activate 2
+bch->bch cancel activated winner for future periods
+bch->bch settle 2
+Testing token->token same-category
+token->token same-category register first
+token->token same-category register exact tie
+token->token same-category activate
+token->token same-category cancel frozen loser
+token->token same-category settle first
+token->token same-category refund cancelled remainder
+token->token same-category activate 1
+token->token same-category settle 1
+token->token same-category activate 2
+token->token same-category cancel activated winner for future periods
+token->token same-category settle 2
+✔ v2 real BCHN: four asset pairs and same-category tokens with protected balances (186244.979137ms)
+✔ public frontend receives exact-origin CORS; preflight rejects untrusted origins (128.839318ms)
+✔ hosted mode refuses spending-key operations before reaching RPC (8.606209ms)
+{
+  fundingTxid: '8998b1c67014ba3f633a2d1c640952c430197d3ae2d9cde0865e9a9ac8f6b1b0',
+  spendingTxid: '5c3e69115fd95a689b8b4ee97ae94f72818783cb1d9c7eec1a35e261abc2c96a',
+  confirmations: 1,
+  height: 7206,
+  balanceBCH: 14937.80406119
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (3619.940264ms)
+0-conf genesis projection checked
+0-conf registration projection checked
+reload, provider disagreement and drop checks passed
+conflict and replacement checks passed
+✔ LOCAL BCHN regtest: 0-conf genesis/offer chains, confirmation thresholds, reload, disagreement and drop reconciliation (40886.837516ms)
+✔ UTC cutoffs, future registration windows, chain lag, activation and lifetime expiry remain distinct (10.903153ms)
+✔ an offer prepared before the cutoff cannot be authorized or broadcast at the deadline (2398.493637ms)
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (96248.513365ms)
+✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (14165.912776ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (17220.536437ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (111768.866189ms)
+✔ v3 covenant rejects malicious winners, release inflation, accounting theft and stale state independently of builders (1166.779409ms)
+✔ v3 Electrum transport pins local endpoints and regtest genesis before enabling broadcast (180.739983ms)
+✔ v3 portable Electrum replay: confirmed/pending, competing spends, provider errors and reorg recovery (25570.692639ms)
+✔ v3 local BCHN browser wallet plans, canonical replay, public sponsor, interrupted claims and reorg recovery (26652.105636ms)
+✔ v3 pure model: accumulation, live ranks, head blockage, seconds and bounds (12.818295ms)
+bch->bch full reserve genesis
+bch->bch register before releases
+bch->bch register after accumulation, displace head
+bch->bch register exact tie between releases
+bch->bch permissionless reward claim without owner signature
+bch->bch second win removes head
+bch->bch cancel blocked tied offer
+bch->bch refund unused stake
+bch->bch cancel original offer
+bch->bch refund original offer
+bch->bch independent relative withdrawal
+bch->bch independent relative withdrawal
+bch->token full reserve genesis
+bch->token register before releases
+bch->token register after accumulation, displace head
+bch->token register exact tie between releases
+bch->token permissionless reward claim without owner signature
+bch->token second win removes head
+bch->token cancel blocked tied offer
+bch->token refund unused stake
+bch->token cancel original offer
+bch->token refund original offer
+bch->token independent relative withdrawal
+bch->token independent relative withdrawal
+token->bch full reserve genesis
+token->bch register before releases
+token->bch register after accumulation, displace head
+token->bch register exact tie between releases
+token->bch permissionless reward claim without owner signature
+token->bch second win removes head
+token->bch cancel blocked tied offer
+token->bch refund unused stake
+token->bch cancel original offer
+token->bch refund original offer
+token->bch independent relative withdrawal
+token->bch independent relative withdrawal
+token->token full reserve genesis
+token->token register before releases
+token->token register after accumulation, displace head
+token->token register exact tie between releases
+token->token permissionless reward claim without owner signature
+token->token second win removes head
+token->token cancel blocked tied offer
+token->token refund unused stake
+token->token cancel original offer
+token->token refund original offer
+token->token independent relative withdrawal
+token->token independent relative withdrawal
+token->token full reserve genesis
+token->token register before releases
+token->token register after accumulation, displace head
+token->token register exact tie between releases
+token->token permissionless reward claim without owner signature
+token->token second win removes head
+token->token cancel blocked tied offer
+token->token refund unused stake
+token->token cancel original offer
+token->token refund original offer
+token->token independent relative withdrawal
+token->token independent relative withdrawal
+✔ v3 BCHN regtest: four asset pairs, continuous claims, locks, conflicts and reorgs (114403.986135ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (5659.637079ms)
+✔ wallet scan retries a proven new block and preserves BCH, fungible tokens and NFTs (151.128636ms)
+✔ wallet scan rejects snapshots at different tips even when a block arrives between providers (43.618931ms)
+✔ wallet scan discards a genuine reorganization and only accepts a fresh two-provider snapshot (40.4726ms)
+✔ wallet scan fails closed on repeated reorganizations with bounded retries and actionable progress (62.790157ms)
+✔ wallet scan never promotes provider disagreement to a verified balance (64.682259ms)
+✔ wallet scan outage is bounded and gives a connection/retry instruction (22.386028ms)
+✔ wallet scan transient outage automatically recovers and verifies both hosts (18.374409ms)
+✔ wallet scan includes funded addresses after an unused gap and links shared proof headers once per provider (39.495365ms)
+✔ failed refresh clears an earlier engine inventory and blocks creation from stale balances (3032.452013ms)
+✔ wallet scan rejects individually valid but different provider UTXO inventories (35.988455ms)
+✔ wallet scan rechecks the first provider after the second scan before accepting balances (28.249147ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 59
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1105512.053134
+✔ LOCAL VM ONLY: wallet-signature placeholders, genesis, offer, activation, reward and independent withdrawal (635.864838ms)
+✔ chipnet configuration excludes mainnet and rejects unsafe RPC endpoints (1.811689ms)
+✔ chain, fork, synchronization and relay gates run before any RPC signing or broadcast (145.088958ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2403.444317
+
+=== frontend-unit ===
+Command: npm run frontend:test
+Started: 2026-11-13T16:31:31.369Z
+Finished: 2026-11-13T16:32:35.147Z
+Exit: 0
+
+> bch-staking@0.3.0 frontend:test
+> npm --prefix frontend test
+
+
+> staking-arena-web@0.3.0 test
+> vitest run
+
+
+ RUN  v5.1.0 /home/omarchy/bch-staking/frontend
+
+
+ Test Files  19 passed (19)
+      Tests  70 passed (70)
+   Start at  17:31:33
+   Duration  61.74s (environment 50%, import 22%, tests 12%, setup 11%, transform 4%)
+
+Environment  jsdom was created 19 times · 28.06s total, 50% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+=== browser-ui ===
+Command: npm --prefix frontend run test:browser
+Started: 2026-11-13T16:32:35.149Z
+Finished: 2026-11-13T16:33:22.574Z
+Exit: 0
+
+> staking-arena-web@0.3.0 test:browser
+> node scripts/run-browser.mjs
+
+Browser diagnostics: /home/omarchy/bch-staking/frontend/browser-diagnostics/2026-11-13T16-32-35.558Z/
+[WebServer] (node:280417) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:280436) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/arena.spec.ts:5:1 › marketplace uses indexed terms and detail links survive reload (10.9s)
+  ✓  2 tests/browser/arena.spec.ts:14:1 › mobile preview forms are usable without suggesting wallet functionality (4.7s)
+  ✓  3 tests/browser/arena.spec.ts:23:1 › retains snapshot labels across outage, reload and navigation, then recovers (7.0s)
+  ✓  4 tests/browser/arena.spec.ts:37:1 › empty, malformed and stale API data never invent available vaults (3.6s)
+  ✓  5 tests/browser/arena.spec.ts:44:1 › WizardConnect pairs on demand and Escape cancels the accessible mobile dialog (3.4s)
+  ✓  6 tests/browser/arena.spec.ts:74:1 › unified asset selectors support all four pairs with keyboard and touch without a connected signing wallet (6.1s)
+
+  6 passed (43.0s)
+
+=== production-static ===
+Command: npm --prefix frontend run test:static
+Started: 2026-11-13T16:33:22.578Z
+Finished: 2026-11-13T16:33:47.747Z
+Exit: 0
+
+> staking-arena-web@0.3.0 test:static
+> VITE_INDEXER_MODE=off npm run build && VITE_API_BASE_URL=https://indexer.example.test/read-only vite build --outDir .static-test/api && node scripts/run-browser.mjs --config playwright.static.config.ts
+
+
+> staking-arena-web@0.3.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/assets/indexer-BsGdJRmh.js                     0.05 kB
+dist/assets/keeper-BRelbEv1.js                      0.58 kB
+dist/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+dist/index.html                                     1.21 kB │ gzip:   0.68 kB
+dist/assets/model-_T7ZtZtD.js                       1.68 kB
+dist/assets/wallet-Bjyd2blu.js                     12.22 kB
+dist/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+dist/assets/indexer-OEDKZyIY.js                    45.90 kB
+dist/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+dist/assets/registry-R-0oSpMz.js                  378.30 kB
+dist/assets/arena.worker-ChqnRxXr.js              688.94 kB
+dist/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+dist/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+dist/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+dist/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+dist/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+dist/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+dist/assets/index-BiO9uIZH.js                       1.77 kB │ gzip:   0.95 kB
+dist/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+dist/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+dist/assets/V3Arena-DY1PjVaj.js                    16.03 kB │ gzip:   5.25 kB
+dist/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+dist/assets/app-entry-BV2HLyHq.js                 784.36 kB │ gzip: 307.28 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.98s
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+.static-test/api/assets/indexer-BsGdJRmh.js                     0.05 kB
+.static-test/api/assets/keeper-BRelbEv1.js                      0.58 kB
+.static-test/api/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+.static-test/api/index.html                                     1.21 kB │ gzip:   0.68 kB
+.static-test/api/assets/model-_T7ZtZtD.js                       1.68 kB
+.static-test/api/assets/wallet-Bjyd2blu.js                     12.22 kB
+.static-test/api/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+.static-test/api/assets/indexer-OEDKZyIY.js                    45.90 kB
+.static-test/api/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+.static-test/api/assets/registry-R-0oSpMz.js                  378.30 kB
+.static-test/api/assets/arena.worker-ChqnRxXr.js              688.94 kB
+.static-test/api/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+.static-test/api/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+.static-test/api/assets/GeneralizedVaults-BHC53z9c.js           0.12 kB │ gzip:   0.12 kB
+.static-test/api/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+.static-test/api/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+.static-test/api/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+.static-test/api/assets/index-CgQVoO78.js                       1.77 kB │ gzip:   0.95 kB
+.static-test/api/assets/GeneralizedVaults-eNJwUx_v.js           2.34 kB │ gzip:   1.15 kB
+.static-test/api/assets/GeneralizedAssets-DJAfXU57.js           9.14 kB │ gzip:   3.35 kB
+.static-test/api/assets/V3Arena-BVkHw4_R.js                    16.03 kB │ gzip:   5.25 kB
+.static-test/api/assets/createAssets-BwK70fPT.js              139.22 kB │ gzip:  41.80 kB
+.static-test/api/assets/app-entry-CSFB9pOY.js                 784.39 kB │ gzip: 307.30 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.90s
+[PLUGIN_TIMINGS] JavaScript callbacks ran for 3.3s of this 3.8s build (86%).
+The slowest callbacks, timed inside each callback (the wait before a callback starts is excluded, the time it awaits is included):
+  - plugin vite:worker load (80%, 3.1s, 1 call)
+Additional callback time came from the callbacks below and from callbacks under 1s.
+1 callback is listed without a time. Its calls overlapped, so the time inside one call includes work from other calls. To find its cost, profile the build with `node --cpu-prof`:
+  - plugin vite:worker-import-meta-url transform (2 calls)
+See https://rolldown.rs/reference/InputOptions.checks#bundlertimings for more details.
+
+Browser diagnostics: /home/omarchy/bch-staking/frontend/browser-diagnostics/2026-11-13T16-33-38.337Z/
+[WebServer] (node:281169) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:281181) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/static/offline.spec.ts:5:1 › production offline build renders marketplace and creation preview with no backend (2.7s)
+  ✓  2 tests/static/offline.spec.ts:12:1 › configured production hash routes, offer preview and persistent outage labels work (2.5s)
+
+  2 passed (7.7s)
+
+=== production-static-smoke ===
+Command: npm --prefix frontend run test:static:browser
+Started: 2026-11-13T16:33:47.749Z
+Finished: 2026-11-13T16:33:54.394Z
+Exit: 0
+
+> staking-arena-web@0.3.0 test:static:browser
+> node scripts/run-browser.mjs --script scripts/verify-browser.mjs
+
+Browser diagnostics: /home/omarchy/bch-staking/frontend/browser-diagnostics/2026-11-13T16-33-48.273Z/
+PASS: production offline marketplace, direct creation route and preview-only controls
+PASS: production direct vault/offer routes, ranking, calculation, mobile layout, snapshot persistence and recovery; no JavaScript errors; GET only
+PASS: no browser JavaScript errors; all network requests are GET
+
+=== browser-indexer ===
+Command: npm --prefix frontend run test:electrum
+Started: 2026-11-13T16:33:54.401Z
+Finished: 2026-11-13T16:36:53.941Z
+Exit: 0
+
+> staking-arena-web@0.3.0 test:electrum
+> tsc --noEmit && VITE_INDEXER_MODE=electrum VITE_ELECTRUM_ENDPOINTS=wss://127.0.0.1:4177,wss://localhost:4177 VITE_ELECTRUM_TIMEOUT_MS=2000 VITE_ELECTRUM_MAX_HISTORY=100 vite build --outDir .static-test/electrum && node scripts/build-settlement-fixture.mjs && node scripts/run-browser.mjs --config playwright.electrum.config.ts
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+.static-test/electrum/assets/indexer-BsGdJRmh.js                     0.05 kB
+.static-test/electrum/assets/keeper-BRelbEv1.js                      0.58 kB
+.static-test/electrum/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+.static-test/electrum/index.html                                     1.21 kB │ gzip:   0.68 kB
+.static-test/electrum/assets/model-_T7ZtZtD.js                       1.68 kB
+.static-test/electrum/assets/wallet-Bjyd2blu.js                     12.22 kB
+.static-test/electrum/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+.static-test/electrum/assets/indexer-OEDKZyIY.js                    45.90 kB
+.static-test/electrum/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+.static-test/electrum/assets/registry-R-0oSpMz.js                  378.30 kB
+.static-test/electrum/assets/arena.worker-ChqnRxXr.js              688.94 kB
+.static-test/electrum/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+.static-test/electrum/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+.static-test/electrum/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+.static-test/electrum/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+.static-test/electrum/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+.static-test/electrum/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+.static-test/electrum/assets/index-CKg9qFUD.js                       1.77 kB │ gzip:   0.95 kB
+.static-test/electrum/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+.static-test/electrum/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+.static-test/electrum/assets/V3Arena-DY1PjVaj.js                    16.03 kB │ gzip:   5.25 kB
+.static-test/electrum/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+.static-test/electrum/assets/app-entry-BA8kEBkV.js                 784.50 kB │ gzip: 307.32 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.92s
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+.static-test/settlement/assets/indexer-BsGdJRmh.js                     0.05 kB
+.static-test/settlement/assets/keeper-BRelbEv1.js                      0.58 kB
+.static-test/settlement/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+.static-test/settlement/index.html                                     1.21 kB │ gzip:   0.68 kB
+.static-test/settlement/assets/model-_T7ZtZtD.js                       1.68 kB
+.static-test/settlement/assets/wallet-Bjyd2blu.js                     12.22 kB
+.static-test/settlement/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+.static-test/settlement/assets/indexer-OEDKZyIY.js                    45.90 kB
+.static-test/settlement/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+.static-test/settlement/assets/registry-R-0oSpMz.js                  378.30 kB
+.static-test/settlement/assets/arena.worker-ChqnRxXr.js              688.94 kB
+.static-test/settlement/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+.static-test/settlement/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+.static-test/settlement/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+.static-test/settlement/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+.static-test/settlement/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+.static-test/settlement/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+.static-test/settlement/assets/index-BkjTnNY_.js                       1.77 kB │ gzip:   0.95 kB
+.static-test/settlement/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+.static-test/settlement/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+.static-test/settlement/assets/V3Arena-DY1PjVaj.js                    16.03 kB │ gzip:   5.25 kB
+.static-test/settlement/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+.static-test/settlement/assets/app-entry-BSeocZU0.js                 784.75 kB │ gzip: 307.46 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.90s
+Browser diagnostics: /home/omarchy/bch-staking/frontend/browser-diagnostics/2026-11-13T16-34-05.708Z/
+[WebServer] (node:281710) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 19 tests using 1 worker
+
+(node:281732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/electrum/settlement.spec.ts:28:1 › mandatory automation ignores saved false, needs no wallet interaction and processes confirmed periods sequentially (21.2s)
+  ✓   2 tests/electrum/settlement.spec.ts:43:1 › two independent browsers converge on a single pending canonical transaction (5.6s)
+  ✓   3 tests/electrum/settlement.spec.ts:48:1 › reload preserves pending intents and tab leadership transfer resumes without a control (9.3s)
+  ✓   4 tests/electrum/settlement.spec.ts:53:1 › provider contradiction prevents all automatic broadcasts and recovery starts without a toggle (4.3s)
+  ✓   5 tests/electrum/wallet.spec.ts:28:1 › native wallet worker persists signed factory intent, resumes after reload and admits confirmed genesis (3.7s)
+  ✓   6 tests/electrum/wallet.spec.ts:36:1 › native wallet worker reserves unsigned funding, permits explicit discard and refuses changed signed outputs (1.5s)
+  ✓   7 tests/electrum/wallet.spec.ts:40:85 › v2 native worker token-bch: reserve, offer, keeper and allocation withdrawal (15.1s)
+  ✓   8 tests/electrum/wallet.spec.ts:40:85 › v2 native worker bch-token: reserve, offer, keeper and allocation withdrawal (15.9s)
+  ✓   9 tests/electrum/wallet.spec.ts:40:85 › v2 native worker token-token: reserve, offer, keeper and allocation withdrawal (15.8s)
+  ✓  10 tests/electrum/wallet.spec.ts:40:85 › v2 native worker bch-bch: reserve, offer, keeper and allocation withdrawal (15.1s)
+  ✓  11 tests/electrum/wallet.spec.ts:40:85 › v2 native worker same-category: reserve, offer, keeper and allocation withdrawal (15.0s)
+  ✓  12 tests/electrum/wallet.spec.ts:55:28 › mock Electrum browser: pending genesis visibility at threshold 0, reload and confirmation keep one listing (6.6s)
+  ✓  13 tests/electrum/wallet.spec.ts:55:28 › mock Electrum browser: pending genesis visibility at threshold 1, reload and confirmation keep one listing (7.3s)
+  ✓  14 tests/electrum/worker.spec.ts:46:1 › static worker reuses protocol/state validation and IndexedDB across reload, provider outage, and recovery (4.9s)
+  ✓  15 tests/electrum/worker.spec.ts:64:1 › multiple tabs share one indexing lock and recover leadership when the owner closes (5.2s)
+  ✓  16 tests/electrum/worker.spec.ts:72:1 › replacement branch restores a spent allocation; restoring the original chain detects its withdrawal again (4.4s)
+  ✓  17 tests/electrum/worker.spec.ts:88:1 › invalid inclusion evidence withholds new state and clearly reports the provider error (2.8s)
+  ✓  18 tests/electrum/worker.spec.ts:95:1 › large histories fail at the configured cap without publishing partial state (1.9s)
+  ✓  19 tests/electrum/worker.spec.ts:104:1 › an IndexedDB write failure preserves the last committed snapshot and marks it stale (3.3s)
+
+  19 passed (2.8m)
+
+=== v3-browser-indexer ===
+Command: npm --prefix frontend run test:v3:browser
+Started: 2026-11-13T16:36:53.948Z
+Finished: 2026-11-13T16:37:23.824Z
+Exit: 0
+
+> staking-arena-web@0.3.0 test:v3:browser
+> VITE_INDEXER_MODE=off vite build --outDir .static-test/v3 && node scripts/run-browser.mjs --config playwright.v3.config.ts
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+.static-test/v3/assets/indexer-BsGdJRmh.js                     0.05 kB
+.static-test/v3/assets/keeper-BRelbEv1.js                      0.58 kB
+.static-test/v3/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+.static-test/v3/index.html                                     1.21 kB │ gzip:   0.68 kB
+.static-test/v3/assets/model-_T7ZtZtD.js                       1.68 kB
+.static-test/v3/assets/wallet-Bjyd2blu.js                     12.22 kB
+.static-test/v3/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+.static-test/v3/assets/indexer-OEDKZyIY.js                    45.90 kB
+.static-test/v3/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+.static-test/v3/assets/registry-R-0oSpMz.js                  378.30 kB
+.static-test/v3/assets/arena.worker-ChqnRxXr.js              688.94 kB
+.static-test/v3/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+.static-test/v3/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+.static-test/v3/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+.static-test/v3/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+.static-test/v3/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+.static-test/v3/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+.static-test/v3/assets/index-BiO9uIZH.js                       1.77 kB │ gzip:   0.95 kB
+.static-test/v3/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+.static-test/v3/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+.static-test/v3/assets/V3Arena-DY1PjVaj.js                    16.03 kB │ gzip:   5.25 kB
+.static-test/v3/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+.static-test/v3/assets/app-entry-BV2HLyHq.js                 784.36 kB │ gzip: 307.28 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.40s
+Browser diagnostics: /home/omarchy/bch-staking/frontend/browser-diagnostics/2026-11-13T16-36-58.669Z/
+[WebServer] (node:283579) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:283600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/v3/arena.spec.ts:18:1 › real browser worker verifies v3 over WSS, requires confirmed sponsorship and claims without a wallet (9.9s)
+  ✓  2 tests/v3/arena.spec.ts:29:1 › provider failure disables v3 actions and a reorganization restores the queue and allocation state (9.0s)
+
+  2 passed (23.3s)
+
+=== production-build ===
+Command: npm run frontend:build
+Started: 2026-11-13T16:37:23.831Z
+Finished: 2026-11-13T16:37:31.820Z
+Exit: 0
+
+> bch-staking@0.3.0 frontend:build
+> npm --prefix frontend run build
+
+
+> staking-arena-web@0.3.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/assets/indexer-BsGdJRmh.js                     0.05 kB
+dist/assets/keeper-BRelbEv1.js                      0.58 kB
+dist/assets/indexer.bootstrap.worker-CRsrFboL.js    0.62 kB
+dist/index.html                                     1.21 kB │ gzip:   0.68 kB
+dist/assets/model-_T7ZtZtD.js                       1.68 kB
+dist/assets/wallet-Bjyd2blu.js                     12.22 kB
+dist/assets/wallet.worker-BmHXGA5V.js              43.69 kB
+dist/assets/indexer-OEDKZyIY.js                    45.90 kB
+dist/assets/electrum-wallet-Bg1oEifS.js           282.43 kB
+dist/assets/registry-R-0oSpMz.js                  378.30 kB
+dist/assets/arena.worker-ChqnRxXr.js              688.94 kB
+dist/assets/v3.worker-BEqD_Jqe.js                 704.77 kB
+dist/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+dist/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+dist/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+dist/assets/v3Client-OidGH37O.js                    1.10 kB │ gzip:   0.59 kB
+dist/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+dist/assets/index-iobi-6d-.js                       1.77 kB │ gzip:   0.95 kB
+dist/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+dist/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+dist/assets/V3Arena-DY1PjVaj.js                    16.03 kB │ gzip:   5.25 kB
+dist/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+dist/assets/app-entry-C31oP3rL.js                 784.34 kB │ gzip: 307.27 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.83s

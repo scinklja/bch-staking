@@ -1,26 +1,26 @@
 {
   "network": "regtest",
   "node": "/Bitcoin Cash Node:29.2.0/",
-  "verifiedAt": "2026-11-13T14:55:20.408Z",
+  "verifiedAt": "2026-11-13T16:31:16.366Z",
   "evidence": [
     {
       "label": "bch->bch full reserve genesis",
-      "txid": "8b6d791171fe1ae58dd2a8b1e7a2ae70d4c8fee8e8c8967c895509220c4c2b99",
+      "txid": "a1549c92bd620b8bafa0caeff512a535b09bb784312775bb53e543219fe5dfaf",
       "bytes": 4670
     },
     {
       "label": "bch->bch register before releases",
-      "txid": "a7c1d6eaedc32161c899f8ee9ebafe0eb97428f6afc8f668d7180366009f3532",
+      "txid": "20f894fb7fdfd24dfb7ab5b0dc1fb94a1c3561c134b034b82e4e429b49332330",
       "bytes": 4671
     },
     {
       "label": "bch->bch register after accumulation, displace head",
-      "txid": "a7753840577c7b4c7b70691a9afd32183c2c735b1d1bf3819c7280c0d6513bf6",
+      "txid": "a3edb5ff13a439a4140bc507b29d554ad992cb03bd317a6c0d35b91cca1061d6",
       "bytes": 4671
     },
     {
       "label": "bch->bch register exact tie between releases",
-      "txid": "3e48c4b611dab8c32abecd7529283f382a2505fd49d888c4fd804ea984f16703",
+      "txid": "0d9a196b27b8a5ac696898582b453750c91a6a6b8bd5534d951ba58b73310627",
       "bytes": 4671
     },
     {
@@ -69,7 +69,7 @@
     },
     {
       "label": "bch->bch permissionless reward claim without owner signature",
-      "txid": "820519c0ebcc9701e3b24b817d2bf858c7e9949c669ec7b4d2532599ec30adbe",
+      "txid": "b167295483f16215f41c5702f264d6be323ad388f8c5c870bfb73f80d173d62c",
       "bytes": 4396
     },
     {
@@ -86,32 +86,32 @@
     },
     {
       "label": "bch->bch second win removes head",
-      "txid": "549c48c77a53eb0e131421b95fed9fc234f0d81cf6f132f06bc98ba078692ee3",
+      "txid": "4acc4a06bc169fb288bddf3f4284b3c430670b679e7653ea92519f04fc3587c2",
       "bytes": 4396
     },
     {
       "label": "bch->bch cancel blocked tied offer",
-      "txid": "9980ec49cf00013d243a0fd0b940eb388c411c24560f9bb8c5157c5b071b1f7a",
+      "txid": "645311127514f91eb4fccfd6b5535c34e7c53b53e406223560fcab996ca883cf",
       "bytes": 4479
     },
     {
       "label": "bch->bch refund unused stake",
-      "txid": "afe49fce03583a60df72eb8dc3befa04ab723eb7dd46dbf39136ea7c6772539d",
+      "txid": "f984da0b358ae1a2e068223a06556b736eebe7535d76413f6d5e05fa1c663a96",
       "bytes": 4513
     },
     {
       "label": "bch->bch cancel original offer",
-      "txid": "4a8e01e7f72d384a6e62dee4541d26ca1895ee0d96bce4df77097f91a846ace9",
+      "txid": "0085ebf3a5af1aa2dafad55eb551756ab8d0bfc52e4e37ef7d9022e7bc30ad4d",
       "bytes": 4479
     },
     {
       "label": "bch->bch refund original offer",
-      "txid": "07151cc0e1f6361ffb32b7cdb846b7c06283ac57215658964f7d79d9150e72ba",
+      "txid": "aeb10aa82a86e08c7e52664002787b996335c37e29167faee2f69e56f5decb1a",
       "bytes": 4513
     },
     {
       "label": "bch->bch independent relative withdrawal",
-      "txid": "f7a245933958724319c797ea2c7a5d32072b133a9c457f61f5125fabdcf2815c",
+      "txid": "a2724d49aac7769f3c916c4d0ccf40eac863daee5581837fdeadd096532514b2",
       "bytes": 652
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "label": "bch->bch independent relative withdrawal",
-      "txid": "74e8d83b5acfdad1104d70986da788a7f6bef0ce489f7682c1f8882a645a7d7e",
+      "txid": "c349ada3d938e1cf79c458fa688e850cfc8e48083403c07f2019de74eedf39d6",
       "bytes": 652
     },
     {
@@ -133,22 +133,22 @@
     },
     {
       "label": "bch->token full reserve genesis",
-      "txid": "43ddfe6468b07a51bf23c3957b8b5eca736f236b95ca6560be5facb77968d4bd",
+      "txid": "67c65059e1138ac5e88c7d0efed4c4ff1ea164bbf292b7b7d9a99db08c508e5a",
       "bytes": 4703
     },
     {
       "label": "bch->token register before releases",
-      "txid": "36b2c39511873cdad78b2f2ea7a959b1e05171e53bf69ebe09fe3219d2e355ed",
+      "txid": "b8123e26739588b1097fa87464b8c27e5d9f0bb6d5302482df3ef92cdf4bdc6c",
       "bytes": 4704
     },
     {
       "label": "bch->token register after accumulation, displace head",
-      "txid": "a844cd55f9dc0b8d22003293a8a5085dc6d1b24164df43233604509707b577f0",
+      "txid": "a7185dbf2fecee19870a932f092ddfb11de2d01a0681666200d038005a3ab629",
       "bytes": 4704
     },
     {
       "label": "bch->token register exact tie between releases",
-      "txid": "7bfa14e6cbc66b67e9bbe11662c875dca9f0e5810c88c7129acc81ddb5b632b1",
+      "txid": "3c4db931744d741d621be3362fcb669198960f9b592a9d44df9a88af75d0332f",
       "bytes": 4704
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "label": "bch->token permissionless reward claim without owner signature",
-      "txid": "2953cc10a920b77c8d914a4f503e3ac4248112303e096a1b1ee417cd2428159f",
+      "txid": "abf19827194b5e434ff113f1eeaf2eceea85f949ce5120e17cf98cdffdd80353",
       "bytes": 4464
     },
     {
@@ -218,32 +218,32 @@
     },
     {
       "label": "bch->token second win removes head",
-      "txid": "be15476176adc8bedbe932a1f2937a01e31f1cc06b692bff773e93183f3944e1",
+      "txid": "9a9f5e4fcd527838e3b0ee0db089bf5d3462fd984e62ce0ad9b3b007445e0f4b",
       "bytes": 4429
     },
     {
       "label": "bch->token cancel blocked tied offer",
-      "txid": "298fa6a45325c15de3ec1e5f8eaabde00db52959b3074a0b3ff1fdf620430a11",
+      "txid": "4944c644d99dca666d8252ed3b771e3ccf097cefff4edf9f391022815b1b466b",
       "bytes": 4477
     },
     {
       "label": "bch->token refund unused stake",
-      "txid": "18b43676884d1b133ba0412744a5fcb9286c6be8ae6c4185be5a40822578a22b",
+      "txid": "d4ecfda977c21c3bb291b9964157c10d4b1ef11f32caa8abce5c4531188209be",
       "bytes": 4511
     },
     {
       "label": "bch->token cancel original offer",
-      "txid": "faa7b7f8b628a538585af6d5d1b269831f4422baa571abb2910f285f8cb2f04b",
+      "txid": "7f6ff7f81063a2523831f42eb698b7a5b5d8fad3ec374296359f60cc6cd35d8c",
       "bytes": 4477
     },
     {
       "label": "bch->token refund original offer",
-      "txid": "cc0de2420d6e8c03e3185b08840ab055f3e76f0f010abb489e6c846f9533ced6",
+      "txid": "e6df24540da53451a41c6db5e0bca720860deb2f16ba1be46d3ff282bcab11ac",
       "bytes": 4511
     },
     {
       "label": "bch->token independent relative withdrawal",
-      "txid": "08717bf9a934f4130b1fa93d26b99bb218993571296977fd0a4f3f3897d700e6",
+      "txid": "db9b9c90a53d88bef8553c7acd731c716f79bdc1c41cd4a6873a8539132a4944",
       "bytes": 652
     },
     {
@@ -252,7 +252,7 @@
     },
     {
       "label": "bch->token independent relative withdrawal",
-      "txid": "008539295ccc464af81f9b16d4cfa413545cc8eb80fcd2c2e87eba172a2ccbf9",
+      "txid": "5f6627df06e9e989989cf8f7bf65ac563f67aff296ffc08098b4a8c12942a4f6",
       "bytes": 652
     },
     {
@@ -265,22 +265,22 @@
     },
     {
       "label": "token->bch full reserve genesis",
-      "txid": "39aacb017ebfa340254ebd7ed77881a4feec13897d6f7fa62b91540eabcb01f9",
+      "txid": "f2f0adf0510879f8a7a998cae472d126de34aa653a92a6beedb14162612a97a7",
       "bytes": 4670
     },
     {
       "label": "token->bch register before releases",
-      "txid": "11822cf43150c1a9f9f2da1456a32367a1fd0154ff5b7a71707a588dc6efabdb",
+      "txid": "a85a8116e345e8bfc0ee433a1831e5c2ecb3640c477d315dcd55f9079ac10beb",
       "bytes": 4708
     },
     {
       "label": "token->bch register after accumulation, displace head",
-      "txid": "9ae5f8dbbdba25584ff1dbb80376e87c8572f146e7bab1cbdce13b13db1dfd47",
+      "txid": "a50b54e4e5ea1c21169089c1064029a11dbfde8368dd379551f8e632c2f8a829",
       "bytes": 4708
     },
     {
       "label": "token->bch register exact tie between releases",
-      "txid": "efd0ebe552da2780ca765b561699cbd7c73e9287039c56f0ad8e27e8d1933aa8",
+      "txid": "11edd8edc2478d34534aed7ad33dc6a091f2571b350b2f305b4c90c9ea469f12",
       "bytes": 4708
     },
     {
@@ -329,7 +329,7 @@
     },
     {
       "label": "token->bch permissionless reward claim without owner signature",
-      "txid": "9294f3fa2b5b65afdbe7bdb02c481b137aea13d155d866fd9dff969d22d17ce9",
+      "txid": "2b87696059d369631e94307f3cd9eaa594b29c52e51ff107d3044f0241e65897",
       "bytes": 4470
     },
     {
@@ -346,32 +346,32 @@
     },
     {
       "label": "token->bch second win removes head",
-      "txid": "6b87538fd5491c4813dfaa85995a0c10564d671ff8573b1f5ac30e115b579328",
+      "txid": "cbe0d803f4967296637f02824f7fe332c772cf1fcc8a215558c9651119cd1bc4",
       "bytes": 4470
     },
     {
       "label": "token->bch cancel blocked tied offer",
-      "txid": "942072e5d7f62664258d1acca3080479ce75b559673492a66aec6b1aed1763ca",
+      "txid": "e3b5db39776607b5c6dad65162cbc498ed26c1e0a997122f6d16dd60fd4d8e67",
       "bytes": 4516
     },
     {
       "label": "token->bch refund unused stake",
-      "txid": "13151b44306aeeba34537d84f69d30ab5eebb37efac97e27098df25c34368442",
+      "txid": "91a7e5a439e2a73ea79424be02ff3bb8f6fabe9edfee9c718bc9230affae9e81",
       "bytes": 4587
     },
     {
       "label": "token->bch cancel original offer",
-      "txid": "6d74297f63eec5f57d975bbdc5c6acdeabedddc16191ea0f4de5b4ad3e12baed",
+      "txid": "2c03fffaa4eecde193132eaa0ccc5d82c9a42b2b7fe235b787adc59aed99067f",
       "bytes": 4516
     },
     {
       "label": "token->bch refund original offer",
-      "txid": "c343a6a2333d536567469efe4a9c708addab261b0c1cbd9b3ba95258555535c1",
+      "txid": "c2f57d2425ecba732999c457928815d9f544fb4be5498c26d21bfddefebd554d",
       "bytes": 4550
     },
     {
       "label": "token->bch independent relative withdrawal",
-      "txid": "f84b06b488e8721f827c81def44ca46186c22d08f6c245fb72aed52c9bdf1345",
+      "txid": "fb71b220c87ae561c3984c0ffcf0e85af1ef6f97cfcb8a87bc88b1c6153b917d",
       "bytes": 689
     },
     {
@@ -380,7 +380,7 @@
     },
     {
       "label": "token->bch independent relative withdrawal",
-      "txid": "ccd9f772268ff78b02ee97d0b1e77a26231af05a8b7acd51fcefd7120c672527",
+      "txid": "06c45b0fc30546a32779331b1a22735215d2d151e9c74182a37edfc2edd882ba",
       "bytes": 689
     },
     {
@@ -393,22 +393,22 @@
     },
     {
       "label": "token->token full reserve genesis",
-      "txid": "85e84b4cb97f71d6575e57f23fe35d5c961cf1e8d29a2fcd23473f91a0e0cb75",
+      "txid": "a4426e4756ce195c593c7e98117fa5d4281a6760b2c0c804bd52d0c81f2ff625",
       "bytes": 4703
     },
     {
       "label": "token->token register before releases",
-      "txid": "2e146314c3544ddde998da1933af5fae5ec556f10fc63dc7515ef573e3cf6b78",
+      "txid": "e4f54229a1606c380ac16c61a7949c30b14563737eecd6e2bd3873b61c57eae8",
       "bytes": 4741
     },
     {
       "label": "token->token register after accumulation, displace head",
-      "txid": "e41b63491feedf60e5265422865aa3121ddd3d79fb34ae7bb1927ccfb550e2d0",
+      "txid": "9991c069e75a93bd3fbc632d55ee716eda1dd78809498f6b8344d232352a26b5",
       "bytes": 4741
     },
     {
       "label": "token->token register exact tie between releases",
-      "txid": "257dbff487622dd38be2a6b1ec2b9f48d418c01844caeae57d525058808dd318",
+      "txid": "88ce3ccba8a620356a23942ef0ab4336524a7b97f27f467eb3afd1574207a51f",
       "bytes": 4741
     },
     {
@@ -461,7 +461,7 @@
     },
     {
       "label": "token->token permissionless reward claim without owner signature",
-      "txid": "6248412375e3eb13bdded083f5a99c9a9360ce16a77f945fa4fc18db27f509f7",
+      "txid": "7bc6d7aa0954d37f5e102856cc64f05fdcbda1c929799006b13c95418825cc44",
       "bytes": 4538
     },
     {
@@ -478,32 +478,32 @@
     },
     {
       "label": "token->token second win removes head",
-      "txid": "fd390e7ba46333fcbd06124a2bb08ecb48de95a4180bc82505c5cec7f33da58e",
+      "txid": "1ef73e6454dac1e1a51ea679d57b2b7ccb42c6a615107f2eea75f80e8b19413a",
       "bytes": 4503
     },
     {
       "label": "token->token cancel blocked tied offer",
-      "txid": "8392c0d38481dbcba889d4c32d1b6d163a97e2090549f114d10b8d29b215595a",
+      "txid": "8df221d47aeacbced4f006fc52ca0ae7f40d098b3337207aea1ee3563b586074",
       "bytes": 4514
     },
     {
       "label": "token->token refund unused stake",
-      "txid": "5e83eb8cc9be527a5bf04bba2242493963a0e491df5e3d1fd3c04e8d89059813",
+      "txid": "61800bf9ac05fd2f2f33769daa027402d91162ce8897b0a387779a6021cf5ba3",
       "bytes": 4585
     },
     {
       "label": "token->token cancel original offer",
-      "txid": "b71d22435b47f111d661e909378a101cd66eb734c2f64ee4dc1dbcd093ab21c1",
+      "txid": "a04f89e4d4423ae8fd5041a9578df2c481e24e6b7a91d5cf86122bdde800be57",
       "bytes": 4514
     },
     {
       "label": "token->token refund original offer",
-      "txid": "d2af51be4c3cc90656811eb6c8394e5902a87c9df4afc87f579708d80b8fd3bd",
+      "txid": "cd9103e4262e2d1a29199f7b36d5672ecac903769ecc34438316d3416309e6f2",
       "bytes": 4548
     },
     {
       "label": "token->token independent relative withdrawal",
-      "txid": "87b90511b7ab2dde010e518378cfc15b189d3b5f0c403563bb9653d956a4c993",
+      "txid": "409c7168bd2b0ac31fd9ec6a5e178fbcb28f1092548f59ec7d5f06bb1802bb41",
       "bytes": 689
     },
     {
@@ -512,7 +512,7 @@
     },
     {
       "label": "token->token independent relative withdrawal",
-      "txid": "e53a37599a1cd8c4eaacc5735be92d771a7c2cbb6c0e551b7002e0a2de97cffc",
+      "txid": "95bb438921fdd68753f9b249d14b8b5e631d2d946e2282e67d9d47545f886266",
       "bytes": 689
     },
     {
@@ -525,22 +525,22 @@
     },
     {
       "label": "token->token full reserve genesis",
-      "txid": "f2b09dc2372e39c50fad7c6f678844fbd16553b6a21f0fc64258ed5e780cdafa",
+      "txid": "6e33bac35f3f024910e4b5716e162e601b333277393158f879d65ba33321dfdb",
       "bytes": 4703
     },
     {
       "label": "token->token register before releases",
-      "txid": "c7c2af2bdfce8d01f5f490534ead4d3bb7a5150b0ab6e9973bac5e95afd1ea88",
+      "txid": "1aec51e2e9c20e4541330f2271e65216614d0e9d2339feb7beb9a65975771b11",
       "bytes": 4741
     },
     {
       "label": "token->token register after accumulation, displace head",
-      "txid": "6d7e4255d13b43d9987206ff45f8ab1767252a15fd8868ed827b5d091a3bb06b",
+      "txid": "dbbc6baa2cefa428d8b417f3c5e1df9f27ad3bf23b1ecc54bbb855b10c42c39d",
       "bytes": 4741
     },
     {
       "label": "token->token register exact tie between releases",
-      "txid": "d3ed9772fa59e29e295e6139e9eeeeacfa6ddb7bd044c40f66177688384eaedd",
+      "txid": "907005c3c53012f4a6f5a7cc1a10ff3bbe0495dfffedc7ffacae6925f78adb66",
       "bytes": 4741
     },
     {
@@ -593,7 +593,7 @@
     },
     {
       "label": "token->token permissionless reward claim without owner signature",
-      "txid": "2bcbe8d8cb7f8854045d6c0088c9619512bc060322a56cc44306bbce900f3d59",
+      "txid": "14f1d8c6f98354e9eb4797912452da3d0f0adef6be30ff3ff1c615ad22afaac3",
       "bytes": 4538
     },
     {
@@ -610,32 +610,32 @@
     },
     {
       "label": "token->token second win removes head",
-      "txid": "dc0cba287233b53cd5112fbbcdd71ff6b0e8fe914dcc7e0a11745910e0a17b97",
+      "txid": "17fa5ccdc16c00b7ba47937e78f80c31b352c4be186417387ac51a0ccce01c1d",
       "bytes": 4503
     },
     {
       "label": "token->token cancel blocked tied offer",
-      "txid": "4f4b0457186f267badc79f7d97f453bb6c9263a358d2703f4fd148f6cd8dd4f6",
+      "txid": "ebf337a67e617c236acc018b52e2573cf3db41b92225a45f2963cc5d880ba550",
       "bytes": 4514
     },
     {
       "label": "token->token refund unused stake",
-      "txid": "c33f137f1e74df64dcfb929113024a554d9b70c339c6167b2a9256226bf2ec36",
+      "txid": "ea0566cb965ee6465f089df673fd25b0f4cab3fa496b3ff1e83ad71d20f98ecf",
       "bytes": 4585
     },
     {
       "label": "token->token cancel original offer",
-      "txid": "1bc1cf2ec2c1c7effde338517d742f356559a03728faa3eab569e422236b984a",
+      "txid": "28634cf106bc41516513794bf8f63c76dd366e3b51666896a0fe0c18aed2187e",
       "bytes": 4514
     },
     {
       "label": "token->token refund original offer",
-      "txid": "c91fc413d9729ba1ab98906b18e9a3820e9d2fb171bda72ee9ede53a3262793e",
+      "txid": "a2e86f76c2d39b2dead893b3981fe322aeedec6384ae993c42b07b3f663eed8b",
       "bytes": 4548
     },
     {
       "label": "token->token independent relative withdrawal",
-      "txid": "0d6507a75018abc7670ecb5f98b001e4421704fa977d44ea10c8e695517ca48d",
+      "txid": "29c578cb368f8accaa389b710acf898cd956e3b316d488f0c0440ea1f610aeec",
       "bytes": 689
     },
     {
@@ -644,7 +644,7 @@
     },
     {
       "label": "token->token independent relative withdrawal",
-      "txid": "08501632473c538b5d129462ede4d284efaebfcc8737a2f1ed343092e596ac47",
+      "txid": "0c62b1d142a896dd3a630a2eb7ba678b16b128bc7bfb1eedcf588f76d8bcc6e8",
       "bytes": 689
     },
     {

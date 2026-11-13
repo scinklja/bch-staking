@@ -1,37 +1,90 @@
 {
-  "verifiedAt": "2026-11-13T15:04:37.952607+00:00",
+  "verifiedAt": "2026-11-13T16:37:31.823Z",
   "branch": "dev/staking-arena-v3",
-  "network": "regtest",
-  "node": "/Bitcoin Cash Node:29.2.0/",
-  "v3GroupsPassed": 6,
-  "protocolUniqueCasesVerifiedAcrossRuns": 62,
+  "sourceCommit": "c992b343a5f5e462ea0e168369e9b855ddf07fa6",
+  "requiredAncestor": "57f742b7d21a3d24df8c0eaae3d724c438506213",
+  "command": "npm run test:review",
+  "freshCompleteRun": true,
+  "allStagesPassed": true,
+  "startedAt": "2026-11-13T16:12:49.148Z",
+  "finishedAt": "2026-11-13T16:37:31.823Z",
+  "stages": [
+    {
+      "name": "regtest-node",
+      "command": "npm run node:start",
+      "startedAt": "2026-11-13T16:12:49.160Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:12:49.547Z",
+      "passedChecks": null
+    },
+    {
+      "name": "protocol-contracts-regtest",
+      "command": "npm test",
+      "startedAt": "2026-11-13T16:12:49.549Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:31:31.368Z",
+      "passedChecks": 62
+    },
+    {
+      "name": "frontend-unit",
+      "command": "npm run frontend:test",
+      "startedAt": "2026-11-13T16:31:31.369Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:32:35.147Z",
+      "passedChecks": 70
+    },
+    {
+      "name": "browser-ui",
+      "command": "npm --prefix frontend run test:browser",
+      "startedAt": "2026-11-13T16:32:35.149Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:33:22.574Z",
+      "passedChecks": 6
+    },
+    {
+      "name": "production-static",
+      "command": "npm --prefix frontend run test:static",
+      "startedAt": "2026-11-13T16:33:22.578Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:33:47.747Z",
+      "passedChecks": 2
+    },
+    {
+      "name": "production-static-smoke",
+      "command": "npm --prefix frontend run test:static:browser",
+      "startedAt": "2026-11-13T16:33:47.749Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:33:54.394Z",
+      "passedChecks": 3
+    },
+    {
+      "name": "browser-indexer",
+      "command": "npm --prefix frontend run test:electrum",
+      "startedAt": "2026-11-13T16:33:54.401Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:36:53.941Z",
+      "passedChecks": 19
+    },
+    {
+      "name": "v3-browser-indexer",
+      "command": "npm --prefix frontend run test:v3:browser",
+      "startedAt": "2026-11-13T16:36:53.948Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:37:23.824Z",
+      "passedChecks": 2
+    },
+    {
+      "name": "production-build",
+      "command": "npm run frontend:build",
+      "startedAt": "2026-11-13T16:37:23.831Z",
+      "exitCode": 0,
+      "finishedAt": "2026-11-13T16:37:31.820Z",
+      "passedChecks": null
+    }
+  ],
+  "protocolTestsPassed": 62,
   "frontendTestsPassed": 70,
-  "typecheck": "passed",
-  "frontendBuild": "passed",
-  "initialAggregate": {
-    "command": "npm test",
-    "passed": 55,
-    "failed": 3,
-    "cancelled": 1
-  },
-  "correctiveReruns": {
-    "broadcastGuardMessageCompatibility": "8 browser-keeper cases passed",
-    "realClockDeadline": "passed on isolated BCHN",
-    "legacyRegistry": "passed on isolated BCHN",
-    "standardPolicy": "passed on isolated BCHN after removing frozen peer mocktime",
-    "legacyAllocations": "passed on isolated BCHN",
-    "publicClaimFlowAfterConfirmedSponsorVerification": "passed on BCHN",
-    "mockedChipnetFixtures": "3 cases passed; no live chipnet connections or broadcasts"
-  },
-  "freshSingleAggregateRerunAfterCorrections": false,
-  "legacyAllocationEvidence": {
-    "node": "/Bitcoin Cash Node:29.2.0/",
-    "accepted": 71,
-    "rejected": 103,
-    "confirmedTransactions": 113,
-    "standardPolicy": "acceptnonstdtxn=0 on both nodes",
-    "stateBytes": 1574
-  },
+  "covenantArtifactsSemanticallyUnchangedFrom57f742b": true,
   "artifactSha256": {
     "AssetRoleV3.json": "79626fe2232b6a2e8da140de2ec0394159b131ab78339ca2d1d1e8551e573d46",
     "FeeSponsorV3.json": "538d7ce53ee915eff0c2b549c2a0853a3b0639a32e56691d13ba8b978a429801",
@@ -39,7 +92,22 @@
     "RegistryV3.json": "91d5024443fd0b7fe9876cf9d9ca9ee83be4ce74fce227ec0aad47eaf654a1fc",
     "StakeAllocationV3.json": "e3314fb2b673e3016bfbdccdec62d823f54d5f2a489a6df7c0b689da6f022346"
   },
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "v1v2Regressions": "passed in the fresh complete invocation",
+  "publicNetworkBroadcasts": false,
+  "deploymentPerformed": false,
   "publicWalletVerified": false,
-  "publicNetworkDeployment": false,
-  "productionReady": false
+  "productionReady": false,
+  "review": "staking-arena-v3-review.md",
+  "log": "staking-arena-v3-review-run.txt",
+  "priorFailedAttempts": [
+    {
+      "sourceCommit": "d17902a",
+      "cause": "Future-dated regtest chain rejected on real node restart; 12 failures from the outage. Fixed test-clock persistence."
+    },
+    {
+      "sourceCommit": "a7e6bcb",
+      "cause": "Shared future clock violated the zero-confirmation test adapter wall-clock bounds. Isolated that test; production tip validation unchanged."
+    }
+  ]
 }

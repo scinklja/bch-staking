@@ -88,3 +88,32 @@ limit. That test now uses a fresh isolated BCHN node as well. Its confirmation,
 conflict, replacement, reload and provider-disagreement assertions are unchanged;
 production Electrum tip bounds are not relaxed. Every correction is followed by
 another complete gate, not a combination of selected test results.
+
+
+## Fresh complete results
+
+The complete `npm run test:review` invocation passed on source commit `c992b343a5f5e462ea0e168369e9b855ddf07fa6`.
+Started 2026-11-13T16:12:49.148Z; finished 2026-11-13T16:37:31.823Z. Every stage below belongs
+to that one run, after both infrastructure corrections. No selected-rerun aggregation
+was used for this result.
+
+| Stage | Result | Exit |
+|---|---|---|
+| regtest-node | passed | 0 |
+| protocol-contracts-regtest | 62 passed | 0 |
+| frontend-unit | 70 passed | 0 |
+| browser-ui | 6 passed | 0 |
+| production-static | 2 passed | 0 |
+| production-static-smoke | 3 passed | 0 |
+| browser-indexer | 19 passed | 0 |
+| v3-browser-indexer | 2 passed | 0 |
+| production-build | passed | 0 |
+
+All v1/v2 compatibility cases passed alongside v3. Compiled covenant artifacts were
+compared with `57f742b`; only build timestamps changed, and those timestamps were
+restored. There are no v1/v2 or v3 covenant-bytecode changes in this review. The build
+retains its large-chunk advisory; it is not a failed check.
+
+See [the machine-readable result](staking-arena-v3-verification.json) and
+[the complete run log](staking-arena-v3-review-run.txt). The six deployment decisions
+above remain open. No deployment or live chipnet/mainnet testing occurred.

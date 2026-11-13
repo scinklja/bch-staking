@@ -68,28 +68,13 @@ See `staking-arena-v3.md` for timing, accounting, inherited limits and unresolve
 security/deployment questions. Passing regtest is not production readiness.
 
 
-## Final check results
+## Current complete review gate
 
-All six v3 test groups passed. The 59 protocol cases from the aggregate run were
-verified across the aggregate and corrective reruns; three additional mocked
-chipnet cases passed (62 unique protocol cases total). All 70 frontend tests,
-TypeScript checking and the production frontend build passed. The build reports
-its existing large-chunk warning.
+The fresh full review gate supersedes the initial aggregate plus corrective reruns
+recorded by commit `57f742b`. All stages now pass in one invocation. See
+[the review and decisions](staking-arena-v3-review.md),
+[the current machine-readable result](staking-arena-v3-verification.json), and
+[the fresh full run log](staking-arena-v3-review-run.txt).
 
-The first `npm test` run reported 55 passes, three failures and one cancellation.
-One failure was an error-message compatibility assertion, corrected by preserving
-the existing chipnet wording. Real-clock deadline/registry tests inherited future
-MTP; the relay policy test also exposed a frozen peer clock during investigation.
-The clock-sensitive fixtures now use disposable BCHN nodes with the existing
-100ms local relay timing, and the peer clock adjustment was removed. The deadline,
-registry, policy and allocation tests all passed on rerun, with their assertions
-preserved. The browser-keeper suite passed all eight cases. A fresh single aggregate
-run after these corrections was not performed; these are explicitly combined
-results from the aggregate and targeted reruns.
-
-`staking-arena-v3-verification.json` records the checks and artifact hashes.
-`staking-arena-v3-test-run.txt` retains the historical aggregate failures and the
-successful corrective runs, including the intermediate policy retry. The latest
-public claim flow was rerun after confirmed sponsorship verification was added;
-it verifies persistence before broadcast, lost acknowledgement, reorg rollback,
-cancellation/refund and independent relative withdrawal against BCHN.
+The older `staking-arena-v3-test-run.txt` is retained as historical evidence only.
+The standalone supervisor lifecycle test remains opt-in and outside this gate.
