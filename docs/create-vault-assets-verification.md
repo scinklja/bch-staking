@@ -79,3 +79,21 @@ reorganization behavior still require verification with explicit authorization.
 The independent covenant/security review described in the existing v2 design also
 remains a rollout gate. This change deploys frontend assets only. Mainnet remains
 disabled, and no new covenant is deployed.
+
+## Delivery state
+
+Implementation commit: `7f2b6d4`. Tested compiled frontend commit:
+`01c9bb8209724d176671af48f1a24bdb95bb2e9f` in the local deployment checkout.
+Publication is prepared but blocked by authentication: the connected GitHub
+integration returned HTTP 403 on creating the rollback branch, and the existing
+CLI credential is in the locked desktop login keyring. The user was asked to
+unlock that keyring. No remote branch or Pages content was changed.
+
+The previous public release is
+`1d361a8d9418886e689d781aa001b3f2567aab3f`, retained in the verified complete
+`.pages-release/pre-unified-create-2026-11-13.bundle` and local branch
+`rollback/pre-unified-create-2026-11-13`. The prepared release retains old hashed
+assets for open tabs. An HTTP-only check confirmed that Pages still serves the
+previous release. Asset hashes, test counts and delivery state are recorded in
+[the deployment manifest](create-vault-assets-deployment.json). No live chain
+verification is needed to finish the static frontend publication.

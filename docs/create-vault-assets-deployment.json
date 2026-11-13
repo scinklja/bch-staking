@@ -1,0 +1,204 @@
+{
+  "rollbackCommit": "1d361a8d9418886e689d781aa001b3f2567aab3f",
+  "rollbackTree": "d5a6d856d455c76d7cae8c68f2ada8e3587da915",
+  "rollbackBranch": "rollback/pre-unified-create-2026-11-13",
+  "rollbackBundle": ".pages-release/pre-unified-create-2026-11-13.bundle",
+  "base": "/staking-arena-site/",
+  "mainnetEnabled": false,
+  "newCovenantsDeployed": false,
+  "liveChipnetVerification": false,
+  "chipnetBroadcasts": false,
+  "sourceMaps": false,
+  "secretPatternAudit": true,
+  "assets": [
+    {
+      "path": "arena.svg",
+      "bytes": 270,
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "blob": "cb32a985e84d215b97e4556521f22918abfd3fe9",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/GeneralizedAssets-BoRiwcHB.js",
+      "bytes": 8916,
+      "sha256": "7a50a1adbbfdf53b763410465b4c835754391d43d87fe6b7274cdba3ab6c6d50",
+      "blob": "8ba34f55dcf3c935ea8b1b956ecff3919f0ae0d5",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/GeneralizedVaults-1TRgt_-7.js",
+      "bytes": 2338,
+      "sha256": "86b91b3c74d979692bf401d0d91cfe5ede0d1abfab4b96a5640151984df616e0",
+      "blob": "c196fd7c8cfd1aa0f696168e6dab6b70477fb38a",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/GeneralizedVaults-DbjDUzM2.js",
+      "bytes": 120,
+      "sha256": "ea5a95952eab446446f553061c379c237cbc4e76444a6b133cc30507fd8df0bb",
+      "blob": "5dcf70bb75ea8c3f213e32590ed3a3665e454ca4",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/app-entry-BXvRC_7J.js",
+      "bytes": 775941,
+      "sha256": "cffd2cc84bf7f9272351de9de60ad38490be70b4fc0b624a3fc6edd441454cc8",
+      "blob": "51b9d40468066d5075178ae870b5aaa7002f7b25",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/app-entry-CSVIGMzA.css",
+      "bytes": 9985,
+      "sha256": "edb69f3df5eb40e5c5ec86d9f2eaa470dff4f18a00da2ebf8540cb0cf6ec846a",
+      "blob": "a76f505f87fd6761dd656bdc0c3f91e69202287d",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/arena.worker-CTxc-Eda.js",
+      "bytes": 688413,
+      "sha256": "7ef170f48e2a21e6b2f24065636e163686806ff08f5d4636c5a001e29455848c",
+      "blob": "3f8477acfe4d89101f4e453f647ad24495003210",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/createAssets-DeTBGvvo.js",
+      "bytes": 139136,
+      "sha256": "48c79ff666e1d2267ef0d973fe8d88f00c3e26b3db700a4f484dc7e1eebef628",
+      "blob": "fb1bb703e6245b6294d1ea89ec8caf47e68873e1",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/electrum-wallet-DjZLKb_e.js",
+      "bytes": 282399,
+      "sha256": "63398ba4d3490a5111a22692312f92ad53e7f940ad095e9e40f7f92b3a8c6143",
+      "blob": "fc8a3f3516372a6a00a742801a684e9e5dfa1c16",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/index-Ca_wd-56.js",
+      "bytes": 1723,
+      "sha256": "ae1743df6bc69b1940c731abfe48f76c61b17b9f5fa263d7c64bea23fa9997c9",
+      "blob": "4a3eb7037330f85d7f7f1b942ef28a05a5645f6c",
+      "needsUpload": true
+    },
+    {
+      "path": "assets/indexer-BLSUFPLs.js",
+      "bytes": 45900,
+      "sha256": "eb41e42dff5a8be9ce07814ef141201106bd01c16182155932dae4319ee3d457",
+      "blob": "84f5bca21ed109a8448c1c7ecd9ffe5df324c8ce",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/indexer-Cp9wECd7.js",
+      "bytes": 53,
+      "sha256": "9cc5a00c555c0c0db489e0a11cd7c98a056a251fa950b6369f5565d8ffe10e21",
+      "blob": "1cb619878c9e399b727d22f8c4a3fd3f97d09e6f",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-D7vr6vWd.js",
+      "bytes": 628,
+      "sha256": "4ce583809d4ada4b853889caa3f4febc84a88d33fe5628f938b39875cbf3d9fe",
+      "blob": "51aed9ae661ab8915c591bcfe9cb5a109c50cb20",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/keeper-BRelbEv1.js",
+      "bytes": 584,
+      "sha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "blob": "364eb192730cc32e8a17e23fe897c61b9fdfcc1f",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/model-_T7ZtZtD.js",
+      "bytes": 1685,
+      "sha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "blob": "eab593d7c09a93f639d00f6596dd0f7261ef0f4a",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/preload-helper-DZYbdLbp.js",
+      "bytes": 1634,
+      "sha256": "4628f281be8264eb4454d5781b6706cffc720fea5604b46612d743254a940fd9",
+      "blob": "916e2dc7eeded02b681ec7ffd55f53c3571951bb",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/registry-R-0oSpMz.js",
+      "bytes": 378307,
+      "sha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "blob": "7193697518e6c5a6cd2faa6ad52c5cefe8d32d91",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/rolldown-runtime-WkwZ5CU-.js",
+      "bytes": 599,
+      "sha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "blob": "52beb2d9be1db7be33889e0bcc845741ea37d0a3",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/wallet-X5w_xZFM.js",
+      "bytes": 11895,
+      "sha256": "496d494786fe19384ba2c31c4ec72151b3ecf8ee73cc63b26c2ac36fdc704523",
+      "blob": "a3db7d35195df75a3c1c089a1e4bf122d68d95a8",
+      "needsUpload": false
+    },
+    {
+      "path": "assets/wallet.worker-jgamCDdG.js",
+      "bytes": 43057,
+      "sha256": "789d779ec51d28ebcf9697b41b6d88879460509afa646e58ef06d774f5778a2f",
+      "blob": "f694c0e0f7f632f29b791e7a7ec0f5b9ad9835fe",
+      "needsUpload": false
+    },
+    {
+      "path": "index.html",
+      "bytes": 1250,
+      "sha256": "658a69d634727755145770f1e1534ed7f3b8b51a7536b676ccb9cee2a1eb51bf",
+      "blob": "322c08642979b5072c9b8073bb10f18031a255e6",
+      "needsUpload": true
+    }
+  ],
+  "retainsPreviouslyPublishedHashedAssets": true,
+  "sourceImplementationCommit": "7f2b6d4a7c789b9a58f46f87705171660d442493",
+  "preparedAt": "2026-11-13T09:50:11.083129+00:00",
+  "status": "compiled, tested and committed locally; publishing awaits keyring authentication",
+  "deployed": false,
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "repository": "scinklja/staking-arena-site",
+  "branch": "main",
+  "preparedDeploymentCommit": "01c9bb8209724d176671af48f1a24bdb95bb2e9f",
+  "rollbackBundleVerified": true,
+  "rollbackBranchPublished": false,
+  "localReleaseBrowserVerified": true,
+  "testEvidence": {
+    "regtestCases": 53,
+    "localVmMockCases": 3,
+    "v2AcceptedBchnTransactions": 99,
+    "v2RejectedAttacks": 130,
+    "frontendCases": 67,
+    "developmentBrowserDistinctCases": 6,
+    "staticBrowserCases": 2,
+    "electrumBrowserCases": 19,
+    "compiledReleasePairs": 4,
+    "rootTypecheck": true,
+    "frontendTypecheck": true
+  },
+  "authenticationBlockers": [
+    "GitHub connector create_branch returned HTTP 403 Resource not accessible by integration",
+    "Existing gh credential is stored in locked desktop login keyring"
+  ],
+  "pairStatus": {
+    "token-bch": "existing experimental v1 wallet flow",
+    "bch-bch": "v2 local implementation; public creation unavailable",
+    "bch-token": "v2 local implementation; public creation unavailable",
+    "token-token": "v2 local implementation; public creation unavailable"
+  },
+  "publicSiteCheck": {
+    "method": "HTTP GET only; no browser or JavaScript execution",
+    "httpStatus": 200,
+    "indexSha256": "b2696165eb5d801f9a3e2f36c4ed15af2dd2e48bc32e6d0b1c7cf8ea230f1c57",
+    "matchesRollbackRelease": true,
+    "checkedAt": "2026-11-13T09:51:21.346134+00:00"
+  }
+}
