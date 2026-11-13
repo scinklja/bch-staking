@@ -1,13 +1,13 @@
 import {Network,TransactionBuilder,placeholderP2PKHUnlocker,placeholderSignature,type SpendableUtxo,type NetworkProvider} from 'cashscript';
 import {hexToBin,binToHex,createVirtualMachineBch2026,hashTransaction,decodeTransaction,encodeCashAddress,hash160,type Transaction} from '@bitauth/libauth';
 import {Buffer} from '../bytes.js';
-import {walletScript,validateWalletSigned,type BrowserPlan,type WalletKey,type WalletCoin} from '../transactions-core.js';
+import {walletScript,validateWalletSigned,walletPlanIdentity,type BrowserPlan,type WalletKey,type WalletCoin} from '../transactions-core.js';
 import {chooseBch,chooseTokens,scanWallet,verifyCoinsAcrossPeers,confirmedWalletTransaction} from '../electrum-wallet.js';
 import type {ElectrumCore} from '../electrum-core.js';
 import {utxo,records} from '../arena-core.js';
 import {AssetIndexer,type Config,type Snapshot} from './indexer.js';
 import {FEE,CARRIER,decision,assetOutput,covenant,parameterArgs,validateParameters,validateTerms,genesisBuilder,transitionBuilder,sponsorAmount,withdrawalBuilder,rewardRemaining,type Parameters,type Terms,type Asset} from './protocol.js';
-export interface Operation {id:string;version:3;kind:'create'|'offer'|'action'|'withdraw';step:'funding'|'action'|'complete';stage:'review'|'prepared'|'pending'|'confirmed';parameters:Parameters;config?:Config;terms?:Terms;action?:number;slot?:number;allocation?:string;owner:WalletKey;plan?:BrowserPlan;raw?:string;txid?:string;funding?:string;fundingRaw?:string;fundingPlan?:BrowserPlan;error?:string}
+export interface Operation {id:string;version:3;kind:'create'|'offer'|'action'|'withdraw'|'claim';step:'funding'|'action'|'complete';stage:'review'|'prepared'|'pending'|'confirmed'|'conflicted';parameters:Parameters;config?:Config;terms?:Terms;action?:number;slot?:number;allocation?:string;owner:WalletKey;payer?:WalletKey;source?:string;plan?:BrowserPlan;raw?:string;txid?:string;funding?:string;fundingRaw?:string;fundingPlan?:BrowserPlan;error?:string}
 export interface Store {list():Promise<Operation[]>;save(value:Operation):Promise<void>}
 function plan(builder:TransactionBuilder,label:string,coins:{coin:WalletCoin;index:number}[],authorization?:WalletKey):BrowserPlan {
  const request=builder.generateWcTransactionObject({broadcast:false,userPrompt:'V3 EXPERIMENTAL REGTEST FUNDS: '+label}),tx=request.transaction as Transaction;
@@ -55,15 +55,56 @@ function validateIntent(op:Pick<Operation,'kind'|'parameters'> & Partial<Operati
  if(op.action===1||op.action===4){const entry=records(state)[op.slot??0];if(!entry||entry.owner!==owner.publicKey)throw Error('Offer is not owned by this wallet');if(op.action===1&&entry.cancelled)throw Error('Offer is already cancelled');if(op.action===4&&(!entry.cancelled||entry.refunded||entry.wins>=entry.maxWins))throw Error('Remaining stake cannot be refunded in the current state');return;}
  const next=decision(snapshot.instance,snapshot.clock);if(next.phase!=='ready'||next.action!==op.action||next.slot!==(op.slot??0))throw Error('Claim head changed; refresh canonical state');
 }
-/** Two wallet approvals, separated by confirmation. Journal public plans and signed bytes
+/** Funding actions use two approvals; claims use one atomic wallet-funded transaction. Journal public plans and signed bytes
  * before broadcast; retries reconcile the exact txid and never silently spend fresh coins.
  */
 export class AssetWallet {
  constructor(readonly provider:ElectrumCore,readonly store:Store){if(provider.network!==Network.REGTEST)throw Error('V3 wallet is local regtest only');}
  async create(parameters:Parameters,keys:WalletKey[]){validateParameters(parameters);return this.prepare({kind:'create',parameters},keys);}
  async offer(config:Config,terms:Terms,keys:WalletKey[]){validateTerms(config,terms);return this.prepare({kind:'offer',parameters:config,config,terms},keys);}
- async action(config:Config,action:number,slot:number,keys:WalletKey[]){if(![1,3,4].includes(action))throw Error('Invalid v3 action');return this.prepare({kind:'action',parameters:config,config,action,slot},keys);}
+ async action(config:Config,action:number,slot:number,keys:WalletKey[]){if(action===3)return this.claim(config,keys);if(![1,4].includes(action))throw Error('Invalid v3 action');return this.prepare({kind:'action',parameters:config,config,action,slot},keys);}
  async withdraw(config:Config,allocation:string,keys:WalletKey[]){return this.prepare({kind:'withdraw',parameters:config,config,allocation},keys);}
+ /** One approval, one transaction. The caller need not own any offer. */
+ async claim(config:Config,keys:WalletKey[]){
+  const owner=keys.find(k=>k.path==='receive'&&k.index===0);if(!owner)throw Error('Connect a compatible wallet with receive child zero');
+  const snapshot=await new AssetIndexer(this.provider,config).sync(),next=decision(snapshot.instance,snapshot.clock);
+  if(snapshot.pending.length)throw Error('A competing vault transaction is pending; refresh before claiming');
+  if(next.phase!=='ready')throw Error(next.reason);
+  const journal=await this.store.list();
+  if(journal.some(o=>o.kind==='claim'&&o.config?.genesis===config.genesis&&o.step!=='complete'))throw Error('An existing claim needs reconciliation or explicit discard before another spend');
+  const reserved=new Set(journal.filter(o=>o.step!=='complete').flatMap(o=>o.plan?planCoins(o.plan).map(i=>i.txid+':'+i.vout):[]));
+  const inventory=await scanWallet(this.provider,keys),required=sponsorAmount(snapshot.instance,3);
+  const coin=inventory.coins.filter(c=>!c.utxo.token&&!reserved.has(c.utxo.txid+':'+c.utxo.vout)&&(c.utxo.satoshis===required||c.utxo.satoshis>=required+CARRIER)).sort((a,b)=>a.utxo.satoshis<b.utxo.satoshis?-1:a.utxo.satoshis>b.utxo.satoshis?1:0)[0];
+  if(!coin)throw Error(`Insufficient BCH: one confirmed token-free wallet coin must cover ${required} satoshis (miner fee ${FEE}, token carriers ${required-FEE}), with exact funding or at least 1000 satoshis change`);
+  const clock=await verifyCoinsAcrossPeers(this.provider,[...snapshot.instance.inputs,coin.utxo]);
+  if(clock.hash!==snapshot.tip.hash)throw Error('Chain changed during fee selection; refresh before authorizing');
+  const built=transitionBuilder(snapshot.instance,3,next.slot,this.provider,clock,sponsor(coin,coin.utxo),undefined,undefined,{address:walletAddress(hexToBin(coin.publicKey))});
+  const op:Operation={id:crypto.randomUUID(),version:3,kind:'claim',parameters:config,config,action:3,slot:next.slot,owner,payer:{publicKey:coin.publicKey,path:coin.path,index:coin.index},source:snapshot.instance.inputs[0].txid,step:'action',stage:'review',plan:plan(built.builder,`Claim reward to top offer #${next.slot}; caller pays miner fee ${FEE} sats + token carriers ${required-FEE} sats; change ${coin.utxo.satoshis-required} sats; no caller reward`,[{coin,index:3}])};
+  await this.store.save(op);return op;
+ }
+ private async checkClaim(op:Operation){
+  if(!op.config||!op.plan||!op.payer||op.source===undefined||op.slot===undefined||op.step!=='action')throw Error('Invalid saved claim');
+  const snapshot=await new AssetIndexer(this.provider,op.config).sync();
+  validateIntent(op,op.owner,snapshot);
+  if(snapshot.instance.inputs[0].txid!==op.source)throw Error('Claim state changed; reconcile the conflicting claim');
+  const coins=planCoins(op.plan),tx=op.plan.request.transaction as Transaction;
+  if(coins.length!==4||coins[3]!.token||coins[3]!.lockingBytecode!==walletScript(op.payer.publicKey))throw Error('Invalid caller BCH input');
+  const built=transitionBuilder(snapshot.instance,3,op.slot,this.provider,{height:snapshot.clock.height,mtp:tx.locktime+1},sponsor(op.payer,coins[3]!),undefined,undefined,{address:walletAddress(hexToBin(op.payer.publicKey))});
+  const expected=plan(built.builder,op.plan.label,[{coin:keyCoin(op.payer,coins[3]!),index:3}]);
+  if(walletPlanIdentity(op.plan)!==walletPlanIdentity(expected))throw Error('Saved claim changes the winner, fee, carriers, inputs or caller change');
+  return snapshot;
+ }
+ private async resumeClaim(op:Operation){
+  if(op.raw&&op.txid){
+   try{const s=await new AssetIndexer(this.provider,op.config!).sync();
+    const confirmed=s.history.includes(op.txid),pending=s.pending.includes(op.txid),conflict=!confirmed&&!pending&&s.instance.inputs[0].txid!==op.source;
+    const next:Operation={...op,step:confirmed||conflict?'complete':'action',stage:confirmed?'confirmed':pending?'pending':conflict?'conflicted':'prepared',error:conflict?'A competing confirmed claim/state spend superseded this transaction':confirmed?undefined:'Signed transaction retained; only an explicit identical-byte retry is permitted'};
+    await this.store.save(next);return next;
+   }catch(e){const next:Operation={...op,step:'action',stage:'prepared',error:'Confirmation unavailable; signed claim retained: '+String(e)};await this.store.save(next);return next;}
+  }
+  if(op.step==='complete')return op;
+  try{await this.checkClaim(op);return op;}catch(e){const next:Operation={...op,error:'Unsigned claim needs refresh/discard: '+String(e)};await this.store.save(next);throw e;}
+ }
  private async prepare(request:Pick<Operation,'kind'|'parameters'> & Partial<Operation>,keys:WalletKey[]){
  const owner=keys.find(k=>k.path==='receive'&&k.index===0);if(!owner)throw Error('Receive child zero required');
  const journal=await this.store.list(),reserved=new Set(journal.filter(o=>o.step!=='complete').flatMap(o=>o.plan?.request.transaction.inputs.map(i=>Buffer.from(i.outpointTransactionHash).toString('hex')+':'+i.outpointIndex)??[]));
@@ -89,6 +130,7 @@ export class AssetWallet {
  await verifyCoinsAcrossPeers(this.provider,selected.map(c=>c.utxo));await this.store.save(op);return op;
  }
  async resume(id:string){let op=(await this.store.list()).find(o=>o.id===id);if(!op)throw Error('Unknown v3 operation');
+ if(op.kind==='claim')return this.resumeClaim(op);
  if(op.raw&&op.txid){let status:any;
  try{status=await confirmedWalletTransaction(this.provider,op.txid);}catch(e){const uncertain={...op,step:op.step==='complete'?'action' as const:op.step,stage:'prepared' as const,error:'Confirmation unavailable; signed transaction retained: '+String(e)};await this.store.save(uncertain);return uncertain;}
  if(status.confirmations<=0){const pending={...op,step:op.step==='complete'?'action' as const:op.step,stage:'pending' as const,error:'Awaiting canonical confirmation; a previous confirmation may have been reorganized'};await this.store.save(pending);return pending;}
@@ -115,21 +157,23 @@ export class AssetWallet {
  async authorize(id:string){
  const op=(await this.store.list()).find(o=>o.id===id);
  if(!op?.plan||op.stage!=='review'||op.raw||op.txid)throw Error('V3 operation is not awaiting unsigned wallet approval');
- validateParameters(op.parameters);validateFundingPlan(op,this.provider);
+ validateParameters(op.parameters);validateFundingPlan(op,this.provider);if(op.kind==='claim')await this.checkClaim(op);
  await verifyCoinsAcrossPeers(this.provider,planCoins(op.plan));
  return {plan:op.plan,owner:op.owner,verifiedAt:Date.now()};
  }
+ async signingFailed(id:string,error:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)return op;const next={...op,error:'Wallet authorization interrupted or refused: '+error.slice(0,500)};await this.store.save(next);return next;}
  async rebroadcastFunding(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.fundingRaw||!op.fundingPlan)throw Error('No saved signed funding transaction');
  validateFundingPlan({...op,step:'funding',plan:op.fundingPlan},this.provider);const inputs=planCoins(op.fundingPlan),clock=await verifyCoinsAcrossPeers(this.provider,inputs);validateWalletSigned(op.fundingPlan,op.fundingRaw,clock);
  await this.provider.session(async()=>{await verifyCoinsAcrossPinned(this.provider,inputs);await this.provider.sendRawTransaction(op.fundingRaw!);},clock.peer);
  const pending={...op,stage:'pending' as const,error:'Identical funding transaction retried; awaiting confirmation'};await this.store.save(pending);return pending;
  }
  async rebroadcast(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.raw||!op.plan||!op.txid||op.step==='complete')throw Error('No uncertain signed transaction');
+ if(op.kind==='claim'){const checked=await this.resumeClaim(op);if(checked.stage==='confirmed'||checked.stage==='conflicted'||checked.stage==='pending')return checked;}
  const reviewed={...op,stage:'review' as const};await this.store.save(reviewed);return this.submit(id,op.raw);
  }
- async discard(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)throw Error('Only unsigned operations may be discarded');if(op.kind==='create'&&op.funding)throw Error('A funded factory must remain recoverable; finish genesis instead of discarding it');const discarded={...op,step:'complete' as const,stage:'confirmed' as const,plan:undefined,error:'Unsigned operation discarded; prepared wallet coins remain spendable'};await this.store.save(discarded);return discarded;}
+ async discard(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)throw Error('Only unsigned operations may be discarded');if(op.kind==='create'&&op.funding)throw Error('A funded factory must remain recoverable; finish genesis instead of discarding it');const discarded={...op,step:'complete' as const,stage:op.kind==='claim'?'conflicted' as const:'confirmed' as const,plan:undefined,error:'Unsigned operation discarded; prepared wallet coins remain spendable'};await this.store.save(discarded);return discarded;}
  async submit(id:string,raw:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.plan||op.stage!=='review')throw Error('No reviewed v3 plan');
- validateFundingPlan(op,this.provider);if(op.step==='action'&&op.config)validateIntent(op,op.owner,await new AssetIndexer(this.provider,op.config).sync());const inputs=planCoins(op.plan);
+ validateFundingPlan(op,this.provider);if(op.kind==='claim')await this.checkClaim(op);if(op.step==='action'&&op.config)validateIntent(op,op.owner,await new AssetIndexer(this.provider,op.config).sync());const inputs=planCoins(op.plan);
  const clock=await verifyCoinsAcrossPeers(this.provider,inputs),validated=validateWalletSigned(op.plan,raw,clock,v3WalletValidation),prepared={...op,raw,txid:validated.txid,stage:'prepared' as const};await this.store.save(prepared);
  try {await this.provider.session(async()=>{await verifyCoinsAcrossPinned(this.provider,inputs);await this.provider.sendRawTransaction(raw);},clock.peer);const sent={...prepared,stage:'pending' as const};await this.store.save(sent);return sent;}catch(e){const uncertain={...prepared,error:String(e)};await this.store.save(uncertain);return uncertain;}
  }

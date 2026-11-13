@@ -45,7 +45,7 @@ export function genesisBuilder(p:Parameters,factoryInput:SpendableUtxo,rewardFun
  .addOutput({to:cs.reserve.tokenAddress,...assetOutput(p.rewardAsset,p.cap*BigInt(p.periods))});return {builder,state};
 }
 // A caller supplies either a wallet placeholder or an actual SignatureTemplate. No key is held here.
-export function transitionBuilder(v:Instance,action:number,slot:number,provider:NetworkProvider,clock:KeeperClock,sponsor:Sponsor,authorization?:SignatureTemplate|Uint8Array,registration?:{owner:Uint8Array;terms:Terms;funding:Sponsor}) {
+export function transitionBuilder(v:Instance,action:number,slot:number,provider:NetworkProvider,clock:KeeperClock,sponsor:Sponsor,authorization?:SignatureTemplate|Uint8Array,registration?:{owner:Uint8Array;terms:Terms;funding:Sponsor},payerChange?:{address:string}) {
  const cs=validateInstance(v,provider),state=v.state;
  if(!Number.isInteger(action)||action<0||action>4||action===2||!Number.isInteger(slot)||slot<0||slot>15)throw Error('Invalid action or slot');
  if(sponsor.input.token)throw Error('Fee sponsor must be token-free BCH');
@@ -65,6 +65,12 @@ export function transitionBuilder(v:Instance,action:number,slot:number,provider:
  b.addOutput({to:ownerAddress(Buffer.from(winner.owner,'hex'),provider),...assetOutput(v.parameters.rewardAsset,BigInt(winner.reward),v.parameters.rewardAsset.kind==='bch'?0n:CARRIER)})
  .addOutput({to:a.tokenAddress,...assetOutput(v.parameters.stakingAsset,BigInt(winner.stake),v.parameters.stakingAsset.kind==='bch'?0n:CARRIER)});}
  if(action===4){const r=records(state)[slot];if(!r)throw Error('Missing refund owner');b.addOutput({to:ownerAddress(Buffer.from(r.owner,'hex'),provider),...assetOutput(v.parameters.stakingAsset,BigInt(r.stake)*BigInt(r.maxWins-r.wins),v.parameters.stakingAsset.kind==='bch'?0n:CARRIER)});}
+ if(payerChange){
+  if(action!==3)throw Error('Caller change is only supported for reward claims');
+  const change=sponsor.input.satoshis-sponsorAmount(v,3);
+  if(change<0n||change>0n&&change<CARRIER)throw Error('Insufficient BCH or claim change below 1000 satoshis');
+  if(change>0n)b.addOutput({to:payerChange.address,amount:change});
+ }
  return {builder:b,state:next,terms,sources:[...v.inputs,...(action===0?[registration!.funding.input]:[]),sponsor.input]};
 }
 export function sponsorAmount(v:Instance,action:number){return FEE+(action===0&&v.parameters.stakingAsset.kind==='token'?-CARRIER:0n)+(action===3?(v.parameters.rewardAsset.kind==='token'?CARRIER:0n)+(v.parameters.stakingAsset.kind==='token'?CARRIER:0n):0n)+(action===4&&v.parameters.stakingAsset.kind==='token'?CARRIER:0n);}

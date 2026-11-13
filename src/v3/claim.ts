@@ -1,7 +1,14 @@
 import {Buffer} from '../bytes.js';
 import {walletPeers,verifyCoinsAcrossPeers} from '../electrum-wallet.js';
 import {AssetIndexer,type Config,type Snapshot} from './indexer.js';
-import {covenant,family,decision,sponsorAmount,transitionBuilder,validateBuilt} from './protocol.js';
+import {FEE,CARRIER,covenant,family,decision,sponsorAmount,transitionBuilder,validateBuilt} from './protocol.js';
+/** Public inspection is read-only. The connected caller pays through AssetWallet.claim. */
+export async function inspectClaim(index:AssetIndexer){
+ const snapshot=await index.sync(),next=decision(snapshot.instance,snapshot.clock),required=sponsorAmount(snapshot.instance,3);
+ return {snapshot,next,required,minerFee:FEE,carriers:required-FEE,carrierPerTokenOutput:CARRIER};
+}
+
+/** The UI retains legacy donation journals for read-only reconciliation. */
 export interface ClaimRecord {id:string;config:Config;source:string;raw:string;status:'prepared'|'pending'|'confirmed'|'conflicted';error?:string}
 export interface ClaimStore {list():Promise<ClaimRecord[]>;save(record:ClaimRecord):Promise<void>}
 /** Anyone can supply the exact BCH donation. No key, wallet session or keeper is used. */

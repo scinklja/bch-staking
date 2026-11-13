@@ -103,7 +103,14 @@ contract RegistryV3(bytes32 category, bytes64 assets, int epoch, int periodSecon
             live = live.slice(0,slot*49+47) + 0x01 + live.slice(slot*49+48,784);
             next = state.slice(0,6) + live;
         } else if (action == 3) {
-            require(tx.outputs.length == 5);
+            require(tx.outputs.length == 5 || tx.outputs.length == 6);
+            // Only the external payer's own BCH can return as change.
+            if (tx.outputs.length == 6) {
+                require(tx.outputs[5].lockingBytecode == tx.inputs[3].lockingBytecode);
+                require(tx.outputs[5].value >= 1000);
+                require(tx.outputs[5].tokenCategory == 0x && tx.outputs[5].tokenAmount == 0);
+                require(tx.outputs[5].nftCommitment == 0x);
+            }
             require(tx.time >= epoch + periodSeconds);
             int released = (tx.locktime - epoch) / periodSeconds;
             if (released > periods) { released = periods; }
@@ -193,7 +200,7 @@ contract RegistryV3(bytes32 category, bytes64 assets, int epoch, int periodSecon
         require(tx.outputs[0].nftCommitment == hash256(next));
         int totalIn = 0;
         int totalOut = 0;
-        for (int x = 0; x < 5; x++) {
+        for (int x = 0; x < 6; x++) {
             if (x < tx.inputs.length) {
                 require(tx.inputs[x].sequenceNumber == 4294967294);
                 totalIn = totalIn + tx.inputs[x].value;

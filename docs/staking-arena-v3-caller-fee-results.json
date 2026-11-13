@@ -1,0 +1,48 @@
+{
+  "network": "isolated BCHN regtest",
+  "verifiedAt": "2026-11-13T19:59:48.418Z",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "evidence": [
+    {
+      "staking": "bch",
+      "reward": "bch",
+      "txid": "655edf8736d357a663c1347d9632d3140fc33fbdf748ec2b20641a3692ccf98f",
+      "inputs": 4,
+      "outputs": 6,
+      "minerFee": "10000",
+      "carriers": "0",
+      "change": "90000"
+    },
+    {
+      "staking": "bch",
+      "reward": "token",
+      "txid": "1274d6bdcfe38a41e6d43d69e63e35b2876e86e2a1c81a1cb8ef8d598d369301",
+      "inputs": 4,
+      "outputs": 6,
+      "minerFee": "10000",
+      "carriers": "1000",
+      "change": "79000"
+    },
+    {
+      "staking": "token",
+      "reward": "bch",
+      "txid": "d07d8f337ed0f446e855ce5702789f3bd33a723df071e463316e7c7b15f16e6a",
+      "inputs": 4,
+      "outputs": 6,
+      "minerFee": "10000",
+      "carriers": "1000",
+      "change": "68000"
+    },
+    {
+      "staking": "token",
+      "reward": "token",
+      "txid": "ca84af0f1d3c299adc810626f3915e62c0d5b471dfe2f817134e6d4533072379",
+      "inputs": 4,
+      "outputs": 6,
+      "minerFee": "10000",
+      "carriers": "2000",
+      "change": "56000"
+    }
+  ],
+  "physicalCashonizeVerified": false
+}

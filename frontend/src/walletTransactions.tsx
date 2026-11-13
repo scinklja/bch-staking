@@ -4,6 +4,7 @@ import { createContext, useContext } from 'react';
 import { apiBaseUrl } from './api';
 export interface WalletTransactions {
   browser?:boolean;
+  v3Availability?():{available:boolean;reason?:string};
   v3?(intent:Record<string,unknown>):Promise<any>;
   v2?(intent:Record<string,unknown>):Promise<any>;
   inventory?(limit?:number):Promise<import('../../src/electrum-wallet').WalletInventory>;

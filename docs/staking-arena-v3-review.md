@@ -1,5 +1,9 @@
 # Staking Arena v3 review
 
+Historical review through `c156397`. The subsequent caller-funded claim covenant
+revision is documented in [caller-funded claims](staking-arena-v3-caller-fees.md);
+the complete regression results below do not cover that revision.
+
 Reviewed from `57f742b` on `dev/staking-arena-v3`. This is a local development
 review, not an independent security audit or deployment approval. Existing hosting
 templates and sanitized legacy wallet/chipnet evidence were committed separately;

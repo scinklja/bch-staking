@@ -60,9 +60,11 @@ after relative maturity.
 
 Every transition requires exactly 10,000 BCH sats in fees, externally funded by one
 BCH-only sponsor input. Extra token payout/allocation carriers also come from that
-input. Protected amounts cannot fund fees. Permissionless sponsors can use an
-anyone-can-spend fee covenant; wallet funding is optional for claims, required for
-wallet-owned funds. Broadcasting is pending; only canonical proof verification is
+input. Protected amounts cannot fund fees. The Claim reward interface now requires
+a connected caller wallet to sign that BCH input in the atomic claim transaction.
+The caller may differ from the winner and receives no reward or reimbursement.
+Optional output 5 returns BCH change to exactly the input 3 locking script.
+See [caller-funded claims](staking-arena-v3-caller-fees.md) for the updated format. Broadcasting is pending; only canonical proof verification is
 confirmation. Signed operation journals are persisted before broadcast.
 
 ## Timing
@@ -104,7 +106,7 @@ agreement, and blocks action on pending state spends. Reorgs invalidate cached s
 refresh replays the new branch. Unconfirmed records never authorize claims.
 
 Inherited limitations: serialized throughput, sixteen lifetime slots, bounded raw
-amounts and release count, exact sponsor amounts, external BCH liquidity, and possible
+amounts and release count, single-input fee funding, external BCH liquidity, and possible
 permanent head blockage. At most 256 wins can occur across the sixteen lifetime offers with W <= 16.
 Exhausted registration capacity can therefore strand an unused reserve even without
 head blockage. No creator sweep or parameter mutation is introduced. Lost
@@ -116,7 +118,8 @@ security audit. No v3 chipnet/mainnet deployment is authorized.
 
 The new route is `#/v3`. Creation and offer funding use the existing WizardConnect
 signing interface and immutable unsigned transaction plans, with a separate v3
-IndexedDB journal. The public read/claim worker runs without a connected wallet.
+IndexedDB journal. Public inspection works without a wallet; new claims require
+explicit wallet authorization of the caller BCH input.
 Set `VITE_V3_REGTEST_ENDPOINTS` to two local WSS Electrum Cash 1.5 endpoints
 (default `wss://127.0.0.1:4177,wss://localhost:4177`). Both must serve the local BCHN
 regtest genesis; public endpoints are rejected in regtest mode. Use a local Fulcrum
@@ -134,10 +137,11 @@ inherited browser verification limitation is not a trusted protocol operator.
 The UI shows exact integer amounts and priorities, continuous insertion rank,
 remaining reserve, virtual buffer, next UTC release, head blockage reasons, independent
 allocation maturity, a pending-display toggle, and saved operation recovery. Verified
-snapshots expire after 30 seconds. Clicking claim always verifies again. Public
-sponsors donate the exact required BCH amount to the vault-specific FeeSponsorV3
-address, which can only be consumed at input 3 of a valid five-output claim.
-Donations have no refund path; competing callers cannot redirect the reward.
+snapshots expire after 30 seconds. Clicking claim always verifies again. The caller
+pays the fixed miner fee and token carriers directly, with BCH change returned in
+the same transaction. FeeSponsorV3 is retained for historical tests/journals; no
+pre-funding transaction or donation address is required by the new claim interface.
+The winner and payout are covenant-enforced.
 
 Run `npm run node:start`, then `npm run test:v3`. Run `npm test` for existing v1/v2
 regressions and the v3 suite (the chipnet-named tests use local fixtures/mocked RPC).

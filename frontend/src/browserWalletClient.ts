@@ -24,7 +24,7 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
   return {txid:op.txid??'',status:op.stage,operation:op};
  }
  function v2Updated(result:V2Operation){if(result?.id)window.dispatchEvent(new CustomEvent('arena-v2-operation',{detail:result}));return result;}
- return {browser:true,async v2(intent){
+ return {browser:true,v3Availability(){try{check();const current=getManager();if(typeof current.signTransaction!=='function'||!current.hasPath(0))throw Error('Compatible transaction signing and receive derivation required');return {available:true};}catch(error){return {available:false,reason:manager?String(error):'Connect a compatible WizardConnect/Cashonize wallet declaring local regtest'};}},async v2(intent){
    await startup;
    if(['list','sync'].includes(String(intent.operation)))return rpc('v2',intent,[]);
    if(v2Approval)throw Error('A v2 wallet operation is awaiting approval; finish it before continuing');
@@ -63,11 +63,13 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
     if(Date.now()-authorization.verifiedAt>10000)throw Error('V3 approval verification became stale; reconcile and retry');
     if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before v3 approval');
     window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Awaiting explicit wallet approval for '+authorization.plan.label}));
+    try{
     const signed=await getManager().signTransaction({transaction:wizardWireTransaction(authorization.plan.request),inputPaths:authorization.plan.inputPaths},{signal:signing.signal});
     check();if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed during v3 approval');
     if(signed.error||!signed.signedTransaction)throw Error('V3 signing refused; operation remains recoverable');
     window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Validating the signed v3 transaction and confirmed regtest inputs before broadcast'}));
     return (await v3Call({operation:'submit',id:result.id,raw:signed.signedTransaction},[]));
+    }catch(error){await v3Call({operation:'signingFailed',id:result.id,error:String(error)},[]).catch(()=>{});throw error;}
    }finally{v3Approval=false;}
   },publicKey(){check();const key=getManager().getPubkey(0,0n);if(!key)throw Error('Wallet receive key unavailable');return binToHex(key);},async inventory(limit=40){if(![40,200].includes(limit))throw Error("Unsupported scan bound");scanLimit=limit;await startup;return rpc('scan',keys());},async operations(){await startup;const list=await rpc('list') as WalletOperation[];list.forEach(rememberGenesis);return list;},async inspect(id){await startup;const op=await rpc('get',id) as WalletOperation;if(op.step==='complete')await finish(op);return op;},async importVault(config){await startup;const result=await rpc('importVault',config,true);saveLocalVault(result.config,result.category);return result;},async execute(intent){
   await startup;let op:WalletOperation;
