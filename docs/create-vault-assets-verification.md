@@ -82,18 +82,30 @@ disabled, and no new covenant is deployed.
 
 ## Delivery state
 
-Implementation commit: `7f2b6d4`. Tested compiled frontend commit:
-`01c9bb8209724d176671af48f1a24bdb95bb2e9f` in the local deployment checkout.
-Publication is prepared but blocked by authentication: the connected GitHub
-integration returned HTTP 403 on creating the rollback branch, and the existing
-CLI credential is in the locked desktop login keyring. The user was asked to
-unlock that keyring. No remote branch or Pages content was changed.
+Implementation commit: `7f2b6d4`. Compiled frontend commit:
+`01c9bb8209724d176671af48f1a24bdb95bb2e9f` is deployed to
+https://scinklja.github.io/staking-arena-site/. GitHub Pages reported the build
+complete on 2026-11-13 at 10:28:33 UTC. All 21 compiled files were retrieved by
+HTTP GET and matched their tested SHA-256 hashes. The public frontend was not
+executed against live providers. The earlier authentication blocker was resolved
+using the existing CLI credential after the desktop keyring was unlocked.
 
 The previous public release is
 `1d361a8d9418886e689d781aa001b3f2567aab3f`, retained in the verified complete
-`.pages-release/pre-unified-create-2026-11-13.bundle` and local branch
-`rollback/pre-unified-create-2026-11-13`. The prepared release retains old hashed
-assets for open tabs. An HTTP-only check confirmed that Pages still serves the
-previous release. Asset hashes, test counts and delivery state are recorded in
-[the deployment manifest](create-vault-assets-deployment.json). No live chain
-verification is needed to finish the static frontend publication.
+`.pages-release/pre-unified-create-2026-11-13.bundle` and published branch
+`rollback/pre-unified-create-2026-11-13`. Publication atomically advanced `main`
+and created that rollback branch. The release retains all 30 previous hashed
+assets unchanged; the previous entry script was also fetched and hash-verified.
+Asset hashes, test counts and deployment evidence are recorded in
+[the deployment manifest](create-vault-assets-deployment.json).
+
+To roll back while preserving assets used by already-open tabs, restore just the
+previous entrypoint in the deployment checkout, then publish a new commit:
+
+```sh
+git -C .pages-release/public restore --source=rollback/pre-unified-create-2026-11-13 -- index.html
+git -C .pages-release/public commit -m "Restore previous Pages entrypoint"
+git -C .pages-release/public push origin main
+```
+
+These rollback commands are documented for recovery and were not executed.
