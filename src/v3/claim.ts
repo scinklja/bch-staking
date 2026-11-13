@@ -1,3 +1,4 @@
+import {v3Storage,type V3Network} from './network.js';
 import {Buffer} from '../bytes.js';
 import {walletPeers,verifyCoinsAcrossPeers} from '../electrum-wallet.js';
 import {AssetIndexer,type Config,type Snapshot} from './indexer.js';
@@ -40,8 +41,9 @@ export class RewardClaimer {
  }
 }
 export class BrowserClaimStore implements ClaimStore {
+ constructor(readonly network:V3Network='regtest'){}
  private db?:Promise<IDBDatabase>;
- private open(){return this.db??=new Promise<IDBDatabase>((resolve,reject)=>{const r=indexedDB.open('staking-arena-claims-v3',1);r.onupgradeneeded=()=>r.result.createObjectStore('claims');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(Error('Claim journal blocked'));});}
+ private open(){return this.db??=new Promise<IDBDatabase>((resolve,reject)=>{const r=indexedDB.open(v3Storage('claims',this.network),1);r.onupgradeneeded=()=>r.result.createObjectStore('claims');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);r.onblocked=()=>reject(Error('Claim journal blocked'));});}
  async list(){const db=await this.open();return new Promise<ClaimRecord[]>((resolve,reject)=>{const r=db.transaction('claims').objectStore('claims').getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
  async save(r:ClaimRecord){const db=await this.open();await new Promise<void>((resolve,reject)=>{const t=db.transaction('claims','readwrite',{durability:'strict'});t.objectStore('claims').put(r,r.id);t.oncomplete=()=>resolve();t.onerror=()=>reject(t.error);t.onabort=()=>reject(t.error);});}
 }

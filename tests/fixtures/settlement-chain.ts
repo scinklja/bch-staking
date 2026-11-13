@@ -12,6 +12,7 @@ export class SettlementChain {
   proofs=new Map<string,any>();
   pending=new Set<string>();
   broadcasts:string[]=[];
+  transactionValidator=validateKeeperTransaction;
   permittedFees=new Set([10000n]);
   fail=false;disagree=false;rejectNext=false;loseAcknowledgement=false;
   height=0;time=Math.floor(Date.now()/1000)-1200;
@@ -76,7 +77,7 @@ export class SettlementChain {
       const sources=tx.vin.map(i=>{const prev=this.transactions.get(i.txid);if(!prev)throw Error('Missing input');return sourceOutput(utxo(prev,i.vout));});
       const fee=sources.reduce((n,o)=>n+o.valueSatoshis,0n)-tx.vout.reduce((n,o)=>n+BigInt(o.satoshis),0n);
       if(!this.permittedFees.has(fee))throw Error('Unexpected fixture fee');
-      validateKeeperTransaction(tx.hex,sources,this.clock(),fee);
+      this.transactionValidator(tx.hex,sources,this.clock(),fee);
       this.transactions.set(tx.txid,tx);this.pending.add(tx.txid);
       if(this.loseAcknowledgement){this.loseAcknowledgement=false;throw Error('Connection lost after submission');}
       return tx.txid;

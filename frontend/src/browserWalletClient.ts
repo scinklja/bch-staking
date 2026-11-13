@@ -24,7 +24,7 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
   return {txid:op.txid??'',status:op.stage,operation:op};
  }
  function v2Updated(result:V2Operation){if(result?.id)window.dispatchEvent(new CustomEvent('arena-v2-operation',{detail:result}));return result;}
- return {browser:true,v3Availability(){try{check();const current=getManager();if(typeof current.signTransaction!=='function'||!current.hasPath(0))throw Error('Compatible transaction signing and receive derivation required');return {available:true};}catch(error){return {available:false,reason:manager?String(error):'Connect a compatible WizardConnect/Cashonize wallet declaring local regtest'};}},async v2(intent){
+ return {browser:true,v3Availability(){try{check();const current=getManager();if(typeof current.signTransaction!=='function'||!current.hasPath(0))throw Error('Compatible transaction signing and receive derivation required');return {available:true};}catch(error){return {available:false,reason:manager?String(error):'Connect a compatible WizardConnect/Cashonize wallet using chipnet test funds'};}},async v2(intent){
    await startup;
    if(['list','sync'].includes(String(intent.operation)))return rpc('v2',intent,[]);
    if(v2Approval)throw Error('A v2 wallet operation is awaiting approval; finish it before continuing');
@@ -59,6 +59,7 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
     const result=(await v3Call(intent,intent.operation==='resume'?[]:keys()));
     if(!result?.plan||result.stage!=='review')return result;
     const authorization=await v3Call({operation:'authorize',id:result.id},[]);
+    if(authorization.plan.request.broadcast!==false)throw Error('V3 wallet broadcasting must remain disabled');
     check();if(authorization.owner?.publicKey!==binToHex(getManager().getPubkey(0,0n)??new Uint8Array()))throw Error('Resume with the original v3 wallet owner');
     if(Date.now()-authorization.verifiedAt>10000)throw Error('V3 approval verification became stale; reconcile and retry');
     if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before v3 approval');
@@ -67,7 +68,7 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
     const signed=await getManager().signTransaction({transaction:wizardWireTransaction(authorization.plan.request),inputPaths:authorization.plan.inputPaths},{signal:signing.signal});
     check();if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed during v3 approval');
     if(signed.error||!signed.signedTransaction)throw Error('V3 signing refused; operation remains recoverable');
-    window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Validating the signed v3 transaction and confirmed regtest inputs before broadcast'}));
+    window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Validating the signed v3 transaction and confirmed chipnet inputs before broadcast'}));
     return (await v3Call({operation:'submit',id:result.id,raw:signed.signedTransaction},[]));
     }catch(error){await v3Call({operation:'signingFailed',id:result.id,error:String(error)},[]).catch(()=>{});throw error;}
    }finally{v3Approval=false;}

@@ -1,0 +1,52 @@
+{
+  "verifiedAt": "2026-11-13T21:31:50.076459+00:00",
+  "reviewedBase": "5777a9995d3e8ffee6c7339f8abb950192f5b453",
+  "network": "chipnet",
+  "mainnetEnabled": false,
+  "covenantArtifactsChanged": false,
+  "v3ArtifactsSha256": {
+    "artifacts/AssetRoleV3.json": "79626fe2232b6a2e8da140de2ec0394159b131ab78339ca2d1d1e8551e573d46",
+    "artifacts/FeeSponsorV3.json": "538d7ce53ee915eff0c2b549c2a0853a3b0639a32e56691d13ba8b978a429801",
+    "artifacts/RegistryGenesisV3.json": "9082878b81b0a21e6efc1e47beb6319c1b623e35c32d69a34e1a833c6a9f374e",
+    "artifacts/RegistryV3.json": "356065c67be7f8ca578e22a031158cf933977e75a10ef77a2e5a1b1cb114e4f6",
+    "artifacts/StakeAllocationV3.json": "e3314fb2b673e3016bfbdccdec62d823f54d5f2a489a6df7c0b689da6f022346"
+  },
+  "checks": {
+    "rootTypecheck": "passed",
+    "frontendTypecheck": "passed",
+    "productionBuild": "passed",
+    "frontendUnitTests": {
+      "passed": 77,
+      "files": 21
+    },
+    "finalV3UiTests": {
+      "passed": 4
+    },
+    "chipnetWalletPlanIntegration": {
+      "passed": 5,
+      "pairs": [
+        "bch-bch",
+        "bch-token",
+        "token-bch",
+        "token-token"
+      ],
+      "syntheticChain": true,
+      "realVmValidation": true
+    },
+    "electrumRegression": {
+      "passed": 5
+    },
+    "v3BrowserWss": {
+      "passed": 2
+    },
+    "readOnlyPublicElectrum": "three pinned providers; same chipnet tip",
+    "compiledOnlyAssetAudit": "passed",
+    "localCompiledBrowser": "passed"
+  },
+  "walletConnected": false,
+  "liveWalletTransactionVerified": false,
+  "liveTransactionsInitiated": false,
+  "fullRegtestReviewRepeated": false,
+  "rollbackCommit": "00d5baf50f43b5802f8caf2e5125398dd0bb470d",
+  "rollbackBranch": "rollback/pre-v3-chipnet-2026-11-13"
+}

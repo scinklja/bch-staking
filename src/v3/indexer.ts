@@ -1,3 +1,4 @@
+import {v3Network} from './network.js';
 import {Buffer} from '../bytes.js';
 import {decodeAuthenticationInstructions,binToHex} from '@bitauth/libauth';
 import type {ElectrumCore,Header,HistoryEntry} from '../electrum-core.js';
@@ -16,7 +17,7 @@ const identity=(s:Snapshot)=>JSON.stringify({tip:s.tip.hash,state:s.instance.inp
  */
 export class AssetIndexer {
  snapshot?:Snapshot;error?:string;private busy=false;
- constructor(readonly electrum:ElectrumCore,readonly config:Config){}
+ constructor(readonly electrum:ElectrumCore,readonly config:Config){v3Network(electrum);}
  async sync(){if(this.busy)throw Error('V3 synchronization already running');this.busy=true;try{
   const peers=walletPeers(this.electrum);
   const one=await this.electrum.session(()=>this.replay(),peers[0]);

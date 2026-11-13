@@ -19,3 +19,7 @@ it('wallet rejection persists an unsigned error without submitting or automatica
 it('reconciling a signed uncertain claim never requests another wallet signature',async()=>{
  const {wallet,manager}=setup();vi.mocked(v3Call).mockResolvedValue({id:'claim',raw:'signed',stage:'prepared'});try{await wallet.v3!({operation:'resume',id:'claim'});expect(manager.signTransaction).not.toHaveBeenCalled();}finally{wallet.close?.();}
 });
+
+it('rejects worker authorization that enables wallet broadcasting before Cashonize is called',async()=>{
+ const {wallet,manager}=setup();const previous=vi.mocked(v3Call).getMockImplementation()!;vi.mocked(v3Call).mockImplementation(async (...args)=>{const result=await previous(...args);if(args[0].operation==='authorize')result.plan.request.broadcast=true;return result;});try{await expect(wallet.v3!({operation:'claim',config:{}})).rejects.toThrow(/broadcasting must remain disabled/);expect(manager.signTransaction).not.toHaveBeenCalled();}finally{wallet.close?.();}
+});

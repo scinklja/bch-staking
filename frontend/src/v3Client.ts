@@ -16,7 +16,7 @@ function start():Client{
  worker.onerror=()=>fail(Error('V3 worker failed; saved operations remain recoverable'));
  return current;
 }
-/** Wait for module/WASM initialization before sending a request. Claims need no wallet. */
+/** Wait for module/WASM initialization before sending a request. Inspection needs no wallet; funding and claims require explicit wallet authorization. */
 export async function v3Call(intent:Record<string,unknown>,keys:unknown[]=[]):Promise<any>{
  const current=client??=start();await current.ready;
  return new Promise((resolve,reject)=>{

@@ -12,7 +12,7 @@ import {allocationTerms,hashState,offer,remainingCommitment} from '../registry.j
 import {records} from '../arena-core.js';
 import {sourceOutput,type KeeperClock,type Sponsor} from '../keeper-core.js';
 export interface Instance {parameters:Parameters;category:string;state:Buffer;inputs:[SpendableUtxo,SpendableUtxo,SpendableUtxo]}
-function network(p:NetworkProvider){if(p.network!==Network.REGTEST)throw Error('V3 is regtest only; public deployment requires explicit approval');}
+import {v3Network as network} from './network.js';
 const artifacts={FeeSponsorV3,RegistryV3,RegistryGenesisV3,AssetRoleV3,StakeAllocationV3};
 export function covenant(name:keyof typeof artifacts,args:(bigint|Uint8Array)[],provider:NetworkProvider){network(provider);return new Contract(artifacts[name],args,{provider,contractType:'p2sh32'});}
 export function parameterArgs(p:Parameters){validateParameters(p);return [Buffer.concat([assetBytes(p.stakingAsset),assetBytes(p.rewardAsset)]),BigInt(p.epoch),BigInt(p.periodSeconds),BigInt(p.periods),p.cap];}
@@ -34,7 +34,7 @@ export function validateInstance(v:Instance,provider:NetworkProvider){
  if(v.state.length!==V3_STATE_SIZE||s.satoshis!==CARRIER||s.lockingBytecode!==cs.registry.lockingBytecode||s.token?.category!==v.category||s.token.amount!==0n||s.token.nft?.capability!=='mutable'||s.token.nft.commitment!==hashState(v.state)||e.lockingBytecode!==cs.escrow.lockingBytecode||r.lockingBytecode!==cs.reserve.lockingBytecode||e.txid!==s.txid||r.txid!==s.txid||s.vout!==0||e.vout!==1||r.vout!==2||!matches(e,v.parameters.stakingAsset,remainingCommitment(v.state))||!matches(r,v.parameters.rewardAsset,rewardRemaining(v.state)))throw Error('V3 protected source mismatch');
  return cs;
 }
-export function ownerAddress(owner:Uint8Array,provider:NetworkProvider){const a=encodeCashAddress({prefix:provider.network===Network.REGTEST?'bchreg':'bchtest',type:'p2pkhWithTokens',payload:hash160(owner)});if(typeof a==='string')throw Error(a);return a.address;}
+export function ownerAddress(owner:Uint8Array,provider:NetworkProvider){network(provider);const a=encodeCashAddress({prefix:provider.network===Network.REGTEST?'bchreg':'bchtest',type:'p2pkhWithTokens',payload:hash160(owner)});if(typeof a==='string')throw Error(a);return a.address;}
 export function termsFor(v:Instance,slot:number){const r=records(v.state,false)[slot];if(!r)throw Error('Missing allocation winner');return allocationTerms(Buffer.from(r.owner,'hex'),v.category,assetId(v.parameters.stakingAsset),slot,r.wins,r.stake,allocationSequence(r.duration));}
 export function stateOutput(category:string,state:Uint8Array){return {amount:CARRIER,token:{category,amount:0n,nft:{capability:'mutable' as const,commitment:hashState(state)}}};}
 export function genesisBuilder(p:Parameters,factoryInput:SpendableUtxo,rewardFunding:Sponsor,provider:NetworkProvider){
