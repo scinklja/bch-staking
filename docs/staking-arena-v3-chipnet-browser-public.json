@@ -1,0 +1,36 @@
+{
+  "verifiedAt": "2026-11-13T21:33:56.531Z",
+  "url": "https://scinklja.github.io/staking-arena-site/",
+  "status": "Verified chipnet identity on two providers · height 332215",
+  "pairs": [
+    "bch-bch",
+    "bch-token",
+    "token-bch",
+    "token-token"
+  ],
+  "v3Reload": true,
+  "v1Accessible": true,
+  "v2Accessible": true,
+  "walletConnected": false,
+  "walletSigningVerified": false,
+  "broadcasts": 0,
+  "pageErrors": [],
+  "httpErrors": [],
+  "workers": [
+    "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+    "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DUTsgANd.js",
+    "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+    "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DUTsgANd.js"
+  ],
+  "electrumMethods": [
+    "server.version",
+    "blockchain.block.header",
+    "blockchain.headers.subscribe",
+    "blockchain.transaction.get",
+    "blockchain.scripthash.get_history",
+    "blockchain.transaction.get_merkle",
+    "blockchain.block.headers"
+  ]
+}
