@@ -41,7 +41,7 @@ try{
   await page.getByLabel(/^Maximum reward per period/).fill(pay==='bch'?'0.00002001':'7');
   const reserve=page.locator('.calculation dl>div').filter({has:page.getByText('Total upfront reward reserve',{exact:true})});
   assert.match(await reserve.innerText(),pay==='bch'?/0\.00006003 BCH \(6003 satoshis\)/:/21 raw token units/);
-  assert.equal(await page.getByRole('button',{name:stake==='token'&&pay==='bch'?'Review funding in wallet':'V2 creation unavailable',exact:true}).isDisabled(),true);
+  assert.equal(await page.getByRole('button',{name:'Review funding in wallet',exact:true}).isDisabled(),true);
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   assert.equal(await page.locator('.calculation dd').evaluateAll(nodes=>nodes.every(n=>n.scrollWidth<=n.clientWidth+1)),true,'Funding values fit without clipping');
  }

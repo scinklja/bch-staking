@@ -3,11 +3,12 @@ import {useWalletTransactions,transactionApi} from './walletTransactions';
 import {apiBaseUrl} from './api';
 import {bch,score,type Vault,type Envelope} from './model';
 import {integer,rewardSatoshis,offerPreview,registrationAllowed} from './marketplace';
-import {createQuote,assetLabel,V2_CREATION_UNAVAILABLE,type AssetKind} from './createAssets';
+import {createQuote,assetLabel,V2_CREATION_WARNING,type AssetKind} from './createAssets';
 import type {WalletOperation} from '../../src/browser-wallet';
 import type {WalletInventory} from '../../src/electrum-wallet';
 
 import {sharedVault,vaultShareLink} from './vaultCatalog';
+import V2CreationRecovery,{useV2Creation} from './V2CreationRecovery';
 function useWalletFlow(){
  const wallet=useWalletTransactions(),[inventory,setInventory]=useState<WalletInventory>(),[operations,setOperations]=useState<WalletOperation[]>([]),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
  const currentWallet=useRef(wallet);currentWallet.current=wallet;
@@ -37,14 +38,18 @@ function LegacyApiCreationRecovery(){
  return <details className="advanced"><summary>Existing API creation recovery</summary><p>This saved v1 record predates the unified form. Retain it until the original API verifies and admits its canonical genesis.</p><pre style={{overflowWrap:'anywhere',whiteSpace:'pre-wrap'}}>{JSON.stringify(record,null,2)}</pre><button type="button" disabled={busy||!apiBaseUrl()} onClick={()=>{setBusy(true);void transactionApi('admit',{config:record}).then(()=>{localStorage.removeItem('staking-arena-pending-chipnet-genesis');setRecord(null);}).catch(e=>setMessage(String(e))).finally(()=>setBusy(false));}}>Admit confirmed genesis</button><p role="status">{message}</p></details>;
 }
 export function BrowserCreateForm(){
- const f=useWalletFlow(),active=useRef<string|undefined>(undefined);
+ const f=useWalletFlow(),v2=useV2Creation(),active=useRef<string|undefined>(undefined);
+ const [preferredVersion,setPreferredVersion]=useState<1|2>(2);
+ let connected=false;try{connected=!!f.wallet?.publicKey();}catch{}
  useEffect(()=>{const complete=f.operations.find(o=>o.id===active.current&&o.step==='complete'&&o.config&&o.pregenesis);if(complete){active.current=undefined;location.hash='#/vault/'+complete.pregenesis;}},[f.operations]);
  const [stakeKind,setStakeKind]=useState<AssetKind>('token'),[rewardKind,setRewardKind]=useState<AssetKind>('bch');
  const [asset,setAsset]=useState(''),[rewardCategory,setRewardCategory]=useState(''),[cap,setCap]=useState(''),[duration,setDuration]=useState('86400'),[periods,setPeriods]=useState(''),[epoch,setEpoch]=useState(''),[recovery,setRecovery]=useState(''),[ack,setAck]=useState(false);
  const stakingAsset=stakeKind==='bch'?{kind:'bch' as const}:{kind:'token' as const,category:asset.toLowerCase()},rewardAsset=rewardKind==='bch'?{kind:'bch' as const}:{kind:'token' as const,category:rewardCategory.toLowerCase()};
  let quote:ReturnType<typeof createQuote>|undefined,error='';
- try{quote=createQuote(stakingAsset,rewardAsset,cap,periods,duration,epoch);}catch(e){error=e instanceof Error?e.message:String(e);}
- const protocol=stakeKind==='token'&&rewardKind==='bch'?1:2;
+ try{quote=createQuote(stakingAsset,rewardAsset,cap,periods,duration,epoch,preferredVersion);}catch(e){error=e instanceof Error?e.message:String(e);}
+ const protocol=stakeKind==='token'&&rewardKind==='bch'?preferredVersion:2;
+ const pendingCreation=v2.operations.some(o=>o.kind==='create'&&o.step!=='complete');
+ const creating=f.busy||v2.busy;
  const insufficient=quote&&f.inventory?(BigInt(f.inventory.bch)<quote.requiredBch?'Insufficient token-free BCH in the verified wallet scan.':rewardAsset.kind==='token'&&BigInt(f.inventory.tokens[rewardAsset.category]??'0')<quote.requiredTokens?'Insufficient reward CashTokens in the verified wallet scan.':quote.version===1&&BigInt(f.inventory.tokens[asset.toLowerCase()]??'0')===0n?'V1 creation requires a confirmed fungible category in the verified wallet scan. Tokens are verified, not deposited.':''):'';
  const categories=Object.entries(f.inventory?.tokens??{}).filter(([,amount])=>BigInt(amount)>0n);
  const categoryField=(kind:'staking'|'reward',value:string,setValue:(s:string)=>void)=><label>{kind==='staking'?'Staking asset category':'Reward token category'}<input list="verified-fungible-categories" value={value} onChange={e=>{setValue(e.target.value.toLowerCase());setAck(false);}} maxLength={64} spellCheck={false} placeholder="64-character CashToken category"/><small>Select a verified wallet category or enter one manually. Exact integer fungible units; decimals are not verified.{kind==='staking'&&protocol===1?' V1 requires this category in the confirmed wallet scan; creation does not consume its tokens.':''}</small></label>;
@@ -54,6 +59,7 @@ export function BrowserCreateForm(){
   {stakeKind==='token'&&categoryField('staking',asset,setAsset)}
   <label>Reward asset<select value={rewardKind} onChange={e=>{setRewardKind(e.target.value as AssetKind);setCap('');resetReview();}}><option value="bch">BCH</option><option value="token">CashToken</option></select></label>
   {rewardKind==='token'&&categoryField('reward',rewardCategory,setRewardCategory)}
+  {stakeKind==='token'&&rewardKind==='bch'&&<label>Protocol version<select value={preferredVersion} onChange={e=>{setPreferredVersion(Number(e.target.value) as 1|2);resetReview();}}><option value="2">V2 experimental</option><option value="1">V1 existing protocol</option></select></label>}
   <datalist id="verified-fungible-categories">{categories.map(([id,amount])=><option key={id} value={id}>{amount} verified raw units</option>)}</datalist>
   <label>Maximum reward per period ({rewardKind==='bch'?'BCH':'raw token units'})<input value={cap} onChange={e=>{setCap(e.target.value);resetReview();}} inputMode={rewardKind==='bch'?'decimal':'numeric'}/></label>
   <label>Period duration (seconds)<input value={duration} onChange={e=>setDuration(e.target.value)} inputMode="numeric"/></label>
@@ -74,9 +80,14 @@ export function BrowserCreateForm(){
  <p>No staking asset deposit is required to create this vault. Stakers commit S × W when registering offers. Priority uses exact S × T / R in raw asset units.</p>
  <p>{quote.version===1?'Includes at least 1,000 satoshis for separate wallet change. The committed reserve funds ordinary transitions; optional actions or future relay policy can require additional sponsorship.':'Every later operation needs a separate BCH sponsor: fixed 10,000-satoshi miner fee, plus 1,000 satoshis per token payout/allocation carrier as required by the builder. Creator commits the full reward token reserve during preparation; no staking tokens are consumed. BCH total is a conservative token-free funding allowance; selected token-input carriers can contribute.'}</p></>:<p>{error}</p>}
  {insufficient&&<p role="alert">{insufficient}</p>}</div>
- {protocol===2&&<p role="status">{V2_CREATION_UNAVAILABLE}</p>}
+ {protocol===2&&<p role="status">{V2_CREATION_WARNING}</p>}
  <label><input type="checkbox" checked={ack} onChange={e=>setAck(e.target.checked)}/> I reviewed the terms and funding. Choose a future start and submit offers before its scheduled registration cutoff; automatic period processing is mandatory. The factory can only create this vault; it cannot refund its BCH. I will save recovery information.</label>
- <button className="button" type="button" disabled={protocol!==1||!quote||!f.wallet?.browser||!f.inventory||!!insufficient||f.busy||!ack} onClick={()=>{if(quote?.version!==1||!f.wallet?.browser||!f.inventory||insufficient||!ack)return;void f.execute({kind:'create',parameters:quote.parameters}).then(result=>{if(result?.operation)active.current=result.operation.id;});}}>{protocol===2?'V2 creation unavailable':'Review funding in wallet'}</button></form><p role="status">{f.message}</p><Operations flow={f} kind="create"/>
+ {protocol===2&&pendingCreation&&<p role="status">A v2 creation is already saved. Continue it below; discard an unsigned, unfunded plan before starting another creation.</p>}
+ <button className="button" type="button" disabled={!quote||!f.wallet?.browser||!connected||!f.inventory||!!insufficient||creating||!ack||(protocol===2&&(!f.wallet.v2||!v2.loaded||pendingCreation))} onClick={()=>{
+  if(!quote||!f.wallet?.browser||!connected||!f.inventory||insufficient||!ack||creating)return;
+  if(quote.version===2){if(!v2.loaded||pendingCreation)return;void v2.work({operation:'create',parameters:quote.parameters});}
+  else void f.execute({kind:'create',parameters:quote.parameters}).then(result=>{if(result?.operation)active.current=result.operation.id;});
+ }}>Review funding in wallet</button></form><p role="status">{protocol===1?f.message:''}</p><V2CreationRecovery flow={v2}/><Operations flow={f} kind="create"/>
  <details className="advanced"><summary>Recover a funded factory from another browser</summary><p>Paste the exported public JSON containing parameters and pregenesis. Recovery verifies the exact factory and its canonical spend; it never asks for a seed.</p><textarea value={recovery} onChange={e=>setRecovery(e.target.value)} rows={6}/><button type="button" disabled={f.busy||!recovery} onClick={()=>{try{const record=JSON.parse(recovery);void f.execute({kind:'recover',parameters:record.parameters,pregenesis:record.pregenesis});}catch(e){f.setMessage(String(e));}}}>Import factory recovery record</button></details><LegacyApiCreationRecovery/></>;
 }
 export function BrowserOfferForm({vault:v,tip=null,stale=true,now=Date.now()}:{vault:Vault;tip?:Envelope['tip'];stale?:boolean;now?:number}) {

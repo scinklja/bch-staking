@@ -18,7 +18,7 @@ test('mobile preview forms are usable without suggesting wallet functionality',a
  await expect(page.getByText('9,000 raw token units',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Make an Offer'})).toBeDisabled();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.goto('/#/create',{waitUntil:'domcontentloaded'});await expect(page.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
- await expect(page.getByRole('option')).toHaveCount(4);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await expect(page.getByRole('option')).toHaveCount(6);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 test('retains snapshot labels across outage, reload and navigation, then recovers',async({page})=>{
  let offline=false;await page.route('**/api/vaults',route=>offline?route.abort():route.fulfill({json:fixture()}));
@@ -71,7 +71,7 @@ test('WizardConnect pairs on demand and Escape cancels the accessible mobile dia
  expect(errors).toEqual([]);
 });
 
-test('unified asset selectors support all four pairs with keyboard and touch without public v2 spending',async({page})=>{
+test('unified asset selectors support all four pairs with keyboard and touch without a connected signing wallet',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
  await page.goto('/#/create',{waitUntil:'domcontentloaded'});
  const staking=page.getByRole('combobox',{name:'Staking asset',exact:true}),reward=page.getByRole('combobox',{name:'Reward asset',exact:true});
@@ -86,7 +86,7 @@ test('unified asset selectors support all four pairs with keyboard and touch wit
   await page.getByLabel(/^Maximum reward per period/).fill(pay==='bch'?'0.00002000':'7');
   const reserve=page.locator('.calculation dl > div').filter({has:page.getByText('Total upfront reward reserve',{exact:true})});
   await expect(reserve).toContainText(pay==='bch'?'0.00006000 BCH (6000 satoshis)':'21 raw token units · '+'cd'.repeat(32));
-  await expect(page.getByRole('button',{name:stake==='token'&&pay==='bch'?'Review funding in wallet':'V2 creation unavailable',exact:true})).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Review funding in wallet',exact:true})).toBeDisabled();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  }
  await staking.focus();await page.keyboard.press('ArrowUp');await page.keyboard.press('Enter');await expect(staking).toHaveValue('bch');

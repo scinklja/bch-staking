@@ -28,6 +28,8 @@ scope.onmessage=event=>{
      else if(intent.operation==='keeper')result=await new AssetKeeper(new AssetIndexer(v2!.provider,intent.config),(config,action,slot)=>v2!.action(config,action,slot,keys)).process();
      else if(intent.operation==='action')result=await v2!.action(intent.config,intent.action,intent.slot,keys);
      else if(intent.operation==='withdraw')result=await v2!.withdraw(intent.config,intent.allocation,keys);
+     else if(intent.operation==='authorize')result=await v2!.authorize(intent.id);
+     else if(intent.operation==='inspect')result=await v2!.resume(intent.id);
      else if(intent.operation==='resume')result=await v2!.resume(intent.id);
      else if(intent.operation==='rebroadcastFunding')result=await v2!.rebroadcastFunding(intent.id);
      else if(intent.operation==='rebroadcast')result=await v2!.rebroadcast(intent.id);

@@ -22,7 +22,7 @@ it('reload recovers pending genesis candidates from the journal and excludes fun
  const {wallet}=client([factory,pending]);
  try{await vi.waitFor(()=>expect(localVaultRecords()).toHaveLength(1));expect(localVaultRecords()[0].config.genesis).toBe(pending.genesis);expect(localVaultRecords()[0].category).toBe(pending.pregenesis);}finally{wallet.close?.();}
 });
-it('blocks new public v2 creation before wallet authorization while preserving journal access',async()=>{
+it('requires a live wallet before preparing public v2 creation',async()=>{
  const {wallet,methods}=client([]);
- try{await expect(wallet.v2!({operation:'create',parameters:{}})).rejects.toThrow(/public-wallet creation unavailable/);expect(methods).not.toContain('v2');}finally{wallet.close?.();}
+ try{await expect(wallet.v2!({operation:'create',parameters:{}})).rejects.toThrow(/Connect a chipnet wallet first/);expect(methods).not.toContain('v2');}finally{wallet.close?.();}
 });

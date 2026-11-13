@@ -92,7 +92,7 @@ export class AssetWallet {
  if(op.raw&&op.txid){let status:any;
  try{status=await confirmedWalletTransaction(this.provider,op.txid);}catch(e){const uncertain={...op,step:op.step==='complete'?'action' as const:op.step,stage:'prepared' as const,error:'Confirmation unavailable; signed transaction retained: '+String(e)};await this.store.save(uncertain);return uncertain;}
  if(status.confirmations<=0){const pending={...op,step:op.step==='complete'?'action' as const:op.step,stage:'pending' as const,error:'Awaiting canonical confirmation; a previous confirmation may have been reorganized'};await this.store.save(pending);return pending;}
- if(op.step==='action'){op={...op,step:'complete',stage:'confirmed',config:op.kind==='create'?{...op.parameters,genesis:op.txid}:op.config};await this.store.save(op);return op;}
+ if(op.step==='action'||op.step==='complete'){op={...op,step:'complete',stage:'confirmed',config:op.kind==='create'?{...op.parameters,genesis:op.txid}:op.config};await this.store.save(op);return op;}
  op={...op,funding:op.txid,fundingRaw:op.raw,fundingPlan:op.plan,stage:'confirmed',raw:undefined,txid:undefined,plan:undefined};await this.store.save(op);
  }
  if(op.step==='complete'||(op.plan&&op.step==='funding'))return op;
@@ -110,6 +110,14 @@ export class AssetWallet {
  mapping=op.kind==='offer'?[{coin:coin(0),index:3},{coin:coin(1),index:4}]:[{coin:coin(0),index:3}];if([0,1,4].includes(action))auth=op.owner;
  }}
  op={...op,step:'action',stage:'review',plan:plan(builder,`${op.kind} v2: ${JSON.stringify(op.parameters,(_,v)=>typeof v==='bigint'?v.toString():v)}`,mapping,auth)};await this.store.save(op);return op;
+ }
+ /** Read-only pre-approval validation. Never signs, sends or replaces a funding transaction. */
+ async authorize(id:string){
+ const op=(await this.store.list()).find(o=>o.id===id);
+ if(!op?.plan||op.stage!=='review'||op.raw||op.txid)throw Error('V2 operation is not awaiting unsigned wallet approval');
+ validateParameters(op.parameters);validateFundingPlan(op,this.provider);
+ await verifyCoinsAcrossPeers(this.provider,planCoins(op.plan));
+ return {plan:op.plan,owner:op.owner,verifiedAt:Date.now()};
  }
  async rebroadcastFunding(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.fundingRaw||!op.fundingPlan)throw Error('No saved signed funding transaction');
  validateFundingPlan({...op,step:'funding',plan:op.fundingPlan},this.provider);const inputs=planCoins(op.fundingPlan),clock=await verifyCoinsAcrossPeers(this.provider,inputs);validateWalletSigned(op.fundingPlan,op.fundingRaw,clock);
