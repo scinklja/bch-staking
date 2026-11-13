@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-11-11T09:54:26.446344+00:00",
+  "wallet": "Cashonize web HD wallet, fresh chipnet development wallet",
+  "walletOrigin": "https://cashonize.com",
+  "applicationOrigin": "http://127.0.0.1:5173",
+  "walletReceiveAddress": "bchtest:qzh9mxdn870eneerpe7llu3gx56pn8tkmssnz2scd6",
+  "transport": "Actual WizardConnect public relay; separate wallet and application browser contexts; no relay mocking",
+  "funds": "Only the user's chipnet faucet transaction 9f1a86a9c8a93a9c06c31d620b972ce4016132adaa6901f56a3013ca9fec211f",
+  "signingOperations": [
+    {
+      "operation": "Create Vault factory funding P2PKH signature",
+      "txid": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "walletApproval": "Actual Cashonize Sign button",
+      "nodeAcceptance": true,
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "operation": "Exact escrow preparation P2PKH signature",
+      "txid": "cac928daed969d07f5519ef2bc86b68422664797df9a8853bdf2d72d23e34a97",
+      "walletApproval": "Actual Cashonize Sign button",
+      "nodeAcceptance": true,
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "operation": "Make an Offer registry covenant input 0 and token P2PKH input 2",
+      "txid": "f7ecc070ed2d6e2692bf4aca310b2cac47b03473d31d49dd33a04955c7792697",
+      "walletApproval": "Actual Cashonize Sign button",
+      "nodeAcceptance": true,
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "operation": "Independent StakeAllocation covenant input 0, no registry input",
+      "txid": "12c8344a17517c2d233bd4b503ee7e375328780925650425ef0fe4441accce32",
+      "walletApproval": "Actual Cashonize Sign button",
+      "nodeAcceptance": true,
+      "confirmations": 1,
+      "confirmationBlock": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e"
+    }
+  ],
+  "signingCompatibilityFix": "The installed WizardConnect relay calls JSON.stringify directly; libauth stringify encoding is required for BigInt and Uint8Array fields before SDK submission. The initial local serialization error sent no signing request. Encoding was fixed and the actual requests above were approved and accepted.",
+  "chainIdentityLimit": "hdwalletv1 supplies key-family versions, not an authenticated exact test-network ID. Mainnet key families are rejected; transaction sources are independently resolved on synchronized chipnet.",
+  "spendingPrivateKeysOrSeedExportedToApplication": false,
+  "withdrawalSigning": "Actual owner-wallet signature accepted by BCHN and confirmed in block 331821",
+  "mainnetRejectionEvidence": "chipnet-mainnet-rejection.json",
+  "withdrawalConfirmedInUi": true
+}

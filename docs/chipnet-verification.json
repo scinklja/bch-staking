@@ -1,0 +1,189 @@
+{
+  "observedAt": "2026-11-11T09:47:39.842Z",
+  "network": "chipnet",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "chain": "chip",
+  "blocks": 331821,
+  "headers": 331821,
+  "tip": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e",
+  "mtp": 1794384403,
+  "initialBlockDownload": false,
+  "ready": true,
+  "readinessError": "",
+  "indexes": {
+    "txindex": {
+      "synced": true,
+      "best_block_height": 331821
+    }
+  },
+  "peerCount": 8,
+  "relayPeers": 8,
+  "cashTokensActiveByHeight": true,
+  "warnings": "Warning: This version of Bitcoin Cash Node is old and may fall out of network consensus in 4 day(s). Please upgrade, or add expire=0 to your configuration file if you want to continue running this version. If you do nothing, the software will gracefully degrade by limiting its functionality in 4 day(s).",
+  "broadcasts": [
+    {
+      "observedAt": "2026-11-11T09:01:02.780Z",
+      "label": "test-token-provision",
+      "txid": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:01:02.835Z",
+      "label": "test-token-provision",
+      "txid": "2fc352041a301e25fe382da7baca1ef3ce26ae5d90c3af8db77e1fcccc13e261",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:01:52.091Z",
+      "label": "fund-chipnet-wizardconnect-test-wallet",
+      "txid": "1ced5654ab8373a55756e5b9bbc4e655f06f1c0f069b58b22ad53c2092ac28de",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:04:33.724Z",
+      "label": "Create Vault: fund canonical factory",
+      "txid": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:04:33.965Z",
+      "label": "vault-genesis",
+      "txid": "128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:08:44.171Z",
+      "label": "Prepare exact offer escrow",
+      "txid": "cac928daed969d07f5519ef2bc86b68422664797df9a8853bdf2d72d23e34a97",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:09:16.376Z",
+      "label": "Make an Offer: authorize registration and S×W escrow",
+      "txid": "f7ecc070ed2d6e2692bf4aca310b2cac47b03473d31d49dd33a04955c7792697",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:22:18.212Z",
+      "label": "keeper-action-2",
+      "txid": "f02d1bb3f72720be50c8f0b0a0852e93e776a33e0623221cb5e2f4fc56087a7e",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:22:18.345Z",
+      "label": "keeper-action-3",
+      "txid": "3f0e6a98a295252d505a310c47f0e7625561308e135d216c72c6f82d4b9505a2",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:27:46.954Z",
+      "label": "Withdraw independent mature stake allocation",
+      "txid": "12c8344a17517c2d233bd4b503ee7e375328780925650425ef0fe4441accce32",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 1,
+      "confirmationBlock": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e"
+    }
+  ],
+  "pendingTransactions": [],
+  "confirmedTransactions": [
+    {
+      "observedAt": "2026-11-11T09:01:02.780Z",
+      "label": "test-token-provision",
+      "txid": "48505b63bb3b4211c2d44099e1529d015a454e41c1f56aba7e12c87e5722c431",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:01:02.835Z",
+      "label": "test-token-provision",
+      "txid": "2fc352041a301e25fe382da7baca1ef3ce26ae5d90c3af8db77e1fcccc13e261",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:01:52.091Z",
+      "label": "fund-chipnet-wizardconnect-test-wallet",
+      "txid": "1ced5654ab8373a55756e5b9bbc4e655f06f1c0f069b58b22ad53c2092ac28de",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:04:33.724Z",
+      "label": "Create Vault: fund canonical factory",
+      "txid": "a79f2bd4b33f7583ead1a750cfbc86f54dc2b2855bd8b2eea5e9342f11690fa5",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:04:33.965Z",
+      "label": "vault-genesis",
+      "txid": "128606824ed744a0f7f5ba45904bd87180cd0483df79b4fb54da125fcf75be74",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 3,
+      "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+    },
+    {
+      "observedAt": "2026-11-11T09:08:44.171Z",
+      "label": "Prepare exact offer escrow",
+      "txid": "cac928daed969d07f5519ef2bc86b68422664797df9a8853bdf2d72d23e34a97",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:09:16.376Z",
+      "label": "Make an Offer: authorize registration and S×W escrow",
+      "txid": "f7ecc070ed2d6e2692bf4aca310b2cac47b03473d31d49dd33a04955c7792697",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:22:18.212Z",
+      "label": "keeper-action-2",
+      "txid": "f02d1bb3f72720be50c8f0b0a0852e93e776a33e0623221cb5e2f4fc56087a7e",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:22:18.345Z",
+      "label": "keeper-action-3",
+      "txid": "3f0e6a98a295252d505a310c47f0e7625561308e135d216c72c6f82d4b9505a2",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 2,
+      "confirmationBlock": "00000000646843a4be889997a05947f1ef475b90517b6f5525c510a0ce7fa0e5"
+    },
+    {
+      "observedAt": "2026-11-11T09:27:46.954Z",
+      "label": "Withdraw independent mature stake allocation",
+      "txid": "12c8344a17517c2d233bd4b503ee7e375328780925650425ef0fe4441accce32",
+      "status": "BCHN-accepted-broadcast",
+      "confirmations": 1,
+      "confirmationBlock": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e"
+    }
+  ],
+  "localSimulationReport": "chipnet-local-verification.json"
+}

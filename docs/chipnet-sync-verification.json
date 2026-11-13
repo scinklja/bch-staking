@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-11-11T09:51:00.190Z",
+  "network": "chipnet",
+  "independentElectrumServer": "chipnet.imaginary.cash",
+  "independentHeight": 331821,
+  "independentHash": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e",
+  "localHeight": 331821,
+  "localHash": "00000000d6550b39804905f0e76e8c15ac86588a9759bd61a3edbc30f331ea8e",
+  "matches": true
+}

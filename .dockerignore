@@ -1,0 +1,9 @@
+.git
+.regtest
+.chipnet
+node_modules
+frontend
+.env
+**/.env*
+downloads
+deploy/data

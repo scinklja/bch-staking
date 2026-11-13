@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-11-11T09:52:19.551Z",
+  "network": "chipnet",
+  "txid": "9f1a86a9c8a93a9c06c31d620b972ce4016132adaa6901f56a3013ca9fec211f",
+  "address": "bchtest:qr47ssf5hcpjnf0f06g4nc875nf0tjxmfv86u4lxa2",
+  "satoshis": "1015000",
+  "independentElectrumObserved": true,
+  "confirmations": 3,
+  "confirmationBlock": "00000000e4f4c2fbbb990c7f07845d92e7ed4b2af519d2aa4df164417e3594ea"
+}

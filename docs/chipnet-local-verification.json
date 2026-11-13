@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-11-11T09:54:26.447525+00:00",
+  "environment": "local BCH 2026 VM and mocked RPC/relay; synthetic outpoints",
+  "publicChainBroadcasts": 0,
+  "publicChainConfirmations": 0,
+  "backendLocalTests": {
+    "command": "npm run test:chipnet:local",
+    "passed": 3,
+    "failed": 0
+  },
+  "frontendTests": {
+    "command": "npm run frontend:test",
+    "passed": 27,
+    "failed": 0
+  },
+  "build": "npm run frontend:build passed",
+  "typecheck": "npm run typecheck passed",
+  "lifecycle": [
+    "wallet-authorized factory funding",
+    "canonical vault genesis",
+    "exact S*W escrow preparation",
+    "registry and funding input signatures",
+    "activation",
+    "settlement",
+    "atomic BCH reward",
+    "independent owner stake withdrawal"
+  ],
+  "negativeChecks": [
+    "mainnet and unsafe RPC configuration",
+    "wrong node chain",
+    "wrong chipnet fork",
+    "initial synchronization",
+    "offline relay",
+    "wallet-altered output",
+    "mainnet key family",
+    "stale or disconnected wallet session",
+    "explicit conflicting wallet declaration"
+  ],
+  "covenantModifications": [],
+  "realWalletTransactionSigning": "Separate live evidence: chipnet-wallet-verification.json",
+  "browserTests": {
+    "command": "npm run frontend:test:browser",
+    "passed": 5,
+    "failed": 0,
+    "lastRun": "5 passed after closing the separate live-wallet browser"
+  },
+  "browserTransientFailure": "One preceding run timed out on reload while only Loading Staking Arena was rendered. Trace showed slow module loads; a clean rerun passed without application changes or increased test timeouts."
+}

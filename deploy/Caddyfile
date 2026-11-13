@@ -1,0 +1,10 @@
+{$ARENA_API_DOMAIN} {
+  request_body {
+    max_size 160KB
+  }
+  header {
+    X-Content-Type-Options nosniff
+    Referrer-Policy no-referrer
+  }
+  reverse_proxy 127.0.0.1:3100
+}

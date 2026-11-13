@@ -1,0 +1,15 @@
+[Unit]
+Description=Staking Arena wallet-disabled BCHN chipnet
+After=network-online.target
+Wants=network-online.target
+[Service]
+User=arena
+Group=arena
+ExecStart=/usr/local/bin/bitcoind -datadir=/var/lib/arena-bchn -chipnet -daemon=0
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=180
+UMask=0077
+NoNewPrivileges=true
+[Install]
+WantedBy=multi-user.target

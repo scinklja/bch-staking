@@ -1,0 +1,8 @@
+{
+  "observedAt": "2026-11-11T09:30:29.606Z",
+  "mainnetKeyFamilyDetected": true,
+  "blockedBeforePlanRequest": true,
+  "planRequests": 0,
+  "walletSigningDialogs": 0,
+  "error": "Error: Mainnet, unknown and incompatible wallets cannot sign chipnet transactions"
+}

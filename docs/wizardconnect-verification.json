@@ -1,0 +1,259 @@
+{
+  "checkedAt": "2026-11-10T22:03:10.244Z",
+  "browser": "158.0.8127.18",
+  "appOrigin": "http://127.0.0.1:5173",
+  "walletOrigin": "https://cashonize.com",
+  "walletType": "fresh unfunded HD wallet",
+  "realPublicRelay": true,
+  "protocol": "hdwalletv1",
+  "paths": [
+    {
+      "name": "receive",
+      "network": "mainnet",
+      "depth": 4,
+      "sha256": "8ef821c418abd13f679230393bb11a6928f910582bccd16c0decbb56bb68788c"
+    },
+    {
+      "name": "change",
+      "network": "mainnet",
+      "depth": 4,
+      "sha256": "7ba3dbdf456e6b4492c68f56ea9d9ba467dabe8e77df8910efcd2b8249cc4d2b"
+    },
+    {
+      "name": "defi",
+      "network": "mainnet",
+      "depth": 4,
+      "sha256": "59927a95401dec13961260bc43d8254eeda3b55cc0136511175d2891780c17cd"
+    }
+  ],
+  "receiveAddress": "bitcoincash:qrfslwvgul268d0elz6lf5fkae8us5ydzud6vu85qh",
+  "receiveAddressMatchesWallet": true,
+  "refresh": {
+    "protocol": "hdwalletv1",
+    "sameRelayIdentity": true,
+    "sameWalletIdentity": true,
+    "samePaths": true,
+    "sameReceivePublicKey": true,
+    "qrVisible": false
+  },
+  "dappDisconnect": {
+    "storageCleared": true,
+    "sentActions": [
+      "dapp_ready",
+      "disconnect"
+    ],
+    "walletRemovedSession": true,
+    "staysDisconnectedAfterRefresh": true
+  },
+  "qr": {
+    "realWalletImageDecoder": true,
+    "approvalPresented": true,
+    "pairingSucceeded": true,
+    "cameraScanVerified": false
+  },
+  "walletDisconnect": {
+    "storageCleared": true,
+    "noticeShown": true,
+    "elapsedMs": 8562,
+    "walletSessionRemoved": true,
+    "staysDisconnectedAfterRefresh": true
+  },
+  "webWalletLink": {
+    "walletUrlParameterAccepted": true,
+    "approvalPresented": true,
+    "pairingSucceeded": true,
+    "mobileViewportEmulation": true,
+    "physicalMobileDevice": false,
+    "transportPrivateKeyExistedBeforeWalletAndUnchanged": true
+  },
+  "firstSessionObservation": {
+    "sent": [
+      "dapp_ready",
+      "dapp_ready",
+      "dapp_ready"
+    ],
+    "received": [
+      {
+        "action": "wallet_ready",
+        "keys": [
+          "action",
+          "supported_protocols",
+          "wallet_name",
+          "wallet_icon",
+          "time",
+          "dapp_discovered",
+          "session",
+          "public_key",
+          "secret",
+          "extensions"
+        ],
+        "sessionKeys": [
+          "hdwalletv1"
+        ],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "wallet_ready",
+        "keys": [
+          "action",
+          "supported_protocols",
+          "wallet_name",
+          "wallet_icon",
+          "time",
+          "dapp_discovered",
+          "session",
+          "public_key",
+          "secret",
+          "extensions"
+        ],
+        "sessionKeys": [
+          "hdwalletv1"
+        ],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      },
+      {
+        "action": "pong",
+        "keys": [
+          "action",
+          "time"
+        ],
+        "sessionKeys": [],
+        "sensitiveKeyPatternDetected": false
+      }
+    ]
+  },
+  "websiteSessionFieldNames": [
+    "privateKey",
+    "secret",
+    "walletPublicKey",
+    "walletName",
+    "walletIcon",
+    "paths"
+  ],
+  "websiteIndexedDbNames": [],
+  "applicationPageErrors": [],
+  "physicalMobileTestsCompleted": false,
+  "nativeWizHandlerInstalled": false,
+  "chipnet": {
+    "realWalletPairing": true,
+    "networkSelectedInWallet": "chipnet",
+    "deployedDevelopmentNetworkChoices": [
+      "chipnet",
+      "testnet4"
+    ],
+    "publicKeyVersionFamily": "testnet",
+    "receiveAddress": "bchtest:qpn6vnr9zu756av240zuqar9gcvyyalajc7eppqjl6",
+    "receiveAddressMatchesWallet": true,
+    "regtestCompatible": false,
+    "networkMismatchRejectedByApp": false
+  },
+  "completedAt": "2026-11-10T22:05:18.480Z",
+  "finalSessionCleared": true,
+  "preservation": {
+    "checkedAt": "2026-11-10T22:06:00.176Z",
+    "chain": "regtest",
+    "blocksBefore": 2627,
+    "blocksAfter": 2627,
+    "bestBlockHashBefore": "79b2a91bc4a3a1a1f09861bce5ac5904505083eb1f4ca4303c82e9eb49762b4b",
+    "bestBlockHashAfter": "79b2a91bc4a3a1a1f09861bce5ac5904505083eb1f4ca4303c82e9eb49762b4b",
+    "mempoolBefore": [],
+    "mempoolAfter": [],
+    "filesChecked": [
+      ".regtest/frontend/config.json",
+      "contracts/DeadlineProbe.cash",
+      "contracts/Example.cash",
+      "contracts/LegacyRegistry.cash",
+      "contracts/PeriodOpen.cash",
+      "contracts/Registry.cash",
+      "contracts/Registry.template.cash",
+      "contracts/RegistryDeposit.cash",
+      "contracts/RegistryGenesis.cash",
+      "contracts/RegistryGenesis.template.cash",
+      "contracts/StakeAllocation.cash",
+      "contracts/StakeLock.cash",
+      "contracts/StakePool.cash",
+      "contracts/Vault.cash",
+      "artifacts/DeadlineProbe.json",
+      "artifacts/Example.json",
+      "artifacts/LegacyRegistry.json",
+      "artifacts/PeriodOpen.json",
+      "artifacts/Registry.json",
+      "artifacts/RegistryDeposit.json",
+      "artifacts/RegistryGenesis.json",
+      "artifacts/StakeAllocation.json",
+      "artifacts/StakeLock.json",
+      "artifacts/StakePool.json",
+      "artifacts/Vault.json"
+    ],
+    "changedFiles": []
+  },
+  "software": {
+    "wizardconnectReact": "0.2.3",
+    "wizardconnectCore": "0.2.5",
+    "wizardconnectDapp": "0.2.2",
+    "walletEntry": "https://cashonize.com/assets/index-B_7E5_sy.js",
+    "walletEntrySha256": "61fb3d1401aadcec9cfd1109e1849761097caefcd152854dc6cd5cdde172fcfa",
+    "reviewedCashonizeSourceCommit": "3b7ae7ba3d1695349bc75b89223d528282fc0c98",
+    "reviewedSourcePackageVersion": "0.15.2"
+  },
+  "cleanup": {
+    "finalWebsiteSessionCleared": true,
+    "testBrowserClosed": true,
+    "temporaryWalletContextsDiscarded": true,
+    "generatedPairingQrDeleted": true
+  }
+}
