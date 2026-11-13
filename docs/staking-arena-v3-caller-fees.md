@@ -1,5 +1,10 @@
 # V3 caller-funded claims
 
+The subsequent [focused claim security review](staking-arena-v3-claim-security-review.md)
+records authorization hardening and a successful complete `npm run test:review`
+run for this implementation. It supersedes the historical full-suite deferral
+below. Real Cashonize compatibility remains unverified.
+
 This change replaces the Claim reward interface's FeeSponsorV3 pre-funding requirement with one atomic wallet-funded transaction. V3 remains local-regtest-only. No deployment is included. The existing sixteen-slot queue, exact priority/tie breaking, no-skipping rule, release buffer, repeated wins and rounded CSV locks are unchanged.
 
 ## Transaction and accounting

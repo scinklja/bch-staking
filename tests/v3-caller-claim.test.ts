@@ -50,7 +50,12 @@ test('caller-funded claims: four asset pairs, independent caller, change, signed
   await wallet.authorize(op.id);
   for(const mutate of [(t:Transaction)=>{t.outputs[3]!.lockingBytecode=t.outputs[5]!.lockingBytecode;},(t:Transaction)=>{t.outputs[5]!.valueSatoshis--;},(t:Transaction)=>{t.outputs[5]!.lockingBytecode=t.outputs[3]!.lockingBytecode;}]){const bad=sign(op.plan!,caller,mutate);await assert.rejects(()=>wallet.submit(op.id,bad),/changed/);const [accept]=await rpc('testmempoolaccept',[[bad]]);assert.equal(accept.allowed,false,'Covenant must reject even a newly signed diversion');}
   // Persisted plan corruption must fail even before any signing request.
-  const original=structuredClone(journal.get(op.id)!);journal.get(op.id)!.plan!.request.transaction.outputs[3]!.lockingBytecode=hexToBin('51');await assert.rejects(()=>wallet.authorize(op.id),/Saved claim/);journal.set(op.id,original);
+  const original=structuredClone(journal.get(op.id)!);journal.get(op.id)!.plan!.request.transaction.outputs[3]!.lockingBytecode=hexToBin('51');await assert.rejects(()=>wallet.authorize(op.id),/Saved claim/);journal.set(op.id,structuredClone(original));
+  // WalletConnect controls are outside the transaction identity: never let saved
+  // metadata enable wallet broadcasting or supply a substituted signing script.
+  journal.get(op.id)!.plan!.request.broadcast=true;await assert.rejects(()=>wallet.authorize(op.id),/disable wallet broadcasting/);journal.set(op.id,structuredClone(original));
+  journal.get(op.id)!.plan!.request.sourceOutputs[3]!.contract=structuredClone(op.plan!.request.sourceOutputs[0]!.contract);
+  const authorized=await wallet.authorize(op.id);assert.equal(authorized.plan.request.broadcast,false);assert.equal(authorized.plan.request.sourceOutputs[3]!.contract,undefined);assert.deepEqual(authorized.plan.inputPaths,[[3,'receive',0]]);journal.set(op.id,structuredClone(original));
   assert.equal(provider.broadcasts,before);
   const broken=new AssetWallet(provider,{list:store.list,save:async()=>{throw Error('Disk quota');}});await assert.rejects(()=>broken.submit(op.id,sign(op.plan!,caller)),/quota/);assert.equal(provider.broadcasts,before);
   provider.loseAcknowledgement=true;op=await wallet.submit(op.id,sign(op.plan!,caller));assert.equal(op.stage,'prepared');assert.ok(op.raw);assert.equal(provider.broadcasts,before+1);

@@ -1,0 +1,99 @@
+{
+  "startedAt": "2026-11-13T20:36:39.651Z",
+  "sourceCommit": "98ea300299cafdf45d16f2bebe3fa029261b0af2",
+  "directory": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z",
+  "liveBroadcasts": false,
+  "stages": [
+    {
+      "name": "regtest-node",
+      "command": "npm run node:start",
+      "startedAt": "2026-11-13T20:36:39.658Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/regtest-node.log",
+      "finishedAt": "2026-11-13T20:36:40.066Z"
+    },
+    {
+      "name": "protocol-contracts-regtest",
+      "command": "npm test",
+      "startedAt": "2026-11-13T20:36:40.070Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/protocol-contracts-regtest.log",
+      "finishedAt": "2026-11-13T20:58:02.251Z"
+    },
+    {
+      "name": "frontend-unit",
+      "command": "npm run frontend:test",
+      "startedAt": "2026-11-13T20:58:02.259Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/frontend-unit.log",
+      "finishedAt": "2026-11-13T20:59:38.676Z"
+    },
+    {
+      "name": "browser-ui",
+      "command": "npm --prefix frontend run test:browser",
+      "startedAt": "2026-11-13T20:59:38.679Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/browser-ui.log",
+      "finishedAt": "2026-11-13T21:00:45.737Z"
+    },
+    {
+      "name": "production-static",
+      "command": "npm --prefix frontend run test:static",
+      "startedAt": "2026-11-13T21:00:45.769Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/production-static.log",
+      "finishedAt": "2026-11-13T21:01:24.763Z"
+    },
+    {
+      "name": "production-static-smoke",
+      "command": "npm --prefix frontend run test:static:browser",
+      "startedAt": "2026-11-13T21:01:24.774Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/production-static-smoke.log",
+      "finishedAt": "2026-11-13T21:01:35.447Z"
+    },
+    {
+      "name": "browser-indexer",
+      "command": "npm --prefix frontend run test:electrum",
+      "startedAt": "2026-11-13T21:01:35.451Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/browser-indexer.log",
+      "finishedAt": "2026-11-13T21:05:57.550Z"
+    },
+    {
+      "name": "v3-browser-indexer",
+      "command": "npm --prefix frontend run test:v3:browser",
+      "startedAt": "2026-11-13T21:05:57.561Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/v3-browser-indexer.log",
+      "finishedAt": "2026-11-13T21:06:38.859Z"
+    },
+    {
+      "name": "production-build",
+      "command": "npm run frontend:build",
+      "startedAt": "2026-11-13T21:06:38.865Z",
+      "exitCode": 0,
+      "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T20-36-39.645Z/production-build.log",
+      "finishedAt": "2026-11-13T21:06:52.520Z"
+    }
+  ],
+  "status": "passed",
+  "finishedAt": "2026-11-13T21:06:52.526Z",
+  "sourceNote": "sourceCommit is the starting HEAD; the tested working tree includes the wallet and regression changes identified by SHA-256 below. The final commit also includes review documentation and generated evidence.",
+  "testedFilesSha256": {
+    "src/v3/wallet.ts": "d360601acf8b21bca0ca529685d8ee9d1aadc7ab24cb8c664d5b42aecc8591cc",
+    "tests/v3-caller-claim.test.ts": "4da01b33412f7e581b879024fd2beef1e130f52990563457bbf859cf92a3f0aa"
+  },
+  "counts": {
+    "regtestProtocol": 60,
+    "offlineChipnetConfigurationAndVm": 3,
+    "frontendUnit": 74,
+    "browserUi": 6,
+    "productionStatic": 2,
+    "productionStaticSmoke": 3,
+    "browserIndexer": 19,
+    "v3BrowserIndexer": 2
+  },
+  "physicalCashonizeVerified": false,
+  "compiledArtifactsUnchangedExceptTimestamps": 20
+}

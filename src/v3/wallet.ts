@@ -84,6 +84,7 @@ export class AssetWallet {
  }
  private async checkClaim(op:Operation){
   if(!op.config||!op.plan||!op.payer||op.source===undefined||op.slot===undefined||op.step!=='action')throw Error('Invalid saved claim');
+  if(op.plan.request.broadcast!==false)throw Error('Saved claim must disable wallet broadcasting');
   const snapshot=await new AssetIndexer(this.provider,op.config).sync();
   validateIntent(op,op.owner,snapshot);
   if(snapshot.instance.inputs[0].txid!==op.source)throw Error('Claim state changed; reconcile the conflicting claim');
@@ -92,7 +93,9 @@ export class AssetWallet {
   const built=transitionBuilder(snapshot.instance,3,op.slot,this.provider,{height:snapshot.clock.height,mtp:tx.locktime+1},sponsor(op.payer,coins[3]!),undefined,undefined,{address:walletAddress(hexToBin(op.payer.publicKey))});
   const expected=plan(built.builder,op.plan.label,[{coin:keyCoin(op.payer,coins[3]!),index:3}]);
   if(walletPlanIdentity(op.plan)!==walletPlanIdentity(expected))throw Error('Saved claim changes the winner, fee, carriers, inputs or caller change');
-  return snapshot;
+  // The identity deliberately excludes WalletConnect metadata. Only freshly generated
+  // source witnesses/contract descriptions may cross the wallet authorization boundary.
+  return expected;
  }
  private async resumeClaim(op:Operation){
   if(op.raw&&op.txid){
@@ -157,9 +160,9 @@ export class AssetWallet {
  async authorize(id:string){
  const op=(await this.store.list()).find(o=>o.id===id);
  if(!op?.plan||op.stage!=='review'||op.raw||op.txid)throw Error('V3 operation is not awaiting unsigned wallet approval');
- validateParameters(op.parameters);validateFundingPlan(op,this.provider);if(op.kind==='claim')await this.checkClaim(op);
+ validateParameters(op.parameters);validateFundingPlan(op,this.provider);const authorizedPlan=op.kind==='claim'?await this.checkClaim(op):op.plan;
  await verifyCoinsAcrossPeers(this.provider,planCoins(op.plan));
- return {plan:op.plan,owner:op.owner,verifiedAt:Date.now()};
+ return {plan:authorizedPlan,owner:op.owner,verifiedAt:Date.now()};
  }
  async signingFailed(id:string,error:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)return op;const next={...op,error:'Wallet authorization interrupted or refused: '+error.slice(0,500)};await this.store.save(next);return next;}
  async rebroadcastFunding(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.fundingRaw||!op.fundingPlan)throw Error('No saved signed funding transaction');
