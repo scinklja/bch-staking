@@ -10,7 +10,16 @@ cli() { bitcoin-cli -datadir="$DATA" -regtest "$@"; }
 case "${1:-status}" in
  start)
  if ! cli getblockcount >/dev/null 2>&1; then
- bitcoind -datadir="$DATA" -regtest -daemon
+ # Regtest tests can mine beyond wall time. BCHN otherwise rejects its own
+ # future-dated tip during a restart, before RPC becomes available.
+ regtest_clock="${ARENA_REGTEST_MOCKTIME:-}"
+ if [[ -z "$regtest_clock" && -f "$DATA/clock" ]]; then read -r regtest_clock < "$DATA/clock"; fi
+ regtest_clock_args=()
+ if [[ -n "$regtest_clock" ]]; then
+ [[ "$regtest_clock" =~ ^[0-9]{1,10}$ ]] && (( regtest_clock <= 4294967295 )) || { echo 'Invalid saved regtest clock'; exit 2; }
+ if (( regtest_clock > $(date +%s) + 7200 )); then regtest_clock_args=("-mocktime=$regtest_clock"); fi
+ fi
+ bitcoind -datadir="$DATA" -regtest -daemon "${regtest_clock_args[@]}"
  ready=0
  for i in {1..100}; do
  if cli getblockcount >/dev/null 2>&1; then ready=1; break; fi
@@ -27,6 +36,10 @@ case "${1:-status}" in
  cli getblockchaininfo
  ;;
  stop)
+ # Preserve the test clock atomically before the cookie disappears on shutdown.
+ regtest_tip=$(cli getbestblockhash)
+ cli getblockheader "$regtest_tip" | node -e "const fs=require('node:fs');const h=JSON.parse(fs.readFileSync(0,'utf8'));process.stdout.write(String(h.time+1)+'\\n')" > "$DATA/clock.tmp"
+ mv "$DATA/clock.tmp" "$DATA/clock"
  cli stop
  for i in {1..100}; do
  [[ ! -f "$DATA/regtest/bitcoind.pid" ]] && exit 0

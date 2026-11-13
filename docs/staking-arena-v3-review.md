@@ -54,7 +54,7 @@ input age or select the canonical chain.
 
 ## Complete review gate
 
-Run `npm run test:review` with local BCHN regtest running. This compiles all covenant
+Run `npm run test:review`. It starts/checks local BCHN regtest and compiles all covenant
 families and runs all v1/v2/v3 protocol tests, frontend unit tests, browser UI,
 production static tests and smoke checks, Electrum indexer/wallet/settlement browser
 tests, v3 browser worker tests, and the production build. Every stage must pass in
@@ -67,3 +67,16 @@ actual BCHN regtest for transaction admission, maturity, conflicts and reorganiz
 No live chipnet tests, external wallet signing or deployment is part of this gate.
 The opt-in development-supervisor test requires stopping existing services and is
 outside the protocol/browser review gate.
+
+
+## Full-run infrastructure correction
+
+The first fresh review gate exposed an actual node-restart failure in the v1
+keeper/indexer test. The shared regtest chain had blocks more than two hours beyond
+wall time from deliberate mocktime mining. BCHN rejected that tip during startup,
+leaving its RPC cookie absent and causing the following node tests to fail too.
+The regtest node script now saves its verified tip time atomically before shutdown
+and resumes the saved test clock only when needed to load a future-dated tip.
+Normal wall-clock starts are unchanged. The existing chain and wallet were recovered
+without reindexing or deletion. The real stop/start regression is retained, and the
+complete gate is rerun after the correction. No chipnet startup script was changed.

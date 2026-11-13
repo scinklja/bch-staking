@@ -8,6 +8,7 @@ await mkdir(directory,{recursive:true});
 const env={...process.env,CI:'1',ARENA_NETWORK:'regtest',ARENA_BROWSER_PORT:'5189'};
 for(const name of ['ARENA_LIVE_URL','ARENA_TEST_API','ARENA_SPONSOR_KEY'])delete env[name];
 const stages=[
+ ['regtest-node',['run','node:start']],
  ['protocol-contracts-regtest',['test']],
  ['frontend-unit',['run','frontend:test']],
  ['browser-ui',['--prefix','frontend','run','test:browser']],
