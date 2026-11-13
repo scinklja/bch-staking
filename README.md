@@ -149,3 +149,17 @@ Install root and frontend dependencies, then run `npm --prefix frontend run buil
 The worker shares validation/replay with Node, uses IndexedDB, and coordinates tabs without a hosted API.
 Marketplace display defaults to `VITE_MIN_DISPLAY_CONFIRMATIONS=0`; set it to `1` or higher at build time for confirmation-gated vaults and offers. Spending and settlement still require confirmed inputs. See [0-conf visibility, regtest validation and limits](docs/zero-confirmation-visibility.md).
 See [browser configuration, trust assumptions and verification](docs/browser-electrum.md).
+
+
+### V3 continuous queue development
+
+The separate `src/v3` / `contracts/v3` covenant family releases scheduled rewards
+into a virtual accumulating buffer. Offers rank continuously by exact S*T/R and
+claims always pay the live head. Each win creates a separate relative stake lock.
+V1/v2 vaults retain their existing covenant and frontend behavior.
+
+See [the v3 architecture, timing, accounting and limitations](docs/staking-arena-v3.md)
+and [the scenario-by-scenario verification record](docs/staking-arena-v3-verification.md).
+Use `npm run node:start`, `npm run test:v3`, and the frontend `#/v3` route for local
+regtest development. V3 builders and browser connections reject public networks.
+No chipnet/mainnet deployment is authorized or included.

@@ -1,3 +1,4 @@
+import {v3Call} from './v3Client';
 import type {DappConnectionManager} from '@wizardconnect/dapp';
 import {binToHex} from '@bitauth/libauth';
 import type {WalletOperation} from '../../src/browser-wallet';
@@ -9,7 +10,7 @@ import type {Operation as V2Operation} from '../../src/v2/wallet';
 /** The worker builds/verifies public transactions. Only the live wallet manager ever signs. */
 export function browserWalletClient(manager:DappConnectionManager|null,check:()=>void):WalletTransactions {
  const getManager=()=>{if(!manager)throw Error('Connect a chipnet wallet first');return manager;};
- const worker=new Worker(new URL('./wallet.worker.ts',import.meta.url),{type:'module'}),pending=new Map<number,{resolve:(v:any)=>void;reject:(e:Error)=>void}>();let counter=0,scanLimit=40,closed=false,v2Approval=false;const signing=new AbortController();let startupTimer:ReturnType<typeof setTimeout>|undefined,startupReject:(e:Error)=>void=()=>{};let derived:WalletKey[]|undefined,derivationIdentity="";
+ const worker=new Worker(new URL('./wallet.worker.ts',import.meta.url),{type:'module'}),pending=new Map<number,{resolve:(v:any)=>void;reject:(e:Error)=>void}>();let counter=0,scanLimit=40,closed=false,v2Approval=false,v3Approval=false;const signing=new AbortController();let startupTimer:ReturnType<typeof setTimeout>|undefined,startupReject:(e:Error)=>void=()=>{};let derived:WalletKey[]|undefined,derivationIdentity="";
  const rpc=(method:string,...args:unknown[])=>new Promise<any>((resolve,reject)=>{if(closed){reject(Error('Wallet session closed; reconnect and resume from the journal'));return;}const id=++counter;pending.set(id,{resolve,reject});worker.postMessage({id,method,args});});
  const startup=new Promise<void>((resolve,reject)=>{startupReject=reject;const timer=startupTimer=setTimeout(()=>reject(Error('Wallet worker startup timeout')),30000);worker.onmessage=event=>{if(event.data?.type==='operation'){window.dispatchEvent(new CustomEvent('arena-wallet-operation',{detail:event.data.operation}));return;}if(event.data?.type==='progress'){window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:event.data.message}));return;}if(event.data?.type==='ready'){clearTimeout(timer);try{void rpc('start',browserConfig()).then(()=>rpc('list')).then((list:WalletOperation[])=>{list.forEach(rememberGenesis);resolve();},reject);}catch(error){reject(error);}return;}const task=pending.get(event.data.id);if(!task)return;pending.delete(event.data.id);event.data.error?task.reject(Error(event.data.error)):task.resolve(event.data.result);};});
  void startup.catch(()=>{});
@@ -46,6 +47,28 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
     window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Validating the signed v2 transaction and confirmed chipnet inputs before broadcast'}));
     return v2Updated(await rpc('v2',{operation:'submit',id:result.id,raw:signed.signedTransaction},[]));
    }finally{v2Approval=false;}
+  },async v3(intent){
+   if(['list','sync'].includes(String(intent.operation)))return v3Call(intent,[]);
+   if(v3Approval)throw Error('A v3 wallet operation is awaiting approval; finish it before continuing');
+   if(intent.operation==='inspect')return (await v3Call(intent,[]));
+   v3Approval=true;
+   try{
+    // Every spending call is checked against the live session. Inspect/list never ask to sign.
+    check();const session=JSON.stringify(getManager().getSessionPaths());
+    if(typeof getManager().signTransaction!=='function')throw Error('Wallet does not support transaction signing');
+    const result=(await v3Call(intent,intent.operation==='resume'?[]:keys()));
+    if(!result?.plan||result.stage!=='review')return result;
+    const authorization=await v3Call({operation:'authorize',id:result.id},[]);
+    check();if(authorization.owner?.publicKey!==binToHex(getManager().getPubkey(0,0n)??new Uint8Array()))throw Error('Resume with the original v3 wallet owner');
+    if(Date.now()-authorization.verifiedAt>10000)throw Error('V3 approval verification became stale; reconcile and retry');
+    if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed before v3 approval');
+    window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Awaiting explicit wallet approval for '+authorization.plan.label}));
+    const signed=await getManager().signTransaction({transaction:wizardWireTransaction(authorization.plan.request),inputPaths:authorization.plan.inputPaths},{signal:signing.signal});
+    check();if(JSON.stringify(getManager().getSessionPaths())!==session)throw Error('Wallet changed during v3 approval');
+    if(signed.error||!signed.signedTransaction)throw Error('V3 signing refused; operation remains recoverable');
+    window.dispatchEvent(new CustomEvent('arena-wallet-progress',{detail:'Validating the signed v3 transaction and confirmed regtest inputs before broadcast'}));
+    return (await v3Call({operation:'submit',id:result.id,raw:signed.signedTransaction},[]));
+   }finally{v3Approval=false;}
   },publicKey(){check();const key=getManager().getPubkey(0,0n);if(!key)throw Error('Wallet receive key unavailable');return binToHex(key);},async inventory(limit=40){if(![40,200].includes(limit))throw Error("Unsupported scan bound");scanLimit=limit;await startup;return rpc('scan',keys());},async operations(){await startup;const list=await rpc('list') as WalletOperation[];list.forEach(rememberGenesis);return list;},async inspect(id){await startup;const op=await rpc('get',id) as WalletOperation;if(op.step==='complete')await finish(op);return op;},async importVault(config){await startup;const result=await rpc('importVault',config,true);saveLocalVault(result.config,result.category);return result;},async execute(intent){
   await startup;let op:WalletOperation;
   if(intent.kind==='cancel')return finish(await rpc('cancel',intent.id));

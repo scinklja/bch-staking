@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-11-13T15:04:37.952607+00:00",
+  "branch": "dev/staking-arena-v3",
+  "network": "regtest",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "v3GroupsPassed": 6,
+  "protocolUniqueCasesVerifiedAcrossRuns": 62,
+  "frontendTestsPassed": 70,
+  "typecheck": "passed",
+  "frontendBuild": "passed",
+  "initialAggregate": {
+    "command": "npm test",
+    "passed": 55,
+    "failed": 3,
+    "cancelled": 1
+  },
+  "correctiveReruns": {
+    "broadcastGuardMessageCompatibility": "8 browser-keeper cases passed",
+    "realClockDeadline": "passed on isolated BCHN",
+    "legacyRegistry": "passed on isolated BCHN",
+    "standardPolicy": "passed on isolated BCHN after removing frozen peer mocktime",
+    "legacyAllocations": "passed on isolated BCHN",
+    "publicClaimFlowAfterConfirmedSponsorVerification": "passed on BCHN",
+    "mockedChipnetFixtures": "3 cases passed; no live chipnet connections or broadcasts"
+  },
+  "freshSingleAggregateRerunAfterCorrections": false,
+  "legacyAllocationEvidence": {
+    "node": "/Bitcoin Cash Node:29.2.0/",
+    "accepted": 71,
+    "rejected": 103,
+    "confirmedTransactions": 113,
+    "standardPolicy": "acceptnonstdtxn=0 on both nodes",
+    "stateBytes": 1574
+  },
+  "artifactSha256": {
+    "AssetRoleV3.json": "79626fe2232b6a2e8da140de2ec0394159b131ab78339ca2d1d1e8551e573d46",
+    "FeeSponsorV3.json": "538d7ce53ee915eff0c2b549c2a0853a3b0639a32e56691d13ba8b978a429801",
+    "RegistryGenesisV3.json": "6515d34c577cd225e3fb1fd533fd0b91e9b93a8946171b83eb8bec35198b9523",
+    "RegistryV3.json": "91d5024443fd0b7fe9876cf9d9ca9ee83be4ce74fce227ec0aad47eaf654a1fc",
+    "StakeAllocationV3.json": "e3314fb2b673e3016bfbdccdec62d823f54d5f2a489a6df7c0b689da6f022346"
+  },
+  "publicWalletVerified": false,
+  "publicNetworkDeployment": false,
+  "productionReady": false
+}

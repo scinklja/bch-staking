@@ -56,7 +56,7 @@ it('uses verified category suggestions, preserves manual entry, hides BCH catego
  fill('Protocol version','1');fill(/^Staking asset category/,asset);fill(/^Maximum reward per period/,'0.00002000');fill(/^Number of periods/,'2');fill(/^Schedule starts/,'2027-01-01T00:00');
  fireEvent.click(screen.getByRole('checkbox'));expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeEnabled();
  fill('Staking asset','bch');expect(screen.queryByLabelText(/^Staking asset category/)).not.toBeInTheDocument();expect(screen.getByRole('checkbox')).not.toBeChecked();
- expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
  fill('Reward asset','token');expect(screen.getByLabelText(/^Maximum reward per period/)).toHaveValue('');
  fill(/^Reward token category/,'b'.repeat(64));fill(/^Maximum reward per period/,'7');
  expect(screen.getByText('14 raw token units · '+'b'.repeat(64))).toBeInTheDocument();expect(screen.getByRole('alert')).toHaveTextContent('Insufficient reward CashTokens');

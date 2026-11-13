@@ -2,7 +2,7 @@ import {Network,type SpendableUtxo} from 'cashscript';
 import {ElectrumCore,type Header} from './electrum-core.js';
 import {json,utxo} from './arena-core.js';
 import {walletScript,type WalletKey,type WalletCoin} from './transactions-core.js';
-export function walletPeers(p:ElectrumCore){if(p.network!==Network.CHIPNET)throw Error('Wallet transactions are chipnet-only');const peers=p.endpoints.filter((v,i,a)=>a.findIndex(x=>new URL(x).hostname===new URL(v).hostname)===i);if(peers.length<2)throw Error('Two different configured chipnet WSS hosts are required');return peers.slice(0,2);}
+export function walletPeers(p:ElectrumCore){if(p.network!==Network.CHIPNET&&p.network!==Network.REGTEST)throw Error('Wallet transactions require chipnet or local regtest');const peers=p.endpoints.filter((v,i,a)=>a.findIndex(x=>new URL(x).hostname===new URL(v).hostname)===i);if(peers.length<2)throw Error('Two different configured WSS hosts are required');return peers.slice(0,2);}
 export const coinIdentity=(u:SpendableUtxo)=>json({txid:u.txid,vout:u.vout,satoshis:u.satoshis,script:u.lockingBytecode,token:u.token??null});
 export async function confirmedWalletTransaction(p:ElectrumCore,id:string){
  let first:any;

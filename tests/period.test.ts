@@ -1,3 +1,4 @@
+import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -6,7 +7,7 @@ import { Contract, SignatureTemplate, TransactionBuilder, type SpendableUtxo } f
 import { rpc, assertRegtest } from '../src/rpc.js';
 import { RegtestProvider } from '../src/provider.js';
 
-test('deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED', { timeout: 180000 }, async () => {
+test('deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED', { timeout: 180000 }, async () => isolatedRegtest(async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const provider = new RegtestProvider();
@@ -120,4 +121,4 @@ test('deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED', { time
   const payout = await rpc('getrawtransaction', [settledId, true]);
   assert.equal(Math.round(payout.vout[0].value * 1e8), 2000);
   await writeFile('docs/period-test-result.json', JSON.stringify(evidence, null, 2) + '\n');
-});
+}));

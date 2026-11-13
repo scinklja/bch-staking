@@ -72,7 +72,7 @@ export function walletPlanIdentity(plan:BrowserPlan) {
  return JSON.stringify({transaction:binToHex(encodeTransaction(plan.request.transaction as Transaction)),sources:plan.request.sourceOutputs.map(o=>({value:o.valueSatoshis.toString(),script:binToHex(o.lockingBytecode),token:o.token?{category:binToHex(o.token.category),amount:o.token.amount.toString(),nft:o.token.nft?{capability:o.token.nft.capability,commitment:binToHex(o.token.nft.commitment)}:null}:null})),inputPaths:plan.inputPaths,signers:plan.signers,kind:plan.kind,fee:plan.fee});
 }
 const zeroSignature='00'.repeat(65);
-export function validateWalletSigned(plan:BrowserPlan,raw:string,clock:KeeperClock) {
+export function validateWalletSigned(plan:BrowserPlan,raw:string,clock:KeeperClock,validator=validateKeeperTransaction) {
  if(typeof raw!=='string'||raw.length>200000||! /^(?:[a-f0-9]{2})+$/i.test(raw))throw Error('Invalid or oversized signed transaction');
  const tx=decodeTransaction(hexToBin(raw));if(typeof tx==='string')throw Error('Malformed signed transaction');
  const expected=plan.request.transaction as Transaction,shape=(v:Transaction)=>binToHex(encodeTransaction({...v,inputs:v.inputs.map(i=>({...i,unlockingBytecode:new Uint8Array()}))}));
@@ -90,5 +90,5 @@ export function validateWalletSigned(plan:BrowserPlan,raw:string,clock:KeeperClo
    if(count!==1)throw Error('Expected exactly one covenant authorization');
   }
  }
- return validateKeeperTransaction(raw,plan.request.sourceOutputs.map(o=>({valueSatoshis:o.valueSatoshis,lockingBytecode:o.lockingBytecode,...(o.token?{token:o.token}:{})})),clock,BigInt(plan.fee));
+ return validator(raw,plan.request.sourceOutputs.map(o=>({valueSatoshis:o.valueSatoshis,lockingBytecode:o.lockingBytecode,...(o.token?{token:o.token}:{})})),clock,BigInt(plan.fee));
 }

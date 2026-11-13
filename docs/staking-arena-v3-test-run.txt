@@ -1,0 +1,470 @@
+Historical aggregate results and corrective reruns. See verification.md for interpretation.
+
+=== initialAggregate ===
+
+> bch-staking@0.3.0 test
+> npm run compile && npm run compile:vault && npm run compile:period && npm run compile:registry && npm run compile:v2 && npm run compile:v3 && npm run typecheck && node scripts/test-regressions.mjs
+
+
+> bch-staking@0.3.0 compile
+> cashc contracts/Example.cash --output artifacts/Example.json
+
+
+> bch-staking@0.3.0 compile:vault
+> cashc contracts/Vault.cash --output artifacts/Vault.json && cashc contracts/StakeLock.cash --output artifacts/StakeLock.json
+
+
+> bch-staking@0.3.0 compile:period
+> cashc contracts/DeadlineProbe.cash --output artifacts/DeadlineProbe.json && cashc contracts/PeriodOpen.cash --output artifacts/PeriodOpen.json
+
+
+> bch-staking@0.3.0 compile:registry
+> node scripts/compile-registry.mjs
+
+
+> bch-staking@0.3.0 compile:v2
+> node scripts/compile-v2.mjs
+
+
+> bch-staking@0.3.0 compile:v3
+> node scripts/compile-v3.mjs
+
+
+> bch-staking@0.3.0 typecheck
+> tsc
+
+Loopback relay initial sync: height 514, headers 6003
+Loopback relay initial sync: height 2443, headers 6003
+Loopback relay initial sync: height 4763, headers 6003
+Loopback relay initial sync: height 6000, headers 6003
+Loopback relay initial sync: height 6000, headers 6003
+Loopback relay initial sync: height 6000, headers 6003
+Loopback relay initial sync: height 6000, headers 6003
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (580998.79028ms)
+✔ keeper daemon catches up empty periods after SIGKILL and rejects a shared checkpoint writer (20983.354858ms)
+registration replay and UTXOs verified
+three sponsored periods settled automatically
+BCHN disconnected and restarted
+withdrawal, rollback and fresh reconstruction verified
+✔ v0.3 automated keeper/indexer: catch-up, sponsorship, competitors, restarts, BCHN outage, reorg, replay, API and UTXOs (75539.608886ms)
+✔ browser keeper: activation, canonical tied winner, payouts, allocations, reserve and sequential confirmations (7070.930668ms)
+✖ local VM enforces winner, immediate reward and protected fee reserve; mainnet and non-final transactions rejected (1300.139751ms)
+✔ uncertain acknowledgements survive closure, do not duplicate submissions, and confirm after restart (759.252859ms)
+✔ disconnects, provider disagreement, persistence failures and safety interlocks cannot send (3035.891028ms)
+✔ mempool rejection retries the identical transaction with backoff; a competing confirmed spend supersedes it (3801.706284ms)
+✔ independent keepers racing the same UTXOs rely on blockchain validation; reorganizations recover (1587.964855ms)
+✔ mandatory default starts without a control and cannot consume released reward reserves for miner fees (429.661235ms)
+✔ verification becoming stale at the final broadcast boundary fails closed (251.326104ms)
+✔ browser wallet: two-step factory creation, exact reserve accounting, restart and canonical local import (627.349126ms)
+✔ browser wallet: token consolidation/change, 0x61 covenant authorization, canonical registration and subsequent browser settlement (4953.195035ms)
+✔ browser wallet: validation, wrong asset/balance, unsigned mutation and failed persistence never broadcast (133.912518ms)
+✔ browser wallet: missing acknowledgement, interrupted factory recovery, provider disagreement and reorgs fail closed (3451.343573ms)
+✔ browser wallet: competing registrations require a newly approved canonical slot and preserve prepared funding (6594.699035ms)
+✔ browser wallet: resume refreshes before approval, activated/completed vaults refuse registration, prepared funds stay recoverable (4604.290013ms)
+✔ browser wallet: exact REGISTER commitment/carrier and closed/capacity constraints reject before requesting signatures (1851.443229ms)
+✔ wire decoding preserves exact CashToken amounts, NFT category/commitment, and satoshis (16.397762ms)
+✔ captured real chipnet vault: lineage, immutable snapshot, allocations, withdrawal, restart and API routes without BCHN (1472.810977ms)
+✔ reorganizations roll back confirmed lineage and withdrawals; recovery replays the canonical branch (989.371713ms)
+✔ disconnects, stale tips, invalid proofs and changed ancestry fail closed, preserving last committed state (486.44435ms)
+✔ protocol negotiation, chipnet identity, timeout, reconnect and server failover use the real socket transport (266.793597ms)
+✔ v2 portable Electrum replay: confirmed/pending, competing spends, provider errors and reorg recovery (43123.220103ms)
+✔ v2 raw integer bounds, exact ranking, frozen roster and conservation (17.659564ms)
+✔ same-category asset roles retain independent native and token amounts (0.998782ms)
+✔ v2 WizardConnect templates: all four pairs, same-category, durable approvals and withdrawals (41855.040971ms)
+✔ v2 wallet persists before broadcast and retains signed bytes after lost acknowledgement (187.554334ms)
+✔ v2 competing registrations refresh unsigned slots and preserve prepared funds (1834.23146ms)
+✔ v2 removed funding confirmations retain identical signed funding for explicit recovery (214.256367ms)
+Testing token->bch
+token->bch register first
+token->bch register exact tie
+token->bch register full-roster slot 2
+token->bch register full-roster slot 3
+token->bch register full-roster slot 4
+token->bch register full-roster slot 5
+token->bch register full-roster slot 6
+token->bch register full-roster slot 7
+token->bch register full-roster slot 8
+token->bch register full-roster slot 9
+token->bch register full-roster slot 10
+token->bch register full-roster slot 11
+token->bch register full-roster slot 12
+token->bch register full-roster slot 13
+token->bch register full-roster slot 14
+token->bch register full-roster slot 15
+token->bch activate
+token->bch cancel frozen loser
+token->bch settle first
+token->bch refund cancelled remainder
+token->bch activate 1
+token->bch settle 1
+token->bch activate 2
+token->bch cancel activated winner for future periods
+token->bch settle 2
+Testing bch->token
+bch->token register first
+bch->token register exact tie
+bch->token activate
+bch->token cancel frozen loser
+bch->token settle first
+bch->token refund cancelled remainder
+bch->token activate 1
+bch->token settle 1
+bch->token activate 2
+bch->token cancel activated winner for future periods
+bch->token settle 2
+Testing token->token
+token->token register first
+token->token register exact tie
+token->token activate
+token->token cancel frozen loser
+token->token settle first
+token->token refund cancelled remainder
+token->token activate 1
+token->token settle 1
+token->token activate 2
+token->token cancel activated winner for future periods
+token->token settle 2
+Testing bch->bch
+bch->bch register first
+bch->bch register exact tie
+bch->bch activate
+bch->bch cancel frozen loser
+bch->bch settle first
+bch->bch refund cancelled remainder
+bch->bch activate 1
+bch->bch settle 1
+bch->bch activate 2
+bch->bch cancel activated winner for future periods
+bch->bch settle 2
+Testing token->token same-category
+token->token same-category register first
+token->token same-category register exact tie
+token->token same-category activate
+token->token same-category cancel frozen loser
+token->token same-category settle first
+token->token same-category refund cancelled remainder
+token->token same-category activate 1
+token->token same-category settle 1
+token->token same-category activate 2
+token->token same-category cancel activated winner for future periods
+token->token same-category settle 2
+✔ v2 real BCHN: four asset pairs and same-category tokens with protected balances (225927.54597ms)
+✔ public frontend receives exact-origin CORS; preflight rejects untrusted origins (102.961992ms)
+✔ hosted mode refuses spending-key operations before reaching RPC (4.011829ms)
+{
+  fundingTxid: 'c158bcd1d8be5c193976836abb766068c3c5878442ca53f4e296889d3bf334ed',
+  spendingTxid: '369333e86e4a0bdd12af4e2c707fef7703f68be3bdb8a480b56a77e0ceb98bf6',
+  confirmations: 1,
+  height: 6267,
+  balanceBCH: 14938.69430323
+}
+✔ local BCHN: isolated regtest, funding, rejected invalid spend, valid spend and confirmation (2478.24062ms)
+0-conf genesis projection checked
+0-conf registration projection checked
+reload, provider disagreement and drop checks passed
+conflict and replacement checks passed
+✔ LOCAL BCHN regtest: 0-conf genesis/offer chains, confirmation thresholds, reload, disagreement and drop reconciliation (38993.503346ms)
+✔ UTC cutoffs, future registration windows, chain lag, activation and lifetime expiry remain distinct (11.690737ms)
+✔ an offer prepared before the cutoff cannot be authorized or broadcast at the deadline (2395.682115ms)
+✖ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (180009.039265ms)
+Loopback relay initial sync: height 904, headers 6274
+Loopback relay initial sync: height 2827, headers 6274
+Loopback relay initial sync: height 4787, headers 6274
+✖ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (178466.904784ms)
+✔ legacy registry verification: late maturity, frozen snapshots, serial reserves and allocation limitation (10086.710586ms)
+✖ tests/registry.test.ts (99282.536303ms)
+✔ v3 covenant rejects malicious winners, release inflation, accounting theft and stale state independently of builders (1323.985381ms)
+✔ v3 Electrum transport pins local endpoints and regtest genesis before enabling broadcast (471.513097ms)
+✔ v3 portable Electrum replay: confirmed/pending, competing spends, provider errors and reorg recovery (40841.118825ms)
+✔ v3 local BCHN browser wallet plans, canonical replay, public sponsor, interrupted claims and reorg recovery (45623.440051ms)
+✔ v3 pure model: accumulation, live ranks, head blockage, seconds and bounds (15.142085ms)
+bch->bch full reserve genesis
+bch->bch register before releases
+bch->bch register after accumulation, displace head
+bch->bch register exact tie between releases
+bch->bch permissionless reward claim without owner signature
+bch->bch second win removes head
+bch->bch cancel blocked tied offer
+bch->bch refund unused stake
+bch->bch cancel original offer
+bch->bch refund original offer
+bch->bch independent relative withdrawal
+bch->bch independent relative withdrawal
+bch->token full reserve genesis
+bch->token register before releases
+bch->token register after accumulation, displace head
+bch->token register exact tie between releases
+bch->token permissionless reward claim without owner signature
+bch->token second win removes head
+bch->token cancel blocked tied offer
+bch->token refund unused stake
+bch->token cancel original offer
+bch->token refund original offer
+bch->token independent relative withdrawal
+bch->token independent relative withdrawal
+token->bch full reserve genesis
+token->bch register before releases
+token->bch register after accumulation, displace head
+token->bch register exact tie between releases
+token->bch permissionless reward claim without owner signature
+token->bch second win removes head
+token->bch cancel blocked tied offer
+token->bch refund unused stake
+token->bch cancel original offer
+token->bch refund original offer
+token->bch independent relative withdrawal
+token->bch independent relative withdrawal
+token->token full reserve genesis
+token->token register before releases
+token->token register after accumulation, displace head
+token->token register exact tie between releases
+token->token permissionless reward claim without owner signature
+token->token second win removes head
+token->token cancel blocked tied offer
+token->token refund unused stake
+token->token cancel original offer
+token->token refund original offer
+token->token independent relative withdrawal
+token->token independent relative withdrawal
+token->token full reserve genesis
+token->token register before releases
+token->token register after accumulation, displace head
+token->token register exact tie between releases
+token->token permissionless reward claim without owner signature
+token->token second win removes head
+token->token cancel blocked tied offer
+token->token refund unused stake
+token->token cancel original offer
+token->token refund original offer
+token->token independent relative withdrawal
+token->token independent relative withdrawal
+✔ v3 BCHN regtest: four asset pairs, continuous claims, locks, conflicts and reorgs (154915.349287ms)
+✔ bounded vault: BCHN consensus ranking, ties, reserves, payout, locks and replay (7603.839149ms)
+✔ wallet scan retries a proven new block and preserves BCH, fungible tokens and NFTs (141.681296ms)
+✔ wallet scan rejects snapshots at different tips even when a block arrives between providers (72.566023ms)
+✔ wallet scan discards a genuine reorganization and only accepts a fresh two-provider snapshot (67.76377ms)
+✔ wallet scan fails closed on repeated reorganizations with bounded retries and actionable progress (58.89778ms)
+✔ wallet scan never promotes provider disagreement to a verified balance (75.936725ms)
+✔ wallet scan outage is bounded and gives a connection/retry instruction (30.595801ms)
+✔ wallet scan transient outage automatically recovers and verifies both hosts (44.461209ms)
+✔ wallet scan includes funded addresses after an unused gap and links shared proof headers once per provider (76.205404ms)
+✔ failed refresh clears an earlier engine inventory and blocks creation from stale balances (3056.894869ms)
+✔ wallet scan rejects individually valid but different provider UTXO inventories (58.435569ms)
+✔ wallet scan rechecks the first provider after the second scan before accepting balances (51.576446ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 55
+ℹ fail 3
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2017018.872079
+
+✖ failing tests:
+
+test at tests/browser-keeper.test.ts:1:2793
+✖ local VM enforces winner, immediate reward and protected fee reserve; mainnet and non-final transactions rejected (1300.139751ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /chipnet/. Input:
+
+  'Error: Broadcast requires a verified active chain session'
+
+      at async TestContext.<anonymous> (/home/omarchy/bch-staking/tests/browser-keeper.test.ts:54:117)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Broadcast requires a verified active chain session
+        at ElectrumCore.sendRawTransaction (/home/omarchy/bch-staking/src/electrum-core.ts:184:107)
+        at TestContext.<anonymous> (/home/omarchy/bch-staking/tests/browser-keeper.test.ts:54:140)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /chipnet/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests/period.test.ts:1:453
+✖ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (180009.039265ms)
+  'test timed out after 180000ms'
+
+test at tests/policy.test.ts:1:506
+✖ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (178466.904784ms)
+  Error: Relay peer timeout: control funding relay
+      at Object.until (/home/omarchy/bch-staking/src/relay-peer.ts:49:11)
+      at async TestContext.<anonymous> (/home/omarchy/bch-staking/tests/policy.test.ts:20:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests/registry.test.ts:1:1
+✖ tests/registry.test.ts (99282.536303ms)
+  'test failed'
+
+=== legacyDeadlineResolved ===
+✔ deadline counterexample and irrevocable OPEN -> CLOSED -> SETTLED (93950.287013ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96357.002719
+
+=== legacyRegistryResolved ===
+✖ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (73555.75044ms)
+✔ legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement (113688.134196ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 193966.429071
+
+✖ failing tests:
+
+test at tests/policy.test.ts:11:1
+✖ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (73555.75044ms)
+  Error: Relay peer timeout: control funding relay
+      at Object.until (/home/omarchy/bch-staking/src/relay-peer.ts:49:11)
+      at async <anonymous> (/home/omarchy/bch-staking/tests/policy.test.ts:21:5)
+      at async isolatedRegtest (/home/omarchy/bch-staking/tests/fixtures/isolated-regtest.ts:19:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+=== legacyPolicyResolved ===
+✔ BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms (14084.091835ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16478.904415
+
+=== browserKeeperResolved ===
+✔ browser keeper: activation, canonical tied winner, payouts, allocations, reserve and sequential confirmations (5360.005742ms)
+✔ local VM enforces winner, immediate reward and protected fee reserve; mainnet and non-final transactions rejected (866.418885ms)
+✔ uncertain acknowledgements survive closure, do not duplicate submissions, and confirm after restart (1001.286562ms)
+✔ disconnects, provider disagreement, persistence failures and safety interlocks cannot send (2321.713178ms)
+✔ mempool rejection retries the identical transaction with backoff; a competing confirmed spend supersedes it (3474.90328ms)
+✔ independent keepers racing the same UTXOs rely on blockchain validation; reorganizations recover (2075.619075ms)
+✔ mandatory default starts without a control and cannot consume released reward reserves for miner fees (1323.240282ms)
+✔ verification becoming stale at the final broadcast boundary fails closed (670.546798ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22242.354981
+
+=== isolatedAllocations ===
+Allocation verification: token genesis ready
+Allocation verification: all sixteen commitments registered
+Allocation verification: three independent allocations settled
+✔ independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement (302639.25522ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 307204.650377
+
+=== finalPublicClaimFlow ===
+✔ v3 local BCHN browser wallet plans, canonical replay, public sponsor, interrupted claims and reorg recovery (51561.087013ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56305.416954
+
+=== mockedChipnetOnly ===
+✔ LOCAL VM ONLY: wallet-signature placeholders, genesis, offer, activation, reward and independent withdrawal (601.869678ms)
+✔ chipnet configuration excludes mainnet and rejects unsafe RPC endpoints (2.264559ms)
+✔ chain, fork, synchronization and relay gates run before any RPC signing or broadcast (164.149755ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2923.819644
+
+=== frontend ===
+
+> staking-arena-web@0.3.0 test
+> vitest run
+
+
+ RUN  v5.1.0 /home/omarchy/bch-staking/frontend
+
+
+ Test Files  19 passed (19)
+      Tests  70 passed (70)
+   Start at  15:58:33
+   Duration  115.27s (environment 52%, import 22%, tests 12%, setup 10%, transform 3%)
+
+Environment  jsdom was created 19 times · 54.17s total, 52% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+
+=== typecheck ===
+
+> bch-staking@0.3.0 typecheck
+> tsc
+
+
+=== build ===
+
+> staking-arena-web@0.3.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.7 building client environment for production...
+transforming...
+✓ 628 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/assets/indexer-BRVBtEON.js                     0.05 kB
+dist/assets/keeper-BRelbEv1.js                      0.58 kB
+dist/assets/indexer.bootstrap.worker-CLsuqGDp.js    0.62 kB
+dist/index.html                                     1.21 kB │ gzip:   0.68 kB
+dist/assets/model-_T7ZtZtD.js                       1.68 kB
+dist/assets/wallet-Buut2aon.js                     12.22 kB
+dist/assets/wallet.worker-Ds3rTAr1.js              43.69 kB
+dist/assets/indexer-CYA7rQEc.js                    45.90 kB
+dist/assets/electrum-wallet-AOewTl42.js           282.43 kB
+dist/assets/registry-R-0oSpMz.js                  378.30 kB
+dist/assets/arena.worker-DAYxYEh5.js              688.94 kB
+dist/assets/v3.worker-BOAlDRqY.js                 704.77 kB
+dist/assets/app-entry-CSVIGMzA.css                  9.98 kB │ gzip:   2.74 kB
+dist/assets/GeneralizedVaults-DuG-Bxr4.js           0.12 kB │ gzip:   0.12 kB
+dist/assets/v3Client-LpFqnOi-.js                    0.55 kB │ gzip:   0.37 kB
+dist/assets/rolldown-runtime-WkwZ5CU-.js            0.59 kB │ gzip:   0.36 kB
+dist/assets/preload-helper-DclECHGd.js              1.63 kB │ gzip:   0.83 kB
+dist/assets/index-CWKw_Sob.js                       1.77 kB │ gzip:   0.95 kB
+dist/assets/GeneralizedVaults-fiphaBA7.js           2.34 kB │ gzip:   1.15 kB
+dist/assets/GeneralizedAssets-CaamVH0O.js           9.14 kB │ gzip:   3.35 kB
+dist/assets/V3Arena-C_2SLQmg.js                    15.49 kB │ gzip:   5.09 kB
+dist/assets/createAssets-B6UVP0Mg.js              139.18 kB │ gzip:  41.77 kB
+dist/assets/app-entry-D5uBEe_P.js                 784.22 kB │ gzip: 307.25 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 8.80s

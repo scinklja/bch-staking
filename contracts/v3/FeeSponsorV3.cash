@@ -1,0 +1,10 @@
+pragma cashscript ^0.14.0;
+// Public BCH sponsorship can only be spent alongside this vault's valid claim.
+contract FeeSponsorV3(bytes registryScript) {
+    function spend() {
+        require(this.activeInputIndex == 3);
+        require(tx.inputs[0].lockingBytecode == registryScript);
+        require(tx.inputs.length == 4 && tx.outputs.length == 5);
+        require(tx.inputs[3].tokenCategory == 0x);
+    }
+}

@@ -18,7 +18,7 @@ it('verifies actual BCH/token terms and converts BCH offers to exact raw units w
  const wallet={v2,execute:vi.fn(),publicKey:()=>''} as WalletTransactions;
  saveV2Config(config);render(<WalletTransactionsContext.Provider value={wallet}><GeneralizedAssets genesis={config.genesis}/></WalletTransactionsContext.Provider>);
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Verify and refresh vault'})));
- expect(screen.getByText(/Maximum reward: 7 raw fungible units per period/)).toHaveTextContent('Staking: BCH. Reward: CashToken');
+ expect(screen.getAllByText(/Maximum reward: 7 raw fungible units per period/)[1]).toHaveTextContent('Staking: BCH. Reward: CashToken');
  expect(screen.getByText(/Protected staking escrow:/)).toHaveTextContent('0.00000000 BCH (0 satoshis)');
  fireEvent.change(screen.getByLabelText('Stake S (BCH)'),{target:{value:'0.00003001'}});
  fireEvent.change(screen.getByLabelText('Requested reward R (raw token units)'),{target:{value:'7'}});

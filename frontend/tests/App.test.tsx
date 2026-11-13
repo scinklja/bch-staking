@@ -15,7 +15,7 @@ it('shows only actual indexed vault terms and separate v2 navigation',async()=>{
  expect(screen.getByText('0.00001000 BCH')).toBeInTheDocument();
  expect(screen.getByText('Every minute')).toBeInTheDocument();
  expect(fetcher.mock.calls[0]).toBeDefined();
- expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(2);
+ expect(within(screen.getByRole('navigation')).getAllByRole('link')).toHaveLength(3);
  expect(screen.queryByText('Native BCH reserves')).not.toBeInTheDocument();
 });
 it('opens a dedicated hash detail route and ranks offers by exact priority',async()=>{

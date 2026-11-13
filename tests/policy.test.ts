@@ -1,3 +1,4 @@
+import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { rpc, assertRegtest } from '../src/rpc.js';
 import { TokenRegtestProvider } from '../src/token-provider.js';
 import { relayPeer } from '../src/relay-peer.js';
 
-test('BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms', { timeout: 900000 }, async () => {
+test('BCHN standard policy control: oversized data rejected on both nodes; smaller control relays and confirms', { timeout: 900000 }, async () => isolatedRegtest(async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const checkpoint = await rpc('getblockchaininfo');
@@ -48,4 +49,4 @@ test('BCHN standard policy control: oversized data rejected on both nodes; small
       rejectedBytes: large.length / 2, acceptedBytes: small.length / 2, relayedAndConfirmed: txid,
       note: 'Oversized data is a policy rejection; no invalid-block consensus experiment was performed.' }, null, 2) + '\n');
   } finally { await relay.close(); }
-});
+}));

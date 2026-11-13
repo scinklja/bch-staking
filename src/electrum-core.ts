@@ -8,7 +8,7 @@ export const scriptHash = (script: string) => sha256Bytes(Buffer.from(script, 'h
 export const headerHash = (hex: string) => hash256(Buffer.from(hex, 'hex')).reverse().toString('hex');
 export interface Header { height: number; hex: string; hash: string; parent: string; time: number; merkle: string }
 export interface HistoryEntry { tx_hash: string; height: number }
-export interface ElectrumOptions { network?: 'chipnet' | 'mainnet'; endpoints?: string[]; timeoutMs?: number; maxTipAgeSeconds?: number; maxHistoryEntries?: number; maxTransactions?: number; maxRawBytes?: number; allowBroadcast?: boolean }
+export interface ElectrumOptions { network?: 'chipnet' | 'regtest' | 'mainnet'; endpoints?: string[]; timeoutMs?: number; maxTipAgeSeconds?: number; maxHistoryEntries?: number; maxTransactions?: number; maxRawBytes?: number; allowBroadcast?: boolean }
 export type ElectrumRequest = (method: string, ...params: (string | number | boolean)[]) => Promise<any>;
 const isHash = (s: unknown): s is string => typeof s === 'string' && /^[a-f0-9]{64}$/.test(s);
 export function decodeRawTransaction(raw: string, expected?: string) {
@@ -32,13 +32,15 @@ export class ElectrumCore implements NetworkProvider {
   readonly maxRawBytes: number;
   private rawBytes = 0;
   endpoint = '';
-  private activeChipnetSession=false;
+  private activeChainSession=false;
   readonly allowBroadcast: boolean;
   request: ElectrumRequest = async () => { throw Error('Electrum operation requires a session'); };
   constructor(readonly connectionFactory: ConnectionFactory, options: ElectrumOptions = {}) {
     this.allowBroadcast=options.allowBroadcast===true;
-    if ((options.network ?? 'chipnet') !== 'chipnet') throw Error('Mainnet Electrum is disabled');
+    if (!['chipnet','regtest'].includes(options.network??'chipnet')) throw Error('Mainnet Electrum is disabled');
+    if(options.network==='regtest')this.network=Network.REGTEST;
     this.endpoints = options.endpoints ?? ['wss://chipnet.imaginary.cash:50004', 'wss://electrum-chipnet.optnlabs.com', 'wss://chipnet.bch.ninja:50004'];
+    if(this.network===Network.REGTEST&&this.endpoints.some(e=>!['localhost','127.0.0.1','[::1]'].includes(new URL(e).hostname)))throw Error('Regtest Electrum requires local endpoints');
     this.timeoutMs = options.timeoutMs ?? 10000;
     this.maxTipAgeSeconds = options.maxTipAgeSeconds ?? 21600;
     this.maxHistoryEntries = options.maxHistoryEntries ?? 50000;
@@ -64,12 +66,13 @@ export class ElectrumCore implements NetworkProvider {
         await connection.connect(); this.endpoint = endpoint; this.request = connection.request;
         const version = await this.request('server.version', 'Staking Arena', '1.5.0');
         if (!Array.isArray(version) || !/^1\.(?:[5-9]|[1-9][0-9])(?:\.|$)/.test(version[1])) throw Error('Electrum Cash protocol 1.5.0 required: ' + JSON.stringify(version));
-        if ((await this.header(0)).hash !== '000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b'
+        if(this.network===Network.REGTEST){if((await this.header(0)).hash!=='0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206')throw Error('Electrum regtest identity mismatch');}
+        else if ((await this.header(0)).hash !== '000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b'
           || (await this.header(121957)).hash !== '0000000056087dee73fb66178ca70da89dfd0be098b1a63cf6fe93934cd04c78') throw Error('Electrum chipnet identity mismatch');
-        this.activeChipnetSession=true;
+        this.activeChainSession=true;
         return await work();
       } catch (e) { errors.push(`${endpoint}: ${String(e)}`); }
-      finally { this.activeChipnetSession=false; connection.close(); this.rawCache = undefined; this.request = async () => { throw Error('Electrum session closed'); }; }
+      finally { this.activeChainSession=false; connection.close(); this.rawCache = undefined; this.request = async () => { throw Error('Electrum session closed'); }; }
     }
     throw Error(errors.join('; '));
   }
@@ -158,7 +161,7 @@ export class ElectrumCore implements NetworkProvider {
   async getBlockHeight() { return (await this.tip()).height; }
   async getUtxos(address: string) {
     const result = cashAddressToLockingBytecode(address);
-    if (typeof result === 'string' || result.prefix !== 'bchtest') throw Error('Address network mismatch');
+    if (typeof result === 'string' || result.prefix !== (this.network===Network.REGTEST?'bchreg':'bchtest')) throw Error('Address network mismatch');
     return this.getUtxosForLockingBytecode(result.bytecode);
   }
   async getUtxosForLockingBytecode(script: string | Uint8Array): Promise<SpendableUtxo[]> {
@@ -178,7 +181,7 @@ export class ElectrumCore implements NetworkProvider {
   }
   async sendRawTransaction(raw: string): Promise<string> {
     if(!this.allowBroadcast)throw Error('Electrum broadcasting disabled');
-    if(!this.activeChipnetSession || this.network!==Network.CHIPNET)throw Error('Broadcast requires a verified active chipnet session');
+    if(!this.activeChainSession || (this.network!==Network.CHIPNET&&this.network!==Network.REGTEST))throw Error('Broadcast requires a verified active '+(this.network===Network.REGTEST?'regtest':'chipnet')+' session');
     const tx=decodeRawTransaction(raw),result=await this.request('blockchain.transaction.broadcast',raw);
     if(result!==tx.txid)throw Error('Electrum broadcast response does not match transaction ID; acceptance is uncertain');
     return result;

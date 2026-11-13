@@ -1,0 +1,107 @@
+{
+  "contractName": "StakeAllocationV3",
+  "constructorInputs": [
+    {
+      "name": "terms",
+      "type": "bytes110"
+    }
+  ],
+  "abi": [
+    {
+      "name": "withdraw",
+      "inputs": [
+        {
+          "name": "authorization",
+          "type": "sig"
+        }
+      ]
+    }
+  ],
+  "bytecode": "OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXVERSION OP_2 OP_NUMEQUALVERIFY OP_0 OP_INPUTSEQUENCENUMBER OP_OVER 4e OP_SPLIT OP_DROP 4a OP_SPLIT OP_NIP OP_BIN2NUM OP_NUMEQUALVERIFY OP_1 OP_INPUTSEQUENCENUMBER feffffff00 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_1 OP_UTXOTOKENCATEGORY OP_0 OP_EQUAL OP_1 OP_UTXOTOKENAMOUNT OP_0 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_1 OP_UTXOVALUE 1027 OP_NUMEQUALVERIFY OP_TUCK 21 OP_SPLIT OP_DROP OP_CHECKSIGVERIFY OP_DUP 4e OP_SPLIT OP_DROP 4a OP_SPLIT OP_NIP OP_BIN2NUM OP_CHECKSEQUENCEVERIFY OP_DROP OP_0 OP_UTXOTOKENCOMMITMENT OP_0 OP_EQUAL OP_0 OP_OUTPUTTOKENCOMMITMENT OP_0 OP_EQUAL OP_BOOLAND OP_VERIFY OP_0 OP_OUTPUTBYTECODE 76a914 OP_2 OP_PICK 21 OP_SPLIT OP_DROP OP_HASH160 OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_DUP 4a OP_SPLIT OP_DROP 46 OP_SPLIT OP_NIP OP_BIN2NUM OP_OVER 6e OP_SPLIT OP_DROP 4e OP_SPLIT OP_NIP 0000000000000000000000000000000000000000000000000000000000000000 OP_EQUAL OP_IF OP_0 OP_UTXOVALUE OP_OVER OP_NUMEQUAL OP_0 OP_OUTPUTVALUE OP_2 OP_PICK OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_0 OP_UTXOTOKENCATEGORY OP_0 OP_EQUAL OP_0 OP_OUTPUTTOKENCATEGORY OP_0 OP_EQUAL OP_BOOLAND OP_VERIFY OP_0 OP_UTXOTOKENAMOUNT OP_0 OP_NUMEQUAL OP_0 OP_OUTPUTTOKENAMOUNT OP_0 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_ELSE OP_0 OP_UTXOVALUE e803 OP_NUMEQUAL OP_0 OP_OUTPUTVALUE e803 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_0 OP_UTXOTOKENCATEGORY OP_2 OP_PICK 6e OP_SPLIT OP_DROP 4e OP_SPLIT OP_NIP OP_EQUAL OP_0 OP_OUTPUTTOKENCATEGORY OP_3 OP_PICK 6e OP_SPLIT OP_DROP 4e OP_SPLIT OP_NIP OP_EQUAL OP_BOOLAND OP_VERIFY OP_0 OP_UTXOTOKENAMOUNT OP_OVER OP_NUMEQUAL OP_0 OP_OUTPUTTOKENAMOUNT OP_2 OP_PICK OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_ENDIF OP_2DROP OP_1",
+  "source": "pragma cashscript ^0.14.0;\ncontract StakeAllocationV3(bytes110 terms) {\n    function withdraw(sig authorization) {\n        require(this.activeInputIndex == 0);\n        require(tx.version == 2);\n        require(tx.inputs[0].sequenceNumber == int(terms.slice(74,78)));\n        require(tx.inputs[1].sequenceNumber == 4294967294);\n        require(tx.inputs.length == 2 && tx.outputs.length == 1);\n        require(tx.inputs[1].tokenCategory == 0x && tx.inputs[1].tokenAmount == 0);\n        require(tx.inputs[1].value == 10000);\n        require(checkSig(authorization, pubkey(terms.slice(0,33))));\n        require(this.age >= int(terms.slice(74,78)));\n        require(tx.inputs[0].nftCommitment == 0x && tx.outputs[0].nftCommitment == 0x);\n        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(hash160(terms.slice(0,33))));\n        int s = int(terms.slice(70,74));\n        if (terms.slice(78,110) == 0x0000000000000000000000000000000000000000000000000000000000000000) {\n            require(tx.inputs[0].value == s && tx.outputs[0].value == s);\n            require(tx.inputs[0].tokenCategory == 0x && tx.outputs[0].tokenCategory == 0x);\n            require(tx.inputs[0].tokenAmount == 0 && tx.outputs[0].tokenAmount == 0);\n        } else {\n            require(tx.inputs[0].value == 1000 && tx.outputs[0].value == 1000);\n            require(tx.inputs[0].tokenCategory == terms.slice(78,110) && tx.outputs[0].tokenCategory == terms.slice(78,110));\n            require(tx.inputs[0].tokenAmount == s && tx.outputs[0].tokenAmount == s);\n        }\n    }\n}\n",
+  "fingerprint": "820ae94f8b09b0c7f3b598c9a647a84ddadfdb7e61a4d0731194d65956b59875",
+  "debug": {
+    "bytecode": "c0009dc2529d00cb78014e7f75014a7f77819d51cb05feffffff009dc3529cc4519c9a6951ce008751d0009c9a6951c60210279d7d01217f75ad76014e7f75014a7f7781b27500cf008700d200879a6900cd0376a914527901217f75a97e0288ac7e8876014a7f7501467f778178016e7f75014e7f77200000000000000000000000000000000000000000000000000000000000000000876300c6789c00cc52799c9a6900ce008700d100879a6900d0009c00d3009c9a696700c602e8039c00cc02e8039c9a6900ce5279016e7f75014e7f778700d15379016e7f75014e7f77879a6900d0789c00d352799c9a69686d51",
+    "sourceMap": "4:16:4:37;:41::42;:8::44:1;5:16:5:26:0;:30::31;:8::33:1;6:26:6:27:0;:16::43:1;:51::56:0;:66::68;:51::69:1;;:63::65:0;:51::69:1;;:47::70;:8::72;7:26:7:27:0;:16::43:1;:47::57:0;:8::59:1;8:16:8:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;9:26:9:27:0;:16::42:1;:46::48:0;:16:::1;:62::63:0;:52::76:1;:80::81:0;:52:::1;:16;:8::83;10:26:10:27:0;:16::34:1;:38::43:0;:8::45:1;11:25:11:52:0;:61::63;:47::64:1;;:8::68;12:32:12:37:0;:47::49;:32::50:1;;:44::46:0;:32::50:1;;:28::51;:8::53;;13:26:13:27:0;:16::42:1;:46::48:0;:16:::1;:63::64:0;:52::79:1;:83::85:0;:52:::1;:16;:8::87;14:27:14:28:0;:16::45:1;:49::101:0;:82::87;;:96::98;:82::99:1;;:74::100;:49::101;;;:8::103;15:20:15:25:0;:35::37;:20::38:1;;:32::34:0;:20::38:1;;:16::39;16:12:16:17:0;:27::30;:12::31:1;;:24::26:0;:12::31:1;;:35::101:0;:12:::1;:103:20:9:0;17:30:17:31;:20::38:1;:42::43:0;:20:::1;:58::59:0;:47::66:1;:70::71:0;;:47:::1;:20;:12::73;18:30:18:31:0;:20::46:1;:50::52:0;:20:::1;:67::68:0;:56::83:1;:87::89:0;:56:::1;:20;:12::91;19:30:19:31:0;:20::44:1;:48::49:0;:20:::1;:64::65:0;:53::78:1;:82::83:0;:53:::1;:20;:12::85;20:15:24:9:0;21:30:21:31;:20::38:1;:42::46:0;:20:::1;:61::62:0;:50::69:1;:73::77:0;:50:::1;:20;:12::79;22:30:22:31:0;:20::46:1;:50::55:0;;:65::68;:50::69:1;;:62::64:0;:50::69:1;;:20;:84::85:0;:73::100:1;:104::109:0;;:119::122;:104::123:1;;:116::118:0;:104::123:1;;:73;:20;:12::125;23:30:23:31:0;:20::44:1;:48::49:0;:20:::1;:64::65:0;:53::78:1;:82::83:0;;:53:::1;:20;:12::85;20:15:24:9;3:41:25:5;",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 3,
+        "line": 4
+      },
+      {
+        "ip": 6,
+        "line": 5
+      },
+      {
+        "ip": 17,
+        "line": 6
+      },
+      {
+        "ip": 21,
+        "line": 7
+      },
+      {
+        "ip": 29,
+        "line": 8
+      },
+      {
+        "ip": 39,
+        "line": 9
+      },
+      {
+        "ip": 43,
+        "line": 10
+      },
+      {
+        "ip": 48,
+        "line": 11
+      },
+      {
+        "ip": 57,
+        "line": 12
+      },
+      {
+        "ip": 68,
+        "line": 13
+      },
+      {
+        "ip": 81,
+        "line": 14
+      },
+      {
+        "ip": 110,
+        "line": 17
+      },
+      {
+        "ip": 120,
+        "line": 18
+      },
+      {
+        "ip": 130,
+        "line": 19
+      },
+      {
+        "ip": 141,
+        "line": 21
+      },
+      {
+        "ip": 165,
+        "line": 22
+      },
+      {
+        "ip": 176,
+        "line": 23
+      }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-13T14:31:56.314Z"
+}

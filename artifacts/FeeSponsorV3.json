@@ -1,0 +1,50 @@
+{
+  "contractName": "FeeSponsorV3",
+  "constructorInputs": [
+    {
+      "name": "registryScript",
+      "type": "bytes"
+    }
+  ],
+  "abi": [
+    {
+      "name": "spend",
+      "inputs": []
+    }
+  ],
+  "bytecode": "OP_INPUTINDEX OP_3 OP_NUMEQUALVERIFY OP_0 OP_UTXOBYTECODE OP_EQUALVERIFY OP_TXINPUTCOUNT OP_4 OP_NUMEQUAL OP_TXOUTPUTCOUNT OP_5 OP_NUMEQUAL OP_BOOLAND OP_VERIFY OP_3 OP_UTXOTOKENCATEGORY OP_0 OP_EQUAL",
+  "source": "pragma cashscript ^0.14.0;\n// Public BCH sponsorship can only be spent alongside this vault's valid claim.\ncontract FeeSponsorV3(bytes registryScript) {\n    function spend() {\n        require(this.activeInputIndex == 3);\n        require(tx.inputs[0].lockingBytecode == registryScript);\n        require(tx.inputs.length == 4 && tx.outputs.length == 5);\n        require(tx.inputs[3].tokenCategory == 0x);\n    }\n}\n",
+  "fingerprint": "3a06e5e526f194b1ecb4f2d294a796ebc25383b4344c73075035b06e7d731872",
+  "debug": {
+    "bytecode": "c0539d00c788c3549cc4559c9a6953ce0087",
+    "sourceMap": "5:16:5:37;:41::42;:8::44:1;6:26:6:27:0;:16::44:1;:8::64;7:16:7:32:0;:36::37;:16:::1;:41::58:0;:62::63;:41:::1;:16;:8::65;8:26:8:27:0;:16::42:1;:46::48:0;:8::50:1",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 3,
+        "line": 5
+      },
+      {
+        "ip": 6,
+        "line": 6
+      },
+      {
+        "ip": 14,
+        "line": 7
+      },
+      {
+        "ip": 19,
+        "line": 8
+      }
+    ]
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-13T14:31:55.970Z"
+}

@@ -1,3 +1,4 @@
+import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { rpc, assertRegtest } from '../src/rpc.js';
 import { TokenRegtestProvider } from '../src/token-provider.js';
 import { hashState, nextState, offer, STATE_SIZE, LIVE, SNAPSHOT, RECORD_SIZE, periodBoundary } from '../src/legacy-registry.js';
 
-test('legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement', { timeout: 240000 }, async () => {
+test('legacy 16-offer authenticated registry: registration, immutable activation, cancellation and settlement', { timeout: 240000 }, async () => isolatedRegtest(async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const provider = new TokenRegtestProvider();
@@ -215,4 +216,4 @@ test('legacy 16-offer authenticated registry: registration, immutable activation
   evidence.push({ genesis: genesis.txid, category, settled, second, schedule, registryBytes: registry.bytesize,
     activationBytes: activation.raw.length / 2, settlementBytes: winning.raw.length / 2, stateBytes: state.length });
   await writeFile('docs/registry-test-result.json', JSON.stringify(evidence, null, 2) + '\n');
-});
+}));

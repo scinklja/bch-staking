@@ -1,0 +1,26 @@
+pragma cashscript ^0.14.0;
+contract StakeAllocationV3(bytes110 terms) {
+    function withdraw(sig authorization) {
+        require(this.activeInputIndex == 0);
+        require(tx.version == 2);
+        require(tx.inputs[0].sequenceNumber == int(terms.slice(74,78)));
+        require(tx.inputs[1].sequenceNumber == 4294967294);
+        require(tx.inputs.length == 2 && tx.outputs.length == 1);
+        require(tx.inputs[1].tokenCategory == 0x && tx.inputs[1].tokenAmount == 0);
+        require(tx.inputs[1].value == 10000);
+        require(checkSig(authorization, pubkey(terms.slice(0,33))));
+        require(this.age >= int(terms.slice(74,78)));
+        require(tx.inputs[0].nftCommitment == 0x && tx.outputs[0].nftCommitment == 0x);
+        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(hash160(terms.slice(0,33))));
+        int s = int(terms.slice(70,74));
+        if (terms.slice(78,110) == 0x0000000000000000000000000000000000000000000000000000000000000000) {
+            require(tx.inputs[0].value == s && tx.outputs[0].value == s);
+            require(tx.inputs[0].tokenCategory == 0x && tx.outputs[0].tokenCategory == 0x);
+            require(tx.inputs[0].tokenAmount == 0 && tx.outputs[0].tokenAmount == 0);
+        } else {
+            require(tx.inputs[0].value == 1000 && tx.outputs[0].value == 1000);
+            require(tx.inputs[0].tokenCategory == terms.slice(78,110) && tx.outputs[0].tokenCategory == terms.slice(78,110));
+            require(tx.inputs[0].tokenAmount == s && tx.outputs[0].tokenAmount == s);
+        }
+    }
+}

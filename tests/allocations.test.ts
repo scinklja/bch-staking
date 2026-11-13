@@ -1,3 +1,4 @@
+import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import test from 'node:test';
 import { relayPeer } from '../src/relay-peer.js';
 import { verifyRegistryGenesis } from '../src/genesis.js';
@@ -10,7 +11,7 @@ import { TokenRegtestProvider } from '../src/token-provider.js';
 import { allocationTerms, hashState, LIVE, nextState, offer, periodBoundary, RECORD_SIZE, remainingCommitment, SNAPSHOT, STATE_SIZE } from '../src/registry.js';
 
 const recoveryOnly = process.env.STAKING_RECOVERY_ONLY === '1';
-test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 1800000 }, async () => {
+test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'independent CashToken allocations: three wins, immutable locks, escrow, snapshots and delayed settlement', { timeout: 1800000 }, async () => isolatedRegtest(async () => {
   await assertRegtest();
   assert.equal((await rpc('getnetworkinfo')).networkactive, false);
   const checkpoint = await rpc('getblockchaininfo');
@@ -460,4 +461,4 @@ test(recoveryOnly ? 'fee recovery with a separate third-party signing key' : 'in
     await rpc('setmocktime', [0]);
     try { await relay.peer('setmocktime', [0]); } finally { await relay.close(); }
   }
-});
+}));

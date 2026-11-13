@@ -1,0 +1,13 @@
+{
+  "network": "regtest",
+  "node": "/Bitcoin Cash Node:29.2.0/",
+  "verifiedAt": "2026-11-13T14:57:53.800Z",
+  "genesis": "af4986c5bc3f383067380c24c8110a2a3e1009183bf4e0b066d79bade8ec7216",
+  "claim": "10d9857b6a3e489f4183c3c7c2bbd85fcc034857e51a842e2a13d3df4f3cf2aa",
+  "walletPlansSignedLocally": true,
+  "publicWalletVerified": false,
+  "publicClaimWithoutWallet": true,
+  "interruptedAcknowledgementVerified": true,
+  "reorganizationReplayVerified": true,
+  "relativeWithdrawalVerified": true
+}
