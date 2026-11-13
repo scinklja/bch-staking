@@ -5,8 +5,8 @@ test.beforeEach(async({page})=>{await page.clock.setFixedTime(browserTime);});
 test('production offline build renders marketplace and creation preview with no backend',async({page})=>{
  const errors:string[]=[],requests:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
  await page.goto('/',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Staking Arena'})).toBeVisible();await expect(page.getByRole('alert')).toContainText('No API is configured');
- await page.getByRole('link',{name:'Create Vault'}).click();await expect(page.getByText('Chipnet test funds only',{exact:true})).toBeVisible();
- await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByRole('button',{name:'Create Vault'})).toBeDisabled();
+ await page.getByRole('link',{name:'Create Vault'}).click();await expect(page.getByRole('heading',{name:'Create Vault',exact:true})).toBeVisible();
+ await page.reload({waitUntil:'domcontentloaded'});await expect(page.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
  expect(requests.every(url=>new URL(url).origin==='http://127.0.0.1:4174'&&!url.includes('/api/'))).toBe(true);expect(errors).toEqual([]);
 });
 test('configured production hash routes, offer preview and persistent outage labels work',async({page})=>{

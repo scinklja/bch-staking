@@ -5,6 +5,7 @@ import type {WalletKey} from '../../src/transactions-core';
 import {browserConfig} from './browserConfig';
 import {wizardWireTransaction,type WalletTransactions} from './walletTransactions';
 import {saveLocalVault} from './vaultCatalog';
+import {V2_CREATION_UNAVAILABLE} from './createAssets';
 /** The worker builds/verifies public transactions. Only the live wallet manager ever signs. */
 export function browserWalletClient(manager:DappConnectionManager|null,check:()=>void):WalletTransactions {
  const getManager=()=>{if(!manager)throw Error('Connect a chipnet wallet first');return manager;};
@@ -22,6 +23,7 @@ export function browserWalletClient(manager:DappConnectionManager|null,check:()=
   return {txid:op.txid??'',status:op.stage,operation:op};
  }
  return {browser:true,async v2(intent){
+   if(intent.operation==='create')throw Error(V2_CREATION_UNAVAILABLE);
    await startup;
    if(['list','sync'].includes(String(intent.operation)))return rpc('v2',intent,[]);
    const session=JSON.stringify(getManager().getSessionPaths());

@@ -15,9 +15,9 @@ try {
  await go('/');await page.getByRole('heading',{name:'Staking Arena'}).waitFor();await page.getByText('Offline · no API configured',{exact:true}).waitFor();
  assert.equal(requests.filter(r=>r.url.includes('/api/')).length,0);
  await page.getByRole('link',{name:'Create Vault'}).click();await page.getByRole('heading',{name:'Create Vault'}).waitFor();
- await page.reload({waitUntil:'domcontentloaded'});await page.getByText('Chipnet test funds only',{exact:true}).waitFor();
- assert.equal(await page.getByRole('button',{name:'Create Vault'}).isEnabled(),false);
- assert.equal(await page.getByRole('option').count(),1);
+ await page.reload({waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Create Vault',exact:true}).waitFor();
+ assert.equal(await page.getByRole('button',{name:'Review funding in wallet'}).isEnabled(),false);
+ assert.equal(await page.getByRole('option').count(),4);
  console.log('PASS: production offline marketplace, direct creation route and preview-only controls');
  const id='a'.repeat(64);let online=true;
  await page.route('https://indexer.example.test/read-only/vaults',route=>online?route.fulfill({json:fixture(),headers:{'Access-Control-Allow-Origin':'*'}}):route.abort());

@@ -17,8 +17,8 @@ test('mobile preview forms are usable without suggesting wallet functionality',a
  for(const [label,value] of [[/^Stake amount/,'3000'],[/^Lock duration/,'2'],[/^Reward requested/,'0.00001000'],[/^Maximum wins/,'3']] as const)await page.getByRole('textbox',{name:label}).fill(value);
  await expect(page.getByText('9,000 raw token units',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Make an Offer'})).toBeDisabled();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- await page.goto('/#/create',{waitUntil:'domcontentloaded'});await expect(page.getByRole('button',{name:'Create Vault'})).toBeDisabled();
- await expect(page.getByRole('option')).toHaveCount(1);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.goto('/#/create',{waitUntil:'domcontentloaded'});await expect(page.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
+ await expect(page.getByRole('option')).toHaveCount(4);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 test('retains snapshot labels across outage, reload and navigation, then recovers',async({page})=>{
  let offline=false;await page.route('**/api/vaults',route=>offline?route.abort():route.fulfill({json:fixture()}));
@@ -71,14 +71,25 @@ test('WizardConnect pairs on demand and Escape cancels the accessible mobile dia
  expect(errors).toEqual([]);
 });
 
- test('v2 asset selectors show exact reserves without enabling unsigned wallet spends',async({page})=>{
+test('unified asset selectors support all four pairs with keyboard and touch without public v2 spending',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.route('**/api/vaults',route=>route.fulfill({json:fixture()}));
- await page.goto('/#/v2',{waitUntil:'domcontentloaded'});await expect(page.getByRole('heading',{name:'Staking Arena v2'})).toBeVisible();
- await page.getByLabel('First period start (UTC)').fill('2027-01-01T00:00');await page.getByLabel('Period duration (seconds)').fill('60');
- await expect(page.getByText(/Full upfront reward reserve: 6000 raw units/)).toBeVisible();
- await page.getByRole('combobox',{name:'Reward asset',exact:true}).selectOption('token');await page.getByLabel('Reward token category').fill('ab'.repeat(32));await page.getByLabel('Maximum reward per period (raw units)').fill('7');
- await expect(page.getByText(/Full upfront reward reserve: 21 raw units/)).toBeVisible();
- await page.getByRole('combobox',{name:'Staking asset',exact:true}).selectOption('token');await page.getByLabel('Staking token category').fill('ab'.repeat(32));
- await expect(page.getByRole('button',{name:'Review v2 funding in wallet'})).toBeDisabled();
- expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- });
+ await page.goto('/#/create',{waitUntil:'domcontentloaded'});
+ const staking=page.getByRole('combobox',{name:'Staking asset',exact:true}),reward=page.getByRole('combobox',{name:'Reward asset',exact:true});
+ await expect(staking).toBeEnabled();await expect(reward).toBeEnabled();
+ await page.getByLabel('Schedule starts (UTC)').fill('2027-01-01T00:00');await page.getByLabel('Period duration (seconds)').fill('60');await page.getByLabel('Number of periods').fill('3');
+ for(const stake of ['bch','token'])for(const pay of ['bch','token']){
+  await staking.selectOption(stake);await reward.selectOption(pay);
+  if(stake==='token')await page.getByLabel('Staking asset category',{exact:false}).fill('ab'.repeat(32));
+  else await expect(page.getByLabel('Staking asset category',{exact:false})).toHaveCount(0);
+  if(pay==='token')await page.getByLabel('Reward token category',{exact:false}).fill('cd'.repeat(32));
+  else await expect(page.getByLabel('Reward token category',{exact:false})).toHaveCount(0);
+  await page.getByLabel(/^Maximum reward per period/).fill(pay==='bch'?'0.00002000':'7');
+  const reserve=page.locator('.calculation dl > div').filter({has:page.getByText('Total upfront reward reserve',{exact:true})});
+  await expect(reserve).toContainText(pay==='bch'?'0.00006000 BCH (6000 satoshis)':'21 raw token units · '+'cd'.repeat(32));
+  await expect(page.getByRole('button',{name:stake==='token'&&pay==='bch'?'Review funding in wallet':'V2 creation unavailable',exact:true})).toBeDisabled();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ }
+ await staking.focus();await page.keyboard.press('ArrowUp');await page.keyboard.press('Enter');await expect(staking).toHaveValue('bch');
+ await expect(page.getByLabel('Staking asset category',{exact:false})).toHaveCount(0);
+ await page.goto('/#/v2');await page.getByRole('link',{name:/Create Vault/}).click();await expect(page).toHaveURL(/#\/create$/);
+});

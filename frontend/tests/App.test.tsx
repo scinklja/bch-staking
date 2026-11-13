@@ -44,17 +44,17 @@ it('calculates the offer preview with exact BCH conversion and never submits a t
  expect(screen.getByText(/Requested reward must be at least/)).toBeInTheDocument();
  expect(screen.getByText('Chipnet test funds only')).toBeInTheDocument();
 });
-it('offers a creation preview even offline and only supports native BCH rewards',async()=>{
+it('offers both asset choices offline with exact BCH funding and no authorization',async()=>{
  vi.stubGlobal('fetch',vi.fn().mockRejectedValue(Error('offline')));window.location.hash='#/create';render(<App/>);
  await screen.findByRole('heading',{name:'Create Vault'});
- expect(screen.getAllByRole('option')).toHaveLength(1);expect(screen.getByRole('combobox')).toBeDisabled();
- expect(screen.getByRole('button',{name:'Create Vault'})).toBeDisabled();
- fireEvent.change(screen.getByRole('textbox',{name:/^Staking asset category/}),{target:{value:'e'.repeat(64)}});
+ expect(screen.getAllByRole('option')).toHaveLength(4);expect(screen.getByRole('combobox',{name:'Reward asset'})).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
+ fireEvent.change(screen.getByLabelText(/^Staking asset category/),{target:{value:'e'.repeat(64)}});
  fireEvent.change(screen.getByRole('textbox',{name:/^Maximum reward/}),{target:{value:'0.00001000'}});
  fireEvent.change(screen.getByRole('textbox',{name:/^Number of periods/}),{target:{value:'3'}});
  fireEvent.change(screen.getByLabelText(/^Schedule starts/),{target:{value:'2027-01-01T00:00'}});
- expect(screen.getByText('0.00003000 BCH')).toBeInTheDocument();
- expect(screen.getByText(/All vault settings become immutable/)).toBeInTheDocument();
+ expect(screen.getByText('0.00003000 BCH (3000 satoshis)')).toBeInTheDocument();
+ expect(screen.getByText(/No staking asset deposit is required/)).toBeInTheDocument();
 });
 it('handles loading, empty data, missing vaults and initial outages without fabricated listings',async()=>{
  vi.stubGlobal('fetch',vi.fn(()=>new Promise(()=>{})));const loading=render(<App/>);expect(screen.getByText('Loading vaults…')).toBeInTheDocument();loading.unmount();

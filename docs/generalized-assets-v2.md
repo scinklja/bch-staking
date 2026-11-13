@@ -194,3 +194,28 @@ Final verification is recorded in [the verification report](generalized-assets-v
 A funded creation factory cannot be discarded as an unsigned operation: its
 recovery record is retained until genesis is completed. Unsigned, unfunded
 preparations and ordinary wallet-owned prepared inputs may be explicitly discarded.
+
+## Unified creation interface (November 2026)
+
+`#/create` is the single creation form for BCH and CashToken staking/reward
+choices. It uses the existing v1 path for CashToken staking with BCH rewards.
+BCH staking or token rewards require the existing v2 family. Those choices expose
+exact funding previews but new public-wallet v2 creation is unavailable: local
+BCHN and simulated-wallet coverage does not establish real-wallet compatibility.
+The browser client rejects new v2 creation before asking the wallet to sign.
+Existing v2 recovery operations remain accessible; no covenant or wallet builder
+has been replaced. `#/v2` now provides import, verification and recovery, with a
+link back to the unified form.
+
+BCH form values convert exactly to integer satoshis; CashTokens use integer
+fungible units without inferred decimals. Wallet scans supply category suggestions;
+manual category entry remains possible. Creation does not require a staking asset
+deposit. Token reward reserves are fully funded by the v2 preparation builder;
+there is no BCH fallback for a token reward selection.
+
+The main marketplace also displays local v2 discovery hints and creation journal
+records with their actual asset pair. `#/v2/vault/<genesis>` loads public terms for
+explicit canonical verification. Imported hints are saved only after successful
+v2 sync, retain decimal-string caps on disk, and never substitute for verification.
+Pending journal observations are identified as historical 0-conf records. V1
+catalogs, snapshots, recovery journals and confirmed/pending indexing are retained.

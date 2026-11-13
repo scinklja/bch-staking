@@ -1,4 +1,28 @@
-import {render,screen,fireEvent} from '@testing-library/react';
-import {describe,it,expect} from 'vitest';
+import {render,screen} from '@testing-library/react';
+import {it,expect} from 'vitest';
 import GeneralizedAssets from '../src/GeneralizedAssets';
-describe('v2 generalized asset creation',()=>{it('provides BCH and CashToken choices for both protected assets',()=>{render(<GeneralizedAssets/>);const staking=screen.getByLabelText('Staking asset'),reward=screen.getByLabelText('Reward asset');expect(staking).toHaveValue('bch');expect(reward).toHaveValue('bch');fireEvent.change(staking,{target:{value:'token'}});fireEvent.change(reward,{target:{value:'token'}});expect(screen.getByLabelText('Staking token category')).toBeInTheDocument();expect(screen.getByLabelText('Reward token category')).toBeInTheDocument();expect(screen.getByRole('button',{name:'Review v2 funding in wallet'})).toBeDisabled();expect(screen.getByText(/Public wallet and chipnet compatibility remain unverified/)).toBeInTheDocument();});});
+it('directs legacy v2 creation links to the unified Create Vault form and retains recovery',()=>{
+ render(<GeneralizedAssets/>);
+ expect(screen.getByRole('link',{name:/Create Vault/})).toHaveAttribute('href','#/create');
+ expect(screen.queryByLabelText('Reward asset')).not.toBeInTheDocument();
+ expect(screen.getByRole('heading',{name:'Recoverable v2 operations'})).toBeInTheDocument();
+});
+
+import {act,fireEvent} from '@testing-library/react';
+import {vi} from 'vitest';
+import {WalletTransactionsContext,type WalletTransactions} from '../src/walletTransactions';
+import {saveV2Config} from '../src/GeneralizedVaults';
+it('verifies actual BCH/token terms and converts BCH offers to exact raw units with recovery intact',async()=>{
+ const config={version:2 as const,genesis:'c'.repeat(64),stakingAsset:{kind:'bch' as const},rewardAsset:{kind:'token' as const,category:'ab'.repeat(32)},cap:7n,periods:3,periodSeconds:60,epoch:1800000000};
+ const v2=vi.fn(async(intent:Record<string,unknown>)=>intent.operation==='list'?[]:intent.operation==='sync'?{config,instance:{state:new Uint8Array(1580),parameters:config,inputs:[{satoshis:1000n},{satoshis:1000n},{satoshis:1000n,token:{amount:21n}}]},pending:[],allocations:[],clock:{mtp:1790000000}}:{stage:'pending',step:'funding'});
+ const wallet={v2,execute:vi.fn(),publicKey:()=>''} as WalletTransactions;
+ saveV2Config(config);render(<WalletTransactionsContext.Provider value={wallet}><GeneralizedAssets genesis={config.genesis}/></WalletTransactionsContext.Provider>);
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Verify and refresh vault'})));
+ expect(screen.getByText(/Maximum reward: 7 raw fungible units per period/)).toHaveTextContent('Staking: BCH. Reward: CashToken');
+ expect(screen.getByText(/Protected staking escrow:/)).toHaveTextContent('0.00000000 BCH (0 satoshis)');
+ fireEvent.change(screen.getByLabelText('Stake S (BCH)'),{target:{value:'0.00003001'}});
+ fireEvent.change(screen.getByLabelText('Requested reward R (raw token units)'),{target:{value:'7'}});
+ expect(screen.getByText(/Required upfront stake:/)).toHaveTextContent('Exact priority: 6002 / 7');
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review offer funding in wallet'})));
+ expect(v2).toHaveBeenCalledWith(expect.objectContaining({operation:'offer',config,terms:{stake:3001n,duration:2,reward:7n,maxWins:3}}));
+});

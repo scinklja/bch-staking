@@ -40,7 +40,7 @@ try {
  console.log('PASS: marketplace HTML, JavaScript and CSS load below '+prefix);
  await go('#/create');await waitHeading('Create Vault');
  await page.reload({waitUntil:'domcontentloaded'});await waitHeading('Create Vault');
- assert.equal(await page.getByRole('button',{name:'Create Vault'}).isDisabled(),true);
+ assert.equal(await page.getByRole('button',{name:'Review funding in wallet'}).isDisabled(),true);
  console.log('PASS: direct creation route and reload retain the GitHub Pages prefix');
  const hash='#/vault/'+'0'.repeat(64);
  await go(hash);await page.getByRole('heading',{name:'Vault data unavailable',exact:true}).waitFor();

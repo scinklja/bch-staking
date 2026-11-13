@@ -48,3 +48,41 @@ it('disables offer submission for an overdue or expired UTC schedule even while 
  render(<WalletTransactionsContext.Provider value={wallet}><BrowserOfferForm vault={vault} tip={{...fixture().tip!,mtp:epoch-1}} stale={false}/></WalletTransactionsContext.Provider>);
  expect(screen.getByRole('button',{name:'Review offer funding in wallet'})).toBeDisabled();expect(screen.getByRole('alert')).toHaveTextContent('scheduled cutoff');expect(wallet.execute).not.toHaveBeenCalled();
 });
+
+it('uses verified category suggestions, preserves manual entry, hides BCH categories and blocks every public v2 approval',async()=>{
+ const wallet=client();wallet.v2=vi.fn();render(<WalletTransactionsContext.Provider value={wallet}><BrowserCreateForm/></WalletTransactionsContext.Provider>);
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Check wallet balances'})));
+ expect(document.querySelector('datalist option')).toHaveValue(asset);
+ fill(/^Staking asset category/,asset);fill(/^Maximum reward per period/,'0.00002000');fill(/^Number of periods/,'2');fill(/^Schedule starts/,'2027-01-01T00:00');
+ fireEvent.click(screen.getByRole('checkbox'));expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeEnabled();
+ fill('Staking asset','bch');expect(screen.queryByLabelText(/^Staking asset category/)).not.toBeInTheDocument();expect(screen.getByRole('checkbox')).not.toBeChecked();
+ expect(screen.getByRole('button',{name:'V2 creation unavailable'})).toBeDisabled();
+ fill('Reward asset','token');expect(screen.getByLabelText(/^Maximum reward per period/)).toHaveValue('');
+ fill(/^Reward token category/,'b'.repeat(64));fill(/^Maximum reward per period/,'7');
+ expect(screen.getByText('14 raw token units · '+'b'.repeat(64))).toBeInTheDocument();expect(screen.getByRole('alert')).toHaveTextContent('Insufficient reward CashTokens');
+ fill(/^Reward token category/,asset);expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+ fireEvent.click(screen.getByRole('checkbox'));fireEvent.click(screen.getByRole('button',{name:'V2 creation unavailable'}));expect(wallet.execute).not.toHaveBeenCalled();expect(wallet.v2).not.toHaveBeenCalled();
+ fill('Staking asset','token');expect(screen.getByLabelText(/^Staking asset category/)).toHaveValue(asset);
+ fill('Reward asset','bch');expect(screen.queryByLabelText(/^Reward token category/)).not.toBeInTheDocument();expect(screen.getByLabelText(/^Maximum reward per period/)).toHaveValue('');
+});
+it('refuses insufficient funding or missing category proof without requiring a staking deposit',async()=>{
+ const wallet=client();vi.mocked(wallet.inventory!).mockResolvedValue({coins:[],bch:'1000',tokens:{},addresses:1,gap:20,limit:40,bounded:true});
+ render(<WalletTransactionsContext.Provider value={wallet}><BrowserCreateForm/></WalletTransactionsContext.Provider>);
+ fill(/^Staking asset category/,asset);fill(/^Maximum reward per period/,'0.00002000');fill(/^Number of periods/,'2');fill(/^Schedule starts/,'2027-01-01T00:00');fireEvent.click(screen.getByRole('checkbox'));
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Check wallet balances'})));
+ expect(screen.getByRole('alert')).toHaveTextContent('Insufficient token-free BCH');expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
+ vi.mocked(wallet.inventory!).mockResolvedValue({coins:[],bch:'200000',tokens:{},addresses:1,gap:20,limit:40,bounded:true});
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Check wallet balances'})));
+ expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();expect(screen.getByRole('alert')).toHaveTextContent('Tokens are verified, not deposited');
+ vi.mocked(wallet.inventory!).mockResolvedValue({coins:[],bch:'200000',tokens:{[asset]:'1'},addresses:1,gap:20,limit:40,bounded:true});
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Check wallet balances'})));
+ expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeEnabled();
+ fill(/^Staking asset category/,'0'.repeat(64));expect(screen.getByText('Invalid fungible asset category')).toBeInTheDocument();expect(screen.getByRole('button',{name:'Review funding in wallet'})).toBeDisabled();
+});
+it('preserves legacy API creation recovery records in the unified form',()=>{
+ const record={stakingCategory:asset,cap:2000,periods:2,periodSeconds:60,epoch:1800000000,genesis:'b'.repeat(64)};
+ localStorage.setItem('staking-arena-pending-chipnet-genesis',JSON.stringify(record));
+ render(<BrowserCreateForm/>);
+ expect(screen.getByText('Existing API creation recovery')).toBeInTheDocument();expect(screen.getByRole('button',{name:'Admit confirmed genesis'})).toBeInTheDocument();
+ expect(JSON.parse(localStorage.getItem('staking-arena-pending-chipnet-genesis')!)).toEqual(record);
+});
