@@ -1,3 +1,4 @@
+import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {binToHex,decodeTransaction,encodeTransaction,hexToBin} from '@bitauth/libauth';
@@ -10,7 +11,7 @@ import {indexEnvelope} from '../src/view.js';
 import {decodeRawTransaction} from '../src/electrum-core.js';
 import {RegtestElectrum} from './fixtures/regtest-electrum.js';
 
-test('LOCAL BCHN regtest: 0-conf genesis/offer chains, confirmation thresholds, reload, disagreement and drop reconciliation',{timeout:600000},async()=>{
+test('LOCAL BCHN regtest: 0-conf genesis/offer chains, confirmation thresholds, reload, disagreement and drop reconciliation',{timeout:600000},async()=>isolatedRegtest(async()=>{
   await assertRegtest();
   const start=await rpc('getblockcount'), owner=new SignatureTemplate(new Uint8Array(32).fill(157));
   const deposit=await contract('RegistryDeposit',[owner.publicKey]),mining=await rpc('getnewaddress');
@@ -71,4 +72,4 @@ test('LOCAL BCHN regtest: 0-conf genesis/offer chains, confirmation thresholds, 
   assert.equal(indexEnvelope({...confirmedRestart,tip:confirmedRestart.tip,vaults:confirmedRestart.displayVaults!}).vaults[0].offers[0].transactionStatus,'confirmed');
   // A factory funding transaction is never a completed vault.
   const factoryOnly=new ElectrumIndexer([{...parameters,genesis:category}],p,undefined,0);await assert.rejects(factoryOnly.sync(),/malformed genesis|factory authorization|Genesis absent from registry history/i);assert.equal(factoryOnly.displayVaults?.length,0);
-});
+}));

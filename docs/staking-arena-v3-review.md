@@ -80,3 +80,11 @@ and resumes the saved test clock only when needed to load a future-dated tip.
 Normal wall-clock starts are unchanged. The existing chain and wallet were recovered
 without reindexing or deletion. The real stop/start regression is retained, and the
 complete gate is rerun after the correction. No chipnet startup script was changed.
+
+
+The next complete attempt also exposed the legacy zero-confirmation test's use of
+a deliberately future-dated shared chain through an adapter with a wall-clock tip
+limit. That test now uses a fresh isolated BCHN node as well. Its confirmation,
+conflict, replacement, reload and provider-disagreement assertions are unchanged;
+production Electrum tip bounds are not relaxed. Every correction is followed by
+another complete gate, not a combination of selected test results.
