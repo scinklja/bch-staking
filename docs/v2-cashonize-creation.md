@@ -96,3 +96,29 @@ Pages build (including frontend TypeScript) passed. Existing assertions were
 updated for the new default protocol and connected-wallet gate but were not run.
 No chipnet transaction was initiated by the assistant. Publication is verified by
 GitHub Pages build status and HTTP/SHA-256 checks of static assets only.
+
+## Deployment
+
+Published frontend commit:
+`00d5baf50f43b5802f8caf2e5125398dd0bb470d`.
+Implementation commits: `7aab40c` and `1427324`.
+
+GitHub Pages reported the final build complete at 2026-11-13 10:59:16 UTC.
+All 20 compiled static assets were fetched and SHA-256 verified without executing
+public JavaScript. All 37 hashed assets from the previous release remain unchanged;
+its entry script is still served and was hash-verified separately.
+
+Rollback is retained at published branch
+`rollback/pre-v2-cashonize-2026-11-13`, commit
+`01c9bb8209724d176671af48f1a24bdb95bb2e9f`, and verified complete bundle
+`.pages-release/pre-v2-cashonize-2026-11-13.bundle`. Restoring only that release's
+`index.html` in a new deployment commit restores the old UI while retaining hashed
+assets for already-open tabs. Rollback was not executed.
+
+See [the deployment manifest](v2-cashonize-deployment.json) for asset hashes,
+verification evidence and explicit flags recording which tests were not run.
+
+Do not manually spend or consolidate the preparation outputs between approvals;
+genesis needs those exact confirmed sources. Source conflicts fail closed and can
+require further recovery work even though the original wallet controls its own
+prepared reward input.
