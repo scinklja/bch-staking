@@ -87,7 +87,7 @@ export function BrowserCreateForm(){
   if(!quote||!f.wallet?.browser||!connected||!f.inventory||insufficient||!ack||creating)return;
   if(quote.version===2){if(!v2.loaded||pendingCreation)return;void v2.work({operation:'create',parameters:quote.parameters});}
   else void f.execute({kind:'create',parameters:quote.parameters}).then(result=>{if(result?.operation)active.current=result.operation.id;});
- }}>Review funding in wallet</button></form><p role="status">{protocol===1?f.message:''}</p><V2CreationRecovery flow={v2}/><Operations flow={f} kind="create"/>
+ }}>Review funding in wallet</button></form><p role="status">{f.message}</p><V2CreationRecovery flow={v2}/><Operations flow={f} kind="create"/>
  <details className="advanced"><summary>Recover a funded factory from another browser</summary><p>Paste the exported public JSON containing parameters and pregenesis. Recovery verifies the exact factory and its canonical spend; it never asks for a seed.</p><textarea value={recovery} onChange={e=>setRecovery(e.target.value)} rows={6}/><button type="button" disabled={f.busy||!recovery} onClick={()=>{try{const record=JSON.parse(recovery);void f.execute({kind:'recover',parameters:record.parameters,pregenesis:record.pregenesis});}catch(e){f.setMessage(String(e));}}}>Import factory recovery record</button></details><LegacyApiCreationRecovery/></>;
 }
 export function BrowserOfferForm({vault:v,tip=null,stale=true,now=Date.now()}:{vault:Vault;tip?:Envelope['tip'];stale?:boolean;now?:number}) {
