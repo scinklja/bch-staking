@@ -29,3 +29,9 @@ it('direct creation requests one Cashonize approval for every selected wallet in
  vi.mocked(v3Call).mockImplementation(async (...args)=>{if(args[0].operation==='create'){const result=await original({operation:'claim'});result.plan.inputPaths=[[0,'receive',0],[1,'change',2]];return result;}return original(...args);});
  try{await wallet.v3!({operation:'create',parameters:{}});expect(manager.signTransaction).toHaveBeenCalledTimes(1);expect(manager.signTransaction).toHaveBeenCalledWith({transaction:expect.objectContaining({broadcast:false}),inputPaths:[[0,'receive',0],[1,'change',2]]},{signal:expect.any(AbortSignal)});}finally{wallet.close?.();}
 });
+
+it('a changed canonical state rejects authorization before Cashonize signing',async()=>{
+ const {wallet,manager}=setup();const original=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{if(args[0].operation==='authorize')throw Error('Vault state changed; review a fresh transaction');return original(...args);});
+ try{await expect(wallet.v3!({operation:'claim',config:{}})).rejects.toThrow(/state changed/);expect(manager.signTransaction).not.toHaveBeenCalled();expect(vi.mocked(v3Call).mock.calls.some(([i])=>i.operation==='submit')).toBe(false);}finally{wallet.close?.();}
+});

@@ -8,7 +8,7 @@ import {initialState,advance,type Parameters} from '../../src/v3/model';
 import {offer} from '../../src/registry';
 vi.mock('../src/v3Client',()=>({v3Call:vi.fn(async()=>[])}));
 const p:Parameters={version:3,stakingAsset:{kind:'bch'},rewardAsset:{kind:'bch'},epoch:1800000000,periodSeconds:3600,periods:4,cap:2000n},config={...p,genesis:'ab'.repeat(32)};
-const wallet={publicKey:()=>'',execute:vi.fn(),v3:vi.fn()};
+const wallet={publicKey:()=>'02'+'11'.repeat(32),execute:vi.fn(),v3:vi.fn()};
 function stub(phase='ready'){const state=advance(initialState(p),0,0,offer(Buffer.from('02'+'11'.repeat(32),'hex'),3000,513,3000,2));vi.mocked(v3Call).mockImplementation(async intent=>{
  if(intent.operation==='sync')return {snapshot:{config,instance:{parameters:p,state},clock:{mtp:p.epoch+7201},pending:[],allocations:[]},next:{phase,available:4000n,reason:'Top offer exceeds available buffer'},required:10000n,minerFee:10000n,carriers:0n};
  if(intent.operation==='claim')return {id:'cd'.repeat(32),status:'pending'};return [];
@@ -32,4 +32,82 @@ it('shows a journaled pending vault after reload without allowing provisional st
  expect(screen.getByText(/Genesis transaction:/)).toHaveTextContent(config.genesis);
  expect(screen.queryByRole('button',{name:'Review and pay fee in wallet'})).not.toBeInTheDocument();
  expect(screen.getByText(/Direct creation uses one Cashonize approval/)).toBeInTheDocument();
+});
+
+async function ageDisplay(){vi.spyOn(Date,'now').mockReturnValue(Date.now()+31000);await act(async()=>{await new Promise(resolve=>setTimeout(resolve,1050));});}
+it('keeps eligible actions and the ranked display available after thirty seconds and verifies on offer click',async()=>{
+ stub();wallet.v3.mockReset().mockResolvedValue({stage:'pending'});await open();vi.mocked(v3Call).mockClear();
+ await ageDisplay();expect(screen.getByText(/Displayed state may be outdated/)).toBeInTheDocument();
+ expect(screen.getByRole('button',{name:'Review stake commitment in wallet'})).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeEnabled();
+ expect(vi.mocked(v3Call).mock.calls.filter(([i])=>i.operation==='sync')).toHaveLength(0);
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review stake commitment in wallet'})));
+ expect(v3Call).toHaveBeenCalledWith({operation:'sync',config});expect(wallet.v3).toHaveBeenCalledWith(expect.objectContaining({operation:'offer',config}));
+ const syncIndex=vi.mocked(v3Call).mock.calls.findIndex(([i])=>i.operation==='sync');
+ expect(vi.mocked(v3Call).mock.invocationCallOrder[syncIndex]).toBeLessThan(wallet.v3.mock.invocationCallOrder[0]!);
+ expect(screen.getByRole('heading',{name:'Live ranked queue'})).toBeInTheDocument();
+});
+it('recalculates claim eligibility after refreshing an aged display',async()=>{
+ stub();wallet.v3.mockReset();await open();await ageDisplay();stub('blocked');
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Top offer exceeds available buffer');
+ expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeDisabled();
+});
+it('allows an aged insufficient-buffer display to be rechecked for a newly released reward',async()=>{
+ stub('blocked');wallet.v3.mockReset().mockResolvedValue({stage:'pending'});await open();await ageDisplay();stub();
+ expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeEnabled();
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
+ expect(wallet.v3).toHaveBeenCalledWith({operation:'claim',config});
+});
+it('shows fresh capacity exhaustion without entering the wallet',async()=>{
+ stub();wallet.v3.mockReset();await open();const previous=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync')result.snapshot.instance.state[5]=16;return result;});
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review stake commitment in wallet'})));
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByText(/Make an Offer unavailable:/)).toHaveTextContent('capacity exhausted');
+});
+it('keeps invalid offers blocked as the display ages',async()=>{
+ stub();await open();fireEvent.change(screen.getByLabelText('Duration T (seconds)'),{target:{value:'0'}});await ageDisplay();
+ expect(screen.getByRole('button',{name:'Review stake commitment in wallet'})).toBeDisabled();expect(screen.getByText(/Make an Offer unavailable:/)).toBeInTheDocument();
+});
+it('retains the display after provider failure and never enters the wallet on unverified state',async()=>{
+ stub();wallet.v3.mockReset();await open();const previous=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{if(args[0].operation==='sync')throw Error('Provider unavailable');return previous(...args);});
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review stake commitment in wallet'})));
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Provider unavailable');expect(screen.getByRole('heading',{name:'Live ranked queue'})).toBeInTheDocument();
+});
+it('opens a saved vault automatically without a manual verification click',async()=>{
+ stub();localStorage.setItem('staking-arena-v3-configs-chipnet',JSON.stringify([config],(_,v)=>typeof v==='bigint'?v.toString():v));
+ render(<WalletTransactionsContext.Provider value={wallet}><V3Arena/></WalletTransactionsContext.Provider>);
+ await waitFor(()=>expect(screen.getByRole('button',{name:'Review stake commitment in wallet'})).toBeEnabled());
+ expect(v3Call).toHaveBeenCalledWith({operation:'sync',config});
+});
+
+it('rejects a changed claim state and shows the refreshed queue before any wallet approval',async()=>{
+ stub();wallet.v3.mockReset();await open();const previous=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync')result.snapshot.instance.state=advance(result.snapshot.instance.state,3,0);return result;});
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Vault state changed');expect(screen.getByRole('cell',{name:'1 / 2'})).toBeInTheDocument();
+});
+
+it('keeps owner cancellation, unused commitment recovery and matured withdrawal available after thirty seconds',async()=>{
+ stub();const previous=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync'){
+  result.snapshot.instance.state=advance(advance(result.snapshot.instance.state,0,1,offer(Buffer.from(wallet.publicKey(),'hex'),3000,513,3000,2)),1,1);
+  const terms=Buffer.alloc(78);Buffer.from(wallet.publicKey(),'hex').copy(terms);terms.writeUInt32LE(3000,70);terms.writeUInt32LE(2,74);
+  result.snapshot.allocations=[{id:'allocation:4',terms,sourceMtp:p.epoch,mature:true}];
+ }return result;});
+ await open();await ageDisplay();expect(screen.getAllByRole('button',{name:'Cancel'})[0]).toBeEnabled();
+ expect(screen.getAllByRole('button',{name:'Recover unused commitment'})[1]).toBeEnabled();
+ expect(screen.getByRole('button',{name:'Withdraw in owner wallet'})).toBeEnabled();
+});
+
+it('allows an aged empty queue to be checked for newly eligible offers',async()=>{
+ stub('blocked');const previous=vi.mocked(v3Call).getMockImplementation()!;wallet.v3.mockReset().mockResolvedValue({stage:'pending'});
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync'){result.snapshot.instance.state=initialState(p);result.next.reason='No active offers';}return result;});
+ await open();expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeDisabled();await ageDisplay();
+ expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeEnabled();stub();
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Vault state changed');
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
+ expect(wallet.v3).toHaveBeenCalledWith({operation:'claim',config});
 });

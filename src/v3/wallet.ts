@@ -61,6 +61,11 @@ function validateIntent(op:Pick<Operation,'kind'|'parameters'> & Partial<Operati
  if(op.action===1||op.action===4){const entry=records(state)[op.slot??0];if(!entry||entry.owner!==owner.publicKey)throw Error('Offer is not owned by this wallet');if(op.action===1&&entry.cancelled)throw Error('Offer is already cancelled');if(op.action===4&&(!entry.cancelled||entry.refunded||entry.wins>=entry.maxWins))throw Error('Remaining stake cannot be refunded in the current state');return;}
  const next=decision(snapshot.instance,snapshot.clock);if(next.phase!=='ready'||next.action!==op.action||next.slot!==(op.slot??0))throw Error('Claim head changed; refresh canonical state');
 }
+/** Bind unsigned plans to the relevant canonical source, not a wall-clock deadline. */
+function intentSource(op:Partial<Operation>,snapshot:Snapshot){
+ if(op.kind==='withdraw'){const input=snapshot.allocations.find(a=>a.id===op.allocation)?.input;return input?`${input.txid}:${input.vout}`:undefined;}
+ return snapshot.instance.inputs[0].txid;
+}
 /** Direct creation and claims use one approval; legacy funded actions use two. Journal public plans and signed bytes
  * before broadcast; retries reconcile the exact txid and never silently spend fresh coins.
  */
@@ -141,13 +146,15 @@ export class AssetWallet {
  }
  private async prepare(request:Pick<Operation,'kind'|'parameters'> & Partial<Operation>,keys:WalletKey[]){
  const owner=keys.find(k=>k.path==='receive'&&k.index===0);if(!owner)throw Error('Receive child zero required');
+ const snapshot=request.config?await new AssetIndexer(this.provider,request.config).sync():undefined;
+ if(snapshot)validateIntent(request,owner,snapshot);
  const journal=await this.store.list(),reserved=new Set(journal.filter(o=>o.step!=='complete').flatMap(o=>o.plan?.request.transaction.inputs.map(i=>Buffer.from(i.outpointTransactionHash).toString('hex')+':'+i.outpointIndex)??[]));
  const inventory=await scanWallet(this.provider,keys),coins=inventory.coins.filter(c=>!reserved.has(c.utxo.txid+':'+c.utxo.vout));
  let asset:Asset={kind:'bch'},amount=0n,base=0n,extra=FEE;
  if(request.kind==='create'){asset=request.parameters.rewardAsset;amount=request.parameters.cap*BigInt(request.parameters.periods);base=CARRIER;extra=12000n;}
- else if(request.kind==='offer'){asset=request.parameters.stakingAsset;amount=validateTerms(request.parameters,request.terms!);base=asset.kind==='token'?CARRIER:0n;const snapshot=await new AssetIndexer(this.provider,request.config!).sync();validateIntent(request,owner,snapshot);extra=sponsorAmount(snapshot.instance,0);}
+ else if(request.kind==='offer'){asset=request.parameters.stakingAsset;amount=validateTerms(request.parameters,request.terms!);base=asset.kind==='token'?CARRIER:0n;extra=sponsorAmount(snapshot!.instance,0);}
  else {
-  const snapshot=await new AssetIndexer(this.provider,request.config!).sync();validateIntent(request,owner,snapshot);extra=request.kind==='withdraw'?FEE:sponsorAmount(snapshot.instance,request.action!);
+  extra=request.kind==='withdraw'?FEE:sponsorAmount(snapshot!.instance,request.action!);
  }
  const required=base+(asset.kind==='bch'?amount:0n)+extra+FEE+CARRIER+(asset.kind==='token'?CARRIER:0n);
  let selected=asset.kind==='token'?chooseTokens(coins,asset.category,amount):[];selected=chooseBch(coins,required,selected);
@@ -160,7 +167,7 @@ export class AssetWallet {
  const tokenChange=asset.kind==='token'&&tokens>amount;
  if(tokenChange&&asset.kind==='token')builder.addOutput({to:ownerAddress(hexToBin(owner.publicKey),this.provider),amount:CARRIER,token:{category:asset.category,amount:tokens-amount}});
  builder.addOutput({to:ownerAddress(hexToBin(owner.publicKey),this.provider),amount:total-sent-FEE-(tokenChange?CARRIER:0n)});
- const op:Operation={...request,id:crypto.randomUUID(),version:3,kind:request.kind,parameters:request.parameters,owner,step:'funding',stage:'review',plan:plan(builder,`Prepare ${request.kind}: ${amount} ${asset.kind} raw units; external BCH funding ${extra}; fee ${FEE}`,selected.map((coin,index)=>({coin,index})))};
+ const op:Operation={...request,...(snapshot?{source:intentSource(request,snapshot)}:{}),id:crypto.randomUUID(),version:3,kind:request.kind,parameters:request.parameters,owner,step:'funding',stage:'review',plan:plan(builder,`Prepare ${request.kind}: ${amount} ${asset.kind} raw units; external BCH funding ${extra}; fee ${FEE}`,selected.map((coin,index)=>({coin,index})))};
  await verifyCoinsAcrossPeers(this.provider,selected.map(c=>c.utxo));await this.store.save(op);return op;
  }
  async resume(id:string){let op=(await this.store.list()).find(o=>o.id===id);if(!op)throw Error('Unknown v3 operation');
@@ -180,7 +187,7 @@ export class AssetWallet {
  let builder:TransactionBuilder,mapping:{coin:WalletCoin;index:number}[]=[],auth:WalletKey|undefined;
  const coin=(n:number)=>keyCoin(op!.owner,utxo(funding,n));
  if(op.kind==='create'){builder=genesisBuilder(op.parameters,utxo(funding,0),sponsor(op.owner,utxo(funding,1),this.provider),this.provider).builder;mapping=[{coin:coin(1),index:1}];}
- else {const snapshot=await new AssetIndexer(this.provider,op.config!).sync();validateIntent(op,op.owner,snapshot);
+ else {const snapshot=await new AssetIndexer(this.provider,op.config!).sync();validateIntent(op,op.owner,snapshot);op={...op,source:intentSource(op,snapshot)};
  if(op.kind==='withdraw'){const a=snapshot.allocations.find(a=>a.id===op!.allocation);if(!a||!a.mature||a.withdrawal||a.pending||a.terms.subarray(0,33).toString('hex')!==op.owner.publicKey)throw Error('Allocation unavailable, immature, or not owned');builder=withdrawalBuilder(a.input,a.terms,placeholderSignature(),sponsor(op.owner,coin(0).utxo,this.provider),this.provider);mapping=[{coin:coin(0),index:1}];auth=op.owner;}
  else {const registration=op.kind==='offer'?{owner:hexToBin(op.owner.publicKey),terms:op.terms!,funding:sponsor(op.owner,coin(0).utxo,this.provider)}:undefined,action=op.kind==='offer'?0:op.action!,slot=op.kind==='offer'?snapshot.instance.state[5]!:op.slot??0;
  const built=transitionBuilder(snapshot.instance,action,slot,this.provider,snapshot.clock,sponsor(op.owner,coin(op.kind==='offer'?1:0).utxo,this.provider),[0,1,4].includes(action)?placeholderSignature():undefined,registration);builder=built.builder;
@@ -211,10 +218,17 @@ export class AssetWallet {
  }
  return conflicts[0]===conflicts[1]?conflicts[0]:undefined;
  }
+ private async checkIntent(op:Operation){
+  if(!op.config||op.kind==='claim'||op.kind==='create')return;
+  const snapshot=await new AssetIndexer(this.provider,op.config).sync();
+  validateIntent(op,op.owner,snapshot);
+  if(op.source!==undefined&&op.source!==intentSource(op,snapshot))throw Error('Vault state changed since this transaction was prepared. Reconcile or discard the unsigned operation and review a fresh transaction with a new wallet approval.');
+ }
  /** Read-only pre-approval validation. Never signs, sends or replaces a funding transaction. */
  async authorize(id:string){
  const op=(await this.store.list()).find(o=>o.id===id);
  if(!op?.plan||op.stage!=='review'||op.raw||op.txid)throw Error('V3 operation is not awaiting unsigned wallet approval');
+ await this.checkIntent(op);
  validateParameters(op.parameters);validateFundingPlan(op,this.provider);const authorizedPlan=op.creationMode==='direct'?this.checkDirect(op):op.kind==='claim'?await this.checkClaim(op):op.plan;
  await verifyCoinsAcrossPeers(this.provider,planCoins(op.plan));
  return {plan:authorizedPlan,owner:op.owner,verifiedAt:Date.now()};
@@ -233,7 +247,8 @@ export class AssetWallet {
  async discard(id:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op||op.raw||op.txid)throw Error('Only unsigned operations may be discarded');if(op.kind==='create'&&op.funding)throw Error('A funded factory must remain recoverable; finish genesis instead of discarding it');const discarded={...op,step:'complete' as const,stage:op.kind==='claim'?'conflicted' as const:'confirmed' as const,plan:undefined,error:'Unsigned operation discarded; prepared wallet coins remain spendable'};await this.store.save(discarded);return discarded;}
  async submit(id:string,raw:string){const op=(await this.store.list()).find(o=>o.id===id);if(!op?.plan||op.stage!=='review')throw Error('No reviewed v3 plan');
  if(op.raw&&op.raw!==raw)throw Error('Only identical saved signed bytes may be retried');
- validateFundingPlan(op,this.provider);if(op.kind==='claim')await this.checkClaim(op);if(op.creationMode==='direct')op.plan=this.checkDirect(op);if(op.step==='action'&&op.config&&op.creationMode!=='direct')validateIntent(op,op.owner,await new AssetIndexer(this.provider,op.config).sync());const inputs=planCoins(op.plan);
+ await this.checkIntent(op);
+ validateFundingPlan(op,this.provider);if(op.kind==='claim')await this.checkClaim(op);if(op.creationMode==='direct')op.plan=this.checkDirect(op);const inputs=planCoins(op.plan);
  const clock=await verifyCoinsAcrossPeers(this.provider,inputs),validated=validateWalletSigned(op.plan,raw,clock,v3WalletValidation),prepared={...op,raw,txid:validated.txid,stage:'prepared' as const,...(op.creationMode==='direct'?{config:{...op.parameters,genesis:validated.txid}}:{})};if(op.creationMode==='direct')validateGenesis(op.parameters,raw,inputs,this.provider);await this.store.save(prepared);
  try {await this.provider.session(async()=>{await verifyCoinsAcrossPinned(this.provider,inputs);const accepted=await this.provider.sendRawTransaction(raw);if(accepted!==validated.txid)throw Error('Broadcast returned an unexpected transaction ID');},clock.peer);const sent={...prepared,stage:'pending' as const,...(op.creationMode==='direct'?{confirmations:0}:{})};await this.store.save(sent);return sent;}catch(e){const uncertain={...prepared,error:String(e)};await this.store.save(uncertain);return uncertain;}
  }

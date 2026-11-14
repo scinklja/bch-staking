@@ -16,7 +16,7 @@ async function connection(page){
  throw Error('Chipnet read-only connection failed after three explicit refreshes');
 }
 let server;
-if(local){const root=resolve('dist');server=createServer(async(req,res)=>{const path=new URL(req.url,'http://localhost').pathname,file=resolve(root,path.replace(/^\/staking-arena-site\//,'')||'index.html');if(!file.startsWith(root+'/')){res.writeHead(403).end();return;}try{const body=await readFile(file);res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'})[extname(file)]??'application/octet-stream'}).end(body);}catch{res.writeHead(404).end();}});await new Promise(done=>server.listen(4181,'127.0.0.1',done));}
+if(local){const root=resolve(process.argv[3]??'dist');server=createServer(async(req,res)=>{const path=new URL(req.url,'http://localhost').pathname,file=resolve(root,path.replace(/^\/staking-arena-site\//,'')||'index.html');if(!file.startsWith(root+'/')){res.writeHead(403).end();return;}try{const body=await readFile(file);res.writeHead(200,{'Content-Type':({'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml'})[extname(file)]??'application/octet-stream'}).end(body);}catch{res.writeHead(404).end();}});await new Promise(done=>server.listen(4181,'127.0.0.1',done));}
 let browser,activePage;
 try{
  browser=await chromium.launch(launchOptions);const context=await browser.newContext(),page=await context.newPage(),errors=[],workers=[],methods=[],responses=[];
@@ -25,6 +25,7 @@ try{
  await context.routeWebSocket(/wss:\/\//,ws=>{const peer=ws.connectToServer();ws.onMessage(data=>{let m;try{m=JSON.parse(data.toString());}catch{}if(m?.method){methods.push(m.method);assert.notEqual(m.method,'blockchain.transaction.broadcast','Read-only verification must never broadcast');}peer.send(data);});peer.onMessage(data=>ws.send(data));});
  console.log('Opening compiled v3 page',url);await page.goto(url+'#/v3',{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Create a v3 vault'}).waitFor();await connection(page);
  console.log('Initial chipnet connection verified');
+ assert.match(await page.locator('body').innerText(),/Every action verifies current blockchain state automatically/);
  assert.match(await page.locator('body').innerText(),/Direct creation uses one Cashonize approval and one transaction/);
  await page.getByText('Two-stage creation fallback',{exact:true}).waitFor();
  for(const w of page.workers())methods.push(...await w.evaluate(()=>globalThis.__arenaReadonlyMethods??[]));

@@ -20,7 +20,7 @@ async function open(page:Page){await page.goto('./#/v3');await page.getByLabel('
 test('real browser worker verifies wallet-funded claims over WSS and requires a connected caller wallet',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await open(page);
  await expect(page.getByRole('cell',{name:'513 / 1024'})).toBeVisible();await expect(page.getByRole('button',{name:'Review and pay fee in wallet',exact:true})).toBeDisabled();
- await expect(page.getByText(/connect a compatible WizardConnect/)).toBeVisible();
+ await expect(page.getByText(/Claim unavailable: connect a compatible WizardConnect/)).toBeVisible();
  const claim=await fixture.claim();await refresh(page);expect(fixture.chain.pending.size).toBe(1);expect(fixture.chain.broadcasts).toHaveLength(1);
  await page.reload();await refresh(page);await expect(page.getByText(/Pending state spends/)).toBeVisible();
  fixture.chain.mine();
@@ -31,7 +31,7 @@ test('provider failure disables v3 actions and a reorganization restores the que
  await open(page);const claim=await fixture.claim();fixture.chain.mine();await refresh(page);await expect(page.getByText(/effective lock 1024s/)).toBeVisible();
  fixture.chain.reorgLastBlock();fixture.chain.pending.add(claim);await refresh(page);await expect(page.getByText('0 / 2',{exact:true})).toBeVisible();await expect(page.getByText(/effective lock 1024s/)).toHaveCount(0);await expect(page.getByRole('button',{name:'Review and pay fee in wallet',exact:true})).toBeDisabled();
  fixture.chain.mine();await refresh(page);await expect(page.getByText('1 / 2',{exact:true})).toBeVisible();
- fixture.chain.fail=true;await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('heading',{name:'Live ranked queue'})).toHaveCount(0,{timeout:60000});await expect(page.getByRole('status')).toContainText('Fixture disconnected');
+ fixture.chain.fail=true;await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('status')).toContainText('Fixture disconnected',{timeout:60000});await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible();await expect(page.getByText(/Displayed state may be outdated/)).toBeVisible();
  fixture.chain.fail=false;await refresh(page);await expect(page.getByText('1 / 2',{exact:true})).toBeVisible();
 });
 
