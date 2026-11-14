@@ -11,7 +11,7 @@ it('classifies overdue/expired states from UTC and confirmed period without clai
 it('parses hash routes without server path rewrites',()=>{
  const id='a'.repeat(64);expect(routeFromHash('#/vault/'+id)).toEqual({page:'vault',id});
  expect(routeFromHash('#/vault/'+id+'/offer')).toEqual({page:'offer',id});
- expect(routeFromHash('#/create')).toEqual({page:'create'});expect(routeFromHash('')).toEqual({page:'home'});expect(routeFromHash('#/vault/bad')).toEqual({page:'missing'});
+ expect(routeFromHash('#/v3/offers')).toEqual({page:'v3'});expect(routeFromHash('#/v3/vault/'+id)).toEqual({page:'v3'});expect(routeFromHash('#/v3')).toEqual({page:'v3'});expect(routeFromHash('#/create')).toEqual({page:'create'});expect(routeFromHash('')).toEqual({page:'home'});expect(routeFromHash('#/vault/bad')).toEqual({page:'missing'});
 });
 it('uses raw satoshis for exact priority and rejects invalid or unsupported preview terms',()=>{
  const v=fixture().vaults[0];expect(offerPreview('3000','2','0.00001000','3',v)).toEqual({commitment:9000n,score:'6'});

@@ -1,0 +1,39 @@
+{
+  "verifiedAt": "2026-11-14T09:35:07.554Z",
+  "url": "http://127.0.0.1:4181/staking-arena-site/",
+  "status": "Verified chipnet identity on two providers · height 332282",
+  "pairs": [
+    "bch-bch",
+    "bch-token",
+    "token-bch",
+    "token-token"
+  ],
+  "v3Reload": true,
+  "tabsAndHistory": true,
+  "mobileWidth": true,
+  "v1Accessible": true,
+  "v2Accessible": true,
+  "directGenesisOneApproval": true,
+  "walletConnected": false,
+  "walletSigningVerified": false,
+  "broadcasts": 0,
+  "pageErrors": [],
+  "httpErrors": [],
+  "workers": [
+    "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-BY18kgbM.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-BY18kgbM.js"
+  ],
+  "electrumMethods": [
+    "server.version",
+    "blockchain.block.header",
+    "blockchain.headers.subscribe",
+    "blockchain.transaction.get",
+    "blockchain.scripthash.get_history",
+    "blockchain.transaction.get_merkle",
+    "blockchain.block.headers"
+  ]
+}

@@ -15,8 +15,8 @@ const server=createServer({key:readFileSync(certificate+'/key'),cert:readFileSyn
 test.beforeAll(async()=>{sockets.on('connection',(socket,req)=>{hosts.push(req.headers.host??'');socket.on('message',async data=>{const m=JSON.parse(data.toString());methods.push(m.method);try{const result=await fixture.chain.request(m.method,...m.params);socket.send(JSON.stringify({id:m.id,result}));}catch(e){socket.send(JSON.stringify({id:m.id,error:{code:-1,message:String(e)}}));}});});server.listen(4177,'0.0.0.0');await once(server,'listening');});
 test.afterAll(async()=>{for(const s of sockets.clients)s.terminate();sockets.close();server.close();await once(server,'close');rmSync(certificate,{recursive:true,force:true});});
 test.beforeEach(async({context})=>{fixture=v3BrowserChain();hosts=[];methods=[];await context.routeWebSocket(/^wss:\/\/relay\./,s=>{s.onMessage(()=>{});});});
-async function refresh(page:Page){const input=page.getByLabel('Public v3 configuration');if(!await input.inputValue())await input.fill(JSON.stringify(fixture.config,(_,v)=>typeof v==='bigint'?v.toString():v));await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible({timeout:60000});}
-async function open(page:Page){await page.goto('./#/v3');await page.getByLabel('Public v3 configuration').fill(JSON.stringify(fixture.config,(_,v)=>typeof v==='bigint'?v.toString():v));await refresh(page);}
+async function refresh(page:Page){const input=page.getByLabel('Public v3 configuration');if(!await input.isVisible())await page.getByText('Import or share a vault configuration',{exact:true}).click();if(!await input.inputValue())await input.fill(JSON.stringify(fixture.config,(_,v)=>typeof v==='bigint'?v.toString():v));await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible({timeout:60000});}
+async function open(page:Page){await page.goto('./#/v3/offers');await page.getByLabel('Public v3 configuration').fill(JSON.stringify(fixture.config,(_,v)=>typeof v==='bigint'?v.toString():v));await refresh(page);}
 test('real browser worker verifies wallet-funded claims over WSS and requires a connected caller wallet',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await open(page);
  await expect(page.getByRole('group',{name:'New v3 offer'}).getByRole('textbox')).toHaveCount(3);await expect(page.getByLabel('Maximum wins W')).toHaveCount(0);
@@ -33,7 +33,7 @@ test('provider failure disables v3 actions and a reorganization restores the que
  await open(page);const claim=await fixture.claim();fixture.chain.mine();await refresh(page);await expect(page.getByText(/effective lock 1024s/)).toBeVisible();
  fixture.chain.reorgLastBlock();fixture.chain.pending.add(claim);await refresh(page);await expect(page.getByRole('cell',{name:'Active · #0 · Legacy offer: 2 reward payments remaining'})).toBeVisible();await expect(page.getByText(/effective lock 1024s/)).toHaveCount(0);await expect(page.getByRole('button',{name:'Review and pay fee in wallet',exact:true})).toBeDisabled();
  fixture.chain.mine();await refresh(page);await expect(page.getByRole('cell',{name:'Active · #0 · Legacy offer: 1 reward payment remaining'})).toBeVisible();
- fixture.chain.fail=true;await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('status')).toContainText('Fixture disconnected',{timeout:60000});await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible();await expect(page.getByText(/Displayed state may be outdated/)).toBeVisible();
+ fixture.chain.fail=true;await page.getByRole('button',{name:'Refresh vault state'}).click();await expect(page.getByRole('status')).toContainText('Fixture disconnected',{timeout:60000});await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible();await expect(page.getByText(/Displayed state may be outdated/)).toBeVisible();
  fixture.chain.fail=false;await refresh(page);await expect(page.getByRole('cell',{name:'Active · #0 · Legacy offer: 1 reward payment remaining'})).toBeVisible();
 });
 
@@ -50,8 +50,24 @@ test('direct genesis journal survives browser reload and automatically confirms 
  const op=JSON.parse(encoded,(_,v)=>v?.bigint!==undefined?BigInt(v.bigint):v?.bytes?Uint8Array.from(v.bytes):v);
  await new Promise<void>((resolve,reject)=>{const r=indexedDB.open('staking-arena-wallet-v3',1);r.onupgradeneeded=()=>r.result.createObjectStore('operations');r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,t=db.transaction('operations','readwrite');t.objectStore('operations').put(op,op.id);t.oncomplete=()=>{db.close();resolve();};t.onerror=()=>reject(t.error);};});
  },encoded);
- await page.reload();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Pending (0-conf)');
+ await page.goto('./#/v3/offers');await page.reload();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Pending (0-conf)');
  await expect(page.getByRole('heading',{name:'Live ranked queue'})).toHaveCount(0);
  fixture.chain.mine();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Confirmed (1 canonical confirmation)',{timeout:35000});
  await page.reload();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Confirmed');
+});
+
+test('tabs preserve form values, verified cards open vault routes, and desktop/mobile layouts follow task order',async({page})=>{
+ await page.setViewportSize({width:1360,height:1000});await page.goto('./#/v3');
+ await page.getByLabel('Interval (seconds)',{exact:true}).fill('7200');
+ await page.getByRole('link',{name:'Make an Offer',exact:true}).click();await expect(page.getByRole('heading',{name:'Known vaults'})).toBeVisible();
+ await page.goBack();await expect(page.getByLabel('Interval (seconds)',{exact:true})).toHaveValue('7200');await page.goForward();
+ await page.getByLabel('Public v3 configuration').fill(JSON.stringify(fixture.config,(_,v)=>typeof v==='bigint'?v.toString():v));await refresh(page);
+ await page.getByRole('link',{name:'← Known vaults',exact:true}).click();
+ const card=page.getByRole('link',{name:/V3 vault/});await expect(card).toContainText('Active offers');await expect(card).toContainText('Confirmed · chain verified');await card.click();
+ await expect(page).toHaveURL(new RegExp('#/v3/vault/'+fixture.config.genesis+'$'));await expect(page.locator('.v3-summary')).toBeVisible();
+ const queue=await page.locator('.v3-queue').boundingBox(),form=await page.locator('.v3-offer').boundingBox();expect(queue!.x).toBeLessThan(form!.x);expect(form!.y).toBeLessThan(queue!.y);expect(await page.locator('.v3-queue .table-scroll').evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
+ await page.screenshot({path:'test-results/v3-redesign-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});const mobile=await Promise.all(['.v3-summary','.v3-offer','.v3-queue'].map(c=>page.locator(c).boundingBox()));expect(mobile[0]!.y).toBeLessThan(mobile[1]!.y);expect(mobile[1]!.y).toBeLessThan(mobile[2]!.y);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);await page.screenshot({path:'test-results/v3-redesign-mobile.png',fullPage:true});
+ await page.reload();await expect(page.getByRole('heading',{name:'Live ranked queue'})).toBeVisible();expect(methods).not.toContain('blockchain.transaction.broadcast');
 });
