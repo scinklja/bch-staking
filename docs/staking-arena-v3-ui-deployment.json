@@ -1,0 +1,313 @@
+{
+  "sourceCommit": "550b273b46e3a4071df28a7966936ad52edb421f",
+  "publishedCommit": "e685e6bd62381c3a587b3cb1d0c79d2affc0f459",
+  "url": "https://scinklja.github.io/staking-arena-site/#/v3",
+  "verifiedAt": "2026-11-14T09:36:03.330192+00:00",
+  "verifiedCompiledAssets": [
+    {
+      "path": "arena.svg",
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270,
+      "httpStatus": 200,
+      "servedSha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-10e\""
+    },
+    {
+      "path": "assets/GeneralizedAssets-BUGKlll0.js",
+      "sha256": "14538900417c8dd5b5d6644aa48f34794644f282cfc7ea141cfdf84faf7be49e",
+      "bytes": 9140,
+      "httpStatus": 200,
+      "servedSha256": "14538900417c8dd5b5d6644aa48f34794644f282cfc7ea141cfdf84faf7be49e",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-23b4\""
+    },
+    {
+      "path": "assets/GeneralizedVaults-C6a0-gF_.js",
+      "sha256": "402ef233f4314db326e6fcb0ff67f434cf9e7831726bba307e3de5d680be27b2",
+      "bytes": 120,
+      "httpStatus": 200,
+      "servedSha256": "402ef233f4314db326e6fcb0ff67f434cf9e7831726bba307e3de5d680be27b2",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-78\""
+    },
+    {
+      "path": "assets/GeneralizedVaults-CDaA4hJd.js",
+      "sha256": "14258d666dc5a0a7500c3a775e5b0182f86741282a3bcb115b2dbd4a325d3711",
+      "bytes": 2343,
+      "httpStatus": 200,
+      "servedSha256": "14258d666dc5a0a7500c3a775e5b0182f86741282a3bcb115b2dbd4a325d3711",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-927\""
+    },
+    {
+      "path": "assets/V3Arena-BeE50J9a.js",
+      "sha256": "39245232823224e31653a79cc4cefafca98e94b31f5128f815710a97dd1a9f88",
+      "bytes": 27515,
+      "httpStatus": 200,
+      "servedSha256": "39245232823224e31653a79cc4cefafca98e94b31f5128f815710a97dd1a9f88",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-6b7b\""
+    },
+    {
+      "path": "assets/app-entry-C-Ufr4Ot.js",
+      "sha256": "e6e2082a841ce6d055e7e18bd060b242f75d2f398f93919df05c97bb4862db13",
+      "bytes": 785002,
+      "httpStatus": 200,
+      "servedSha256": "e6e2082a841ce6d055e7e18bd060b242f75d2f398f93919df05c97bb4862db13",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-bfa6a\""
+    },
+    {
+      "path": "assets/app-entry-DXMEOSI4.css",
+      "sha256": "dc405f5c8faf9cf81391435da229432e489016c1202d2fe443bb1d9388de4b20",
+      "bytes": 12662,
+      "httpStatus": 200,
+      "servedSha256": "dc405f5c8faf9cf81391435da229432e489016c1202d2fe443bb1d9388de4b20",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-3176\""
+    },
+    {
+      "path": "assets/arena.worker-BsHklFFg.js",
+      "sha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "bytes": 688941,
+      "httpStatus": 200,
+      "servedSha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-a832d\""
+    },
+    {
+      "path": "assets/createAssets-D_bVmer-.js",
+      "sha256": "20700276f6e3d475eb9e1c817ee27322435eace75bbeecac97243dd0eca63c3e",
+      "bytes": 139233,
+      "httpStatus": 200,
+      "servedSha256": "20700276f6e3d475eb9e1c817ee27322435eace75bbeecac97243dd0eca63c3e",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-21fe1\""
+    },
+    {
+      "path": "assets/electrum-wallet-BAJIoOhl.js",
+      "sha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "bytes": 282435,
+      "httpStatus": 200,
+      "servedSha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-44f43\""
+    },
+    {
+      "path": "assets/index-CWCBeQkw.js",
+      "sha256": "294f1fbdc91665176e55350b044f952cedbb22f4a36439435c952ea9ae92f12e",
+      "bytes": 1777,
+      "httpStatus": 200,
+      "servedSha256": "294f1fbdc91665176e55350b044f952cedbb22f4a36439435c952ea9ae92f12e",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-6f1\""
+    },
+    {
+      "path": "assets/indexer-7KKv9YpT.js",
+      "sha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "bytes": 53,
+      "httpStatus": 200,
+      "servedSha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-35\""
+    },
+    {
+      "path": "assets/indexer-BXSTnHES.js",
+      "sha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "bytes": 45900,
+      "httpStatus": 200,
+      "servedSha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-b34c\""
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "sha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "bytes": 628,
+      "httpStatus": 200,
+      "servedSha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-274\""
+    },
+    {
+      "path": "assets/keeper-BRelbEv1.js",
+      "sha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "bytes": 584,
+      "httpStatus": 200,
+      "servedSha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-248\""
+    },
+    {
+      "path": "assets/model-_T7ZtZtD.js",
+      "sha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "bytes": 1685,
+      "httpStatus": 200,
+      "servedSha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-695\""
+    },
+    {
+      "path": "assets/preload-helper-DclECHGd.js",
+      "sha256": "8674df70cbffd5753771a8dd5b08ac3b6ec29c1170468e46848760a0ffeea550",
+      "bytes": 1630,
+      "httpStatus": 200,
+      "servedSha256": "8674df70cbffd5753771a8dd5b08ac3b6ec29c1170468e46848760a0ffeea550",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-65e\""
+    },
+    {
+      "path": "assets/registry-R-0oSpMz.js",
+      "sha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "bytes": 378307,
+      "httpStatus": 200,
+      "servedSha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-5c5c3\""
+    },
+    {
+      "path": "assets/rolldown-runtime-WkwZ5CU-.js",
+      "sha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "bytes": 599,
+      "httpStatus": 200,
+      "servedSha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-257\""
+    },
+    {
+      "path": "assets/v3.worker-BY18kgbM.js",
+      "sha256": "87ba4175f0ebd213b99bbe34de21bf539d6e86fdf36b947d75a6a17c007df5a3",
+      "bytes": 719686,
+      "httpStatus": 200,
+      "servedSha256": "87ba4175f0ebd213b99bbe34de21bf539d6e86fdf36b947d75a6a17c007df5a3",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-afb46\""
+    },
+    {
+      "path": "assets/v3Client-B6dx7EZS.js",
+      "sha256": "78d9cdbbd2a2b2cee2d031f8c02e145b70802604191f005ff64cdbfa92b2fbf4",
+      "bytes": 2285,
+      "httpStatus": 200,
+      "servedSha256": "78d9cdbbd2a2b2cee2d031f8c02e145b70802604191f005ff64cdbfa92b2fbf4",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-8ed\""
+    },
+    {
+      "path": "assets/wallet-CPjthZGA.js",
+      "sha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "bytes": 12226,
+      "httpStatus": 200,
+      "servedSha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-2fc2\""
+    },
+    {
+      "path": "assets/wallet.worker-CIHbSpAb.js",
+      "sha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "bytes": 43695,
+      "httpStatus": 200,
+      "servedSha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-aaaf\""
+    },
+    {
+      "path": "index.html",
+      "sha256": "eb5801104323565b860fdb5e0ad4141833ba9b29e29a31fde6aba566df6e878f",
+      "bytes": 1214,
+      "httpStatus": 200,
+      "servedSha256": "eb5801104323565b860fdb5e0ad4141833ba9b29e29a31fde6aba566df6e878f",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-4be\""
+    },
+    {
+      "path": "v3-vaults.json",
+      "sha256": "ea3e9b9d177df8f6f57a63b890142767bd831910558131da1606bd8c51d2b738",
+      "bytes": 43,
+      "httpStatus": 200,
+      "servedSha256": "ea3e9b9d177df8f6f57a63b890142767bd831910558131da1606bd8c51d2b738",
+      "cacheControl": "max-age=600",
+      "etag": "\"6af82b7a-2b\""
+    }
+  ],
+  "releaseManifestVerified": true,
+  "previousCachedEntryAssetsVerified": [
+    {
+      "path": "assets/index-Cm_fiowU.js",
+      "sha256": "dc5d24534435dab0df1a4402e9cd951b07ca4a773be1a166b77fc56d9ae4bc58",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/preload-helper-DZYbdLbp.js",
+      "sha256": "4628f281be8264eb4454d5781b6706cffc720fea5604b46612d743254a940fd9",
+      "httpStatus": 200
+    }
+  ],
+  "rollbackCommit": "4cdc6558c474bda33c4361610f61346a949a2980",
+  "rollbackBranch": "rollback/pre-v3-ui-2026-11-14",
+  "walletTransactionsVerified": false,
+  "liveTransactionsInitiated": false,
+  "mainnetEnabled": false,
+  "covenantArtifactsChanged": false,
+  "verification": {
+    "frontend": {
+      "files": 22,
+      "passed": 99
+    },
+    "compiledBrowserTests": 4,
+    "focusedLayoutTests": 1,
+    "typecheck": "passed",
+    "productionBuild": "passed",
+    "publicBrowserEvidence": "docs/staking-arena-v3-ui-browser-public.json",
+    "publicBrowser": {
+      "verifiedAt": "2026-11-14T09:36:38.804Z",
+      "url": "https://scinklja.github.io/staking-arena-site/",
+      "status": "Verified chipnet identity on two providers \u00b7 height 332282",
+      "pairs": [
+        "bch-bch",
+        "bch-token",
+        "token-bch",
+        "token-token"
+      ],
+      "v3Reload": true,
+      "tabsAndHistory": true,
+      "mobileWidth": true,
+      "v1Accessible": true,
+      "v2Accessible": true,
+      "directGenesisOneApproval": true,
+      "walletConnected": false,
+      "walletSigningVerified": false,
+      "broadcasts": 0,
+      "pageErrors": [],
+      "httpErrors": [],
+      "workers": [
+        "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+        "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+        "https://scinklja.github.io/staking-arena-site/assets/v3.worker-BY18kgbM.js",
+        "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+        "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+        "https://scinklja.github.io/staking-arena-site/assets/v3.worker-BY18kgbM.js"
+      ],
+      "electrumMethods": [
+        "server.version",
+        "blockchain.block.header",
+        "blockchain.headers.subscribe",
+        "blockchain.transaction.get",
+        "blockchain.scripthash.get_history",
+        "blockchain.transaction.get_merkle",
+        "blockchain.block.headers"
+      ]
+    },
+    "protocolDiffFrom": "0ca429f",
+    "protocolSourcesAndCovenantArtifactsUnchanged": true
+  },
+  "discovery": {
+    "source": "https://scinklja.github.io/staking-arena-site/v3-vaults.json",
+    "knownVaultsOnly": true,
+    "initialSharedConfigurations": 0,
+    "savedAndImportedConfigurationsPreserved": true,
+    "fullPublicDiscovery": "Requires a separate V3 indexer or maintained catalog; no on-chain registry changes."
+  },
+  "rollbackBundle": ".pages-release/pre-v3-ui-2026-11-14.bundle",
+  "rollbackBranchPublished": true
+}
