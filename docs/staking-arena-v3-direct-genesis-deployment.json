@@ -1,0 +1,288 @@
+{
+  "sourceCommit": "dd143e306f989d8478906e603162c6c6882f5a71",
+  "publishedCommit": "2972dbf44bf45e52d90124fc42a97a0d7af88496",
+  "url": "https://scinklja.github.io/staking-arena-site/#/v3",
+  "verifiedAt": "2026-11-14T08:16:27.222503+00:00",
+  "verifiedCompiledAssets": [
+    {
+      "path": "arena.svg",
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270,
+      "servedSha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedAssets-CaamVH0O.js",
+      "sha256": "a050c1032ad601f9d75dab1969b5e36ecb8aa0aa21be9abef2cb69765a91839c",
+      "bytes": 9140,
+      "servedSha256": "a050c1032ad601f9d75dab1969b5e36ecb8aa0aa21be9abef2cb69765a91839c",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedVaults-DuG-Bxr4.js",
+      "sha256": "7b9f2f6a643e98b5c1d22094eb3e3644684031fab4e355d26a7ea9a89391613f",
+      "bytes": 120,
+      "servedSha256": "7b9f2f6a643e98b5c1d22094eb3e3644684031fab4e355d26a7ea9a89391613f",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedVaults-fiphaBA7.js",
+      "sha256": "b85b81f5d9030f53703778b37bd46bc9d0887a8f3853b4162a1c242c80cabf58",
+      "bytes": 2343,
+      "servedSha256": "b85b81f5d9030f53703778b37bd46bc9d0887a8f3853b4162a1c242c80cabf58",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/V3Arena-DvSoH8jW.js",
+      "sha256": "88ba799c2befe36de5458726a4a6aeecb829a072424bc25287f58bdd91fedf89",
+      "bytes": 20309,
+      "servedSha256": "88ba799c2befe36de5458726a4a6aeecb829a072424bc25287f58bdd91fedf89",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-BBX8p91t.js",
+      "sha256": "ffed22ed791a3d402ec2f341572f8442ee5e22b751ce7380a6cac04437ac4f20",
+      "bytes": 785061,
+      "servedSha256": "ffed22ed791a3d402ec2f341572f8442ee5e22b751ce7380a6cac04437ac4f20",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-CSVIGMzA.css",
+      "sha256": "edb69f3df5eb40e5c5ec86d9f2eaa470dff4f18a00da2ebf8540cb0cf6ec846a",
+      "bytes": 9985,
+      "servedSha256": "edb69f3df5eb40e5c5ec86d9f2eaa470dff4f18a00da2ebf8540cb0cf6ec846a",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/arena.worker-BsHklFFg.js",
+      "sha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "bytes": 688941,
+      "servedSha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/createAssets-B6UVP0Mg.js",
+      "sha256": "c44df901367018347d248909959ed14854e5f72407e18e2756111a3664c3dbac",
+      "bytes": 139188,
+      "servedSha256": "c44df901367018347d248909959ed14854e5f72407e18e2756111a3664c3dbac",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/electrum-wallet-BAJIoOhl.js",
+      "sha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "bytes": 282435,
+      "servedSha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/index-BXpnvlhd.js",
+      "sha256": "033244236739cfa02ebceae10eb7ebaeb38e1c95484bdfa3759444f2a715aa49",
+      "bytes": 1777,
+      "servedSha256": "033244236739cfa02ebceae10eb7ebaeb38e1c95484bdfa3759444f2a715aa49",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer-7KKv9YpT.js",
+      "sha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "bytes": 53,
+      "servedSha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer-BXSTnHES.js",
+      "sha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "bytes": 45900,
+      "servedSha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "sha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "bytes": 628,
+      "servedSha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/keeper-BRelbEv1.js",
+      "sha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "bytes": 584,
+      "servedSha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/model-_T7ZtZtD.js",
+      "sha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "bytes": 1685,
+      "servedSha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/preload-helper-DclECHGd.js",
+      "sha256": "8674df70cbffd5753771a8dd5b08ac3b6ec29c1170468e46848760a0ffeea550",
+      "bytes": 1630,
+      "servedSha256": "8674df70cbffd5753771a8dd5b08ac3b6ec29c1170468e46848760a0ffeea550",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/registry-R-0oSpMz.js",
+      "sha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "bytes": 378307,
+      "servedSha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/rolldown-runtime-WkwZ5CU-.js",
+      "sha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "bytes": 599,
+      "servedSha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/v3.worker-DbWjjVvR.js",
+      "sha256": "0f93622459960f17d7ed8327ef0186a4177b4387799815379888937e4320f901",
+      "bytes": 719012,
+      "servedSha256": "0f93622459960f17d7ed8327ef0186a4177b4387799815379888937e4320f901",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/v3Client-h4VP1e-E.js",
+      "sha256": "415e40da163c6f96c4c4184de32abf22fde1934f7a8b65fb64d64c15e3886807",
+      "bytes": 2340,
+      "servedSha256": "415e40da163c6f96c4c4184de32abf22fde1934f7a8b65fb64d64c15e3886807",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/wallet-CPjthZGA.js",
+      "sha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "bytes": 12226,
+      "servedSha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/wallet.worker-CIHbSpAb.js",
+      "sha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "bytes": 43695,
+      "servedSha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "httpStatus": 200
+    },
+    {
+      "path": "index.html",
+      "sha256": "aa300e84188803a6b072c0c26f888000b89f56bd44a82ccf963041c9a59fa36d",
+      "bytes": 1214,
+      "servedSha256": "aa300e84188803a6b072c0c26f888000b89f56bd44a82ccf963041c9a59fa36d",
+      "httpStatus": 200
+    }
+  ],
+  "releaseManifestVerified": true,
+  "previousCachedEntryAssetsVerified": [
+    {
+      "path": "assets/index-C5mEkRE-.js",
+      "sha256": "7370099d1d041489ddeb71f32ba876dfe7db3d9b350c7004dd1ffef5b0f17108",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/preload-helper-DclECHGd.js",
+      "sha256": "8674df70cbffd5753771a8dd5b08ac3b6ec29c1170468e46848760a0ffeea550",
+      "httpStatus": 200
+    }
+  ],
+  "rollbackCommit": "3d4217ed8598dcf8260ceac86066e123e4dc962b",
+  "rollbackBranch": "rollback/pre-direct-genesis-2026-11-14",
+  "liveCashonizeSigningVerified": false,
+  "liveTransactionsInitiated": false,
+  "mainnetEnabled": false,
+  "covenantArtifactsChanged": false,
+  "publicBrowser": {
+    "verifiedAt": "2026-11-14T08:15:44.357Z",
+    "url": "https://scinklja.github.io/staking-arena-site/",
+    "status": "Verified chipnet identity on two providers \u00b7 height 332264",
+    "pairs": [
+      "bch-bch",
+      "bch-token",
+      "token-bch",
+      "token-token"
+    ],
+    "v3Reload": true,
+    "v1Accessible": true,
+    "v2Accessible": true,
+    "directGenesisOneApproval": true,
+    "walletConnected": false,
+    "walletSigningVerified": false,
+    "broadcasts": 0,
+    "pageErrors": [],
+    "httpErrors": [],
+    "workers": [
+      "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DbWjjVvR.js",
+      "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DbWjjVvR.js"
+    ],
+    "electrumMethods": [
+      "server.version",
+      "blockchain.block.header",
+      "blockchain.headers.subscribe",
+      "blockchain.transaction.get",
+      "blockchain.scripthash.get_history",
+      "blockchain.transaction.get_merkle",
+      "blockchain.block.headers"
+    ]
+  },
+  "localCompiledBrowser": {
+    "verifiedAt": "2026-11-14T08:14:36.712Z",
+    "url": "http://127.0.0.1:4181/staking-arena-site/",
+    "status": "Verified chipnet identity on two providers \u00b7 height 332264",
+    "pairs": [
+      "bch-bch",
+      "bch-token",
+      "token-bch",
+      "token-token"
+    ],
+    "v3Reload": true,
+    "v1Accessible": true,
+    "v2Accessible": true,
+    "directGenesisOneApproval": true,
+    "walletConnected": false,
+    "walletSigningVerified": false,
+    "broadcasts": 0,
+    "pageErrors": [],
+    "httpErrors": [],
+    "workers": [
+      "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-DbWjjVvR.js",
+      "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-DbWjjVvR.js"
+    ],
+    "electrumMethods": [
+      "server.version",
+      "blockchain.block.header",
+      "blockchain.headers.subscribe",
+      "blockchain.transaction.get",
+      "blockchain.scripthash.get_history",
+      "blockchain.transaction.get_merkle",
+      "blockchain.block.headers"
+    ]
+  },
+  "pagesBuild": {
+    "commit": "2972dbf44bf45e52d90124fc42a97a0d7af88496",
+    "status": "built",
+    "error": {
+      "message": null
+    },
+    "updated_at": "2026-11-14T08:15:16Z"
+  },
+  "plainUrlIndexSha256": "aa300e84188803a6b072c0c26f888000b89f56bd44a82ccf963041c9a59fa36d",
+  "rollbackBranchPublished": true,
+  "rollbackBundle": ".pages-release/pre-direct-genesis-2026-11-14.bundle",
+  "reviewGateStatus": "passed",
+  "reviewGateStages": 9,
+  "rootTestsPassed": 70,
+  "frontendTestsPassed": 79,
+  "v3BrowserTestsPassed": 3,
+  "electrumBrowserTestsPassed": 19,
+  "verificationReport": "docs/staking-arena-v3-direct-genesis-verification.json",
+  "sourceFilesMatchTestedHashes": true
+}
