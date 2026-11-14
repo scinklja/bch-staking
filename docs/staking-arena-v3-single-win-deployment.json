@@ -1,0 +1,277 @@
+{
+  "sourceCommit": "2524f53693118d631d3bdff279c5cc334984149a",
+  "publishedCommit": "4cdc6558c474bda33c4361610f61346a949a2980",
+  "url": "https://scinklja.github.io/staking-arena-site/#/v3",
+  "verifiedAt": "2026-11-14T09:06:16.469882+00:00",
+  "rollbackCommit": "237ee632c9df0a4b23071b32f9b5fca80dec659d",
+  "verifiedCompiledAssets": [
+    {
+      "path": "arena.svg",
+      "sha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "bytes": 270,
+      "servedSha256": "c453d03bd8dbbd9cfe0bbde2451d7cfd830d90cfcfffb346252557fd268208bf",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedAssets-DKvbzpCh.js",
+      "sha256": "ce025ac447726bc921192fe11cf5d15403fec1f1ef9a4e64c1aff96976bafd28",
+      "bytes": 9140,
+      "servedSha256": "ce025ac447726bc921192fe11cf5d15403fec1f1ef9a4e64c1aff96976bafd28",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedVaults-BMRmL7Sh.js",
+      "sha256": "1c2d3eac0d61ed78376a3c40861c872ff72e3c7189208dffe012fc7e06ef575a",
+      "bytes": 2343,
+      "servedSha256": "1c2d3eac0d61ed78376a3c40861c872ff72e3c7189208dffe012fc7e06ef575a",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/GeneralizedVaults-COYASqhl.js",
+      "sha256": "c76f4f3f48e7da64b6e1c600e74dfd29461674b4b0e365a363ecca037417561c",
+      "bytes": 120,
+      "servedSha256": "c76f4f3f48e7da64b6e1c600e74dfd29461674b4b0e365a363ecca037417561c",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/V3Arena-DZXMwUud.js",
+      "sha256": "f77f9b76706bc67f202d3652c5b4a577b54fd7732f6a53859670ea20c6823fa3",
+      "bytes": 22960,
+      "servedSha256": "f77f9b76706bc67f202d3652c5b4a577b54fd7732f6a53859670ea20c6823fa3",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-CSVIGMzA.css",
+      "sha256": "edb69f3df5eb40e5c5ec86d9f2eaa470dff4f18a00da2ebf8540cb0cf6ec846a",
+      "bytes": 9985,
+      "servedSha256": "edb69f3df5eb40e5c5ec86d9f2eaa470dff4f18a00da2ebf8540cb0cf6ec846a",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/app-entry-CqP4r6cT.js",
+      "sha256": "8c7a2d5427ad3cd22f9b515b302148f13df5199b41ef73c67803cab683023865",
+      "bytes": 785893,
+      "servedSha256": "8c7a2d5427ad3cd22f9b515b302148f13df5199b41ef73c67803cab683023865",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/arena.worker-BsHklFFg.js",
+      "sha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "bytes": 688941,
+      "servedSha256": "48ad4205548886d76bc9e872a3b2eecd212f5a9b241458fb8fab1e8d5215af77",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/createAssets-CZRHwVmj.js",
+      "sha256": "5da533dd608aad88f1286d9b32cd2b9454bf5133f74b106a9f4643e7b37bf611",
+      "bytes": 139184,
+      "servedSha256": "5da533dd608aad88f1286d9b32cd2b9454bf5133f74b106a9f4643e7b37bf611",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/electrum-wallet-BAJIoOhl.js",
+      "sha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "bytes": 282435,
+      "servedSha256": "2033244fb6c47ad13fb5338398c6732058eac35087d6f3d942252102ed7905b2",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/index-Cm_fiowU.js",
+      "sha256": "dc5d24534435dab0df1a4402e9cd951b07ca4a773be1a166b77fc56d9ae4bc58",
+      "bytes": 1796,
+      "servedSha256": "dc5d24534435dab0df1a4402e9cd951b07ca4a773be1a166b77fc56d9ae4bc58",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer-7KKv9YpT.js",
+      "sha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "bytes": 53,
+      "servedSha256": "fcbbb9d1dfc76531b38618dba32fb8ab91f937c6f455af211730e45031113be4",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer-BXSTnHES.js",
+      "sha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "bytes": 45900,
+      "servedSha256": "a765f059f3a07f4f387065d70467a937e3891309912bf96a32c7e863a399913f",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "sha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "bytes": 628,
+      "servedSha256": "434bc4698b87ecf9c5bf2c33d8a47baa739f5cafba66f8621eef4f9b08161f64",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/keeper-BRelbEv1.js",
+      "sha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "bytes": 584,
+      "servedSha256": "6fd3ba94f13a054c5b10fc681f950104b15e433b7ea04353dbf0d8a41b7c843a",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/model-_T7ZtZtD.js",
+      "sha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "bytes": 1685,
+      "servedSha256": "51b992ea1243a7129b789a60830a31b2b6892f19fc1535b32cff2d48e9c7989b",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/preload-helper-DZYbdLbp.js",
+      "sha256": "4628f281be8264eb4454d5781b6706cffc720fea5604b46612d743254a940fd9",
+      "bytes": 1634,
+      "servedSha256": "4628f281be8264eb4454d5781b6706cffc720fea5604b46612d743254a940fd9",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/registry-R-0oSpMz.js",
+      "sha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "bytes": 378307,
+      "servedSha256": "94cb2d92932ea5be58721295f5b4ccc768e1a1f2a6f6610874d3f70dffd32dfc",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/rolldown-runtime-WkwZ5CU-.js",
+      "sha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "bytes": 599,
+      "servedSha256": "2629f2ad3cb75a57d98de697127f5af7d777ef572bbcdfa6e3ce8f438cd4527e",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/v3.worker-Bp1pJWqv.js",
+      "sha256": "0bcba2eb7520bb6d6109c95828e1ad7258fc985c03ba7e7889c5a058a5f39639",
+      "bytes": 720592,
+      "servedSha256": "0bcba2eb7520bb6d6109c95828e1ad7258fc985c03ba7e7889c5a058a5f39639",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/v3Client-8370yrY8.js",
+      "sha256": "0cb01d2d703773edb42dcd4fad2c4c266d2803d16b0bfd2b21c58e906c7b9947",
+      "bytes": 3188,
+      "servedSha256": "0cb01d2d703773edb42dcd4fad2c4c266d2803d16b0bfd2b21c58e906c7b9947",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/wallet-CPjthZGA.js",
+      "sha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "bytes": 12226,
+      "servedSha256": "f5f5a1035d0ad9eaaa4512f5b0683b33c15c05b8d8fd7e5663f94cbf98b4fa5d",
+      "httpStatus": 200
+    },
+    {
+      "path": "assets/wallet.worker-CIHbSpAb.js",
+      "sha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "bytes": 43695,
+      "servedSha256": "e8c8589d8c5afb091622d3d1169f7e7096ace1e04aa176cb4dd6dbcde40acf0f",
+      "httpStatus": 200
+    },
+    {
+      "path": "index.html",
+      "sha256": "512562fdecbc2a2cb63cf700d93ab4df804617583709c7b4352e947bac89569a",
+      "bytes": 1250,
+      "servedSha256": "512562fdecbc2a2cb63cf700d93ab4df804617583709c7b4352e947bac89569a",
+      "httpStatus": 200
+    }
+  ],
+  "tests": {
+    "focusedFrontend": {
+      "passed": 28,
+      "files": 4
+    },
+    "syntheticChipnet": {
+      "passed": 6,
+      "publicNetwork": false
+    },
+    "v3BrowserWss": {
+      "passed": 3
+    },
+    "bchnWalletAndClaims": {
+      "passed": 2,
+      "network": "local isolated regtest"
+    },
+    "rootTypecheck": "passed",
+    "frontendTypecheck": "passed",
+    "productionBuild": "passed",
+    "pagesProductionBuild": "passed"
+  },
+  "covenantArtifactsChanged": false,
+  "mainnetEnabled": false,
+  "liveTransactionsInitiated": false,
+  "newOffersMaxWins": 1,
+  "legacyMultiWinOffersSupported": true,
+  "journalMigrationRequired": false,
+  "journalStorageKeysChanged": false,
+  "newOptionalJournalMetadata": [
+    "offerPolicy"
+  ],
+  "unchangedArtifacts": [
+    {
+      "path": "artifacts/RegistryV3.json",
+      "sha256": "356065c67be7f8ca578e22a031158cf933977e75a10ef77a2e5a1b1cb114e4f6",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/RegistryGenesisV3.json",
+      "sha256": "9082878b81b0a21e6efc1e47beb6319c1b623e35c32d69a34e1a833c6a9f374e",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/AssetRoleV3.json",
+      "sha256": "79626fe2232b6a2e8da140de2ec0394159b131ab78339ca2d1d1e8551e573d46",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/StakeAllocationV3.json",
+      "sha256": "e3314fb2b673e3016bfbdccdec62d823f54d5f2a489a6df7c0b689da6f022346",
+      "unchanged": true
+    },
+    {
+      "path": "artifacts/FeeSponsorV3.json",
+      "sha256": "538d7ce53ee915eff0c2b549c2a0853a3b0639a32e56691d13ba8b978a429801",
+      "unchanged": true
+    }
+  ],
+  "browser": {
+    "verifiedAt": "2026-11-14T09:05:54.564Z",
+    "url": "https://scinklja.github.io/staking-arena-site/",
+    "status": "Verified chipnet identity on two providers \u00b7 height 332278",
+    "pairs": [
+      "bch-bch",
+      "bch-token",
+      "token-bch",
+      "token-token"
+    ],
+    "v3Reload": true,
+    "v1Accessible": true,
+    "v2Accessible": true,
+    "directGenesisOneApproval": true,
+    "walletConnected": false,
+    "walletSigningVerified": false,
+    "broadcasts": 0,
+    "pageErrors": [],
+    "httpErrors": [],
+    "workers": [
+      "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "https://scinklja.github.io/staking-arena-site/assets/v3.worker-Bp1pJWqv.js",
+      "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
+      "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
+      "https://scinklja.github.io/staking-arena-site/assets/v3.worker-Bp1pJWqv.js"
+    ],
+    "electrumMethods": [
+      "server.version",
+      "blockchain.block.header",
+      "blockchain.headers.subscribe",
+      "blockchain.transaction.get",
+      "blockchain.scripthash.get_history",
+      "blockchain.transaction.get_merkle",
+      "blockchain.block.headers"
+    ]
+  },
+  "limitations": [
+    "Real Cashonize device signing and funded chipnet transactions were not performed.",
+    "One-win is an application policy. Existing W > 1 offers and pending journals retain their terms; older or other clients can still create multi-win offers under unchanged consensus rules.",
+    "Existing build warning: chunks larger than 500 kB."
+  ]
+}

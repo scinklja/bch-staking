@@ -1,7 +1,7 @@
 {
-  "verifiedAt": "2026-11-14T08:45:27.342Z",
+  "verifiedAt": "2026-11-14T09:05:54.564Z",
   "url": "https://scinklja.github.io/staking-arena-site/",
-  "status": "Verified chipnet identity on two providers · height 332273",
+  "status": "Verified chipnet identity on two providers · height 332278",
   "pairs": [
     "bch-bch",
     "bch-token",
@@ -20,10 +20,10 @@
   "workers": [
     "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
     "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
-    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DbHFltWR.js",
+    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-Bp1pJWqv.js",
     "https://scinklja.github.io/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
     "https://scinklja.github.io/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
-    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-DbHFltWR.js"
+    "https://scinklja.github.io/staking-arena-site/assets/v3.worker-Bp1pJWqv.js"
   ],
   "electrumMethods": [
     "server.version",
