@@ -1,3 +1,4 @@
+import {legacyTwoWinJournal} from './fixtures/v3-legacy-offer.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {Network,SignatureTemplate,MockNetworkProvider} from 'cashscript';
@@ -37,8 +38,9 @@ for(const pair of ['bch-bch','bch-token','token-bch','token-token'])test(`chipne
  let creation=await wallet.create(p,keys);const original=structuredClone(journal.get(creation.id)!);journal.get(creation.id)!.plan!.request.broadcast=true;await assert.rejects(()=>wallet.authorize(creation.id),/disable wallet broadcasting/);journal.set(creation.id,original);
  const created=await finish(creation);assert.equal(created.step,'complete');assert.equal(created.stage,'confirmed');const config=created.config!;
  const initial=await new AssetIndexer(provider,config).sync();assert.equal(initial.config.stakingAsset.kind,p.stakingAsset.kind);assert.equal(initial.config.rewardAsset.kind,p.rewardAsset.kind);assert.equal(initial.instance.inputs[2].token?.amount??initial.instance.inputs[2].satoshis-1000n,8000n);
- await finish(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:2},keys));
- await assert.rejects(()=>wallet.offer(config,{stake:3000n,duration:513,reward:9000n,maxWins:2},keys),/reserve/);
+ const legacy=legacyTwoWinJournal(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:1},keys));
+ await store.save(legacy);await finish(await wallet.resume(legacy.id));
+ await assert.rejects(()=>wallet.offer(config,{stake:3000n,duration:513,reward:9000n,maxWins:1},keys),/reserve/);
  const caller=new SignatureTemplate(new Uint8Array(32).fill(95)),callerKeys:WalletKey[]=[{publicKey:binToHex(caller.publicKey),path:'receive',index:0}];f.coin(20000n,walletScript(callerKeys[0]!.publicKey));
  let claim=await wallet.claim(config,callerKeys);assert.deepEqual(claim.plan!.inputPaths,[[3,'receive',0]]);assert.equal(claim.plan!.request.sourceOutputs[3]!.token,undefined);const outputs=claim.plan!.request.transaction.outputs;
  assert.equal(outputs[3]!.token?.amount??outputs[3]!.valueSatoshis,2000n);const required=10000n+(s==='token'?1000n:0n)+(r==='token'?1000n:0n);assert.equal(outputs[5]!.valueSatoshis,20000n-required);

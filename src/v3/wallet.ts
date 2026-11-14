@@ -1,3 +1,4 @@
+import {validateNewOffer} from './offer-policy.js';
 import {v3Network,v3Storage,type V3Network} from './network.js';
 import {TransactionBuilder,placeholderP2PKHUnlocker,placeholderSignature,type SpendableUtxo,type NetworkProvider} from 'cashscript';
 import {hexToBin,binToHex,createVirtualMachineBch2026,hashTransaction,decodeTransaction,type Transaction} from '@bitauth/libauth';
@@ -8,7 +9,7 @@ import type {ElectrumCore} from '../electrum-core.js';
 import {utxo,records} from '../arena-core.js';
 import {AssetIndexer,type Config,type Snapshot} from './indexer.js';
 import {directGenesisBuilder,validateGenesis,ownerAddress,FEE,CARRIER,decision,assetOutput,covenant,parameterArgs,validateParameters,validateTerms,genesisBuilder,transitionBuilder,sponsorAmount,withdrawalBuilder,rewardRemaining,type Parameters,type Terms,type Asset} from './protocol.js';
-export interface Operation {id:string;version:3;creationMode?:'direct';kind:'create'|'offer'|'action'|'withdraw'|'claim';step:'funding'|'action'|'complete';stage:'review'|'prepared'|'pending'|'confirmed'|'conflicted';parameters:Parameters;config?:Config;terms?:Terms;action?:number;slot?:number;allocation?:string;owner:WalletKey;payer?:WalletKey;source?:string;plan?:BrowserPlan;raw?:string;txid?:string;funding?:string;fundingRaw?:string;fundingPlan?:BrowserPlan;error?:string;confirmations?:number}
+export interface Operation {id:string;version:3;creationMode?:'direct';offerPolicy?:'single-win';kind:'create'|'offer'|'action'|'withdraw'|'claim';step:'funding'|'action'|'complete';stage:'review'|'prepared'|'pending'|'confirmed'|'conflicted';parameters:Parameters;config?:Config;terms?:Terms;action?:number;slot?:number;allocation?:string;owner:WalletKey;payer?:WalletKey;source?:string;plan?:BrowserPlan;raw?:string;txid?:string;funding?:string;fundingRaw?:string;fundingPlan?:BrowserPlan;error?:string;confirmations?:number}
 export interface Store {list():Promise<Operation[]>;save(value:Operation):Promise<void>}
 function plan(builder:TransactionBuilder,label:string,coins:{coin:WalletCoin;index:number}[],authorization?:WalletKey):BrowserPlan {
  const request=builder.generateWcTransactionObject({broadcast:false,userPrompt:`V3 EXPERIMENTAL ${v3Network(builder.provider).toUpperCase()} TEST FUNDS: `+label}),tx=request.transaction as Transaction;
@@ -29,6 +30,7 @@ function planCoins(plan:BrowserPlan):SpendableUtxo[]{
 }
 /** Check persisted funding plans as data before accepting wallet signatures. */
 export function validateFundingPlan(op:Operation,provider:NetworkProvider){
+ if(op.kind==='offer'&&op.offerPolicy==='single-win')validateNewOffer(op.parameters,op.terms!);
  if(op.plan?.request.broadcast!==false)throw Error('V3 wallet requests must disable wallet broadcasting');
  if(!op.plan||BigInt(op.plan.fee)!==FEE)throw Error('Unexpected v3 wallet fee');
  if(op.step!=='funding')return;
@@ -56,7 +58,7 @@ export function validateFundingPlan(op:Operation,provider:NetworkProvider){
 function validateIntent(op:Pick<Operation,'kind'|'parameters'> & Partial<Operation>,owner:WalletKey,snapshot:Snapshot){
  if(snapshot.pending.length)throw Error('Vault has pending spends');
  const state=snapshot.instance.state;
- if(op.kind==='offer'){if(state[5]!>=16)throw Error('Registration is closed');validateTerms(snapshot.config,op.terms!,rewardRemaining(state));return;}
+ if(op.kind==='offer'){if(state[5]!>=16)throw Error('Registration is closed');(op.offerPolicy==='single-win'?validateNewOffer:validateTerms)(snapshot.config,op.terms!,rewardRemaining(state));return;}
  if(op.kind==='withdraw'){const a=snapshot.allocations.find(a=>a.id===op.allocation);if(!a||!a.mature||a.withdrawal||a.pending||a.terms.subarray(0,33).toString('hex')!==owner.publicKey)throw Error('Allocation unavailable, immature, or not owned');return;}
  if(op.action===1||op.action===4){const entry=records(state)[op.slot??0];if(!entry||entry.owner!==owner.publicKey)throw Error('Offer is not owned by this wallet');if(op.action===1&&entry.cancelled)throw Error('Offer is already cancelled');if(op.action===4&&(!entry.cancelled||entry.refunded||entry.wins>=entry.maxWins))throw Error('Remaining stake cannot be refunded in the current state');return;}
  const next=decision(snapshot.instance,snapshot.clock);if(next.phase!=='ready'||next.action!==op.action||next.slot!==(op.slot??0))throw Error('Claim head changed; refresh canonical state');
@@ -97,7 +99,7 @@ export class AssetWallet {
  if(walletPlanIdentity(expected)!==walletPlanIdentity(op.plan))throw Error('Saved genesis changes funding, reserve, category, state or wallet change');
  return expected;
  }
- async offer(config:Config,terms:Terms,keys:WalletKey[]){validateTerms(config,terms);return this.prepare({kind:'offer',parameters:config,config,terms},keys);}
+ async offer(config:Config,terms:Terms,keys:WalletKey[]){validateNewOffer(config,terms);return this.prepare({kind:'offer',offerPolicy:'single-win',parameters:config,config,terms},keys);}
  async action(config:Config,action:number,slot:number,keys:WalletKey[]){if(action===3)return this.claim(config,keys);if(![1,4].includes(action))throw Error('Invalid v3 action');return this.prepare({kind:'action',parameters:config,config,action,slot},keys);}
  async withdraw(config:Config,allocation:string,keys:WalletKey[]){return this.prepare({kind:'withdraw',parameters:config,config,allocation},keys);}
  /** One approval, one transaction. The caller need not own any offer. */

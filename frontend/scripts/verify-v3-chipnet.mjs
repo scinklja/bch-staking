@@ -26,6 +26,7 @@ try{
  console.log('Opening compiled v3 page',url);await page.goto(url+'#/v3',{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Create a v3 vault'}).waitFor();await connection(page);
  console.log('Initial chipnet connection verified');
  assert.match(await page.locator('body').innerText(),/Every action verifies current blockchain state automatically/);
+ assert.match(await page.locator('body').innerText(),/Each new offer exchanges one reward payment for one independent stake lock/);
  assert.match(await page.locator('body').innerText(),/Direct creation uses one Cashonize approval and one transaction/);
  await page.getByText('Two-stage creation fallback',{exact:true}).waitFor();
  for(const w of page.workers())methods.push(...await w.evaluate(()=>globalThis.__arenaReadonlyMethods??[]));

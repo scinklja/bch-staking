@@ -15,7 +15,7 @@ function stub(phase='ready'){const state=advance(initialState(p),0,0,offer(Buffe
 });}
 async function open(connected=true){render(<WalletTransactionsContext.Provider value={connected?wallet:null}><V3Arena/></WalletTransactionsContext.Provider>);fireEvent.change(screen.getByLabelText('Public v3 configuration'),{target:{value:JSON.stringify(config,(_,v)=>typeof v==='bigint'?v.toString():v)}});await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Verify and refresh chain state'})));}
 it('requires explicit caller wallet approval and labels broadcast as pending',async()=>{
- stub();wallet.v3.mockResolvedValue({kind:'claim',id:'claim',step:'action',stage:'pending'});await open();expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeEnabled();expect(screen.getByRole('cell',{name:'513 / 1024'})).toBeInTheDocument();expect(screen.getByText(/Priority uses the requested T/)).toBeInTheDocument();expect(screen.getByText(/Current insertion rank:/)).toHaveTextContent('Independent lock: 4096s');
+ stub();wallet.v3.mockResolvedValue({kind:'claim',id:'claim',step:'action',stage:'pending'});await open();expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeEnabled();expect(screen.getByRole('cell',{name:'513'})).toBeInTheDocument();expect(screen.getByText(/Priority uses the requested T/)).toBeInTheDocument();expect(screen.getByText(/Current insertion rank:/)).toHaveTextContent('Independent lock: 4096s');
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));expect(wallet.v3).toHaveBeenCalledWith({operation:'claim',config});expect(screen.getByRole('status')).toHaveTextContent('pending');expect(screen.getByRole('status')).not.toHaveTextContent('confirmed');
 });
 it('blocks claims when the covenant buffer is insufficient and preserves the top offer',async()=>{
@@ -86,7 +86,7 @@ it('rejects a changed claim state and shows the refreshed queue before any walle
  stub();wallet.v3.mockReset();await open();const previous=vi.mocked(v3Call).getMockImplementation()!;
  vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync')result.snapshot.instance.state=advance(result.snapshot.instance.state,3,0);return result;});
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
- expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Vault state changed');expect(screen.getByRole('cell',{name:'1 / 2'})).toBeInTheDocument();
+ expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Vault state changed');expect(screen.getByRole('cell',{name:'Active · #0 · Legacy offer: 1 reward payment remaining'})).toBeInTheDocument();
 });
 
 it('keeps owner cancellation, unused commitment recovery and matured withdrawal available after thirty seconds',async()=>{
@@ -110,4 +110,19 @@ it('allows an aged empty queue to be checked for newly eligible offers',async()=
  expect(wallet.v3).not.toHaveBeenCalled();expect(screen.getByRole('status')).toHaveTextContent('Vault state changed');
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));
  expect(wallet.v3).toHaveBeenCalledWith({operation:'claim',config});
+});
+
+it('offers only S, T and R, shows commitment S, and submits one win',async()=>{
+ stub();wallet.v3.mockReset().mockResolvedValue({stage:'pending'});await open();
+ expect(screen.queryByLabelText(/Maximum wins/)).not.toBeInTheDocument();expect(screen.getByRole('group',{name:'New v3 offer'}).querySelectorAll('input')).toHaveLength(3);
+ expect(screen.getByLabelText('Stake S (BCH)')).toBeInTheDocument();expect(screen.getByLabelText('Duration T (seconds)')).toBeInTheDocument();expect(screen.getByLabelText('Requested reward R (BCH)')).toBeInTheDocument();
+ expect(screen.getByText(/Required staking commitment:/)).toHaveTextContent('Required staking commitment: 0.00003000 BCH (3000 satoshis)');
+ expect(screen.getAllByRole('columnheader').map(h=>h.textContent)).toEqual(['Rank','Stake S','Duration T (seconds)','Requested reward R','Priority P = S × T / R','Offer status']);
+ await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review stake commitment in wallet'})));
+ expect(wallet.v3).toHaveBeenCalledWith({operation:'offer',config,terms:{stake:3000n,duration:3600,reward:1000n,maxWins:1}});
+});
+it('shows a one-win offer as completed outside the active queue after its reward is paid',async()=>{
+ stub();const previous=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async(...args)=>{const result=await previous(...args);if(args[0].operation==='sync')result.snapshot.instance.state=advance(advance(initialState(p),0,0,offer(Buffer.from(wallet.publicKey(),'hex'),3000,513,3000,1)),3,0);return result;});
+ await open();expect(screen.getByText('Offer #0: completed')).toBeInTheDocument();expect(screen.getAllByRole('row')).toHaveLength(1);expect(screen.getByText('No active offers. Released rewards continue accumulating.')).toBeInTheDocument();
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {SignatureTemplate,TransactionBuilder} from 'cashscript';
 import {binToHex,hexToBin,encodeTransaction,generateSigningSerializationBch,hash256,encodeDataPush,type Transaction} from '@bitauth/libauth';
 import {rpc} from '../src/rpc.js';
-import {utxo} from '../src/arena-core.js';
+import {utxo,records,rankings} from '../src/arena-core.js';
 import {isolatedRegtest} from './fixtures/isolated-regtest.js';
 import {RegtestElectrum} from './fixtures/regtest-electrum.js';
 import {AssetWallet,type Operation,type Store} from '../src/v3/wallet.js';
@@ -73,7 +73,9 @@ test('direct genesis and caller-funded claims: four asset pairs, independent cal
   const nftAfter=await rpc('gettxout',[mintId,1,true]);assert.deepEqual(nftAfter.tokenData,nftBefore.tokenData);assert.equal(nftAfter.value,nftBefore.value);assert.deepEqual(nftAfter.scriptPubKey,nftBefore.scriptPubKey);
   await assert.rejects(()=>wallet.create(p,keys(poor)),/vout=0/);
   assert.equal((await new AssetIndexer(provider,config).sync()).instance.category,genesisTx.vin[0].txid);
-  await finish(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:2},keys(staker)));
+  const offer=await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:1},keys(staker));
+  assert.equal(offer.terms!.maxWins,1);assert.equal(offer.plan!.request.transaction.outputs[0]!.token?.amount??offer.plan!.request.transaction.outputs[0]!.valueSatoshis,3000n);
+  await finish(offer);
   await assert.rejects(()=>wallet.claim(config,keys(poor)),/Insufficient BCH/);
   let op=await wallet.claim(config,keys(caller));assert.equal(op.kind,'claim');assert.equal(op.step,'action');assert.notEqual(op.owner.publicKey,keys(staker)[0]!.publicKey);assert.deepEqual(op.plan!.inputPaths,[[3,'receive',0]]);
   assert.equal(op.plan!.request.sourceOutputs[3]!.token,undefined);const tx=op.plan!.request.transaction as Transaction,required=10000n+(stakingAsset.kind==='token'?1000n:0n)+(rewardAsset.kind==='token'?1000n:0n);
@@ -92,9 +94,11 @@ test('direct genesis and caller-funded claims: four asset pairs, independent cal
   const broken=new AssetWallet(provider,{list:store.list,save:async()=>{throw Error('Disk quota');}});await assert.rejects(()=>broken.submit(op.id,sign(op.plan!,caller)),/quota/);assert.equal(provider.broadcasts,before);
   provider.loseAcknowledgement=true;op=await wallet.submit(op.id,sign(op.plan!,caller));assert.equal(op.stage,'prepared');assert.ok(op.raw);assert.equal(provider.broadcasts,before+1);
   const restarted=new AssetWallet(provider,store);assert.equal((await restarted.resume(op.id)).stage,'pending');assert.equal(provider.broadcasts,before+1);await mine();op=await restarted.resume(op.id);assert.equal(op.stage,'confirmed');
-  const snapshot=await new AssetIndexer(provider,config).sync();assert.equal(snapshot.allocations.length,1);assert.equal(snapshot.allocations[0]!.mature,false);assert.equal(snapshot.instance.state[52],1);
+  const snapshot=await new AssetIndexer(provider,config).sync();assert.equal(snapshot.allocations.length,1);assert.equal(snapshot.allocations[0]!.mature,false);assert.equal(snapshot.instance.state[52],1);assert.equal(records(snapshot.instance.state,false)[0]!.maxWins,1);assert.equal(rankings(snapshot.instance.state,false).length,0);
+  assert.equal(snapshot.allocations[0]!.terms.readUInt32LE(70),3000);
   const change=await rpc('gettxout',[op.txid,5]);assert.equal(BigInt(Math.round(change.value*1e8)),tx.outputs[5]!.valueSatoshis);
   if(stakingAsset.kind==='bch'&&rewardAsset.kind==='bch'){
+   await finish(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:1},keys(staker)));
    // Smallest exact-sized fee coin produces no change, without a preparation transaction.
    await rpc('sendtoaddress',[address(caller),0.0001]);await mine();
    const exact=await wallet.claim(config,keys(caller));assert.equal(exact.plan!.request.transaction.outputs.length,5);assert.equal(exact.plan!.request.sourceOutputs[3]!.valueSatoshis,10000n);

@@ -1,7 +1,7 @@
 {
-  "verifiedAt": "2026-11-14T08:43:12.805Z",
+  "verifiedAt": "2026-11-14T09:02:39.254Z",
   "url": "http://127.0.0.1:4181/staking-arena-site/",
-  "status": "Verified chipnet identity on two providers · height 332273",
+  "status": "Verified chipnet identity on two providers · height 332278",
   "pairs": [
     "bch-bch",
     "bch-token",
@@ -20,10 +20,10 @@
   "workers": [
     "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
     "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
-    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-DbHFltWR.js",
+    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-Bp1pJWqv.js",
     "http://127.0.0.1:4181/staking-arena-site/assets/wallet.worker-CIHbSpAb.js",
     "http://127.0.0.1:4181/staking-arena-site/assets/indexer.bootstrap.worker-C2rXK4tM.js",
-    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-DbHFltWR.js"
+    "http://127.0.0.1:4181/staking-arena-site/assets/v3.worker-Bp1pJWqv.js"
   ],
   "electrumMethods": [
     "server.version",

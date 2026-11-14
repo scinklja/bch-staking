@@ -1,12 +1,12 @@
 {
   "network": "isolated BCHN regtest",
-  "verifiedAt": "2026-11-14T08:39:40.162Z",
+  "verifiedAt": "2026-11-14T09:02:54.450Z",
   "node": "/Bitcoin Cash Node:29.2.0/",
   "evidence": [
     {
       "staking": "bch",
       "reward": "bch",
-      "txid": "e4a5a80dc98076862aa4809f8bf60307c349fa823f6aa7dabda0e2eafb882ee4",
+      "txid": "68e89f072e4b5607ba3e0cf40d2c916526446726428cbcfeda2091565578b728",
       "inputs": 4,
       "outputs": 6,
       "minerFee": "10000",
@@ -16,7 +16,7 @@
     {
       "staking": "bch",
       "reward": "token",
-      "txid": "843af36108e22062cb2ecce23b979b3072ec39f2d34c0851890568662a8005ab",
+      "txid": "97dd829899cc2d62695808a1f7f6ff7f5eb9dc664c61533a202e62d876a9fbb0",
       "inputs": 4,
       "outputs": 6,
       "minerFee": "10000",
@@ -26,7 +26,7 @@
     {
       "staking": "token",
       "reward": "bch",
-      "txid": "e8c2f191cf5dcf9d0b6a420e4a11398d011e71433b3bf57e0d5557f95d1a685e",
+      "txid": "b099835fbb42ac21968815f282b5df9ecffb0cf521cdaa82f511da1f08fa7962",
       "inputs": 4,
       "outputs": 6,
       "minerFee": "10000",
@@ -36,7 +36,7 @@
     {
       "staking": "token",
       "reward": "token",
-      "txid": "c6bb04caefc6ebc087aff6f95deb14f7bf16ae171ca95622d2f48182570198d7",
+      "txid": "2c0220e0d4b6dfc633c68a782b4f2fceccbcb20070c037b543e9597cc68fd8e0",
       "inputs": 4,
       "outputs": 6,
       "minerFee": "10000",
