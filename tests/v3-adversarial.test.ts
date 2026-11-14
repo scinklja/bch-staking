@@ -38,7 +38,8 @@ test('v3 covenant rejects malicious winners, release inflation, accounting theft
  const raw=binToHex(encodeTransaction((b as any).buildLibauthTransaction(true)));assert.throws(()=>validateBuilt(raw,[...v.inputs,stake,fee],clock),/covenant/);}
  // Higher priority R is larger than the released buffer. A cheaper lower offer cannot bypass it.
  register(30000n,8000n,1);const blocked=malicious(2);assert.throws(()=>validateBuilt(blocked.raw,blocked.sources,clock),/covenant/);good=malicious(0);assert.throws(()=>validateBuilt(good.raw,good.sources,clock),/covenant/);
- assert.throws(()=>covenant('RegistryV3',[],Object.assign(new MockNetworkProvider(),{network:Network.CHIPNET})),/regtest only/);
+ for(const network of [Network.MAINNET,Network.TESTNET3,Network.TESTNET4])assert.throws(()=>covenant('RegistryV3',[],Object.assign(new MockNetworkProvider(),{network})),/mainnet is disabled/);
+ const chipnet=Object.assign(new MockNetworkProvider(),{network:Network.CHIPNET});assert.equal(family(p,v.category,chipnet).registry.lockingBytecode,family(p,v.category,provider).registry.lockingBytecode);
 });
 
 test('v3 Electrum transport pins local endpoints and regtest genesis before enabling broadcast',async()=>{

@@ -12,7 +12,7 @@ import {ownerAddress,type Parameters,type Asset} from '../src/v3/protocol.js';
 import type {BrowserPlan,WalletKey} from '../src/transactions-core.js';
 import {writeFile} from 'node:fs/promises';
 
-test('caller-funded claims: four asset pairs, independent caller, change, signed-plan safety and durable recovery on BCHN',{timeout:600000},()=>isolatedRegtest(async()=>{
+test('direct genesis and caller-funded claims: four asset pairs, independent caller, change, signed-plan safety and durable recovery on BCHN',{timeout:600000},()=>isolatedRegtest(async()=>{
  class Local extends RegtestElectrum {
   loseAcknowledgement=false;broadcasts=0;
   override async sendRawTransaction(raw:string){const [a]=await rpc('testmempoolaccept',[[raw]]);assert.equal(a.allowed,true,JSON.stringify(a));this.broadcasts++;const id=await rpc<string>('sendrawtransaction',[raw]);await this.refresh();if(this.loseAcknowledgement){this.loseAcknowledgement=false;throw Error('Lost acknowledgement after acceptance');}return id;}
@@ -35,12 +35,44 @@ test('caller-funded claims: four asset pairs, independent caller, change, signed
  // The category genesis must spend output zero of its preparation transaction.
  const source=utxo(fundTx,fundTx.vout.findIndex((o:any)=>Math.round(o.value*1e8)===2000000));
  const pre=await new TransactionBuilder({provider}).addInput(source,staker.unlockP2PKH()).addOutput({to:address(staker),amount:1990000n}).build();
- const preId=await rpc<string>('sendrawtransaction',[pre]),mint=new TransactionBuilder({provider}).addInput(utxo(await rpc('getrawtransaction',[preId,true]),0),staker.unlockP2PKH()).addOutput({to:address(staker),amount:1979000n,token:{category:preId,amount:100000n}}).addOutput({to:address(caller),amount:1000n,token:{category:preId,amount:0n,nft:{capability:'none',commitment:'12'}}});
+ const preId=await rpc<string>('sendrawtransaction',[pre]),mint=new TransactionBuilder({provider}).addInput(utxo(await rpc('getrawtransaction',[preId,true]),0),staker.unlockP2PKH()).addOutput({to:address(staker),amount:1978000n,token:{category:preId,amount:100000n}}).addOutput({to:address(caller),amount:1000n,token:{category:preId,amount:0n,nft:{capability:'none',commitment:'12'}}}).addOutput({to:address(staker),amount:1000n,token:{category:preId,amount:0n,nft:{capability:'none',commitment:'34'}}});
  const mintId=await rpc<string>('sendrawtransaction',[mint.build()]);await mine();
  const token:Asset={kind:'token',category:preId},bch:Asset={kind:'bch'},evidence=[];
  for(const [stakingAsset,rewardAsset] of [[bch,bch],[bch,token],[token,bch],[token,token]] as [Asset,Asset][]){
   const mtp=(await rpc('getblockchaininfo')).mediantime,p:Parameters={version:3,stakingAsset,rewardAsset,epoch:mtp-1000,periodSeconds:100,periods:4,cap:2000n};
-  const created=await finish(await wallet.create(p,keys(staker))),config=created.config!;
+  // Fixture only: place existing confirmed BCH at output zero. Direct creation
+  // itself must broadcast exactly once and never prepare wallet coins.
+  const funding=await rpc<string>('sendtoaddress',[address(staker),0.02]),parent=await rpc('getrawtransaction',[funding,true]);
+  const source=utxo(parent,parent.vout.findIndex((o:any)=>Math.round(o.value*1e8)===2000000));
+  const seedRaw=new TransactionBuilder({provider}).addInput(source,staker.unlockP2PKH()).addOutput({to:address(staker),amount:1990000n}).build();await rpc('sendrawtransaction',[seedRaw]);await mine();
+  const nftBefore=await rpc('gettxout',[mintId,1,true]);
+  let creation=await wallet.create(p,keys(staker));assert.equal(creation.step,'action');assert.equal(creation.creationMode,'direct');
+  const createBefore=provider.broadcasts,originalCreation=structuredClone(journal.get(creation.id)!);
+  await wallet.signingFailed(creation.id,'User rejected genesis');assert.equal(provider.broadcasts,createBefore);assert.equal(journal.get(creation.id)!.raw,undefined);
+  // Saved plans are reconstructed, including signing metadata, before authorization.
+  journal.get(creation.id)!.plan!.request.transaction.outputs[2]!.valueSatoshis--;
+  await assert.rejects(()=>wallet.authorize(creation.id),/Saved genesis/);journal.set(creation.id,structuredClone(originalCreation));
+  journal.get(creation.id)!.plan!.request.sourceOutputs[0]!.contract={redeemScript:hexToBin('51')} as any;
+  const authorizedCreation=await wallet.authorize(creation.id);assert.equal(authorizedCreation.plan.request.sourceOutputs[0]!.contract,undefined);journal.set(creation.id,structuredClone(originalCreation));assert.equal(authorizedCreation.plan.request.broadcast,false);
+  assert.equal(authorizedCreation.plan.inputPaths.length,creation.plan!.request.transaction.inputs.length);
+  for(const mutate of [(t:Transaction)=>{t.outputs[0]!.token!.nft!.commitment=new Uint8Array(32);},(t:Transaction)=>{t.outputs[2]!.valueSatoshis--;},(t:Transaction)=>{t.outputs[1]!.lockingBytecode=hexToBin('51');}])await assert.rejects(()=>wallet.submit(creation.id,sign(creation.plan!,staker,mutate)),/changed/);
+  assert.equal(provider.broadcasts,createBefore);
+  const brokenCreation=new AssetWallet(provider,{list:store.list,save:async()=>{throw Error('Genesis disk quota');}});await assert.rejects(()=>brokenCreation.submit(creation.id,sign(authorizedCreation.plan,staker)),/quota/);assert.equal(provider.broadcasts,createBefore);
+  provider.loseAcknowledgement=true;creation=await wallet.submit(creation.id,sign(authorizedCreation.plan,staker));assert.equal(creation.stage,'prepared',creation.error);assert.ok(creation.raw);assert.equal(provider.broadcasts,createBefore+1);
+  const genesisId=creation.txid!,genesisTx=await rpc('getrawtransaction',[genesisId,true]);assert.equal(genesisTx.confirmations,undefined);assert.notEqual(genesisId,genesisTx.vin[0].txid);assert.equal(genesisTx.vin[0].vout,0);
+  assert.equal(genesisTx.vout[0].tokenData.category,genesisTx.vin[0].txid);assert.equal(genesisTx.vout[0].tokenData.nft.capability,'mutable');
+  assert.equal(genesisTx.vout[2].tokenData?.amount??BigInt(Math.round(genesisTx.vout[2].value*1e8))-1000n,rewardAsset.kind==='token'?'8000':8000n);
+  // Reopening the engine retains exact bytes and pending public configuration.
+  const reloaded=new AssetWallet(provider,store),pending=await reloaded.resume(creation.id);assert.equal(pending.stage,'pending');assert.equal(pending.config!.genesis,genesisId);assert.equal(pending.raw,creation.raw);
+  provider.hidden.add(genesisId);const missing=await reloaded.resume(creation.id);assert.equal(missing.stage,'prepared');assert.equal(missing.raw,creation.raw);assert.equal(provider.broadcasts,createBefore+1);provider.hidden.delete(genesisId);assert.equal((await reloaded.resume(creation.id)).stage,'pending');
+  assert.ok(await rpc('gettxout',[mintId,2,true]),'Unrelated wallet NFT must remain unspent');
+  await assert.rejects(()=>new AssetIndexer(provider,pending.config!).sync(),/confirmed canonical/);
+  await mine();const created=await reloaded.resume(creation.id),config=created.config!;assert.equal(created.stage,'confirmed');
+  const confirmedGenesis=await rpc('getrawtransaction',[genesisId,true]);await rpc('invalidateblock',[confirmedGenesis.blockhash]);provider.headerCache.clear();await provider.refresh();assert.equal((await reloaded.resume(creation.id)).stage,'pending');
+  await rpc('reconsiderblock',[confirmedGenesis.blockhash]);provider.headerCache.clear();await provider.refresh();assert.equal((await reloaded.resume(creation.id)).stage,'confirmed');
+  const nftAfter=await rpc('gettxout',[mintId,1,true]);assert.deepEqual(nftAfter.tokenData,nftBefore.tokenData);assert.equal(nftAfter.value,nftBefore.value);assert.deepEqual(nftAfter.scriptPubKey,nftBefore.scriptPubKey);
+  await assert.rejects(()=>wallet.create(p,keys(poor)),/vout=0/);
+  assert.equal((await new AssetIndexer(provider,config).sync()).instance.category,genesisTx.vin[0].txid);
   await finish(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:2},keys(staker)));
   await assert.rejects(()=>wallet.claim(config,keys(poor)),/Insufficient BCH/);
   let op=await wallet.claim(config,keys(caller));assert.equal(op.kind,'claim');assert.equal(op.step,'action');assert.notEqual(op.owner.publicKey,keys(staker)[0]!.publicKey);assert.deepEqual(op.plan!.inputPaths,[[3,'receive',0]]);

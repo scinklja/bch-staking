@@ -8,7 +8,7 @@ import {decodeRawTransaction,type ElectrumCore} from '../src/electrum-core.js';
 import {utxo} from '../src/arena-core.js';
 import {walletScript} from '../src/transactions-core.js';
 import {AssetIndexer,type Config} from '../src/v3/indexer.js';
-import {assetOutput,covenant,parameterArgs,genesisBuilder,transitionBuilder,sponsorAmount,type Asset,type Parameters,type Instance} from '../src/v3/protocol.js';
+import {directGenesisBuilder,validateGenesis,assetOutput,covenant,parameterArgs,genesisBuilder,transitionBuilder,sponsorAmount,type Asset,type Parameters,type Instance} from '../src/v3/protocol.js';
 
 test('v3 portable Electrum replay: confirmed/pending, competing spends, provider errors and reorg recovery',async()=>{
  const provider=new MockNetworkProvider();provider.network=Network.REGTEST;
@@ -37,4 +37,26 @@ test('v3 portable Electrum replay: confirmed/pending, competing spends, provider
  // A second confirmed spend of the canonical activation must never be selected arbitrarily.
  txs.set(settled.txid,settled);const conflicting=structuredClone(settled);conflicting.txid='ff'.repeat(32);txs.set(conflicting.txid,conflicting);heights.set(conflicting.txid,2);await assert.rejects(()=>index.sync(),/Competing confirmed/);
  }
+});
+
+test('factory-independent direct genesis validation pins roles, reserve, state, category and token conservation',()=>{
+ const provider=new MockNetworkProvider();provider.network=Network.REGTEST;
+ const key=new SignatureTemplate(new Uint8Array(32).fill(72)),owner={publicKey:binToHex(key.publicKey),path:'receive' as const,index:0},script=walletScript(owner.publicKey),p:Parameters={version:3,stakingAsset:{kind:'bch'},rewardAsset:{kind:'token',category:'bb'.repeat(32)},cap:2000n,periods:4,epoch:1700000000,periodSeconds:10};
+ const inputs:SpendableUtxo[]=[{txid:'aa'.repeat(32),vout:0,satoshis:1000000n,lockingBytecode:script},{txid:'cc'.repeat(32),vout:1,satoshis:1000n,lockingBytecode:script,token:{category:'bb'.repeat(32),amount:10000n}}];
+ const built=directGenesisBuilder(p,inputs.map(utxo=>({...owner,utxo})),owner,provider),tx=built.builder.generateWcTransactionObject({broadcast:false}).transaction as Transaction;
+ const raw=(t:Transaction)=>binToHex(encodeTransaction(t));assert.equal(validateGenesis(p,raw(tx),inputs,provider).category,inputs[0]!.txid);
+ // Structural validation is independent of wallet signatures; indexer replay
+ // subsequently runs validateBuilt for VM execution and the fixed fee.
+ for(const mutate of [
+  (t:Transaction)=>{t.outputs[0]!.token!.nft!.commitment=new Uint8Array(32);},
+  (t:Transaction)=>{t.outputs[0]!.token!.category=hexToBin('dd'.repeat(32));},
+  (t:Transaction)=>{t.outputs[1]!.lockingBytecode=hexToBin('51');},
+  (t:Transaction)=>{t.outputs[2]!.token!.amount--;t.outputs[3]!.token!.amount++;},
+  (t:Transaction)=>{t.outputs[3]!.token!.amount--;},
+  (t:Transaction)=>{t.outputs[3]!.token!.nft={capability:'none',commitment:new Uint8Array()};},
+  (t:Transaction)=>{t.outputs.push(structuredClone(t.outputs[0]!));},
+  (t:Transaction)=>{t.outputs[4]!.lockingBytecode=hexToBin('51');},
+  (t:Transaction)=>{t.inputs[0]!.outpointIndex=1;},
+ ]){const bad=structuredClone(tx);mutate(bad);assert.throws(()=>validateGenesis(p,raw(bad),inputs,provider));}
+ const nft=structuredClone(inputs);nft[1]!.token!.nft={capability:'none',commitment:'12'};assert.throws(()=>validateGenesis(p,raw(tx),nft,provider),/NFT/);
 });

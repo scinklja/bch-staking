@@ -6,6 +6,8 @@ import {mkdtempSync,readFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {execFileSync} from 'node:child_process';
 import {once} from 'node:events';
+import {directGenesisBuilder} from '../../../src/v3/protocol';
+import {binToHex,encodeTransaction,generateSigningSerializationBch,hash256,encodeDataPush,type Transaction} from '@bitauth/libauth';
 let fixture:ReturnType<typeof v3BrowserChain>,hosts:string[]=[],methods:string[]=[];
 const certificate=mkdtempSync(tmpdir()+'/arena-v3-wss-');
 execFileSync('openssl',['req','-x509','-newkey','rsa:2048','-nodes','-keyout',certificate+'/key','-out',certificate+'/cert','-days','1','-subj','/CN=localhost','-addext','subjectAltName=IP:127.0.0.1,DNS:localhost'],{stdio:'ignore'});
@@ -31,4 +33,23 @@ test('provider failure disables v3 actions and a reorganization restores the que
  fixture.chain.mine();await refresh(page);await expect(page.getByText('1 / 2',{exact:true})).toBeVisible();
  fixture.chain.fail=true;await page.getByRole('button',{name:'Verify and refresh chain state'}).click();await expect(page.getByRole('heading',{name:'Live ranked queue'})).toHaveCount(0,{timeout:60000});await expect(page.getByRole('status')).toContainText('Fixture disconnected');
  fixture.chain.fail=false;await refresh(page);await expect(page.getByText('1 / 2',{exact:true})).toBeVisible();
+});
+
+test('direct genesis journal survives browser reload and automatically confirms its pending vault',async({page})=>{
+ const coin=fixture.coin(1000000n),owner={publicKey:binToHex(fixture.key.publicKey),path:'receive' as const,index:0},parameters=fixture.config;
+ const built=directGenesisBuilder(parameters,[{...owner,utxo:coin}],owner,fixture.provider),request=built.builder.generateWcTransactionObject({broadcast:false}),tx=structuredClone(request.transaction) as Transaction;
+ const signature=fixture.key.generateSignature(hash256(generateSigningSerializationBch({transaction:tx,sourceOutputs:request.sourceOutputs,inputIndex:0},{coveredBytecode:request.sourceOutputs[0]!.lockingBytecode,signingSerializationType:Uint8Array.of(0x61)})));signature[64]=0x61;
+ tx.inputs[0]!.unlockingBytecode=new Uint8Array([...encodeDataPush(signature),...encodeDataPush(fixture.key.publicKey)]);
+ const raw=binToHex(encodeTransaction(tx)),genesis=fixture.add(raw,false),config={...parameters,genesis:genesis.txid};
+ const op={id:'direct-browser',version:3,kind:'create',creationMode:'direct',step:'action',stage:'pending',parameters,owner,raw,txid:genesis.txid,config,plan:{kind:'offer',label:'Direct browser genesis',request,signers:{0:owner.publicKey},inputPaths:[[0,'receive',0]],fee:'10000'}};
+ const encoded=JSON.stringify(op,(_,v)=>typeof v==='bigint'?{bigint:v.toString()}:v instanceof Uint8Array?{bytes:Array.from(v)}:v);
+ await page.goto('./#/v3');await page.getByRole('heading',{name:'Create a v3 vault'}).waitFor();
+ await page.evaluate(async encoded=>{
+ const op=JSON.parse(encoded,(_,v)=>v?.bigint!==undefined?BigInt(v.bigint):v?.bytes?Uint8Array.from(v.bytes):v);
+ await new Promise<void>((resolve,reject)=>{const r=indexedDB.open('staking-arena-wallet-v3',1);r.onupgradeneeded=()=>r.result.createObjectStore('operations');r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,t=db.transaction('operations','readwrite');t.objectStore('operations').put(op,op.id);t.oncomplete=()=>{db.close();resolve();};t.onerror=()=>reject(t.error);};});
+ },encoded);
+ await page.reload();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Pending (0-conf)');
+ await expect(page.getByRole('heading',{name:'Live ranked queue'})).toHaveCount(0);
+ fixture.chain.mine();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Confirmed (1 canonical confirmation)',{timeout:35000});
+ await page.reload();await expect(page.getByText('Genesis transaction: '+genesis.txid,{exact:false})).toContainText('Confirmed');
 });

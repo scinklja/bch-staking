@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-13T21:22:51.829Z",
+  "verifiedAt": "2026-11-14T08:12:45.799Z",
   "network": "chipnet",
   "broadcasts": 0,
   "results": [
@@ -7,25 +7,25 @@
       "endpoint": "wss://chipnet.imaginary.cash:50004",
       "genesis": "000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b",
       "forkCheckpoint": "0000000056087dee73fb66178ca70da89dfd0be098b1a63cf6fe93934cd04c78",
-      "tip": "0000000000000b8fef51d2f95207c571f0066b3fe1953495b3e286572c0d2955",
-      "height": 332212,
-      "mtp": 1794600776
+      "tip": "00000000000001bfc2984721688905be2a5d6ac0328d1246e9200118b89e6f80",
+      "height": 332264,
+      "mtp": 1794643070
     },
     {
       "endpoint": "wss://electrum-chipnet.optnlabs.com",
       "genesis": "000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b",
       "forkCheckpoint": "0000000056087dee73fb66178ca70da89dfd0be098b1a63cf6fe93934cd04c78",
-      "tip": "0000000000000b8fef51d2f95207c571f0066b3fe1953495b3e286572c0d2955",
-      "height": 332212,
-      "mtp": 1794600776
+      "tip": "00000000000001bfc2984721688905be2a5d6ac0328d1246e9200118b89e6f80",
+      "height": 332264,
+      "mtp": 1794643070
     },
     {
       "endpoint": "wss://chipnet.bch.ninja:50004",
       "genesis": "000000001dd410c49a788668ce26751718cc797474d3152a5fc073dd44fd9f7b",
       "forkCheckpoint": "0000000056087dee73fb66178ca70da89dfd0be098b1a63cf6fe93934cd04c78",
-      "tip": "0000000000000b8fef51d2f95207c571f0066b3fe1953495b3e286572c0d2955",
-      "height": 332212,
-      "mtp": 1794600776
+      "tip": "00000000000001bfc2984721688905be2a5d6ac0328d1246e9200118b89e6f80",
+      "height": 332264,
+      "mtp": 1794643070
     }
   ],
   "agreeingProviders": true

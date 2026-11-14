@@ -17,6 +17,7 @@ scope.onmessage=event=>{queue=queue.catch(()=>{}).then(async()=>{const {id,inten
   if(intent.operation==='claim')return wallet.claim(intent.config,keys);
   if(intent.operation==='reconcileClaim')return new RewardClaimer(new AssetIndexer(provider,intent.config),new BrowserClaimStore(options.network)).reconcile(intent.id,false);
   if(intent.operation==='claims')return new BrowserClaimStore(options.network).list();
+  if(intent.operation==='createLegacy')return wallet.createLegacy(intent.parameters,keys);
   if(intent.operation==='create')return wallet.create(intent.parameters,keys);
   if(intent.operation==='offer')return wallet.offer(intent.config,intent.terms,keys);
   if(intent.operation==='action')return wallet.action(intent.config,intent.action,intent.slot,keys);

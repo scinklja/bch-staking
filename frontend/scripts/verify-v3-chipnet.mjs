@@ -25,6 +25,8 @@ try{
  await context.routeWebSocket(/wss:\/\//,ws=>{const peer=ws.connectToServer();ws.onMessage(data=>{let m;try{m=JSON.parse(data.toString());}catch{}if(m?.method){methods.push(m.method);assert.notEqual(m.method,'blockchain.transaction.broadcast','Read-only verification must never broadcast');}peer.send(data);});peer.onMessage(data=>ws.send(data));});
  console.log('Opening compiled v3 page',url);await page.goto(url+'#/v3',{waitUntil:'domcontentloaded'});await page.getByRole('heading',{name:'Create a v3 vault'}).waitFor();await connection(page);
  console.log('Initial chipnet connection verified');
+ assert.match(await page.locator('body').innerText(),/Direct creation uses one Cashonize approval and one transaction/);
+ await page.getByText('Two-stage creation fallback',{exact:true}).waitFor();
  for(const w of page.workers())methods.push(...await w.evaluate(()=>globalThis.__arenaReadonlyMethods??[]));
  const status=await page.getByTestId('v3-network').innerText();assert.match(await page.locator('body').innerText(),/Experimental — Chipnet test funds only/);assert.doesNotMatch(await page.locator('main').innerText(),/regtest/i);
  const pairs=[];for(const stake of ['bch','token'])for(const reward of ['bch','token']){await page.getByRole('combobox').nth(0).selectOption(stake);if(stake==='token')await page.getByLabel('Staking category',{exact:true}).fill('ac'.repeat(32));await page.getByRole('combobox').nth(1).selectOption(reward);if(reward==='token')await page.getByLabel('Reward category',{exact:true}).fill('bc'.repeat(32));assert.equal(await page.getByRole('button',{name:'Review full reserve funding in wallet'}).isDisabled(),true);pairs.push(stake+'-'+reward);}
@@ -36,6 +38,6 @@ try{
  await page.getByRole('link',{name:'Vaults',exact:true}).click();await page.getByRole('heading',{name:'Staking Arena',exact:true}).waitFor();await page.getByRole('link',{name:'Create Vault',exact:true}).click();await page.getByRole('heading',{name:/Create/}).first().waitFor();
  for(const w of page.workers())methods.push(...await w.evaluate(()=>globalThis.__arenaReadonlyMethods??[]));
  assert.deepEqual(errors,[]);assert.deepEqual(responses,[]);assert(methods.includes('blockchain.block.header'));assert.equal(methods.includes('blockchain.transaction.broadcast'),false);
- const result={verifiedAt:new Date().toISOString(),url,status,pairs,v3Reload:true,v1Accessible:true,v2Accessible:true,walletConnected:false,walletSigningVerified:false,broadcasts:0,pageErrors:errors,httpErrors:responses,workers,electrumMethods:[...new Set(methods)]};
+ const result={verifiedAt:new Date().toISOString(),url,status,pairs,v3Reload:true,v1Accessible:true,v2Accessible:true,directGenesisOneApproval:true,walletConnected:false,walletSigningVerified:false,broadcasts:0,pageErrors:errors,httpErrors:responses,workers,electrumMethods:[...new Set(methods)]};
  await writeFile(resolve('../docs/'+(local?'staking-arena-v3-chipnet-browser-local.json':'staking-arena-v3-chipnet-browser-public.json')),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result,null,2));
 }catch(error){if(activePage)console.error((await activePage.locator('body').innerText()).slice(0,7000));throw error;}finally{await browser?.close();if(server)await new Promise(done=>server.close(done));}

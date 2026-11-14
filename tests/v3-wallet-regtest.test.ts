@@ -31,7 +31,7 @@ test('v3 local BCHN browser wallet plans, canonical replay, public sponsor, inte
  }
  async function finish(op:Operation){assert.equal(op.stage,'review');await wallet.authorize(op.id);op=await wallet.submit(op.id,sign(op.plan!));assert.equal(op.stage,'pending');await mine();op=await wallet.resume(op.id);assert.equal(op.step,'action');op=await wallet.submit(op.id,sign(op.plan!));assert.equal(op.stage,'pending');await mine();op=await wallet.resume(op.id);assert.equal(op.step,'complete');return op;}
  const mtp=(await rpc('getblockchaininfo')).mediantime,p:Parameters={version:3,stakingAsset:{kind:'bch'},rewardAsset:{kind:'bch'},epoch:mtp-1000,periodSeconds:100,periods:4,cap:2000n};
- const created=await finish(await wallet.create(p,keys)),config=created.config as Config;
+ const created=await finish(await wallet.createLegacy(p,keys)),config=created.config as Config;
  const empty=await new AssetIndexer(provider,config).sync();assert.equal(empty.instance.state[5],0);assert.equal(buffer(config,empty.instance.state,empty.clock.mtp-1),8000n);
  await finish(await wallet.offer(config,{stake:3000n,duration:513,reward:2000n,maxWins:2},keys));
  const index=new AssetIndexer(provider,config),snap=await index.sync(),cs=family(config,snap.instance.category,provider),sponsor=covenant('FeeSponsorV3',[hexToBin(cs.registry.lockingBytecode)],provider);

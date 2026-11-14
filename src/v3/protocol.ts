@@ -1,7 +1,7 @@
 import {ZERO,FEE,CARRIER,assetId,assetBytes,validateParameters,validateTerms,decision,initialState,rewardRemaining,advance,allocationSequence,V3_STATE_SIZE,type Asset,type Parameters,type Terms} from './model.js';
 export * from './model.js';
 import {Buffer} from '../bytes.js';
-import {Contract,Network,TransactionBuilder,type NetworkProvider,type SpendableUtxo,type SignatureTemplate,type Unlocker} from 'cashscript';
+import {Contract,Network,TransactionBuilder,placeholderP2PKHUnlocker,type NetworkProvider,type SpendableUtxo,type SignatureTemplate,type Unlocker} from 'cashscript';
 import {binToHex,encodeCashAddress,hash160,decodeTransaction,hexToBin,createVirtualMachineBch2026,hashTransaction} from '@bitauth/libauth';
 import FeeSponsorV3 from '../../artifacts/FeeSponsorV3.json' with {type:'json'};
 import RegistryV3 from '../../artifacts/RegistryV3.json' with {type:'json'};
@@ -43,6 +43,42 @@ export function genesisBuilder(p:Parameters,factoryInput:SpendableUtxo,rewardFun
  const builder=new TransactionBuilder({provider}).addInput(factoryInput,factory.unlock.create()).addInput(rewardFunding.input,rewardFunding.unlocker)
  .addOutput({to:cs.registry.tokenAddress,...stateOutput(factoryInput.txid,state)}).addOutput({to:cs.escrow.address,amount:CARRIER})
  .addOutput({to:cs.reserve.tokenAddress,...assetOutput(p.rewardAsset,p.cap*BigInt(p.periods))});return {builder,state};
+}
+/** Direct genesis has no factory witness: independently pin every protected output and
+ * permit only fungible/BCH change to input wallet scripts. Never consume NFTs. */
+export function validateGenesis(p:Parameters,raw:string,inputs:SpendableUtxo[],provider:NetworkProvider){
+ validateParameters(p);const tx=decodeTransaction(hexToBin(raw));
+ if(typeof tx==='string'||tx.version!==2||!inputs.length||tx.inputs.length!==inputs.length||inputs[0]!.vout!==0||inputs[0]!.token)throw Error('Invalid genesis input/layout');
+ const category=inputs[0]!.txid,state=initialState(p),cs=family(p,category,provider);
+ for(const [i,u]of inputs.entries())if(binToHex(tx.inputs[i]!.outpointTransactionHash)!==u.txid||tx.inputs[i]!.outpointIndex!==u.vout||u.token?.nft)throw Error('Genesis source mismatch or NFT input');
+ const outputs=tx.outputs.map((o,i)=>({txid:hashTransaction(hexToBin(raw)),vout:i,satoshis:o.valueSatoshis,lockingBytecode:binToHex(o.lockingBytecode),...(o.token?{token:{category:binToHex(o.token.category),amount:o.token.amount,...(o.token.nft?{nft:{capability:o.token.nft.capability,commitment:binToHex(o.token.nft.commitment)}}:{})}}:{})}));
+ if(outputs.length<3)throw Error('Missing genesis roles');
+ validateInstance({parameters:p,category,state,inputs:outputs.slice(0,3) as Instance['inputs']},provider);
+ const totals=new Map<string,bigint>();
+ for(const u of inputs)if(u.token)totals.set(u.token.category,(totals.get(u.token.category)??0n)+u.token.amount);
+ const scripts=new Set(inputs.map(u=>u.lockingBytecode).filter(s=>/^76a914[0-9a-f]{40}88ac$/.test(s??'')));
+ for(const [i,o]of outputs.entries()){
+  if(i>=3&&(!scripts.has(o.lockingBytecode)||o.satoshis<CARRIER||o.token?.nft))throw Error('Invalid genesis wallet change');
+  if(i===0)continue;
+  if(o.token){if(o.token.nft||o.token.category===category)throw Error('Unexpected genesis token mint');totals.set(o.token.category,(totals.get(o.token.category)??0n)-o.token.amount);}
+ }
+ if([...totals.values()].some(n=>n!==0n))throw Error('Genesis must conserve reward and wallet tokens');
+ return {category,state,cs};
+}
+export function directGenesisBuilder(p:Parameters,coins:import('../transactions-core.js').WalletCoin[],change:import('../transactions-core.js').WalletKey,provider:NetworkProvider){
+ validateParameters(p);if(!coins.length||coins.length>8||coins[0]!.utxo.vout!==0||coins[0]!.utxo.token||new Set(coins.map(c=>c.utxo.txid+':'+c.utxo.vout)).size!==coins.length)throw Error('A confirmed token-free wallet vout=0 is required for direct genesis');
+ const category=coins[0]!.utxo.txid,cs=family(p,category,provider),state=initialState(p),reserve=p.cap*BigInt(p.periods),asset=p.rewardAsset;
+ let tokens=0n,total=0n;const builder=new TransactionBuilder({provider});
+ for(const c of coins){if(c.utxo.token&&(c.utxo.token.nft||asset.kind!=='token'||c.utxo.token.category!==asset.category))throw Error('Unrelated tokens or NFTs cannot fund genesis');
+ total+=c.utxo.satoshis;tokens+=c.utxo.token?.amount??0n;builder.addInput(c.utxo,placeholderP2PKHUnlocker(ownerAddress(hexToBin(c.publicKey),provider)));}
+ if(asset.kind==='token'&&tokens<reserve)throw Error('Insufficient full reward reserve');
+ builder.addOutput({to:cs.registry.tokenAddress,...stateOutput(category,state)}).addOutput({to:cs.escrow.address,amount:CARRIER}).addOutput({to:cs.reserve.tokenAddress,...assetOutput(asset,reserve)});
+ const address=ownerAddress(hexToBin(change.publicKey),provider),tokenChange=asset.kind==='token'?tokens-reserve:0n;
+ if(tokenChange>0n&&asset.kind==='token')builder.addOutput({to:address,amount:CARRIER,token:{category:asset.category,amount:tokenChange}});
+ const bchChange=total-3n*CARRIER-FEE-(asset.kind==='bch'?reserve:0n)-(tokenChange>0n?CARRIER:0n);
+ if(bchChange<0n||bchChange>0n&&bchChange<CARRIER)throw Error('Insufficient BCH or genesis change below 1000 satoshis');
+ if(bchChange>0n)builder.addOutput({to:address,amount:bchChange});
+ return {builder,state,category};
 }
 // A caller supplies either a wallet placeholder or an actual SignatureTemplate. No key is held here.
 export function transitionBuilder(v:Instance,action:number,slot:number,provider:NetworkProvider,clock:KeeperClock,sponsor:Sponsor,authorization?:SignatureTemplate|Uint8Array,registration?:{owner:Uint8Array;terms:Terms;funding:Sponsor},payerChange?:{address:string}) {

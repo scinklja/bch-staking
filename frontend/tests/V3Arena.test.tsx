@@ -24,3 +24,12 @@ it('blocks claims when the covenant buffer is insufficient and preserves the top
 it('requires a connected compatible wallet even when rewards are available',async()=>{stub('ready');await open(false);expect(screen.getByRole('button',{name:'Review and pay fee in wallet'})).toBeDisabled();expect(screen.getByText(/Claim unavailable:/)).toHaveTextContent('connect a compatible WizardConnect/Cashonize wallet');});
 
 it('surfaces wallet rejection and keeps recovery operations visible',async()=>{stub();wallet.v3.mockRejectedValue(Error('Wallet rejected signing; unsigned claim retained'));await open();await act(async()=>fireEvent.click(screen.getByRole('button',{name:'Review and pay fee in wallet'})));expect(screen.getByRole('status')).toHaveTextContent('Wallet rejected');expect(v3Call).toHaveBeenCalledWith({operation:'list'});});
+
+it('shows a journaled pending vault after reload without allowing provisional state actions',async()=>{
+ stub();const previous=vi.mocked(v3Call).getMockImplementation()!;vi.mocked(v3Call).mockImplementation(async (...args)=>args[0].operation==='list'?[{id:'direct',kind:'create',creationMode:'direct',step:'action',stage:'pending',raw:'signed',txid:config.genesis,config,parameters:p}]:previous(...args));
+ render(<WalletTransactionsContext.Provider value={wallet}><V3Arena/></WalletTransactionsContext.Provider>);
+ await waitFor(()=>expect(screen.getByText(/Genesis transaction:/)).toHaveTextContent('Pending (0-conf)'));
+ expect(screen.getByText(/Genesis transaction:/)).toHaveTextContent(config.genesis);
+ expect(screen.queryByRole('button',{name:'Review and pay fee in wallet'})).not.toBeInTheDocument();
+ expect(screen.getByText(/Direct creation uses one Cashonize approval/)).toBeInTheDocument();
+});

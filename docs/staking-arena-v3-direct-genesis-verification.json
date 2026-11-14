@@ -1,0 +1,162 @@
+{
+  "verifiedAt": "2026-11-14T08:13:53.720992+00:00",
+  "testedSourceBase": "27b68768f4f0c8b14f519e52408e279e5d8b248e",
+  "reviewGate": {
+    "resumedFrom": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z",
+    "resumeReason": "Machine/session interrupted the final v3 browser stage; unchanged staged application source. Retain all seven successful established review stages and rerun the final v3 browser and production build stages verbatim.",
+    "priorFailedStages": [
+      {
+        "name": "v3-browser-indexer",
+        "command": "npm --prefix frontend run test:v3:browser",
+        "startedAt": "2026-11-14T00:32:19.550Z",
+        "exitCode": null,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z/v3-browser-indexer.log"
+      }
+    ],
+    "startedAt": "2026-11-14T08:11:48.260Z",
+    "sourceCommit": "27b68768f4f0c8b14f519e52408e279e5d8b248e",
+    "directory": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T08-11-48.239Z",
+    "liveBroadcasts": false,
+    "stages": [
+      {
+        "name": "regtest-node",
+        "command": "npm run node:start",
+        "startedAt": "2026-11-13T23:43:44.834Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T23-43-44.541Z/regtest-node.log",
+        "finishedAt": "2026-11-13T23:43:48.078Z"
+      },
+      {
+        "name": "protocol-contracts-regtest",
+        "command": "npm test",
+        "startedAt": "2026-11-13T23:43:48.089Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T23-43-44.541Z/protocol-contracts-regtest.log",
+        "finishedAt": "2026-11-14T00:13:46.389Z"
+      },
+      {
+        "name": "frontend-unit",
+        "command": "npm run frontend:test",
+        "startedAt": "2026-11-14T00:13:46.422Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-13T23-43-44.541Z/frontend-unit.log",
+        "finishedAt": "2026-11-14T00:15:41.364Z"
+      },
+      {
+        "name": "browser-ui",
+        "command": "npm --prefix frontend run test:browser",
+        "startedAt": "2026-11-14T00:19:47.621Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z/browser-ui.log",
+        "finishedAt": "2026-11-14T00:21:39.875Z"
+      },
+      {
+        "name": "production-static",
+        "command": "npm --prefix frontend run test:static",
+        "startedAt": "2026-11-14T00:21:39.885Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z/production-static.log",
+        "finishedAt": "2026-11-14T00:22:53.308Z"
+      },
+      {
+        "name": "production-static-smoke",
+        "command": "npm --prefix frontend run test:static:browser",
+        "startedAt": "2026-11-14T00:22:53.320Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z/production-static-smoke.log",
+        "finishedAt": "2026-11-14T00:23:24.222Z"
+      },
+      {
+        "name": "browser-indexer",
+        "command": "npm --prefix frontend run test:electrum",
+        "startedAt": "2026-11-14T00:23:24.256Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T00-19-47.476Z/browser-indexer.log",
+        "finishedAt": "2026-11-14T00:32:19.539Z"
+      },
+      {
+        "name": "v3-browser-indexer",
+        "command": "npm --prefix frontend run test:v3:browser",
+        "startedAt": "2026-11-14T08:11:48.275Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T08-11-48.239Z/v3-browser-indexer.log",
+        "finishedAt": "2026-11-14T08:13:01.923Z"
+      },
+      {
+        "name": "production-build",
+        "command": "npm run frontend:build",
+        "startedAt": "2026-11-14T08:13:01.928Z",
+        "exitCode": 0,
+        "log": "/home/omarchy/bch-staking/.regtest/review/2026-11-14T08-11-48.239Z/production-build.log",
+        "finishedAt": "2026-11-14T08:13:11.230Z"
+      }
+    ],
+    "status": "passed",
+    "finishedAt": "2026-11-14T08:13:11.238Z"
+  },
+  "sourceFilesSha256": {
+    "frontend/scripts/verify-v3-chipnet.mjs": "ffa8c178ddd89d5eaf172f4fa574627ec3a3780cba1a0093a87992cc7f1d8a85",
+    "frontend/src/V3Arena.tsx": "717a8b940f69ccb298dba53e3a9b8b977ea34f5affbad34369dffba3c644ed8b",
+    "frontend/src/v3.worker.ts": "b0c3868b6f2033ba93338c05622c677b620d082a4783db5fd0db9747669e1403",
+    "frontend/tests/V3Arena.test.tsx": "7172ed21abbe0f3b640d72f242a5dac7d063e2070d42fda73043341c53a34f9a",
+    "frontend/tests/v3/arena.spec.ts": "276ddf7a7df8954820aab66e8424dfa26377e306260f957e343f894056653eba",
+    "frontend/tests/v3WalletSigning.test.ts": "54d61811227f8783a907dbbf7f37988d21f9b4abde63468be323a86cbd3ad676",
+    "src/v3/indexer.ts": "b524ee29e66b960a35e493a6f13b28cc05e41c80d06c1c919842abfd26e5bc83",
+    "src/v3/protocol.ts": "800b09f066af367e11a38bf43cb2cb92633d9162c456f01324e1cdd530b296fe",
+    "src/v3/wallet.ts": "b98faf04d4b6e76015fb685f3ecb2d2dbfb214c0828d17422e9d7925aa19e038",
+    "tests/v3-adversarial.test.ts": "0813c0021089295e09ebcabc2e98e0391cbfe53e7216493043ad040a81b47114",
+    "tests/v3-caller-claim.test.ts": "b6ac2868ea22ab8e8e7839129004b480816da2747c1d69edac7c5181d3cf946a",
+    "tests/v3-chipnet.test.ts": "a1efd3b28d8137a7d17b4dbe0744d6c4379eb1d011fcb5275a14fbd743243019",
+    "tests/v3-indexer.test.ts": "8fa299e72fb7d688f658f53216cd28688ac40d831ef3e92f5436138870c48cde",
+    "tests/v3-wallet-regtest.test.ts": "6c7e84739dfff41ce51600d9017ef2169281e29d0c7737f62192d0edb9141cc9"
+  },
+  "rootTests": {
+    "regtestPassed": 67,
+    "chipnetPassed": 3,
+    "failed": 0
+  },
+  "frontendUnitTests": {
+    "passed": 79,
+    "files": 21
+  },
+  "browserTests": {
+    "uiPassed": 6,
+    "staticPassed": 2,
+    "electrumPassed": 19,
+    "v3Passed": 3
+  },
+  "assetCombinations": [
+    "bch-bch",
+    "bch-token",
+    "token-bch",
+    "token-token"
+  ],
+  "directCreation": {
+    "transactions": 1,
+    "walletApprovals": 1,
+    "fundingPreparationTransaction": false,
+    "fullReserveDeposited": true,
+    "minerFeeSatoshis": "10000",
+    "covenantCarriersSatoshis": "3000",
+    "cashonizePlanSigningVerifiedLocally": true,
+    "physicalCashonizeSigningVerified": false,
+    "bchnStandardPolicy": true,
+    "pendingReloadAndAutomaticConfirmation": true,
+    "legacyTwoStageRecovery": true
+  },
+  "covenantBytecodeAbiAndConstructorsChanged": false,
+  "artifactsChecked": 20,
+  "liveTransactionsInitiated": false,
+  "mainnetEnabled": false,
+  "reviewNotes": [
+    "Corrected a pre-existing regtest-only chipnet assertion; all adversarial protections and mainnet/generic-testnet rejection pass.",
+    "A cold browser startup exceeded the 15-second assertion; the complete browser stage passed on retry without application changes.",
+    "The machine/session interrupted the final browser stage; all seven passed stages were retained and the final two established stages were rerun successfully."
+  ],
+  "limitations": [
+    "Requires a confirmed token-free P2PKH wallet output at index zero.",
+    "Selection is bounded to eight inputs. An explicitly approved two-stage fallback remains available.",
+    "Real Cashonize device signing and live chipnet relay remain untested; no live funds were sent.",
+    "Unconfirmed genesis is provisional. Canonical confirmation is required before using covenant state."
+  ]
+}

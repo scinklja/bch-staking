@@ -5,7 +5,7 @@ import type {ElectrumCore,Header,HistoryEntry} from '../electrum-core.js';
 import {walletPeers} from '../electrum-wallet.js';
 import {utxo} from '../arena-core.js';
 import {hashState} from '../registry.js';
-import {advance,covenant,family,initialState,parameterArgs,validateInstance,validateBuilt,termsFor,V3_STATE_SIZE,type Parameters,type Instance} from './protocol.js';
+import {validateGenesis,advance,covenant,family,initialState,validateInstance,validateBuilt,termsFor,V3_STATE_SIZE,type Parameters,type Instance} from './protocol.js';
 export interface Config extends Parameters {genesis:string}
 export interface Allocation {id:string;terms:Buffer;input:ReturnType<typeof utxo>;withdrawal?:string;pending?:string;mature:boolean;sourceMtp:number}
 export interface Snapshot {version:3;config:Config;instance:Instance;tip:Header;clock:{height:number;mtp:number};pending:string[];allocations:Allocation[];history:string[];endpoint:string}
@@ -29,9 +29,9 @@ export class AssetIndexer {
   const rawRead=async(id:string)=>{if(!cache.has(id))cache.set(id,await e.transaction(id));return cache.get(id);};
   const confirm=async(id:string,history:HistoryEntry[])=>{const entry=history.find(h=>h.tx_hash===id);if(!entry||entry.height<=0)throw Error('V3 requires confirmed canonical genesis/history');const tx=await e.transaction(id,entry.height);if(proofs.has(entry.height)&&proofs.get(entry.height)!==tx.blockhash)throw Error('Inconsistent proof header');proofs.set(entry.height,tx.blockhash);cache.set(id,tx);return tx;};
   const verify=async(tx:any)=>{const inputs:ReturnType<typeof utxo>[]=[];for(const i of tx.vin)inputs.push(utxo(await rawRead(i.txid),i.vout));const allocation=allocations.find(a=>a.input.txid===inputs[0]?.txid&&a.input.vout===inputs[0]?.vout);validateBuilt(tx.hex,inputs,clock,allocation?.sourceMtp);};
-  const genesisRaw=await rawRead(c.genesis);if(genesisRaw.vin.length!==2||genesisRaw.vin[0].vout!==0)throw Error('Invalid v3 genesis layout');
-  const category=genesisRaw.vin[0].txid,cs=family(c,category,e),history=await e.history(cs.registry.lockingBytecode),genesis=await confirm(c.genesis,history),factory=utxo(await rawRead(category),0);
-  if(factory.lockingBytecode!==covenant('RegistryGenesisV3',parameterArgs(c),e).lockingBytecode)throw Error('Unpinned v3 genesis');await verify(genesis);
+  const genesisRaw=await rawRead(c.genesis);if(!genesisRaw.vin.length||genesisRaw.vin[0].vout!==0)throw Error('Invalid v3 genesis layout');
+  const category=genesisRaw.vin[0].txid,cs=family(c,category,e),history=await e.history(cs.registry.lockingBytecode),genesis=await confirm(c.genesis,history);
+  const genesisInputs=[];for(const i of genesis.vin)genesisInputs.push(utxo(await rawRead(i.txid),i.vout));validateGenesis(c,genesis.hex,genesisInputs,e);await verify(genesis);
   let instance:Instance={parameters:c,category,state:initialState(c),inputs:[utxo(genesis,0),utxo(genesis,1),utxo(genesis,2)]};validateInstance(instance,e);
   const ids=[c.genesis],confirmed=history.filter(h=>h.height>0&&h.tx_hash!==c.genesis),transactions=[];
   for(const h of confirmed){const tx=await confirm(h.tx_hash,history);if(tx.vout[0]?.tokenData?.category===category&&tx.vout[0]?.tokenData?.nft?.capability==='mutable')transactions.push(tx);}

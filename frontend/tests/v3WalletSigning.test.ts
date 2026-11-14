@@ -23,3 +23,9 @@ it('reconciling a signed uncertain claim never requests another wallet signature
 it('rejects worker authorization that enables wallet broadcasting before Cashonize is called',async()=>{
  const {wallet,manager}=setup();const previous=vi.mocked(v3Call).getMockImplementation()!;vi.mocked(v3Call).mockImplementation(async (...args)=>{const result=await previous(...args);if(args[0].operation==='authorize')result.plan.request.broadcast=true;return result;});try{await expect(wallet.v3!({operation:'claim',config:{}})).rejects.toThrow(/broadcasting must remain disabled/);expect(manager.signTransaction).not.toHaveBeenCalled();}finally{wallet.close?.();}
 });
+
+it('direct creation requests one Cashonize approval for every selected wallet input',async()=>{
+ const {wallet,manager}=setup();const original=vi.mocked(v3Call).getMockImplementation()!;
+ vi.mocked(v3Call).mockImplementation(async (...args)=>{if(args[0].operation==='create'){const result=await original({operation:'claim'});result.plan.inputPaths=[[0,'receive',0],[1,'change',2]];return result;}return original(...args);});
+ try{await wallet.v3!({operation:'create',parameters:{}});expect(manager.signTransaction).toHaveBeenCalledTimes(1);expect(manager.signTransaction).toHaveBeenCalledWith({transaction:expect.objectContaining({broadcast:false}),inputPaths:[[0,'receive',0],[1,'change',2]]},{signal:expect.any(AbortSignal)});}finally{wallet.close?.();}
+});

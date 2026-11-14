@@ -27,13 +27,13 @@ function sign(plan:BrowserPlan,key:SignatureTemplate){
  for(const [i]of plan.inputPaths){const source=plan.request.sourceOutputs[i]!,preimage=generateSigningSerializationBch({transaction:tx,sourceOutputs:plan.request.sourceOutputs,inputIndex:i},{coveredBytecode:source.contract?.redeemScript??source.lockingBytecode,signingSerializationType:Uint8Array.of(0x61)}),sig=key.generateSignature(hash256(preimage));sig[64]=0x61;tx.inputs[i]!.unlockingBytecode=source.contract?hexToBin(binToHex(source.unlockingBytecode!).replace('41'+'00'.repeat(65),'41'+binToHex(sig))):new Uint8Array([...encodeDataPush(sig),...encodeDataPush(key.publicKey)]);}
  return binToHex(encodeTransaction(tx));
 }
-for(const pair of ['bch-bch','bch-token','token-bch','token-token'])test(`chipnet ${pair}: wallet plans, two approvals, registration, caller claim, cancellation/refund and maturity`,async()=>{
+for(const pair of ['bch-bch','bch-token','token-bch','token-token'])test(`chipnet ${pair}: direct genesis, one creation approval, registration, caller claim, cancellation/refund and maturity`,async()=>{
  const f=v3BrowserChain(Network.CHIPNET),provider=f.chain.provider(),key=f.key,keys:WalletKey[]=[{publicKey:binToHex(key.publicKey),path:'receive',index:0}],journal=new Map<string,Operation>(),store:Store={list:async()=>structuredClone([...journal.values()]),save:async op=>{journal.set(op.id,structuredClone(op));}},wallet=new AssetWallet(provider,store);
  const bch:Asset={kind:'bch'},token:Asset={kind:'token',category:'ac'.repeat(32)},[s,r]=pair.split('-'),p:Parameters={version:3,stakingAsset:s==='bch'?bch:token,rewardAsset:r==='bch'?bch:token,epoch:f.chain.clock().mtp-1000,periodSeconds:60,periods:4,cap:2000n};
  f.coin(1000000n);
  f.add(binToHex(encodeTransaction({version:2,locktime:0,inputs:[{outpointTransactionHash:hexToBin('ab'.repeat(32)),outpointIndex:1,sequenceNumber:0xfffffffe,unlockingBytecode:new Uint8Array()}],outputs:[{valueSatoshis:1000n,lockingBytecode:hexToBin(walletScript(keys[0]!.publicKey)),token:{category:hexToBin(token.category),amount:100000n}}]})));
  async function approve(op:Operation,signer=key){const {plan}=await wallet.authorize(op.id);assert.equal(plan.request.broadcast,false);assert.equal(plan.fee,'10000');assert.match(plan.request.userPrompt!,/CHIPNET/);return wallet.submit(op.id,sign(plan,signer));}
- async function finish(op:Operation){assert.equal(op.step,'funding');op=await approve(op);assert.equal(op.stage,'pending');f.chain.mine();op=await wallet.resume(op.id);assert.equal(op.step,'action');op=await approve(op);assert.equal(op.stage,'pending',op.error);f.chain.mine();return wallet.resume(op.id);}
+ async function finish(op:Operation){if(op.creationMode==='direct'){op=await approve(op);assert.equal(op.stage,'pending',op.error);f.chain.mine();return wallet.resume(op.id);}assert.equal(op.step,'funding');op=await approve(op);assert.equal(op.stage,'pending');f.chain.mine();op=await wallet.resume(op.id);assert.equal(op.step,'action');op=await approve(op);assert.equal(op.stage,'pending',op.error);f.chain.mine();return wallet.resume(op.id);}
  let creation=await wallet.create(p,keys);const original=structuredClone(journal.get(creation.id)!);journal.get(creation.id)!.plan!.request.broadcast=true;await assert.rejects(()=>wallet.authorize(creation.id),/disable wallet broadcasting/);journal.set(creation.id,original);
  const created=await finish(creation);assert.equal(created.step,'complete');assert.equal(created.stage,'confirmed');const config=created.config!;
  const initial=await new AssetIndexer(provider,config).sync();assert.equal(initial.config.stakingAsset.kind,p.stakingAsset.kind);assert.equal(initial.config.rewardAsset.kind,p.rewardAsset.kind);assert.equal(initial.instance.inputs[2].token?.amount??initial.instance.inputs[2].satoshis-1000n,8000n);
@@ -48,4 +48,20 @@ for(const pair of ['bch-bch','bch-token','token-bch','token-token'])test(`chipne
  for(let i=0;i<30;i++)f.chain.mine([]);
  assert.equal((await new AssetIndexer(provider,config).sync()).allocations[0]!.mature,true);
  const withdrawal=await finish(await wallet.withdraw(config,allocation.id,keys));assert.equal(withdrawal.stage,'confirmed',withdrawal.error);assert.equal((await new AssetIndexer(provider,config).sync()).allocations[0]!.withdrawal,withdrawal.txid);
+});
+
+test('direct genesis retries saved bytes after drop and detects a canonical conflicting spend',async()=>{
+ const f=v3BrowserChain(Network.CHIPNET),provider=f.chain.provider(),key=f.key,keys:WalletKey[]=[{publicKey:binToHex(key.publicKey),path:'receive',index:0}];f.coin(1000000n);
+ const journal=new Map<string,Operation>(),store:Store={list:async()=>structuredClone([...journal.values()]),save:async op=>{journal.set(op.id,structuredClone(op));}},wallet=new AssetWallet(provider,store);
+ const op=await wallet.create(f.config,keys),authorized=await wallet.authorize(op.id),raw=sign(authorized.plan,key);
+ const sent=await wallet.submit(op.id,raw);assert.equal(sent.stage,'pending');const id=sent.txid!;
+ f.chain.pending.delete(id);f.chain.transactions.delete(id);
+ const reloaded=new AssetWallet(provider,store);assert.equal((await reloaded.resume(op.id)).stage,'prepared');assert.equal(journal.get(op.id)!.raw,raw);
+ const retried=await reloaded.rebroadcast(op.id);assert.equal(retried.stage,'pending');assert.equal(retried.raw,raw);assert.deepEqual(f.chain.broadcasts.slice(-2),[id,id]);
+ // A competing spend is explicit test input, never a production replacement.
+ f.chain.pending.delete(id);f.chain.transactions.delete(id);
+ const conflicting=structuredClone(authorized.plan);conflicting.request.transaction.outputs[2]!.valueSatoshis--;
+ const conflict=f.add(sign(conflicting,key));
+ const blocked=await reloaded.resume(op.id);assert.equal(blocked.stage,'conflicted');assert.match(blocked.error!,new RegExp(conflict.txid));assert.equal(blocked.raw,raw);
+ const broadcasts=f.chain.broadcasts.length;await assert.rejects(()=>reloaded.rebroadcast(op.id),/Input spent/);assert.equal(f.chain.broadcasts.length,broadcasts);
 });
